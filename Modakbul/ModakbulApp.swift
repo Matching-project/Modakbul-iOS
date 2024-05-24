@@ -11,7 +11,9 @@ import SwiftUI
 struct ModakbulApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            NavigationRouteView {
+                ContentView()
+            }
         }
     }
 }
