@@ -7,11 +7,6 @@
 
 import SwiftUI
 
-enum Route: Hashable {
-    case loginView
-    case homeView
-}
-
 final class NavigationRouter: ObservableObject {
     @Published var path: NavigationPath = NavigationPath()
     
