@@ -8,7 +8,7 @@
 import Foundation
 import CoreLocation
 
-protocol LocationServiceDelegate {
+protocol LocationServiceDelegate: NSObject {
     func didUpdateLocations(locations: [CLLocation])
     func didFailWithError(error: LocationServiceError)
 }

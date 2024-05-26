@@ -7,13 +7,16 @@
 
 import SwiftUI
 
-final class NavigationRouter: ObservableObject {
+protocol RouterProtocol {
+    var router: AppRouter { get }
+}
+
+final class AppRouter: ObservableObject {
     @Published var path: NavigationPath = NavigationPath()
     
     @ViewBuilder func view(to route: Route) -> some View {
         switch route {
         case .loginView: LoginView()
-        case .homeView: HomeView()
         }
     }
     

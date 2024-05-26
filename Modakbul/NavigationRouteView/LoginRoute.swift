@@ -7,7 +7,6 @@
 
 import Foundation
 
-enum Route: Hashable {
+enum LoginRoute: Hashable {
     case loginView
-    case homeView
 }
