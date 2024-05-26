@@ -14,7 +14,7 @@ protocol ModuleRouter {
 final class AppRouter: ObservableObject {
     @Published var path: NavigationPath
     
-    init(path: NavigationPath) {
+    init(path: NavigationPath = NavigationPath()) {
         self.path = path
     }
     

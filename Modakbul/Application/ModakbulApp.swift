@@ -9,9 +9,15 @@ import SwiftUI
 
 @main
 struct ModakbulApp: App {
+    @ObservedObject private var router: AppRouter
+    
+    init() {
+        self.router = AppRouter()
+    }
+    
     var body: some Scene {
         WindowGroup {
-            NavigationRouteView {
+            NavigationStack(path: $router.path) {
                 ContentView()
             }
         }
