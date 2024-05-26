@@ -9,6 +9,17 @@ import SwiftUI
 
 enum PageType {
     case home, chattings, settings
+    
+    var label: Label<Text, Image> {
+        switch self {
+        case .home:
+            Label("홈", systemImage: "house")
+        case .chattings:
+            Label("채팅", systemImage: "bubble")
+        case .settings:
+            Label("My", systemImage: "person")
+        }
+    }
 }
 
 struct ContentView: View {
@@ -17,17 +28,14 @@ struct ContentView: View {
     var body: some View {
         TabView {
             HomeView()
-                .tag(PageType.home)
-                .tabItem { Label("홈", systemImage: "house") }
+                .tabItemStyle(.home)
                 .environmentObject(router)
             
             Text("채팅 내역")
-                .tag(PageType.chattings)
-                .tabItem { Label("채팅", systemImage: "bubble") }
+                .tabItemStyle(.chattings)
             
             Text("My페이지")
-                .tag(PageType.settings)
-                .tabItem { Label("My", systemImage: "person") }
+                .tabItemStyle(.settings)
         }
     }
 }
