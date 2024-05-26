@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct NavigationRouteView<Content: View>: View {
-    @StateObject private var router = NavigationRouter()
+    @StateObject private var router = AppRouter()
     
     private let content: Content
     
@@ -19,7 +19,7 @@ struct NavigationRouteView<Content: View>: View {
     var body: some View {
         NavigationStack(path: $router.path) {
             content
-                .navigationDestination(for: Route.self) { route in
+                .navigationDestination(for: LoginRoute.self) { route in
                     router.view(to: route)
                 }
         }

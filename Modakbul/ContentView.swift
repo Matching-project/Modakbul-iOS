@@ -7,16 +7,19 @@
 
 import SwiftUI
 
-@frozen enum PageType {
+enum PageType {
     case home, chattings, settings
 }
 
 struct ContentView: View {
+    @EnvironmentObject private var router: AppRouter
+    
     var body: some View {
         TabView {
             HomeView()
                 .tag(PageType.home)
                 .tabItem { Label("홈", systemImage: "house") }
+                .environmentObject(router)
             
             Text("채팅 내역")
                 .tag(PageType.chattings)
@@ -31,4 +34,5 @@ struct ContentView: View {
 
 #Preview {
     ContentView()
+        .environmentObject(PreviewHelper.shared.router)
 }

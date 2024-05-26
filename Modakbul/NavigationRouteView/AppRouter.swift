@@ -7,21 +7,25 @@
 
 import SwiftUI
 
-protocol RouterProtocol {
+protocol ModuleRouter {
     var router: AppRouter { get }
 }
 
 final class AppRouter: ObservableObject {
-    @Published var path: NavigationPath = NavigationPath()
+    @Published var path: NavigationPath
     
-    @ViewBuilder func view(to route: Route) -> some View {
+    init(path: NavigationPath) {
+        self.path = path
+    }
+    
+    @ViewBuilder func view(to route: LoginRoute) -> some View {
         switch route {
         case .loginView: LoginView()
         }
     }
     
-    func push(_ route: Route) {
-        path.append(route)
+    func push(to destination: any Hashable) {
+        path.append(destination)
     }
     
     func pop() {

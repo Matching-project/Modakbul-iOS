@@ -8,37 +8,54 @@
 import SwiftUI
 
 struct LoginView: View {
+    @EnvironmentObject private var router: AppRouter
+    
     var body: some View {
         VStack(spacing: 20) {
             Spacer()
             
-            Image(systemName: "questionmark")
-                .resizable()
-                .frame(width: 100, height: 100)
-                .scaledToFit()
+            appLogo
             
             Spacer()
             
             AppleLoginButton()
             
-            Button {
-                
-            } label: {
-                HStack {
-                    Text("회원가입 없이")
-                        .font(.headline)
-                        .foregroundStyle(.black)
-                    Text("둘러보기")
-                        .foregroundStyle(.gray)
-                }
-            }
+            enteringButtonWithoutLogin
             
             Spacer()
         }
         .padding()
     }
+    
+    private var appLogo: some View {
+        Image(systemName: "questionmark")
+            .resizable()
+            .frame(width: 100, height: 100)
+            .scaledToFit()
+    }
+    
+    private var enteringButtonWithoutLogin: some View {
+        NavigationLink {
+            HomeView()
+        } label: {
+            HStack {
+                Text("회원가입 없이")
+                    .font(.headline)
+                    .foregroundStyle(.black)
+                Text("둘러보기")
+                    .foregroundStyle(.gray)
+            }
+        }
+
+//        Button {
+//            
+//        } label: {
+//            
+//        }
+    }
 }
 
 #Preview {
     LoginView()
+        .environmentObject(PreviewHelper.shared.router)
 }
