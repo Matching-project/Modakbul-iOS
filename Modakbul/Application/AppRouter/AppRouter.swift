@@ -7,10 +7,6 @@
 
 import SwiftUI
 
-protocol ModuleRouter {
-    var router: AppRouter { get }
-}
-
 final class AppRouter: ObservableObject {
     @Published var path: NavigationPath
     
