@@ -11,15 +11,15 @@ protocol Requestable {
     func asURLRequest() -> URLRequest?
 }
 
+protocol NetworkService {
+    func request<Response: Decodable>(endpoint: Requestable, for type: Response.Type) async throws -> Response
+}
+
 fileprivate enum NetworkServiceError: Error {
     case badResponse(statusCode: Int)
     case notConnectedToInternet
     case invalidURL
     case decodingError(type: String)
-}
-
-protocol NetworkService {
-    func request<Response: Decodable>(endpoint: Requestable, for type: Response.Type) async throws -> Response
 }
 
 final class DefaultNetworkService {
