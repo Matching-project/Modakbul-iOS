@@ -23,13 +23,18 @@ final class DefaultDependencyContainer {
     
     private func _resolve<T>(_ type: T.Type) -> T {
         let key = key(for: type)
+        
         if let instance = dependencies[key] as? T {
             return instance
-        } else if let closure = dependencies[key] as? (DependencyResolver) -> T {
-            return closure(self)
-        } else {
-            fatalError("의존성 객체를 찾을 수 없음.")
         }
+        
+        if let closure = dependencies[key] as? (DependencyResolver) -> T {
+            let instance = closure(self)
+            dependencies[key] = instance
+            return instance
+        }
+        
+        fatalError("의존성 객체를 찾을 수 없음: \(key)")
     }
 }
 
