@@ -6,3 +6,7 @@
 //
 
 import Foundation
+
+protocol SearchPlaceUseCase {
+    func searchPlace(by name: String) async throws -> Place
+}
