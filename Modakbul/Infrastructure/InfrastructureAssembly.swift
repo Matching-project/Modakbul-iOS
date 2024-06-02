@@ -9,9 +9,9 @@ import Foundation
 
 final class InfrastructureAssembly: Assembly {
     func assemble(container: any DependencyContainer) {
-        container.register(for: DefaultNetworkSessionManager.self, DefaultNetworkSessionManager())
-        container.register(for: DefaultNetworkService.self) { resolver in
-            DefaultNetworkService(sessionManager: resolver.resolve(DefaultNetworkSessionManager.self))
+        container.register(for: NetworkSessionManager.self, DefaultNetworkSessionManager())
+        container.register(for: NetworkService.self) { resolver in
+            DefaultNetworkService(sessionManager: resolver.resolve(NetworkSessionManager.self))
         }
         container.register(for: DefaultLocationService.self, DefaultLocationService())
     }

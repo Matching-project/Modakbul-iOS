@@ -10,16 +10,18 @@ import SwiftUI
 @main
 struct ModakbulApp: App {
     @ObservedObject private var router: AppRouter
-//    private let assembler: Assembler
+    private let assembler: Assembler
     
     init() {
         self.router = AppRouter()
+        self.assembler = Assembler(by: InfrastructureAssembly())
     }
     
     var body: some Scene {
         WindowGroup {
             NavigationStack(path: $router.path) {
                 ContentView()
+                    .environmentObject(router)
             }
         }
     }
