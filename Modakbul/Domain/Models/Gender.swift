@@ -9,4 +9,11 @@ import Foundation
 
 enum Gender {
     case female, male
+    
+    var identifier: String {
+        switch self {
+        case .female: "FEMALE"
+        case .male: "MALE"
+        }
+    }
 }
