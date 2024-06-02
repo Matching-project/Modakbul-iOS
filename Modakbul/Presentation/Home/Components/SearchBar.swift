@@ -16,7 +16,7 @@ struct SearchBar: View {
             Image(systemName: "magnifyingglass")
                 .foregroundStyle(textFieldText.isEmpty ? .secondary : .primary)
             
-            TextField("지하철, 카페 이름으로 검색", text: $textFieldText)
+            TextField("카페 이름으로 검색", text: $textFieldText)
                 .focused($isFocused)
             
             if textFieldText.isEmpty == false {

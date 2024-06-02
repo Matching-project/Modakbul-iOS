@@ -15,11 +15,11 @@ final class ViewModel: NSObject, ObservableObject,  LocationServiceDelegate {
     @Published var region = MKCoordinateRegion()
     
     func didUpdateLocations(locations: [CLLocation]) {
-        print(locations.first!)
+        
     }
     
     func didFailWithError(error: LocationServiceError) {
-        print(error)
+        
     }
     
     func connect() {
@@ -58,6 +58,7 @@ struct HomeView: View {
                         Text("\(num)")
                     }
                 }
+                .listStyle(.plain)
             }
         }
         .scrollDismissesKeyboard(.interactively)

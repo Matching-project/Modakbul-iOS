@@ -20,8 +20,6 @@ struct LoginView: View {
             
             AppleLoginButton()
             
-            enteringButtonWithoutLogin
-            
             Spacer()
         }
         .padding()
@@ -32,26 +30,6 @@ struct LoginView: View {
             .resizable()
             .frame(width: 100, height: 100)
             .scaledToFit()
-    }
-    
-    private var enteringButtonWithoutLogin: some View {
-        NavigationLink {
-            HomeView()
-        } label: {
-            HStack {
-                Text("회원가입 없이")
-                    .font(.headline)
-                    .foregroundStyle(.black)
-                Text("둘러보기")
-                    .foregroundStyle(.gray)
-            }
-        }
-
-//        Button {
-//            
-//        } label: {
-//            
-//        }
     }
 }
 
