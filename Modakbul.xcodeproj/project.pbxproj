@@ -200,8 +200,8 @@
 		04CFF77C2C035C8A00EAE4DC /* Infrastructure */ = {
 			isa = PBXGroup;
 			children = (
-				04CFF74B2BFDE92900EAE4DC /* Services */,
 				04D1C7EC2C083E2D008BB1F9 /* InfrastructureAssembly.swift */,
+				04CFF74B2BFDE92900EAE4DC /* Services */,
 			);
 			path = Infrastructure;
 			sourceTree = "<group>";
