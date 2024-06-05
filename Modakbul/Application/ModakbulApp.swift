@@ -6,6 +6,8 @@
 //
 
 import SwiftUI
+import KakaoSDKCommon
+import KakaoSDKAuth
 
 @main
 struct ModakbulApp: App {
@@ -15,6 +17,11 @@ struct ModakbulApp: App {
     init() {
         self.router = AppRouter()
         self.assembler = Assembler(by: InfrastructureAssembly())
+        
+        guard let appKey = Bundle.main.getAPIKey(provider: AuthenticationProvider.kakao) else {
+            return
+        }
+        KakaoSDK.initSDK(appKey: appKey)
     }
     
     var body: some Scene {
@@ -22,6 +29,12 @@ struct ModakbulApp: App {
             NavigationStack(path: $router.path) {
                 ContentView()
                     .environmentObject(router)
+                    .onOpenURL(perform: { url in
+                        if (AuthApi.isKakaoTalkLoginUrl(url)) {
+                            AuthController.handleOpenUrl(url: url)
+                            
+                        }
+                    })
             }
         }
     }
