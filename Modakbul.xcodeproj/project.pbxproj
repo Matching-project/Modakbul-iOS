@@ -33,7 +33,6 @@
 		04D1C7E32C06E2F8008BB1F9 /* SearchPlaceUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D1C7E22C06E2F8008BB1F9 /* SearchPlaceUseCase.swift */; };
 		04D1C7E52C06E435008BB1F9 /* Assembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D1C7E42C06E435008BB1F9 /* Assembly.swift */; };
 		04D1C7E72C06E4B8008BB1F9 /* Assembler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D1C7E62C06E4B8008BB1F9 /* Assembler.swift */; };
-		04D1C7ED2C083E2D008BB1F9 /* InfrastructureAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D1C7EC2C083E2D008BB1F9 /* InfrastructureAssembly.swift */; };
 		04D1C7F12C085981008BB1F9 /* Place.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D1C7F02C085981008BB1F9 /* Place.swift */; };
 		04D1C7F32C085AF7008BB1F9 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D1C7F22C085AF7008BB1F9 /* User.swift */; };
 		04D1C7F52C0B372B008BB1F9 /* FetchUserProfileUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D1C7F42C0B372B008BB1F9 /* FetchUserProfileUseCase.swift */; };
@@ -51,11 +50,13 @@
 		04D1C8142C0C6FB9008BB1F9 /* UnblockUserUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D1C8132C0C6FB9008BB1F9 /* UnblockUserUseCase.swift */; };
 		04D1C8162C0C6FF9008BB1F9 /* UnregisterUserUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D1C8152C0C6FF9008BB1F9 /* UnregisterUserUseCase.swift */; };
 		04D1C8182C0C703B008BB1F9 /* HelpUserUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D1C8172C0C703B008BB1F9 /* HelpUserUseCase.swift */; };
+		04D1C8292C11AEE2008BB1F9 /* AuthorizationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D1C8282C11AEE2008BB1F9 /* AuthorizationService.swift */; };
+		04D1C82D2C11B0EE008BB1F9 /* TokenRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D1C82C2C11B0EE008BB1F9 /* TokenRepository.swift */; };
+		04D1C82F2C11C0FE008BB1F9 /* KakaoLoginManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D1C82E2C11C0FE008BB1F9 /* KakaoLoginManager.swift */; };
 		9C8122292BF722E6007DC215 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9C8122282BF722E6007DC215 /* Preview Assets.xcassets */; };
 		DFE0AFD72C103FA800EC078B /* KakaoSDKAuth in Frameworks */ = {isa = PBXBuildFile; productRef = DFE0AFD62C103FA800EC078B /* KakaoSDKAuth */; };
 		DFE0AFD92C103FA800EC078B /* KakaoSDKCommon in Frameworks */ = {isa = PBXBuildFile; productRef = DFE0AFD82C103FA800EC078B /* KakaoSDKCommon */; };
 		DFE0AFDB2C103FA800EC078B /* KakaoSDKUser in Frameworks */ = {isa = PBXBuildFile; productRef = DFE0AFDA2C103FA800EC078B /* KakaoSDKUser */; };
-		DFE0AFDD2C104B3100EC078B /* AppSecret.plist in Resources */ = {isa = PBXBuildFile; fileRef = DFE0AFDC2C104B3100EC078B /* AppSecret.plist */; };
 		DFE0AFDF2C104E7A00EC078B /* Bundle+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFE0AFDE2C104E7A00EC078B /* Bundle+Extension.swift */; };
 /* End PBXBuildFile section */
 
@@ -86,7 +87,6 @@
 		04D1C7E22C06E2F8008BB1F9 /* SearchPlaceUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchPlaceUseCase.swift; sourceTree = "<group>"; };
 		04D1C7E42C06E435008BB1F9 /* Assembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Assembly.swift; sourceTree = "<group>"; };
 		04D1C7E62C06E4B8008BB1F9 /* Assembler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Assembler.swift; sourceTree = "<group>"; };
-		04D1C7EC2C083E2D008BB1F9 /* InfrastructureAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfrastructureAssembly.swift; sourceTree = "<group>"; };
 		04D1C7F02C085981008BB1F9 /* Place.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Place.swift; sourceTree = "<group>"; };
 		04D1C7F22C085AF7008BB1F9 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		04D1C7F42C0B372B008BB1F9 /* FetchUserProfileUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchUserProfileUseCase.swift; sourceTree = "<group>"; };
@@ -104,11 +104,12 @@
 		04D1C8132C0C6FB9008BB1F9 /* UnblockUserUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnblockUserUseCase.swift; sourceTree = "<group>"; };
 		04D1C8152C0C6FF9008BB1F9 /* UnregisterUserUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnregisterUserUseCase.swift; sourceTree = "<group>"; };
 		04D1C8172C0C703B008BB1F9 /* HelpUserUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpUserUseCase.swift; sourceTree = "<group>"; };
+		04D1C8282C11AEE2008BB1F9 /* AuthorizationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationService.swift; sourceTree = "<group>"; };
+		04D1C82C2C11B0EE008BB1F9 /* TokenRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenRepository.swift; sourceTree = "<group>"; };
+		04D1C82E2C11C0FE008BB1F9 /* KakaoLoginManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoLoginManager.swift; sourceTree = "<group>"; };
 		9C81221E2BF722E4007DC215 /* Modakbul.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Modakbul.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9C8122282BF722E6007DC215 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		DFE0AFD42C103B4100EC078B /* Modakbul.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Modakbul.entitlements; sourceTree = "<group>"; };
-		DFE0AFDC2C104B3100EC078B /* AppSecret.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = AppSecret.plist; path = Modakbul/Application/AppSecret.plist; sourceTree = SOURCE_ROOT; };
-		DFE0AFDE2C104E7A00EC078B /* Bundle+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Bundle+Extension.swift"; path = "Modakbul/Data/Bundle+Extension.swift"; sourceTree = SOURCE_ROOT; };
+		DFE0AFDE2C104E7A00EC078B /* Bundle+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Bundle+Extension.swift"; path = "Modakbul/Data/Extensions/Bundle+Extension.swift"; sourceTree = SOURCE_ROOT; };
 		DFE0AFE02C1053E600EC078B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -164,6 +165,7 @@
 		04CFF74B2BFDE92900EAE4DC /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				04D1C8272C11AEA5008BB1F9 /* OAuth */,
 				04CFF74F2BFDE9CF00EAE4DC /* Network */,
 				04CFF74E2BFDE9C900EAE4DC /* Location */,
 			);
@@ -239,7 +241,6 @@
 		04CFF77C2C035C8A00EAE4DC /* Infrastructure */ = {
 			isa = PBXGroup;
 			children = (
-				04D1C7EC2C083E2D008BB1F9 /* InfrastructureAssembly.swift */,
 				04CFF74B2BFDE92900EAE4DC /* Services */,
 			);
 			path = Infrastructure;
@@ -248,8 +249,8 @@
 		04CFF77D2C035C9900EAE4DC /* Data */ = {
 			isa = PBXGroup;
 			children = (
-				DFE0AFDC2C104B3100EC078B /* AppSecret.plist */,
-				DFE0AFDE2C104E7A00EC078B /* Bundle+Extension.swift */,
+				04D1C82A2C11B0B3008BB1F9 /* Extensions */,
+				04D1C82B2C11B0C0008BB1F9 /* TokenRepository */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -375,6 +376,31 @@
 			path = LocalMap;
 			sourceTree = "<group>";
 		};
+		04D1C8272C11AEA5008BB1F9 /* OAuth */ = {
+			isa = PBXGroup;
+			children = (
+				04D1C8282C11AEE2008BB1F9 /* AuthorizationService.swift */,
+				04D1C82E2C11C0FE008BB1F9 /* KakaoLoginManager.swift */,
+			);
+			path = OAuth;
+			sourceTree = "<group>";
+		};
+		04D1C82A2C11B0B3008BB1F9 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				DFE0AFDE2C104E7A00EC078B /* Bundle+Extension.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		04D1C82B2C11B0C0008BB1F9 /* TokenRepository */ = {
+			isa = PBXGroup;
+			children = (
+				04D1C82C2C11B0EE008BB1F9 /* TokenRepository.swift */,
+			);
+			path = TokenRepository;
+			sourceTree = "<group>";
+		};
 		9C8122152BF722E4007DC215 = {
 			isa = PBXGroup;
 			children = (
@@ -395,7 +421,6 @@
 			isa = PBXGroup;
 			children = (
 				DFE0AFE02C1053E600EC078B /* Info.plist */,
-				DFE0AFD42C103B4100EC078B /* Modakbul.entitlements */,
 				04CFF7802C035CAD00EAE4DC /* Application */,
 				04CFF77F2C035CA700EAE4DC /* Presentation */,
 				04CFF77E2C035C9F00EAE4DC /* Domain */,
@@ -482,7 +507,6 @@
 			files = (
 				9C8122292BF722E6007DC215 /* Preview Assets.xcassets in Resources */,
 				04B315BC2BF8612D0043A529 /* Assets.xcassets in Resources */,
-				DFE0AFDD2C104B3100EC078B /* AppSecret.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -498,6 +522,7 @@
 				04D1C7F92C0B3C07008BB1F9 /* UpdateUserProfileUseCase.swift in Sources */,
 				DFE0AFDF2C104E7A00EC078B /* Bundle+Extension.swift in Sources */,
 				04CFF7482BFDCF8300EAE4DC /* AppleLoginButton.swift in Sources */,
+				04D1C82D2C11B0EE008BB1F9 /* TokenRepository.swift in Sources */,
 				04D1C8162C0C6FF9008BB1F9 /* UnregisterUserUseCase.swift in Sources */,
 				04D1C8082C0C6815008BB1F9 /* LoginUseCase.swift in Sources */,
 				04D1C80C2C0C69EF008BB1F9 /* ReportType.swift in Sources */,
@@ -513,6 +538,7 @@
 				04CFF77A2C01BC2A00EAE4DC /* MyView.swift in Sources */,
 				04CFF7562BFDEB0B00EAE4DC /* URLSession.swift in Sources */,
 				04CFF7732C00B2C700EAE4DC /* LoginRoute.swift in Sources */,
+				04D1C82F2C11C0FE008BB1F9 /* KakaoLoginManager.swift in Sources */,
 				04D1C8022C0C62D6008BB1F9 /* ValidateUserNicknameOverlappedUseCase.swift in Sources */,
 				04D1C80A2C0C69B3008BB1F9 /* ReportUserUseCase.swift in Sources */,
 				04D1C7DF2C05B041008BB1F9 /* DependencyResolver.swift in Sources */,
@@ -521,7 +547,6 @@
 				04CFF7772C01BAF500EAE4DC /* FilterBar.swift in Sources */,
 				04D1C7E72C06E4B8008BB1F9 /* Assembler.swift in Sources */,
 				04D1C8142C0C6FB9008BB1F9 /* UnblockUserUseCase.swift in Sources */,
-				04D1C7ED2C083E2D008BB1F9 /* InfrastructureAssembly.swift in Sources */,
 				04CFF76C2C007B6000EAE4DC /* AppRouter.swift in Sources */,
 				04D1C7F32C085AF7008BB1F9 /* User.swift in Sources */,
 				04D1C80E2C0C6C7A008BB1F9 /* BlockUserUseCase.swift in Sources */,
@@ -535,6 +560,7 @@
 				04CFF7512BFDE9E500EAE4DC /* NetworkService.swift in Sources */,
 				04D1C7F12C085981008BB1F9 /* Place.swift in Sources */,
 				04CFF7532BFDEAF700EAE4DC /* NetworkSessionManager.swift in Sources */,
+				04D1C8292C11AEE2008BB1F9 /* AuthorizationService.swift in Sources */,
 				04CFF7622BFDF51200EAE4DC /* CLLocationManager.swift in Sources */,
 				04D1C8122C0C6EE3008BB1F9 /* BlockedUser.swift in Sources */,
 			);
@@ -671,7 +697,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Modakbul/Application/Resources/Preview Content\"";
-				DEVELOPMENT_TEAM = TTKL6566T6;
+				DEVELOPMENT_TEAM = P85DW78LYM;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Modakbul/Info.plist;
@@ -687,7 +713,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.team.modakbul;
+				PRODUCT_BUNDLE_IDENTIFIER = com.team.modakbul0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -709,7 +735,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Modakbul/Application/Resources/Preview Content\"";
-				DEVELOPMENT_TEAM = TTKL6566T6;
+				DEVELOPMENT_TEAM = P85DW78LYM;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Modakbul/Info.plist;
@@ -725,7 +751,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.team.modakbul;
+				PRODUCT_BUNDLE_IDENTIFIER = com.team.modakbul0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
