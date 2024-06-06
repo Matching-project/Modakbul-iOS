@@ -9,5 +9,5 @@ import Foundation
 
 // TODO: 문서 읽고 정리 다시 해야함
 protocol LoginUseCase {
-    func login(with token: String) async throws
+    func login(with provider: AuthenticationProvider) async throws
 }
