@@ -26,21 +26,23 @@ struct ContentView: View {
     @EnvironmentObject private var router: AppRouter
     
     var body: some View {
-        TabView {
-            HomeView()
-                .tabItemStyle(.home)
-                .environmentObject(router)
-            
-            Text("채팅 내역")
-                .tabItemStyle(.chattings)
-            
-            Text("My페이지")
-                .tabItemStyle(.settings)
-        }
+        router.view(to: .loginView)
+        
+//        TabView {
+//            HomeView()
+//                .tabItemStyle(.home)
+//                .environmentObject(router)
+//            
+//            Text("채팅 내역")
+//                .tabItemStyle(.chattings)
+//            
+//            Text("My페이지")
+//                .tabItemStyle(.settings)
+//        }
     }
 }
 
-#Preview {
-    ContentView()
-        .environmentObject(PreviewHelper.shared.router)
-}
+//#Preview {
+//    ContentView()
+//        .environmentObject(PreviewHelper.shared.router)
+//}
