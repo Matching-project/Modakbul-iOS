@@ -9,14 +9,19 @@ import SwiftUI
 
 final class AppRouter: ObservableObject {
     @Published var path: NavigationPath
+    @Published var container: DependencyContainer
     
-    init(path: NavigationPath = NavigationPath()) {
+    init(
+        path: NavigationPath = NavigationPath(),
+        container: DependencyContainer
+    ) {
         self.path = path
+        self.container = container
     }
     
     @ViewBuilder func view(to route: LoginRoute) -> some View {
         switch route {
-        case .loginView: LoginView()
+        case .loginView: container.resolve(LoginView.self)
         }
     }
     
