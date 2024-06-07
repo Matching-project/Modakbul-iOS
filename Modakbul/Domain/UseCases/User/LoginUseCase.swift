@@ -7,7 +7,26 @@
 
 import Foundation
 
-// TODO: 문서 읽고 정리 다시 해야함
 protocol LoginUseCase {
-    func login(with provider: AuthenticationProvider) async throws
+    func onOpenURL(url: URL)
+    func login(with provider: AuthenticationProvider) async throws -> User
+}
+
+final class DefaultLoginUseCase {
+    private let socialLoginRepository: SocialLoginRepository
+    
+    init(socialLoginRepository: SocialLoginRepository) {
+        self.socialLoginRepository = socialLoginRepository
+    }
+}
+
+// MARK: LoginUseCase Confirmation
+extension DefaultLoginUseCase: LoginUseCase {
+    func onOpenURL(url: URL) {
+        socialLoginRepository.onOpenURL(url: url)
+    }
+    
+    func login(with provider: AuthenticationProvider) async throws -> User {
+        try await socialLoginRepository.login(with: provider)
+    }
 }
