@@ -21,6 +21,7 @@ final class DefaultKakaoLoginManager {
     init(kakaoAPI: UserApi = .shared) {
         self.kakaoAPI = kakaoAPI
         guard let appKey = Bundle.main.getAPIKey(provider: AuthenticationProvider.kakao) else { return }
+        
         KakaoSDK.initSDK(appKey: appKey)
     }
 }
@@ -33,6 +34,7 @@ extension DefaultKakaoLoginManager: KakaoLoginManager {
         }
     }
     
+    @MainActor
     func login() async throws -> OAuthToken {
         return try await withCheckedThrowingContinuation { continuation in
             if UserApi.isKakaoTalkLoginAvailable() {

@@ -18,10 +18,9 @@ final class LoginViewModel: ObservableObject {
         loginUseCase.onOpenURL(url: url)
     }
     
-    @MainActor func loginWithKakaoTalk() {
+    func loginWithKakaoTalk() {
         Task {
             guard let user = try? await loginUseCase.login(with: .kakao) else { return print("로그인 실패") }
-            print(user.email)
         }
     }
 }
