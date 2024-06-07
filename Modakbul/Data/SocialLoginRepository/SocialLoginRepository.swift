@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol TokenRepository {
+protocol SocialLoginRepository {
     func fetchToken(by userId: String) async throws -> String
     func storeToken(by userId: String, with token: String) async throws
 }
