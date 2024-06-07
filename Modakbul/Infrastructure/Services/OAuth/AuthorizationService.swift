@@ -14,7 +14,6 @@ protocol AuthorizationService {
 
 final class DefaultAuthorizationService {
     private let kakaoLoginManager: KakaoLoginManager
-//    private let appleLoginManager:
     
     init(kakaoLoginManager: KakaoLoginManager) {
         self.kakaoLoginManager = kakaoLoginManager
@@ -33,9 +32,7 @@ extension DefaultAuthorizationService: AuthorizationService {
             return ("", "")
             
         case .kakao:
-            print("인증서비스 접근")
             let oAuthToken = try await kakaoLoginManager.login()
-            print(oAuthToken)
             return (oAuthToken.accessToken, oAuthToken.refreshToken)
         }
     }
