@@ -7,10 +7,10 @@
 
 import Foundation
 
-final class PreviewHelper {
-    static let shared = PreviewHelper()
-    
-    let router = AppRouter()
-    
-    private init() {}
-}
+//final class PreviewHelper {
+//    static let shared = PreviewHelper()
+//    
+//    let router = AppRouter()
+//    
+//    private init() {}
+//}
