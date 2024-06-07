@@ -33,16 +33,12 @@ extension Bundle {
     
     // MARK: Private Methods
     private func fetchKey(provider: AuthenticationProvider) -> Result<String, FetchingAPIKeyError> {
-        guard let fileURL = Bundle.main.url(forResource: "AppSecret", withExtension: "plist") else {
-            return .failure(.fileNotFound)
-        }
-        
-        guard let plist = NSDictionary(contentsOf: fileURL),
-              let value = plist.object(forKey: provider.identifier) as? String
+           
+        guard let apikey = Bundle.main.object(forInfoDictionaryKey: provider.infoDictionaryKey) as? String
         else {
             return .failure(.keyNotFound)
         }
-        
-        return .success(value)
+                
+        return .success(apikey)
     }
 }

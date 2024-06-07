@@ -1,9 +1,8 @@
 # Created by https://www.toptal.com/developers/gitignore/api/swift,swiftpackagemanager,macos
 # Edit at https://www.toptal.com/developers/gitignore?templates=swift,swiftpackagemanager,macos
 
-# API key List
-**/AppSecret.plist
-
+# API key
+*.xcconfig
 
 ### macOS ###
 # General

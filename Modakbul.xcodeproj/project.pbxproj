@@ -56,7 +56,6 @@
 		04D1C8332C11E803008BB1F9 /* TokenStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D1C8322C11E803008BB1F9 /* TokenStorage.swift */; };
 		04D1C8352C11EC8D008BB1F9 /* Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D1C8342C11EC8D008BB1F9 /* Endpoint.swift */; };
 		04D1C8392C11EEFC008BB1F9 /* UserDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D1C8382C11EEFC008BB1F9 /* UserDTO.swift */; };
-		04D1C8452C12EE08008BB1F9 /* AppSecret.plist in Resources */ = {isa = PBXBuildFile; fileRef = 04D1C8442C12EE08008BB1F9 /* AppSecret.plist */; };
 		9C8122292BF722E6007DC215 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9C8122282BF722E6007DC215 /* Preview Assets.xcassets */; };
 		DFE0AFD72C103FA800EC078B /* KakaoSDKAuth in Frameworks */ = {isa = PBXBuildFile; productRef = DFE0AFD62C103FA800EC078B /* KakaoSDKAuth */; };
 		DFE0AFD92C103FA800EC078B /* KakaoSDKCommon in Frameworks */ = {isa = PBXBuildFile; productRef = DFE0AFD82C103FA800EC078B /* KakaoSDKCommon */; };
@@ -114,9 +113,9 @@
 		04D1C8322C11E803008BB1F9 /* TokenStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenStorage.swift; sourceTree = "<group>"; };
 		04D1C8342C11EC8D008BB1F9 /* Endpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endpoint.swift; sourceTree = "<group>"; };
 		04D1C8382C11EEFC008BB1F9 /* UserDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDTO.swift; sourceTree = "<group>"; };
-		04D1C8442C12EE08008BB1F9 /* AppSecret.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = AppSecret.plist; sourceTree = "<group>"; };
 		9C81221E2BF722E4007DC215 /* Modakbul.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Modakbul.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9C8122282BF722E6007DC215 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		DF9B423A2C131458006F971F /* AppSecret.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = AppSecret.xcconfig; sourceTree = "<group>"; };
 		DFE0AFDE2C104E7A00EC078B /* Bundle+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Bundle+Extension.swift"; path = "Modakbul/Data/Extensions/Bundle+Extension.swift"; sourceTree = SOURCE_ROOT; };
 		DFE0AFE02C1053E600EC078B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -250,9 +249,9 @@
 		04CFF77C2C035C8A00EAE4DC /* Infrastructure */ = {
 			isa = PBXGroup;
 			children = (
-				04D1C8442C12EE08008BB1F9 /* AppSecret.plist */,
 				04D1C8302C11E7E6008BB1F9 /* Storages */,
 				04CFF74B2BFDE92900EAE4DC /* Services */,
+				DF9B423A2C131458006F971F /* AppSecret.xcconfig */,
 			);
 			path = Infrastructure;
 			sourceTree = "<group>";
@@ -543,7 +542,6 @@
 			files = (
 				9C8122292BF722E6007DC215 /* Preview Assets.xcassets in Resources */,
 				04B315BC2BF8612D0043A529 /* Assets.xcassets in Resources */,
-				04D1C8452C12EE08008BB1F9 /* AppSecret.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -611,6 +609,7 @@
 /* Begin XCBuildConfiguration section */
 		9C81222A2BF722E6007DC215 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = DF9B423A2C131458006F971F /* AppSecret.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -730,6 +729,7 @@
 		};
 		9C81222D2BF722E6007DC215 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = DF9B423A2C131458006F971F /* AppSecret.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;

@@ -16,4 +16,11 @@ enum AuthenticationProvider {
         case .kakao: "KAKAO"
         }
     }
+    
+    var infoDictionaryKey: String {
+        switch self {
+        case .apple: "APPLE_NATIVE_APP_KEY"
+        case .kakao: "KAKAO_NATIVE_APP_KEY"
+        }
+    }
 }
