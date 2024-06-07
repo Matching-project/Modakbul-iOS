@@ -6,3 +6,18 @@
 //
 
 import Foundation
+
+protocol Requestable {
+    func asURLRequest() -> URLRequest?
+}
+
+enum Endpoint {
+    case socialLogin(accessToken: String, refreshToken: String)
+}
+
+// MARK: Requestable Confirmation
+extension Endpoint: Requestable {
+    func asURLRequest() -> URLRequest? {
+        URLRequest(url: URL(string: "")!)
+    }
+}
