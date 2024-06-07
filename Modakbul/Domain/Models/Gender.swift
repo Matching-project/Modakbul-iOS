@@ -16,4 +16,12 @@ enum Gender {
         case .male: "MALE"
         }
     }
+    
+    init(string: String) {
+        if string == "FEMALE" {
+            self = .female
+        } else {
+            self = .male
+        }
+    }
 }

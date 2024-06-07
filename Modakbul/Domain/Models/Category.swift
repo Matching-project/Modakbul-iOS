@@ -17,4 +17,18 @@ enum Category {
     case officiary
     case extracurricularActivities
     case other
+    
+    init(string: String) {
+        switch string {
+        case "INTERVIEW": self = .interview
+        case "CODING": self = .coding
+        case "DESIGN": self = .design
+        case "SELF_IMPROVEMENT": self = .selfImprovement
+        case "READING": self = .reading
+        case "LANGUAGE": self = .language
+        case "OFFICIARY": self = .officiary
+        case "EXTRACURRICULAR_ACTIVITIES": self = .extracurricularActivities
+        default: self = .other
+        }
+    }
 }
