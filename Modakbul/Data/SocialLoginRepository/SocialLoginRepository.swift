@@ -47,7 +47,6 @@ extension DefaultSocialLoginRepository: SocialLoginRepository {
             await tokenStorage.storeToken(id: user.id, tokens: (accessToken, refreshToken))
             return user
         } catch {
-            print("-------------------------\(error)")
             throw error
         }
     }
