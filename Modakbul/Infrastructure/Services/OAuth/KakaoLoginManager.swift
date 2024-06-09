@@ -13,6 +13,7 @@ import KakaoSDKAuth
 protocol KakaoLoginManager {
     func handleOpenUrl(url: URL)
     func login() async throws -> OAuthToken
+    func logout() async throws
 }
 
 final class DefaultKakaoLoginManager {
@@ -57,6 +58,15 @@ extension DefaultKakaoLoginManager: KakaoLoginManager {
                         continuation.resume(returning: token)
                     }
                 }
+            }
+        }
+    }
+    
+    func logout() async throws {
+        return try await withCheckedThrowingContinuation { continuation in
+            kakaoAPI.logout { error in
+                guard let error = error else { return continuation.resume() }
+                continuation.resume(throwing: error)
             }
         }
     }
