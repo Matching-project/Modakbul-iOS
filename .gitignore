@@ -2,7 +2,7 @@
 # Edit at https://www.toptal.com/developers/gitignore?templates=swift,swiftpackagemanager,macos
 
 # API key
-*.xcconfig
+**.xcconfig
 
 ### macOS ###
 # General
