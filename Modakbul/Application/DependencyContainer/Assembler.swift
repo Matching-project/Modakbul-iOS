@@ -18,7 +18,7 @@ final class Assembler {
     
     init(
         container: DependencyContainer = DefaultDependencyContainer(),
-        by assemblies: Assembly...
+        by assemblies: [Assembly]
     ) {
         self.container = container
         run(assemblies: assemblies)

@@ -1,5 +1,5 @@
 //
-//  NavigationRouter.swift
+//  AppRouter.swift
 //  Modakbul
 //
 //  Created by Swain Yun on 5/24/24.
@@ -7,29 +7,65 @@
 
 import SwiftUI
 
-final class AppRouter: ObservableObject {
+protocol AppRouter: ObservableObject {
+    associatedtype Destination: Routable
+    associatedtype Content: View
+    
+    var path: NavigationPath { get set }
+    var sheet: Destination? { get set }
+    var fullScreenCover: Destination? { get set }
+    var isPresented: Bool { get set }
+    var assembler: Assembler { get }
+    var resolver: DependencyResolver { get }
+    
+    @ViewBuilder func view(to destination: Destination) -> Content
+    func push(to destination: Destination)
+    func dismiss()
+    func popToRoot()
+}
+
+extension AppRouter {
+    var resolver: DependencyResolver { assembler.resolver }
+    var isPresented: Bool { sheet != nil || fullScreenCover != nil }
+}
+
+final class DefaultAppRouter: AppRouter {
+    typealias Destination = Route
+    
     @Published var path: NavigationPath
-    @Published var container: DependencyContainer
+    @Published var sheet: Destination?
+    @Published var fullScreenCover: Destination?
+    @Published var isPresented: Bool = false
+    let assembler: Assembler
     
     init(
         path: NavigationPath = NavigationPath(),
-        container: DependencyContainer
+        assembler: Assembler
     ) {
         self.path = path
-        self.container = container
+        self.assembler = assembler
     }
     
-    @ViewBuilder func view(to route: LoginRoute) -> some View {
-        switch route {
-        case .loginView: container.resolve(LoginView.self)
+    convenience init(
+        by assemblies: Assembly...
+    ) {
+        let assembler = Assembler(by: assemblies)
+        self.init(assembler: assembler)
+    }
+    
+    @ViewBuilder func view(to destination: Destination) -> some View {
+        switch destination {
+        case .homeView: HomeView<DefaultAppRouter>(homeViewModel: resolver.resolve(HomeViewModel.self))
+        case .loginView: LoginView<DefaultAppRouter>(loginViewModel: resolver.resolve(LoginViewModel.self))
+        case .myView: MyView()
         }
     }
     
-    func push(to destination: any Hashable) {
+    func push(to destination: Route) {
         path.append(destination)
     }
     
-    func pop() {
+    func dismiss() {
         path.removeLast()
     }
     

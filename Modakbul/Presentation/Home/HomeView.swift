@@ -8,7 +8,7 @@
 import SwiftUI
 import MapKit
 
-final class ViewModel: NSObject, ObservableObject,  LocationServiceDelegate {
+final class HomeViewModel: NSObject, ObservableObject, LocationServiceDelegate {
     private lazy var locationService: LocationService = DefaultLocationService(delegate: self)
     
     @Published var locations: [CLLocation] = []
@@ -27,44 +27,30 @@ final class ViewModel: NSObject, ObservableObject,  LocationServiceDelegate {
     }
 }
 
-struct HomeView: View {
-    @EnvironmentObject private var router: AppRouter
+struct HomeView<Router: AppRouter>: View {
+    @EnvironmentObject private var router: Router
+    @ObservedObject private var homeViewModel: HomeViewModel
     @State private var textFieldText: String = ""
-    @StateObject private var viewModel = ViewModel()
     @State private var isMapAppeared: Bool = true
+    
+    init(homeViewModel: HomeViewModel) {
+        self.homeViewModel = homeViewModel
+    }
     
     var body: some View {
         VStack {
             SearchBar(textFieldText: $textFieldText)
                 .padding()
             
-            // TODO: Filter Options
-            Toggle("item", isOn: $isMapAppeared)
-                .padding()
-            
-            // TODO: Map Layer
-            if isMapAppeared {
-                Map {
-                    Marker(coordinate: viewModel.region.center) {
-                        Text("Here")
-                    }
+            Map {
+                Marker(coordinate: homeViewModel.region.center) {
+                    Text("Here")
                 }
-                .onAppear {
-                    viewModel.connect()
-                }
-            } else {
-                List {
-                    ForEach([1, 2, 3, 4, 5, 6, 7, 8, 9], id: \.self) { num in
-                        Text("\(num)")
-                    }
-                }
-                .listStyle(.plain)
+            }
+            .onAppear {
+                homeViewModel.connect()
             }
         }
         .scrollDismissesKeyboard(.interactively)
     }
-}
-
-#Preview {
-    HomeView()
 }

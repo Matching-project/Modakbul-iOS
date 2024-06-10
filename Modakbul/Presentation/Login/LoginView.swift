@@ -25,8 +25,8 @@ final class LoginViewModel: ObservableObject {
     }
 }
 
-struct LoginView: View {
-    @EnvironmentObject private var router: AppRouter
+struct LoginView<Router: AppRouter>: View {
+    @EnvironmentObject private var router: Router
     @ObservedObject private var loginViewModel: LoginViewModel
     
     init(loginViewModel: LoginViewModel) {
@@ -68,8 +68,3 @@ struct LoginView: View {
         }
     }
 }
-
-//#Preview {
-//    LoginView()
-//        .environmentObject(PreviewHelper.shared.router)
-//}

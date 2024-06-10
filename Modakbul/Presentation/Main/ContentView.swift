@@ -22,27 +22,22 @@ enum PageType {
     }
 }
 
-struct ContentView: View {
-    @EnvironmentObject private var router: AppRouter
+struct ContentView<Router: AppRouter>: View where Router.Destination == Route {
+    @EnvironmentObject private var router: Router
+    
+    @State private var isPresented: Bool = false
     
     var body: some View {
-        router.view(to: .loginView)
-        
-//        TabView {
-//            HomeView()
-//                .tabItemStyle(.home)
-//                .environmentObject(router)
-//            
-//            Text("채팅 내역")
-//                .tabItemStyle(.chattings)
-//            
-//            Text("My페이지")
-//                .tabItemStyle(.settings)
-//        }
+        TabView {
+            router.view(to: .homeView)
+                .tabItemStyle(.home)
+                .environmentObject(router)
+            
+            router.view(to: .loginView)
+                .tabItemStyle(.chattings)
+            
+            MyView()
+                .tabItemStyle(.settings)
+        }
     }
 }
-
-//#Preview {
-//    ContentView()
-//        .environmentObject(PreviewHelper.shared.router)
-//}

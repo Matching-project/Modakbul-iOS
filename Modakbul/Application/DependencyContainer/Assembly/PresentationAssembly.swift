@@ -12,8 +12,8 @@ struct PresentationAssembly: Assembly {
         container.register(for: LoginViewModel.self) { resolver in
             LoginViewModel(loginUseCase: resolver.resolve(LoginUseCase.self))
         }
-        container.register(for: LoginView.self) { resolver in
-            LoginView(loginViewModel: resolver.resolve(LoginViewModel.self))
+        container.register(for: HomeViewModel.self) { resolver in
+            HomeViewModel()
         }
     }
     

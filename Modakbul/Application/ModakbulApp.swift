@@ -2,21 +2,15 @@ import SwiftUI
 
 @main
 struct ModakbulApp: App {
-    @ObservedObject private var router: AppRouter
-    
-    init() {
-        let assembler = Assembler(by: InfrastructureAssembly(),
-                                  DataAssembly(),
-                                  DomainAssembly(),
-                                  PresentationAssembly())
-        self.router = AppRouter(assembler: assembler)
-    }
+    @StateObject private var router = DefaultAppRouter(by: InfrastructureAssembly(),
+                                                                  DataAssembly(),
+                                                                  DomainAssembly(),
+                                                                  PresentationAssembly())
     
     var body: some Scene {
         WindowGroup {
-            RouterView(router: router) {
-                ContentView()
-                    .environmentObject(router)
+            RouterView<ContentView<DefaultAppRouter>, DefaultAppRouter>(router: router) {
+                ContentView<DefaultAppRouter>()
             }
         }
     }
