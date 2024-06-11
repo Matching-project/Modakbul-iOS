@@ -13,6 +13,7 @@ protocol AppRouter: ObservableObject {
     
     var path: NavigationPath { get set }
     var sheet: Destination? { get set }
+    var detent: PresentationDetent { get set }
     var fullScreenCover: Destination? { get set }
     var isPresented: Bool { get set }
     var assembler: Assembler { get }
@@ -32,9 +33,10 @@ extension AppRouter {
 final class DefaultAppRouter: AppRouter {
     typealias Destination = Route
     
-    @Published var path: NavigationPath
-    @Published var sheet: Destination?
-    @Published var fullScreenCover: Destination?
+    @Published var path: NavigationPath { willSet { print("\(newValue)로 바뀜") } }
+    @Published var sheet: Destination? { willSet { print("\(newValue)로 바뀜") } }
+    @Published var detent: PresentationDetent = .large
+    @Published var fullScreenCover: Destination? { willSet { print("\(newValue)로 바뀜") } }
     @Published var isPresented: Bool = false
     let assembler: Assembler
     
@@ -61,15 +63,39 @@ final class DefaultAppRouter: AppRouter {
         }
     }
     
-    func push(to destination: Route) {
-        path.append(destination)
+    func push(to destination: Destination) {
+        switch destination.presentingType {
+        case .push: path.append(destination)
+        case .sheet(let detent): sheet = destination; self.detent = detent
+        case .fullScreenCover: fullScreenCover = destination
+        }
     }
     
     func dismiss() {
-        path.removeLast()
+        if path.isEmpty == false {
+            path.removeLast()
+        } else if sheet != nil {
+            sheet = nil
+        } else if fullScreenCover != nil {
+            fullScreenCover = nil
+        } else if isPresented {
+            isPresented = false
+        }
     }
     
     func popToRoot() {
+        if sheet != nil {
+            sheet = nil
+        }
+        
+        if fullScreenCover != nil {
+            fullScreenCover = nil
+        }
+        
+        if isPresented {
+            isPresented = false
+        }
+        
         path.removeLast(path.count - 1)
     }
 }
