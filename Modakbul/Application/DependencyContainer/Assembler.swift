@@ -12,7 +12,7 @@ final class Assembler {
     
     var resolver: DependencyResolver { container }
     
-    init(container: DependencyContainer = DefaultDependencyContainer()) {
+    init(container: DependencyContainer) {
         self.container = container
     }
     
