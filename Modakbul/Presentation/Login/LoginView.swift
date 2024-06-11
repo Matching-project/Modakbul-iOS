@@ -25,7 +25,7 @@ final class LoginViewModel: ObservableObject {
     }
 }
 
-struct LoginView<Router: AppRouter>: View {
+struct LoginView<Router: AppRouter>: View where Router.Destination == Route {
     @EnvironmentObject private var router: Router
     @ObservedObject private var loginViewModel: LoginViewModel
     
@@ -44,6 +44,30 @@ struct LoginView<Router: AppRouter>: View {
             signInWithKakaoButton
             
             AppleLoginButton()
+            
+            Button {
+                router.push(to: .myView)
+            } label: {
+                Text("MyView 시트")
+            }
+            
+            Button {
+                router.push(to: .loginView)
+            } label: {
+                Text("LoginView 풀스크린")
+            }
+            
+            Button {
+                router.dismiss()
+            } label: {
+                Text("Dismiss")
+            }
+            
+            Button {
+                router.popToRoot()
+            } label: {
+                Text("PopToRoot")
+            }
             
             Spacer()
         }

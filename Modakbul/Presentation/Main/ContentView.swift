@@ -36,7 +36,7 @@ struct ContentView<Router: AppRouter>: View where Router.Destination == Route {
             router.view(to: .loginView)
                 .tabItemStyle(.chattings)
             
-            MyView()
+            router.view(to: .myView)
                 .tabItemStyle(.settings)
         }
     }
