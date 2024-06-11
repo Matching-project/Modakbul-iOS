@@ -46,13 +46,13 @@ struct LoginView<Router: AppRouter>: View where Router.Destination == Route {
             AppleLoginButton()
             
             Button {
-                router.push(to: .myView)
+                router.route(to: .myView)
             } label: {
                 Text("MyView 시트")
             }
             
             Button {
-                router.push(to: .loginView)
+                router.route(to: .loginView)
             } label: {
                 Text("LoginView 풀스크린")
             }

@@ -20,7 +20,7 @@ protocol AppRouter: ObservableObject {
     var resolver: DependencyResolver { get }
     
     @ViewBuilder func view(to destination: Destination) -> Content
-    func push(to destination: Destination)
+    func route(to destination: Destination)
     func dismiss()
     func popToRoot()
 }
@@ -55,6 +55,25 @@ final class DefaultAppRouter: AppRouter {
         self.init(assembler: assembler)
     }
     
+    private func _push(_ destination: Destination) {
+        path.append(destination)
+    }
+    
+    private func _sheet(_ destination: Destination, _ detent: PresentationDetent) {
+        if let sheet = sheet {
+            self.sheet = nil
+        }
+        sheet = destination
+        self.detent = detent
+    }
+    
+    private func _fullScreenCover(_ destination: Destination) {
+        if let fullScreenCover = fullScreenCover {
+            self.fullScreenCover = nil
+        }
+        fullScreenCover = destination
+    }
+    
     @ViewBuilder func view(to destination: Destination) -> some View {
         switch destination {
         case .homeView: HomeView<DefaultAppRouter>(homeViewModel: resolver.resolve(HomeViewModel.self))
@@ -63,11 +82,14 @@ final class DefaultAppRouter: AppRouter {
         }
     }
     
-    func push(to destination: Destination) {
+    func route(to destination: Destination) {
         switch destination.presentingType {
-        case .push: path.append(destination)
-        case .sheet(let detent): sheet = destination; self.detent = detent
-        case .fullScreenCover: fullScreenCover = destination
+        case .push:
+            _push(destination)
+        case .sheet(let detent):
+            _sheet(destination, detent)
+        case .fullScreenCover:
+            _fullScreenCover(destination)
         }
     }
     
