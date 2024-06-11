@@ -28,9 +28,9 @@ enum Route: Routable {
     
     var presentingType: PresentingType {
         switch self {
-        case .loginView: .fullScreenCover
-        case .homeView: .push
-        case .myView: .push
+        case .loginView: return .fullScreenCover
+        case .homeView: return .push
+        case .myView: return .sheet(detent: .medium)
         }
     }
 }

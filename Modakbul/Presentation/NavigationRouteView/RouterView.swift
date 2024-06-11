@@ -10,6 +10,7 @@ import SwiftUI
 struct RouterView<Content: View, Router: AppRouter>: View {
     @StateObject private var router: Router
     private let content: Content
+    private let detents: Set<PresentationDetent> = [.large, .medium]
     
     init(router: Router, @ViewBuilder content: () -> Content) {
         self._router = StateObject(wrappedValue: router)
@@ -25,6 +26,7 @@ struct RouterView<Content: View, Router: AppRouter>: View {
         }
         .sheet(item: $router.sheet) { destination in
             router.view(to: destination)
+                .presentationDetents(detents, selection: $router.detent)
         }
         .fullScreenCover(item: $router.fullScreenCover) { destination in
             router.view(to: destination)
