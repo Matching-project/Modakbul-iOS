@@ -25,6 +25,28 @@ final class DefaultKakaoLoginManager {
         
         KakaoSDK.initSDK(appKey: appKey)
     }
+    
+    private func _handler(_ continuation: CheckedContinuation<OAuthToken, any Error>, _ token: OAuthToken?, _ error: Error?) {
+        if let error = error {
+            continuation.resume(throwing: error)
+        }
+        
+        if let token = token {
+            continuation.resume(returning: token)
+        }
+    }
+    
+    @MainActor private func loginWithKakaoTalk(_ continuation: CheckedContinuation<OAuthToken, any Error>) {
+        kakaoAPI.loginWithKakaoTalk { [weak self] token, error in
+            self?._handler(continuation, token, error)
+        }
+    }
+    
+    @MainActor private func loginWithKakaoAccount(_ continuation: CheckedContinuation<OAuthToken, any Error>) {
+        kakaoAPI.loginWithKakaoAccount { [weak self] token, error in
+            self?._handler(continuation, token, error)
+        }
+    }
 }
 
 // MARK: KakaoLoginManager Confirmation
@@ -39,25 +61,9 @@ extension DefaultKakaoLoginManager: KakaoLoginManager {
     func login() async throws -> OAuthToken {
         return try await withCheckedThrowingContinuation { continuation in
             if UserApi.isKakaoTalkLoginAvailable() {
-                kakaoAPI.loginWithKakaoTalk { token, error in
-                    if let error = error {
-                        continuation.resume(throwing: error)
-                    }
-                    
-                    if let token = token {
-                        continuation.resume(returning: token)
-                    }
-                }
+                loginWithKakaoTalk(continuation)
             } else {
-                kakaoAPI.loginWithKakaoAccount { token, error in
-                    if let error = error {
-                        continuation.resume(throwing: error)
-                    }
-                    
-                    if let token = token {
-                        continuation.resume(returning: token)
-                    }
-                }
+                loginWithKakaoAccount(continuation)
             }
         }
     }
