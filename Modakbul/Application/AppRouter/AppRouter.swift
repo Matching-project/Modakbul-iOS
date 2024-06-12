@@ -27,7 +27,6 @@ protocol AppRouter: ObservableObject {
 
 extension AppRouter {
     var resolver: DependencyResolver { assembler.resolver }
-    var isPresented: Bool { sheet != nil || fullScreenCover != nil }
 }
 
 final class DefaultAppRouter: AppRouter {
@@ -60,17 +59,13 @@ final class DefaultAppRouter: AppRouter {
     }
     
     private func _sheet(_ destination: Destination, _ detent: PresentationDetent) {
-        if let sheet = sheet {
-            self.sheet = nil
-        }
+        guard fullScreenCover == nil else { return }
         sheet = destination
         self.detent = detent
     }
     
     private func _fullScreenCover(_ destination: Destination) {
-        if let fullScreenCover = fullScreenCover {
-            self.fullScreenCover = nil
-        }
+        guard sheet == nil else { return }
         fullScreenCover = destination
     }
     
@@ -94,12 +89,12 @@ final class DefaultAppRouter: AppRouter {
     }
     
     func dismiss() {
-        if path.isEmpty == false {
-            path.removeLast()
+        if fullScreenCover != nil {
+            fullScreenCover = nil
         } else if sheet != nil {
             sheet = nil
-        } else if fullScreenCover != nil {
-            fullScreenCover = nil
+        } else if path.isEmpty == false {
+            path.removeLast()
         } else if isPresented {
             isPresented = false
         }
@@ -118,6 +113,6 @@ final class DefaultAppRouter: AppRouter {
             isPresented = false
         }
         
-        path.removeLast(path.count - 1)
+        path.removeLast(path.count)
     }
 }
