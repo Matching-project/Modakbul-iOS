@@ -36,13 +36,13 @@ final class DefaultKakaoLoginManager {
         }
     }
     
-    @MainActor private func loginWithKakaoTalk(_ continuation: CheckedContinuation<OAuthToken, any Error>) {
+    private func loginWithKakaoTalk(_ continuation: CheckedContinuation<OAuthToken, any Error>) {
         kakaoAPI.loginWithKakaoTalk { [weak self] token, error in
             self?._handler(continuation, token, error)
         }
     }
     
-    @MainActor private func loginWithKakaoAccount(_ continuation: CheckedContinuation<OAuthToken, any Error>) {
+    private func loginWithKakaoAccount(_ continuation: CheckedContinuation<OAuthToken, any Error>) {
         kakaoAPI.loginWithKakaoAccount { [weak self] token, error in
             self?._handler(continuation, token, error)
         }
@@ -57,8 +57,7 @@ extension DefaultKakaoLoginManager: KakaoLoginManager {
         }
     }
     
-    @MainActor
-    func login() async throws -> OAuthToken {
+    @MainActor func login() async throws -> OAuthToken {
         return try await withCheckedThrowingContinuation { continuation in
             if UserApi.isKakaoTalkLoginAvailable() {
                 loginWithKakaoTalk(continuation)
