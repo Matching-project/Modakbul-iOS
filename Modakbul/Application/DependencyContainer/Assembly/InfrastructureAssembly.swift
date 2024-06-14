@@ -23,6 +23,9 @@ struct InfrastructureAssembly: Assembly {
         
         // Location
         container.register(for: LocationService.self, DefaultLocationService())
+        container.register(for: LocalMapService.self) { resolver in
+            DefaultLocalMapService(locationService: resolver.resolve(LocationService.self))
+        }
         
         // Storages
         container.register(for: TokenStorage.self, DefaultTokenStorage())

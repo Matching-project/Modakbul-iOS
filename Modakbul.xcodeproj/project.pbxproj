@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		047C47EC2C1A96A700170758 /* LocalMapService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047C47EB2C1A96A700170758 /* LocalMapService.swift */; };
+		047C47EE2C1A98DC00170758 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047C47ED2C1A98DC00170758 /* HomeViewModel.swift */; };
 		04B315B82BF8608C0043A529 /* ModakbulApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B315B72BF8608C0043A529 /* ModakbulApp.swift */; };
 		04B315BA2BF860CF0043A529 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B315B92BF860CF0043A529 /* ContentView.swift */; };
 		04B315BC2BF8612D0043A529 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 04B315BB2BF8612D0043A529 /* Assets.xcassets */; };
@@ -24,13 +26,11 @@
 		04CFF76C2C007B6000EAE4DC /* AppRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04CFF76B2C007B6000EAE4DC /* AppRouter.swift */; };
 		04CFF7712C008B7300EAE4DC /* PreviewHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04CFF7702C008B7300EAE4DC /* PreviewHelper.swift */; };
 		04CFF7732C00B2C700EAE4DC /* Route.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04CFF7722C00B2C700EAE4DC /* Route.swift */; };
-		04CFF7772C01BAF500EAE4DC /* FilterBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04CFF7762C01BAF500EAE4DC /* FilterBar.swift */; };
 		04CFF77A2C01BC2A00EAE4DC /* MyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04CFF7792C01BC2A00EAE4DC /* MyView.swift */; };
 		04CFF7892C0365C700EAE4DC /* TabItemModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04CFF7882C0365C700EAE4DC /* TabItemModifier.swift */; };
 		04D1C7DD2C04C138008BB1F9 /* DependencyContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D1C7DC2C04C138008BB1F9 /* DependencyContainer.swift */; };
 		04D1C7DF2C05B041008BB1F9 /* DependencyResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D1C7DE2C05B041008BB1F9 /* DependencyResolver.swift */; };
 		04D1C7E12C05B22F008BB1F9 /* DependencyRegister.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D1C7E02C05B22F008BB1F9 /* DependencyRegister.swift */; };
-		04D1C7E32C06E2F8008BB1F9 /* SearchPlaceUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D1C7E22C06E2F8008BB1F9 /* SearchPlaceUseCase.swift */; };
 		04D1C7E52C06E435008BB1F9 /* Assembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D1C7E42C06E435008BB1F9 /* Assembly.swift */; };
 		04D1C7E72C06E4B8008BB1F9 /* Assembler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D1C7E62C06E4B8008BB1F9 /* Assembler.swift */; };
 		04D1C7F12C085981008BB1F9 /* Place.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D1C7F02C085981008BB1F9 /* Place.swift */; };
@@ -69,6 +69,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		047C47EB2C1A96A700170758 /* LocalMapService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalMapService.swift; sourceTree = "<group>"; };
+		047C47ED2C1A98DC00170758 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		04B315B72BF8608C0043A529 /* ModakbulApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModakbulApp.swift; sourceTree = "<group>"; };
 		04B315B92BF860CF0043A529 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		04B315BB2BF8612D0043A529 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -86,13 +88,11 @@
 		04CFF76B2C007B6000EAE4DC /* AppRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRouter.swift; sourceTree = "<group>"; };
 		04CFF7702C008B7300EAE4DC /* PreviewHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewHelper.swift; sourceTree = "<group>"; };
 		04CFF7722C00B2C700EAE4DC /* Route.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Route.swift; sourceTree = "<group>"; };
-		04CFF7762C01BAF500EAE4DC /* FilterBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterBar.swift; sourceTree = "<group>"; };
 		04CFF7792C01BC2A00EAE4DC /* MyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyView.swift; sourceTree = "<group>"; };
 		04CFF7882C0365C700EAE4DC /* TabItemModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabItemModifier.swift; sourceTree = "<group>"; };
 		04D1C7DC2C04C138008BB1F9 /* DependencyContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DependencyContainer.swift; sourceTree = "<group>"; };
 		04D1C7DE2C05B041008BB1F9 /* DependencyResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DependencyResolver.swift; sourceTree = "<group>"; };
 		04D1C7E02C05B22F008BB1F9 /* DependencyRegister.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DependencyRegister.swift; sourceTree = "<group>"; };
-		04D1C7E22C06E2F8008BB1F9 /* SearchPlaceUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchPlaceUseCase.swift; sourceTree = "<group>"; };
 		04D1C7E42C06E435008BB1F9 /* Assembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Assembly.swift; sourceTree = "<group>"; };
 		04D1C7E62C06E4B8008BB1F9 /* Assembler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Assembler.swift; sourceTree = "<group>"; };
 		04D1C7F02C085981008BB1F9 /* Place.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Place.swift; sourceTree = "<group>"; };
@@ -147,6 +147,7 @@
 		04B315C22BFC90E30043A529 /* Home */ = {
 			isa = PBXGroup;
 			children = (
+				047C47ED2C1A98DC00170758 /* HomeViewModel.swift */,
 				04B315C32BFC90F80043A529 /* HomeView.swift */,
 				04B315C52BFC91860043A529 /* Components */,
 			);
@@ -157,7 +158,6 @@
 			isa = PBXGroup;
 			children = (
 				04B315C62BFC919D0043A529 /* SearchBar.swift */,
-				04CFF7762C01BAF500EAE4DC /* FilterBar.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -193,6 +193,7 @@
 			isa = PBXGroup;
 			children = (
 				04CFF7602BFDF4E700EAE4DC /* Extensions */,
+				047C47EB2C1A96A700170758 /* LocalMapService.swift */,
 				04CFF7632BFE1D5F00EAE4DC /* LocationService.swift */,
 			);
 			path = Location;
@@ -329,7 +330,6 @@
 		04CFF7842C03613300EAE4DC /* UseCases */ = {
 			isa = PBXGroup;
 			children = (
-				04D1C81B2C0C70A1008BB1F9 /* LocalMap */,
 				04D1C81A2C0C7094008BB1F9 /* Matching */,
 				04D1C8192C0C7089008BB1F9 /* User */,
 			);
@@ -388,14 +388,6 @@
 			children = (
 			);
 			path = Matching;
-			sourceTree = "<group>";
-		};
-		04D1C81B2C0C70A1008BB1F9 /* LocalMap */ = {
-			isa = PBXGroup;
-			children = (
-				04D1C7E22C06E2F8008BB1F9 /* SearchPlaceUseCase.swift */,
-			);
-			path = LocalMap;
 			sourceTree = "<group>";
 		};
 		04D1C8272C11AEA5008BB1F9 /* OAuth */ = {
@@ -577,6 +569,7 @@
 			files = (
 				04CFF7712C008B7300EAE4DC /* PreviewHelper.swift in Sources */,
 				04D1C7E52C06E435008BB1F9 /* Assembly.swift in Sources */,
+				047C47EC2C1A96A700170758 /* LocalMapService.swift in Sources */,
 				04D1C7F92C0B3C07008BB1F9 /* UpdateUserProfileUseCase.swift in Sources */,
 				DFE0AFDF2C104E7A00EC078B /* Bundle+Extension.swift in Sources */,
 				04CFF7482BFDCF8300EAE4DC /* AppleLoginButton.swift in Sources */,
@@ -592,6 +585,7 @@
 				04B315C72BFC919D0043A529 /* SearchBar.swift in Sources */,
 				04D1C84A2C147839008BB1F9 /* InfrastructureAssembly.swift in Sources */,
 				04D1C7DD2C04C138008BB1F9 /* DependencyContainer.swift in Sources */,
+				047C47EE2C1A98DC00170758 /* HomeViewModel.swift in Sources */,
 				04B315BA2BF860CF0043A529 /* ContentView.swift in Sources */,
 				04CFF7452BFDCE9300EAE4DC /* LoginView.swift in Sources */,
 				04D1C84C2C147B73008BB1F9 /* DataAssembly.swift in Sources */,
@@ -609,7 +603,6 @@
 				04D1C8062C0C644B008BB1F9 /* AuthenticationProvider.swift in Sources */,
 				04D1C8332C11E803008BB1F9 /* TokenStorage.swift in Sources */,
 				04B315B82BF8608C0043A529 /* ModakbulApp.swift in Sources */,
-				04CFF7772C01BAF500EAE4DC /* FilterBar.swift in Sources */,
 				04D1C7E72C06E4B8008BB1F9 /* Assembler.swift in Sources */,
 				04D1C8142C0C6FB9008BB1F9 /* UnblockUserUseCase.swift in Sources */,
 				04CFF76C2C007B6000EAE4DC /* AppRouter.swift in Sources */,
@@ -621,7 +614,6 @@
 				04D1C8042C0C638F008BB1F9 /* RegisterUserProfileUseCase.swift in Sources */,
 				04D1C8182C0C703B008BB1F9 /* HelpUserUseCase.swift in Sources */,
 				04D1C8102C0C6E75008BB1F9 /* FetchBlockedUserUseCase.swift in Sources */,
-				04D1C7E32C06E2F8008BB1F9 /* SearchPlaceUseCase.swift in Sources */,
 				04CFF7512BFDE9E500EAE4DC /* NetworkService.swift in Sources */,
 				04D1C7F12C085981008BB1F9 /* Place.swift in Sources */,
 				04CFF7532BFDEAF700EAE4DC /* NetworkSessionManager.swift in Sources */,
