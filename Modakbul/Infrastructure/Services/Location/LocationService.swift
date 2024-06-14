@@ -13,10 +13,12 @@ protocol LocationServiceDelegate: NSObject {
     func didFailWithError(error: LocationServiceError)
 }
 
-protocol LocationService: NSObject {
+protocol LocationService: NSObject, AnyObject {
+    var delegate: LocationServiceDelegate? { get set }
+    
     func start()
     func stop()
-    func connectOnce()
+    func updateOnce()
 }
 
 enum LocationServiceError: Error {
@@ -56,18 +58,6 @@ final class DefaultLocationService: NSObject {
     }
 }
 
-// MARK: CLLocationManagerDelegate Confirmation
-extension DefaultLocationService: CLLocationManagerDelegate {
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        delegate?.didUpdateLocations(locations: locations)
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: any Error) {
-        let error = resolveError(error)
-        delegate?.didFailWithError(error: error)
-    }
-}
-
 // MARK: LocationService Confirmation
 extension DefaultLocationService: LocationService {
     func start() {
@@ -79,7 +69,27 @@ extension DefaultLocationService: LocationService {
         locationManager.stopUpdatingLocation()
     }
     
-    func connectOnce() {
+    func updateOnce() {
         locationManager.requestLocation()
+    }
+}
+
+
+// MARK: CLLocationManagerDelegate Confirmation
+extension DefaultLocationService: CLLocationManagerDelegate {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        delegate?.didUpdateLocations(locations: locations)
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: any Error) {
+        let error = resolveError(error)
+        delegate?.didFailWithError(error: error)
+    }
+    
+    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+        switch manager.authorizationStatus {
+        case .authorizedAlways, .authorizedWhenInUse: locationManager.startUpdatingLocation()
+        default: locationManager.stopUpdatingLocation()
+        }
     }
 }
