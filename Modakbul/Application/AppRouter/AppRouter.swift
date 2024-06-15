@@ -32,10 +32,10 @@ extension AppRouter {
 final class DefaultAppRouter: AppRouter {
     typealias Destination = Route
     
-    @Published var path: NavigationPath { willSet { print("\(newValue)로 바뀜") } }
-    @Published var sheet: Destination? { willSet { print("\(newValue)로 바뀜") } }
+    @Published var path: NavigationPath
+    @Published var sheet: Destination?
     @Published var detent: PresentationDetent = .large
-    @Published var fullScreenCover: Destination? { willSet { print("\(newValue)로 바뀜") } }
+    @Published var fullScreenCover: Destination?
     @Published var isPresented: Bool = false
     let assembler: Assembler
     

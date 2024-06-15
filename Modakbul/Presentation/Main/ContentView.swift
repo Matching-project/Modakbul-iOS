@@ -25,13 +25,10 @@ enum PageType {
 struct ContentView<Router: AppRouter>: View where Router.Destination == Route {
     @EnvironmentObject private var router: Router
     
-    @State private var isPresented: Bool = false
-    
     var body: some View {
         TabView {
             router.view(to: .homeView)
                 .tabItemStyle(.home)
-                .environmentObject(router)
             
             router.view(to: .loginView)
                 .tabItemStyle(.chattings)
