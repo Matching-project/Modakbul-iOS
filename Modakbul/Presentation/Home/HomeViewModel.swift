@@ -9,51 +9,36 @@ import Foundation
 import MapKit
 
 final class HomeViewModel: NSObject, ObservableObject {
-    @Published var searchingText: String = String() {
-        willSet { fetchSuggestions(with: newValue) }
-    }
+    private let localMapService: LocalMapService
+    private let locationService: LocationService
+    
+    @Published var searchingText: String = String()
     @Published var region: MKCoordinateRegion = MKCoordinateRegion()
     @Published var places: [MKMapItem] = []
-    @Published var searchSuggestions: [MKLocalSearchCompletion] = []
+    var searchSuggestions: [MKLocalSearchCompletion] { localMapService.suggestedResults }
     
-    private let localMapService: LocalMapService
-    
-    init(localMapService: LocalMapService) {
+    init(
+        localMapService: LocalMapService,
+        locationService: LocationService
+    ) {
         self.localMapService = localMapService
+        self.locationService = locationService
         super.init()
-        self.localMapService.delegate = self
+        self.locationService.delegate = self
         self.region.span = MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
     }
     
-    private func fetchSuggestions(with keyword: String) {
-        localMapService.fetchSuggestedResults(by: keyword)
+    func updateLocationOnce() {
+        locationService.updateOnce()
     }
     
-    private func _searchPlace(_ region: MKCoordinateRegion, _ keyword: String? = nil) {
-        Task {
-            await localMapService.searchPlace(on: region, with: keyword)
-        }
-    }
-    
-    @MainActor func searchPlace(with keyword: String) {
-        _searchPlace(region, keyword)
-    }
-    
-    func startLocationUpdating() {
-        localMapService.start()
-    }
-    
-    func stopLocationUpdating() {
-        localMapService.stop()
+    func stopUpdatingLocation() {
+        locationService.stop()
     }
 }
 
-// MARK: LocalMapServiceDelegate Conformation
-extension HomeViewModel: LocalMapServiceDelegate {
-    func suggestedResultsDidUpdate(localMapService: any LocalMapService, results: [MKLocalSearchCompletion]) {
-        searchSuggestions = results
-    }
-    
+// MARK: LocationServiceDelegate Conformation
+extension HomeViewModel: LocationServiceDelegate {
     func didUpdateLocations(locations: [CLLocation]) {
         guard let location = locations.first else { return }
         region.center = location.coordinate

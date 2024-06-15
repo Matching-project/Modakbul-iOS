@@ -8,49 +8,50 @@
 import SwiftUI
 import MapKit
 
-final class HomeViewModel: NSObject, ObservableObject, LocationServiceDelegate {
-    private lazy var locationService: LocationService = DefaultLocationService(delegate: self)
-    
-    @Published var locations: [CLLocation] = []
-    @Published var region = MKCoordinateRegion()
-    
-    func didUpdateLocations(locations: [CLLocation]) {
-        
-    }
-    
-    func didFailWithError(error: LocationServiceError) {
-        
-    }
-    
-    func connect() {
-        locationService.start()
-    }
-}
-
 struct HomeView<Router: AppRouter>: View {
     @EnvironmentObject private var router: Router
     @ObservedObject private var homeViewModel: HomeViewModel
-    @State private var textFieldText: String = ""
-    @State private var isMapAppeared: Bool = true
     
     init(homeViewModel: HomeViewModel) {
         self.homeViewModel = homeViewModel
     }
     
     var body: some View {
-        VStack {
-            SearchBar(textFieldText: $textFieldText)
-                .padding()
+        ZStack {
+            localMapArea
             
-            Map {
-                Marker(coordinate: homeViewModel.region.center) {
-                    Text("Here")
+            VStack {
+                Spacer()
+                
+                HStack {
+                    Spacer()
+                    
+                    mapControlButton
                 }
             }
-            .onAppear {
-                homeViewModel.connect()
+            .padding()
+        }
+    }
+    
+    private var localMapArea: some View {
+        Map(initialPosition: .region(homeViewModel.region)) {
+            ForEach(homeViewModel.places, id: \.self) { place in
+                MapCircle(center: place.placemark.coordinate, radius: 500)
             }
         }
-        .scrollDismissesKeyboard(.interactively)
+        .onAppear {
+            homeViewModel.updateLocationOnce()
+        }
+        .onDisappear {
+            homeViewModel.stopUpdatingLocation()
+        }
+    }
+    
+    private var mapControlButton: some View {
+        Button {
+            homeViewModel.updateLocationOnce()
+        } label: {
+            Text("정위치")
+        }
     }
 }
