@@ -15,9 +15,7 @@ protocol LocationServiceDelegate: NSObject {
 
 protocol LocationService: NSObject, AnyObject {
     var delegate: LocationServiceDelegate? { get set }
-    var isActivated: Bool { get }
     
-    func requestAuthorization()
     func updateOnce()
     func stop()
 }
@@ -33,13 +31,8 @@ enum LocationServiceError: Error {
 
 final class DefaultLocationService: NSObject {
     private let locationManager: LocationManager
+    
     var delegate: LocationServiceDelegate?
-    var isActivated: Bool {
-        switch locationManager.authorizationStatus {
-        case .authorizedAlways, .authorizedWhenInUse: true
-        default: false
-        }
-    }
     
     init(
         locationManager: LocationManager = CLLocationManager(),
@@ -51,6 +44,7 @@ final class DefaultLocationService: NSObject {
         self.delegate = delegate
         super.init()
         locationManager.delegate = self
+        self.requestAuthorization()
     }
     
     private func resolveError(_ error: Error) -> LocationServiceError {
@@ -63,14 +57,14 @@ final class DefaultLocationService: NSObject {
         default: return .unknownError(generic: error)
         }
     }
+    
+    private func requestAuthorization() {
+        locationManager.requestWhenInUseAuthorization()
+    }
 }
 
 // MARK: LocationService Confirmation
 extension DefaultLocationService: LocationService {
-    func requestAuthorization() {
-        locationManager.requestWhenInUseAuthorization()
-    }
-    
     func updateOnce() {
         locationManager.requestLocation()
     }

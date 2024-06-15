@@ -13,7 +13,6 @@
 		04B315BA2BF860CF0043A529 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B315B92BF860CF0043A529 /* ContentView.swift */; };
 		04B315BC2BF8612D0043A529 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 04B315BB2BF8612D0043A529 /* Assets.xcassets */; };
 		04B315C42BFC90F80043A529 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B315C32BFC90F80043A529 /* HomeView.swift */; };
-		04B315C72BFC919D0043A529 /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B315C62BFC919D0043A529 /* SearchBar.swift */; };
 		04CFF7452BFDCE9300EAE4DC /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04CFF7442BFDCE9300EAE4DC /* LoginView.swift */; };
 		04CFF7482BFDCF8300EAE4DC /* AppleLoginButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04CFF7472BFDCF8300EAE4DC /* AppleLoginButton.swift */; };
 		04CFF7512BFDE9E500EAE4DC /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04CFF7502BFDE9E500EAE4DC /* NetworkService.swift */; };
@@ -75,7 +74,6 @@
 		04B315B92BF860CF0043A529 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		04B315BB2BF8612D0043A529 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		04B315C32BFC90F80043A529 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
-		04B315C62BFC919D0043A529 /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
 		04CFF7442BFDCE9300EAE4DC /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		04CFF7472BFDCF8300EAE4DC /* AppleLoginButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleLoginButton.swift; sourceTree = "<group>"; };
 		04CFF7502BFDE9E500EAE4DC /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
@@ -144,6 +142,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0459E7432C1D85C100EFCFF2 /* LocalMap */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = LocalMap;
+			sourceTree = "<group>";
+		};
 		04B315C22BFC90E30043A529 /* Home */ = {
 			isa = PBXGroup;
 			children = (
@@ -157,7 +162,6 @@
 		04B315C52BFC91860043A529 /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				04B315C62BFC919D0043A529 /* SearchBar.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -330,6 +334,7 @@
 		04CFF7842C03613300EAE4DC /* UseCases */ = {
 			isa = PBXGroup;
 			children = (
+				0459E7432C1D85C100EFCFF2 /* LocalMap */,
 				04D1C81A2C0C7094008BB1F9 /* Matching */,
 				04D1C8192C0C7089008BB1F9 /* User */,
 			);
@@ -582,7 +587,6 @@
 				04CFF7582BFDEC6A00EAE4DC /* JSONDecoder.swift in Sources */,
 				04D1C84E2C1483B4008BB1F9 /* DomainAssembly.swift in Sources */,
 				04CFF7892C0365C700EAE4DC /* TabItemModifier.swift in Sources */,
-				04B315C72BFC919D0043A529 /* SearchBar.swift in Sources */,
 				04D1C84A2C147839008BB1F9 /* InfrastructureAssembly.swift in Sources */,
 				04D1C7DD2C04C138008BB1F9 /* DependencyContainer.swift in Sources */,
 				047C47EE2C1A98DC00170758 /* HomeViewModel.swift in Sources */,

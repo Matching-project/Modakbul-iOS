@@ -8,26 +8,22 @@
 import Foundation
 import MapKit
 
-protocol LocalMapServiceDelegate {
-    func suggestedResultsDidUpdate(localMapService: LocalMapService, results: [MKLocalSearchCompletion])
-}
-
 protocol LocalMapService: NSObject, MKLocalSearchCompleterDelegate {
-    var delegate: LocalMapServiceDelegate? { get set }
+    var suggestedResults: [MKLocalSearchCompletion] { get }
     
     func searchPlace(on region: MKCoordinateRegion, with keyword: String?) async -> [MKMapItem]
-    func fetchSuggestedResults(by text: String)
+    func updateSearchingText(by text: String)
 }
 
 final class DefaultLocalMapService: NSObject {
     private let searchCompleter: MKLocalSearchCompleter
     
-    var delegate: LocalMapServiceDelegate?
+    @Published var suggestedResults: [MKLocalSearchCompletion] = []
     
     init(searchCompleter: MKLocalSearchCompleter = MKLocalSearchCompleter()) {
         self.searchCompleter = searchCompleter
         super.init()
-        searchCompleter.delegate = self
+        self.searchCompleter.delegate = self
     }
 }
 
@@ -44,7 +40,7 @@ extension DefaultLocalMapService: LocalMapService {
         return response.mapItems
     }
     
-    func fetchSuggestedResults(by text: String) {
+    func updateSearchingText(by text: String) {
         searchCompleter.queryFragment = text
     }
 }
@@ -52,6 +48,6 @@ extension DefaultLocalMapService: LocalMapService {
 // MARK: MKLocalSearchCompleterDelegate Conformation
 extension DefaultLocalMapService: MKLocalSearchCompleterDelegate {
     func completerDidUpdateResults(_ completer: MKLocalSearchCompleter) {
-        delegate?.suggestedResultsDidUpdate(localMapService: self, results: completer.results)
+        suggestedResults = completer.results
     }
 }
