@@ -13,7 +13,8 @@ struct PresentationAssembly: Assembly {
             LoginViewModel(loginUseCase: resolver.resolve(LoginUseCase.self))
         }
         container.register(for: HomeViewModel.self) { resolver in
-            HomeViewModel(localMapService: resolver.resolve(LocalMapService.self))
+            HomeViewModel(localMapService: resolver.resolve(LocalMapService.self),
+                          locationService: resolver.resolve(LocationService.self))
         }
     }
     
