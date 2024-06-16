@@ -10,5 +10,6 @@ import Foundation
 struct Place: Identifiable {
     let id: String
     let name: String
-    let images: [String]
+    let coordinate: Coordinate
+    let images: [String]?
 }
