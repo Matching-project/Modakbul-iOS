@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		047C47EC2C1A96A700170758 /* LocalMapService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047C47EB2C1A96A700170758 /* LocalMapService.swift */; };
 		047C47EE2C1A98DC00170758 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047C47ED2C1A98DC00170758 /* HomeViewModel.swift */; };
+		049D82FE2C1DBB830090578E /* Coordinate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 049D82FD2C1DBB830090578E /* Coordinate.swift */; };
+		049D83072C1DC97B0090578E /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 049D83062C1DC97B0090578E /* Location.swift */; };
+		049D830D2C1DDB3F0090578E /* LocalMapRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 049D830C2C1DDB3F0090578E /* LocalMapRepository.swift */; };
+		049D83122C1DDC530090578E /* ControlLocalMapUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 049D83112C1DDC530090578E /* ControlLocalMapUseCase.swift */; };
 		04B315B82BF8608C0043A529 /* ModakbulApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B315B72BF8608C0043A529 /* ModakbulApp.swift */; };
 		04B315BA2BF860CF0043A529 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B315B92BF860CF0043A529 /* ContentView.swift */; };
 		04B315BC2BF8612D0043A529 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 04B315BB2BF8612D0043A529 /* Assets.xcassets */; };
@@ -70,6 +74,10 @@
 /* Begin PBXFileReference section */
 		047C47EB2C1A96A700170758 /* LocalMapService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalMapService.swift; sourceTree = "<group>"; };
 		047C47ED2C1A98DC00170758 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
+		049D82FD2C1DBB830090578E /* Coordinate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinate.swift; sourceTree = "<group>"; };
+		049D83062C1DC97B0090578E /* Location.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
+		049D830C2C1DDB3F0090578E /* LocalMapRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalMapRepository.swift; sourceTree = "<group>"; };
+		049D83112C1DDC530090578E /* ControlLocalMapUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlLocalMapUseCase.swift; sourceTree = "<group>"; };
 		04B315B72BF8608C0043A529 /* ModakbulApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModakbulApp.swift; sourceTree = "<group>"; };
 		04B315B92BF860CF0043A529 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		04B315BB2BF8612D0043A529 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -142,9 +150,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		0459E7432C1D85C100EFCFF2 /* LocalMap */ = {
+		049D830B2C1DDB2B0090578E /* LocalMapRepository */ = {
 			isa = PBXGroup;
 			children = (
+				049D830C2C1DDB3F0090578E /* LocalMapRepository.swift */,
+			);
+			path = LocalMapRepository;
+			sourceTree = "<group>";
+		};
+		049D830E2C1DDC190090578E /* LocalMap */ = {
+			isa = PBXGroup;
+			children = (
+				049D83112C1DDC530090578E /* ControlLocalMapUseCase.swift */,
 			);
 			path = LocalMap;
 			sourceTree = "<group>";
@@ -154,16 +171,8 @@
 			children = (
 				047C47ED2C1A98DC00170758 /* HomeViewModel.swift */,
 				04B315C32BFC90F80043A529 /* HomeView.swift */,
-				04B315C52BFC91860043A529 /* Components */,
 			);
 			path = Home;
-			sourceTree = "<group>";
-		};
-		04B315C52BFC91860043A529 /* Components */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Components;
 			sourceTree = "<group>";
 		};
 		04CFF7432BFDCE7000EAE4DC /* Login */ = {
@@ -235,6 +244,8 @@
 			isa = PBXGroup;
 			children = (
 				04CFF7662BFF17CF00EAE4DC /* Gender.swift */,
+				049D82FD2C1DBB830090578E /* Coordinate.swift */,
+				049D83062C1DC97B0090578E /* Location.swift */,
 				04D1C7F02C085981008BB1F9 /* Place.swift */,
 				04D1C7F22C085AF7008BB1F9 /* User.swift */,
 				04D1C8112C0C6EE3008BB1F9 /* BlockedUser.swift */,
@@ -277,6 +288,7 @@
 			children = (
 				04D1C8372C11EEE1008BB1F9 /* DTOs */,
 				04D1C82B2C11B0C0008BB1F9 /* SocialLoginRepository */,
+				049D830B2C1DDB2B0090578E /* LocalMapRepository */,
 				04D1C82A2C11B0B3008BB1F9 /* Extensions */,
 			);
 			path = Data;
@@ -334,7 +346,7 @@
 		04CFF7842C03613300EAE4DC /* UseCases */ = {
 			isa = PBXGroup;
 			children = (
-				0459E7432C1D85C100EFCFF2 /* LocalMap */,
+				049D830E2C1DDC190090578E /* LocalMap */,
 				04D1C81A2C0C7094008BB1F9 /* Matching */,
 				04D1C8192C0C7089008BB1F9 /* User */,
 			);
@@ -606,7 +618,9 @@
 				04D1C8392C11EEFC008BB1F9 /* UserDTO.swift in Sources */,
 				04D1C8062C0C644B008BB1F9 /* AuthenticationProvider.swift in Sources */,
 				04D1C8332C11E803008BB1F9 /* TokenStorage.swift in Sources */,
+				049D83072C1DC97B0090578E /* Location.swift in Sources */,
 				04B315B82BF8608C0043A529 /* ModakbulApp.swift in Sources */,
+				049D830D2C1DDB3F0090578E /* LocalMapRepository.swift in Sources */,
 				04D1C7E72C06E4B8008BB1F9 /* Assembler.swift in Sources */,
 				04D1C8142C0C6FB9008BB1F9 /* UnblockUserUseCase.swift in Sources */,
 				04CFF76C2C007B6000EAE4DC /* AppRouter.swift in Sources */,
@@ -614,12 +628,14 @@
 				04D1C80E2C0C6C7A008BB1F9 /* BlockUserUseCase.swift in Sources */,
 				04CFF7672BFF17CF00EAE4DC /* Gender.swift in Sources */,
 				04CFF7642BFE1D5F00EAE4DC /* LocationService.swift in Sources */,
+				049D83122C1DDC530090578E /* ControlLocalMapUseCase.swift in Sources */,
 				04D1C7F52C0B372B008BB1F9 /* FetchUserProfileUseCase.swift in Sources */,
 				04D1C8042C0C638F008BB1F9 /* RegisterUserProfileUseCase.swift in Sources */,
 				04D1C8182C0C703B008BB1F9 /* HelpUserUseCase.swift in Sources */,
 				04D1C8102C0C6E75008BB1F9 /* FetchBlockedUserUseCase.swift in Sources */,
 				04CFF7512BFDE9E500EAE4DC /* NetworkService.swift in Sources */,
 				04D1C7F12C085981008BB1F9 /* Place.swift in Sources */,
+				049D82FE2C1DBB830090578E /* Coordinate.swift in Sources */,
 				04CFF7532BFDEAF700EAE4DC /* NetworkSessionManager.swift in Sources */,
 				04D1C8292C11AEE2008BB1F9 /* AuthorizationService.swift in Sources */,
 				04D1C8502C14867D008BB1F9 /* PresentationAssembly.swift in Sources */,
