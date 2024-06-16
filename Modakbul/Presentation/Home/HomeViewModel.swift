@@ -9,11 +9,11 @@ import Foundation
 import MapKit
 
 final class HomeViewModel: ObservableObject {
-    private let controlLocalMapUseCase: ControlLocalMapUseCase
+    private let placesRepository: PlacesRepository
     
     var region: MKCoordinateRegion
     
-    init(controlLocalMapUseCase: ControlLocalMapUseCase) {
-        self.controlLocalMapUseCase = controlLocalMapUseCase
+    init(placesRepository: PlacesRepository) {
+        self.placesRepository = placesRepository
     }
 }
