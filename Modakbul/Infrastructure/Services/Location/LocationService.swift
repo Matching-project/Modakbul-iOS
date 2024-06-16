@@ -9,7 +9,7 @@ import Foundation
 import CoreLocation
 
 protocol LocationServiceDelegate: NSObject {
-    func didUpdateCoordinate(coordinate: Coordinate)
+    func didUpdateCoordinate(coordinate: CLLocationCoordinate2D)
     func didFailWithError(error: LocationServiceError)
 }
 
@@ -31,7 +31,7 @@ enum LocationServiceError: Error {
 final class DefaultLocationService: NSObject {
     private let locationManager: LocationManager
     
-    var delegate: LocationServiceDelegate?
+    weak var delegate: LocationServiceDelegate?
     
     init(
         locationManager: LocationManager = CLLocationManager(),
@@ -73,8 +73,7 @@ extension DefaultLocationService: LocationService {
 extension DefaultLocationService: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let coordinate = locations.first?.coordinate else { return }
-        delegate?.didUpdateCoordinate(coordinate: Coordinate(latitude: coordinate.latitude,
-                                                            longitude: coordinate.longitude))
+        delegate?.didUpdateCoordinate(coordinate: coordinate)
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: any Error) {

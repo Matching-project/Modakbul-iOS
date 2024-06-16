@@ -8,17 +8,21 @@
 import Foundation
 import MapKit
 
+protocol LocalMapServiceDelegate: AnyObject {
+    func suggestedResultsDidUpdate(localMapService: LocalMapService, suggestedResults: [MKLocalSearchCompletion])
+}
+
 protocol LocalMapService: NSObject, MKLocalSearchCompleterDelegate {
-    var suggestedResults: [MKLocalSearchCompletion] { get }
+    var delegate: LocalMapServiceDelegate? { get set }
     
-    func searchPlace(on region: MKCoordinateRegion, with keyword: String?) async -> [MKMapItem]
+    @MainActor func findPlaces(on region: MKCoordinateRegion, with keyword: String?) async throws -> [MKMapItem]
     func updateSearchingText(by text: String)
 }
 
 final class DefaultLocalMapService: NSObject {
-    private let searchCompleter: MKLocalSearchCompleter
+    weak var delegate: LocalMapServiceDelegate?
     
-    @Published var suggestedResults: [MKLocalSearchCompletion] = []
+    private let searchCompleter: MKLocalSearchCompleter
     
     init(searchCompleter: MKLocalSearchCompleter = MKLocalSearchCompleter()) {
         self.searchCompleter = searchCompleter
@@ -29,7 +33,7 @@ final class DefaultLocalMapService: NSObject {
 
 // MARK: LocalMapService Conformation
 extension DefaultLocalMapService: LocalMapService {
-    func searchPlace(on region: MKCoordinateRegion, with keyword: String?) async -> [MKMapItem] {
+    func findPlaces(on region: MKCoordinateRegion, with keyword: String?) async throws -> [MKMapItem] {
         let request = MKLocalSearch.Request()
         request.naturalLanguageQuery = keyword ?? "커피숍"
         request.region = region
@@ -48,6 +52,6 @@ extension DefaultLocalMapService: LocalMapService {
 // MARK: MKLocalSearchCompleterDelegate Conformation
 extension DefaultLocalMapService: MKLocalSearchCompleterDelegate {
     func completerDidUpdateResults(_ completer: MKLocalSearchCompleter) {
-        suggestedResults = completer.results
+        delegate?.suggestedResultsDidUpdate(localMapService: self, suggestedResults: completer.results)
     }
 }
