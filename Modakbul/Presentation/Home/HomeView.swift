@@ -8,7 +8,7 @@
 import SwiftUI
 import MapKit
 
-struct HomeView<Router: AppRouter>: View {
+struct HomeView<Router: AppRouter>: View where Router.Destination == Route {
     @EnvironmentObject private var router: Router
     @ObservedObject private var homeViewModel: HomeViewModel
     
@@ -18,40 +18,37 @@ struct HomeView<Router: AppRouter>: View {
     
     var body: some View {
         ZStack {
-//            localMapArea
-//            
-//            VStack {
-//                Spacer()
-//                
-//                HStack {
-//                    Spacer()
-//                    
-//                    mapControlButton
-//                }
-//            }
-//            .padding()
+            localMapArea
+            
+            VStack {
+                Spacer()
+                
+                HStack {
+                    Spacer()
+                    
+                    mapControlButton
+                }
+            }
+            .padding()
         }
     }
     
-//    private var localMapArea: some View {
-//        Map(initialPosition: .region(homeViewModel.region)) {
-//            ForEach(homeViewModel.places, id: \.self) { place in
-//                MapCircle(center: place.placemark.coordinate, radius: 500)
-//            }
-//        }
-//        .onAppear {
-//            homeViewModel.updateLocationOnce()
-//        }
-//        .onDisappear {
-//            homeViewModel.stopUpdatingLocation()
-//        }
-//    }
-//    
-//    private var mapControlButton: some View {
-//        Button {
-//            homeViewModel.updateLocationOnce()
-//        } label: {
-//            Text("정위치")
-//        }
-//    }
+    private var localMapArea: some View {
+        Map(position: $homeViewModel.cameraPosition) {
+            MapCircle(center: homeViewModel.region.center, radius: 50)
+            
+            ForEach(homeViewModel.places, id: \.id) { place in
+                MapCircle(center: place.coordinate.toCLCoordinate(), radius: 50)
+            }
+        }
+        .onAppear {
+            homeViewModel.updateLocationOnce()
+        }
+    }
+    
+    private var mapControlButton: some View {
+        CurrentPositionButton {
+            homeViewModel.moveCameraOnLocation(to: nil)
+        }
+    }
 }

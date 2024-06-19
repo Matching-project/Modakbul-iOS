@@ -7,8 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0401489A2C21A19A0065F77D /* CurrentPositionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 040148992C21A19A0065F77D /* CurrentPositionButton.swift */; };
 		0440233D2C1F3E9E0029E6FA /* PlacesRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0440233C2C1F3E9E0029E6FA /* PlacesRepository.swift */; };
 		044023402C1F50790029E6FA /* PlaceEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0440233F2C1F50790029E6FA /* PlaceEntity.swift */; };
+		044023422C1FF2410029E6FA /* CLLocationCoordinate2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 044023412C1FF2410029E6FA /* CLLocationCoordinate2D.swift */; };
 		047C47EC2C1A96A700170758 /* LocalMapService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047C47EB2C1A96A700170758 /* LocalMapService.swift */; };
 		047C47EE2C1A98DC00170758 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047C47ED2C1A98DC00170758 /* HomeViewModel.swift */; };
 		049D82FE2C1DBB830090578E /* Coordinate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 049D82FD2C1DBB830090578E /* Coordinate.swift */; };
@@ -72,8 +74,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		040148992C21A19A0065F77D /* CurrentPositionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentPositionButton.swift; sourceTree = "<group>"; };
 		0440233C2C1F3E9E0029E6FA /* PlacesRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlacesRepository.swift; sourceTree = "<group>"; };
 		0440233F2C1F50790029E6FA /* PlaceEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceEntity.swift; sourceTree = "<group>"; };
+		044023412C1FF2410029E6FA /* CLLocationCoordinate2D.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLLocationCoordinate2D.swift; sourceTree = "<group>"; };
 		047C47EB2C1A96A700170758 /* LocalMapService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalMapService.swift; sourceTree = "<group>"; };
 		047C47ED2C1A98DC00170758 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		049D82FD2C1DBB830090578E /* Coordinate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinate.swift; sourceTree = "<group>"; };
@@ -150,6 +154,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		040148982C21A16B0065F77D /* Component */ = {
+			isa = PBXGroup;
+			children = (
+				040148992C21A19A0065F77D /* CurrentPositionButton.swift */,
+			);
+			path = Component;
+			sourceTree = "<group>";
+		};
 		0440233B2C1F3E610029E6FA /* PlacesRepository */ = {
 			isa = PBXGroup;
 			children = (
@@ -171,6 +183,7 @@
 			children = (
 				047C47ED2C1A98DC00170758 /* HomeViewModel.swift */,
 				04B315C32BFC90F80043A529 /* HomeView.swift */,
+				040148982C21A16B0065F77D /* Component */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -420,6 +433,7 @@
 			isa = PBXGroup;
 			children = (
 				DFE0AFDE2C104E7A00EC078B /* Bundle+Extension.swift */,
+				044023412C1FF2410029E6FA /* CLLocationCoordinate2D.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -620,6 +634,7 @@
 				04D1C8062C0C644B008BB1F9 /* AuthenticationProvider.swift in Sources */,
 				04D1C8332C11E803008BB1F9 /* TokenStorage.swift in Sources */,
 				049D83072C1DC97B0090578E /* Location.swift in Sources */,
+				0401489A2C21A19A0065F77D /* CurrentPositionButton.swift in Sources */,
 				04B315B82BF8608C0043A529 /* ModakbulApp.swift in Sources */,
 				04D1C7E72C06E4B8008BB1F9 /* Assembler.swift in Sources */,
 				04D1C8142C0C6FB9008BB1F9 /* UnblockUserUseCase.swift in Sources */,
@@ -629,6 +644,7 @@
 				04CFF7672BFF17CF00EAE4DC /* Gender.swift in Sources */,
 				04CFF7642BFE1D5F00EAE4DC /* LocationService.swift in Sources */,
 				04D1C7F52C0B372B008BB1F9 /* FetchUserProfileUseCase.swift in Sources */,
+				044023422C1FF2410029E6FA /* CLLocationCoordinate2D.swift in Sources */,
 				04D1C8042C0C638F008BB1F9 /* RegisterUserProfileUseCase.swift in Sources */,
 				04D1C8182C0C703B008BB1F9 /* HelpUserUseCase.swift in Sources */,
 				04D1C8102C0C6E75008BB1F9 /* FetchBlockedUserUseCase.swift in Sources */,
@@ -788,6 +804,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortrait";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -826,6 +843,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortrait";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
