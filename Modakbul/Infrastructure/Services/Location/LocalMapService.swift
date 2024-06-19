@@ -20,9 +20,9 @@ protocol LocalMapService: NSObject, MKLocalSearchCompleterDelegate {
 }
 
 final class DefaultLocalMapService: NSObject {
-    weak var delegate: LocalMapServiceDelegate?
-    
     private let searchCompleter: MKLocalSearchCompleter
+    
+    weak var delegate: LocalMapServiceDelegate?
     
     init(searchCompleter: MKLocalSearchCompleter = MKLocalSearchCompleter()) {
         self.searchCompleter = searchCompleter

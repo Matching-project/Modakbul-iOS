@@ -34,13 +34,11 @@ final class DefaultLocationService: NSObject {
     weak var delegate: LocationServiceDelegate?
     
     init(
-        locationManager: LocationManager = CLLocationManager(),
-        delegate: LocationServiceDelegate? = nil
+        locationManager: LocationManager = CLLocationManager()
     ) {
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.desiredAccuracy = kCLLocationAccuracyThreeKilometers
         locationManager.distanceFilter = kCLDistanceFilterNone
         self.locationManager = locationManager
-        self.delegate = delegate
         super.init()
         locationManager.delegate = self
         self.requestAuthorization()
