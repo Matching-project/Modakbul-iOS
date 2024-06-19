@@ -17,6 +17,15 @@ struct DataAssembly: Assembly {
                                                 authorizationService: authorizationService,
                                                 networkService: networkService)
         }
+        
+        container.register(for: PlacesRepository.self) { resolver in
+            let localMapService = resolver.resolve(LocalMapService.self)
+            let locationService = resolver.resolve(LocationService.self)
+            let networkService = resolver.resolve(NetworkService.self)
+            return DefaultPlacesRepository(localMapService: localMapService,
+                                           locationService: locationService,
+                                           networkService: networkService)
+        }
     }
     
     func loaded(resolver: DependencyResolver) {
