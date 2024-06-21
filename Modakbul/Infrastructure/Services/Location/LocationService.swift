@@ -8,15 +8,8 @@
 import Foundation
 import CoreLocation
 
-protocol LocationServiceDelegate: NSObject {
-    func didUpdateCoordinate(coordinate: CLLocationCoordinate2D)
-    func didFailWithError(error: LocationServiceError)
-}
-
 protocol LocationService: NSObject, AnyObject {
-    var delegate: LocationServiceDelegate? { get set }
-    
-    func updateOnce()
+    func updateOnce() async -> Result<CLLocationCoordinate2D, Error>
 }
 
 enum LocationServiceError: Error {
@@ -31,7 +24,7 @@ enum LocationServiceError: Error {
 final class DefaultLocationService: NSObject {
     private let locationManager: LocationManager
     
-    weak var delegate: LocationServiceDelegate?
+    private var updateLocationTask: ((Result<CLLocationCoordinate2D, Error>) -> Void)?
     
     init(
         locationManager: LocationManager = CLLocationManager()
@@ -62,8 +55,13 @@ final class DefaultLocationService: NSObject {
 
 // MARK: LocationService Confirmation
 extension DefaultLocationService: LocationService {
-    func updateOnce() {
-        locationManager.requestLocation()
+    func updateOnce() async -> Result<CLLocationCoordinate2D, Error> {
+        return await withCheckedContinuation { continuation in
+            updateLocationTask = {
+                continuation.resume(returning: $0)
+            }
+            locationManager.requestLocation()
+        }
     }
 }
 
@@ -71,12 +69,14 @@ extension DefaultLocationService: LocationService {
 extension DefaultLocationService: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let coordinate = locations.first?.coordinate else { return }
-        delegate?.didUpdateCoordinate(coordinate: coordinate)
+        updateLocationTask?(.success(coordinate))
+        updateLocationTask = nil
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: any Error) {
         let error = resolveError(error)
-        delegate?.didFailWithError(error: error)
+        updateLocationTask?(.failure(error))
+        updateLocationTask = nil
     }
     
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {

@@ -8,21 +8,15 @@
 import Foundation
 import MapKit
 
-protocol LocalMapServiceDelegate: AnyObject {
-    func suggestedResultsDidUpdate(localMapService: LocalMapService, suggestedResults: [MKLocalSearchCompletion])
-}
-
 protocol LocalMapService: NSObject, MKLocalSearchCompleterDelegate {
-    var delegate: LocalMapServiceDelegate? { get set }
-    
     @MainActor func findPlaces(on region: MKCoordinateRegion, with keyword: String?) async throws -> [MKMapItem]
-    func updateSearchingText(by text: String)
+    func suggestResults(by keyword: String) async -> [MKLocalSearchCompletion]
 }
 
 final class DefaultLocalMapService: NSObject {
     private let searchCompleter: MKLocalSearchCompleter
     
-    weak var delegate: LocalMapServiceDelegate?
+    private var updateSuggestResultsTask: (([MKLocalSearchCompletion]) -> Void)?
     
     init(searchCompleter: MKLocalSearchCompleter = MKLocalSearchCompleter()) {
         self.searchCompleter = searchCompleter
@@ -44,14 +38,20 @@ extension DefaultLocalMapService: LocalMapService {
         return response.mapItems
     }
     
-    func updateSearchingText(by text: String) {
-        searchCompleter.queryFragment = text
+    func suggestResults(by keyword: String) async -> [MKLocalSearchCompletion] {
+        return await withCheckedContinuation { continuation in
+            updateSuggestResultsTask = {
+                continuation.resume(returning: $0)
+            }
+            searchCompleter.queryFragment = keyword
+        }
     }
 }
 
-// MARK: MKLocalSearchCompleterDelegate Conformation
+// MARK: MKLocalSearchCompleterDelegate Confirmation
 extension DefaultLocalMapService: MKLocalSearchCompleterDelegate {
     func completerDidUpdateResults(_ completer: MKLocalSearchCompleter) {
-        delegate?.suggestedResultsDidUpdate(localMapService: self, suggestedResults: completer.results)
+        updateSuggestResultsTask?(completer.results)
+        updateSuggestResultsTask = nil
     }
 }

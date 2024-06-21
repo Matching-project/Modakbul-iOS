@@ -12,9 +12,7 @@ import SwiftUI
 final class HomeViewModel: ObservableObject {
     private let placesRepository: PlacesRepository
     
-    @Published var searchingText: String = String() {
-        willSet { placesRepository.updateSearchingText(by: newValue) }
-    }
+    @Published var searchingText: String = String()
     
     @Published var cameraPosition: MapCameraPosition = .region(MKCoordinateRegion())
     var suggestedResults: [String] = []
@@ -23,18 +21,31 @@ final class HomeViewModel: ObservableObject {
     
     init(placesRepository: PlacesRepository) {
         self.placesRepository = placesRepository
-        self.placesRepository.delegate = self
         self.region.span = MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
     }
     
-    func updateLocationOnce() {
-        placesRepository.requestLocationUpdate()
+    @MainActor func suggestResults(_ keyword: String) {
+        Task {
+            suggestedResults = await placesRepository.suggestResults(by: keyword)
+        }
+    }
+    
+    @MainActor func updateLocationOnce() {
+        Task {
+            let coordinate = try await placesRepository.requestLocationUpdate()
+            let newRegion = MKCoordinateRegion(
+                center: coordinate.toCLCoordinate(),
+                span: region.span
+            )
+            cameraPosition = .region(newRegion)
+            findPlace(by: nil)
+        }
     }
     
     @MainActor func findPlace(by keyword: String?) {
         Task {
             do {
-                try await placesRepository.findPlaces(on: region, with: keyword)
+                places = try await placesRepository.findPlaces(on: region, with: keyword)
             } catch {
                 print(error)
             }
@@ -46,25 +57,5 @@ final class HomeViewModel: ObservableObject {
             return updateLocationOnce()
         }
         findPlace(by: place.name)
-    }
-}
-
-// MARK: MapControllable Confirmation
-extension HomeViewModel: MapControllable {
-    func coordinateDidUpdate(_ locationService: any LocationService, coordinate: Coordinate) {
-        let newRegion = MKCoordinateRegion(
-            center: coordinate.toCLCoordinate(),
-            span: region.span
-        )
-        cameraPosition = .region(newRegion)
-        findPlace(by: nil)
-    }
-    
-    func suggestedResultsDidUpdate(_ localMapService: any LocalMapService, results: [String]) {
-        suggestedResults = results
-    }
-    
-    func searchResultsDidUpdate(_ localMapService: any LocalMapService, results: [Place]) {
-        places = results
     }
 }

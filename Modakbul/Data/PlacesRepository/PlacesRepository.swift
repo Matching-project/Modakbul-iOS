@@ -8,18 +8,10 @@
 import Foundation
 import MapKit
 
-protocol MapControllable: AnyObject {
-    @MainActor func coordinateDidUpdate(_ locationService: LocationService, coordinate: Coordinate)
-    @MainActor func suggestedResultsDidUpdate(_ localMapService: LocalMapService, results: [String])
-    @MainActor func searchResultsDidUpdate(_ localMapService: LocalMapService, results: [Place])
-}
-
 protocol PlacesRepository: NSObject {
-    var delegate: MapControllable? { get set }
-    
-    func requestLocationUpdate()
-    @MainActor func findPlaces(on region: MKCoordinateRegion, with keyword: String?) async throws
-    func updateSearchingText(by text: String)
+    func requestLocationUpdate() async throws -> Coordinate
+    func findPlaces(on region: MKCoordinateRegion, with keyword: String?) async throws -> [Place]
+    func suggestResults(by keyword: String) async -> [String]
 }
 
 enum PlacesRepositoryError: Error {
@@ -27,8 +19,6 @@ enum PlacesRepositoryError: Error {
 }
 
 final class DefaultPlacesRepository: NSObject {
-    weak var delegate: MapControllable?
-    
     private let localMapService: LocalMapService
     private let locationService: LocationService
     private let networkService: NetworkService
@@ -42,51 +32,33 @@ final class DefaultPlacesRepository: NSObject {
         self.locationService = locationService
         self.networkService = networkService
         super.init()
-        self.localMapService.delegate = self
-        self.locationService.delegate = self
     }
 }
 
 // MARK: PlacesRepository confirmation
 extension DefaultPlacesRepository: PlacesRepository {
-    func requestLocationUpdate() {
-        locationService.updateOnce()
-    }
-    
-    @MainActor func findPlaces(on region: MKCoordinateRegion, with keyword: String?) async throws {
-        Task {
-            let locations = try await localMapService.findPlaces(on: region, with: keyword).map {
-                let coordinate = $0.placemark.coordinate.toDTO()
-                return Location(name: $0.name, coordinate: coordinate)
-            }
-//            let endpoint = Endpoint.fetchPlaces(locations: locations)
-//            let places = try await networkService.request(endpoint: endpoint, for: [PlaceEntity].self).map { $0.toDTO() }
-            delegate?.searchResultsDidUpdate(localMapService, results: [Place(id: "id", 
-                                                                              name: "name",
-                                                                              coordinate: Coordinate(latitude: 32.3141, longitude: 32.4345),
-                                                                              images: [])])
+    func requestLocationUpdate() async throws -> Coordinate {
+        switch await locationService.updateOnce() {
+        case .success(let coordinate): return coordinate.toDTO()
+        case .failure(let error): throw error
         }
     }
     
-    func updateSearchingText(by text: String) {
-        localMapService.updateSearchingText(by: text)
-    }
-}
-
-// MARK: LocationServiceDelegate Confirmation
-extension DefaultPlacesRepository: LocationServiceDelegate {
-    @MainActor func didUpdateCoordinate(coordinate: CLLocationCoordinate2D) {
-        delegate?.coordinateDidUpdate(locationService, coordinate: coordinate.toDTO())
+    func findPlaces(on region: MKCoordinateRegion, with keyword: String?) async throws -> [Place] {
+//        let locations = try await localMapService.findPlaces(on: region, with: keyword).map {
+//            return Location(name: $0.name, coordinate: $0.placemark.coordinate.toDTO())
+//        }
+//        let endpoint = Endpoint.fetchPlaces(locations: locations)
+//        return try await networkService.request(endpoint: endpoint, for: [PlaceEntity].self).map { $0.toDTO() }
+        return [
+            Place(id: "mock",
+                  name: "mock",
+                  coordinate: Coordinate(latitude: 32.1495, longitude: 32.1495),
+                  images: nil)
+        ]
     }
     
-    func didFailWithError(error: LocationServiceError) {
-        print(error)
-    }
-}
-
-// MARK: LocalMapServiceDelegate Confirmation
-extension DefaultPlacesRepository: LocalMapServiceDelegate {
-    @MainActor func suggestedResultsDidUpdate(localMapService: any LocalMapService, suggestedResults: [MKLocalSearchCompletion]) {
-        delegate?.suggestedResultsDidUpdate(localMapService, results: suggestedResults.map { $0.title })
+    func suggestResults(by keyword: String) async -> [String] {
+        return await localMapService.suggestResults(by: keyword).map { $0.title }
     }
 }
