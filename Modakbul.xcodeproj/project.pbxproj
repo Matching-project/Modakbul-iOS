@@ -69,6 +69,7 @@
 		9C8122292BF722E6007DC215 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9C8122282BF722E6007DC215 /* Preview Assets.xcassets */; };
 		DFA7D0362C2DA537003547CB /* NetworkSocketManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFA7D0352C2DA537003547CB /* NetworkSocketManager.swift */; };
 		DFA7D0382C2DA665003547CB /* NetworkServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFA7D0372C2DA665003547CB /* NetworkServiceError.swift */; };
+		DFA7D03A2C2EA607003547CB /* UserManagementRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFA7D0392C2EA607003547CB /* UserManagementRepository.swift */; };
 		DFE0AFD72C103FA800EC078B /* KakaoSDKAuth in Frameworks */ = {isa = PBXBuildFile; productRef = DFE0AFD62C103FA800EC078B /* KakaoSDKAuth */; };
 		DFE0AFD92C103FA800EC078B /* KakaoSDKCommon in Frameworks */ = {isa = PBXBuildFile; productRef = DFE0AFD82C103FA800EC078B /* KakaoSDKCommon */; };
 		DFE0AFDB2C103FA800EC078B /* KakaoSDKUser in Frameworks */ = {isa = PBXBuildFile; productRef = DFE0AFDA2C103FA800EC078B /* KakaoSDKUser */; };
@@ -140,6 +141,7 @@
 		9C8122282BF722E6007DC215 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		DFA7D0352C2DA537003547CB /* NetworkSocketManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkSocketManager.swift; sourceTree = "<group>"; };
 		DFA7D0372C2DA665003547CB /* NetworkServiceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkServiceError.swift; sourceTree = "<group>"; };
+		DFA7D0392C2EA607003547CB /* UserManagementRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManagementRepository.swift; sourceTree = "<group>"; };
 		DFE0AFDE2C104E7A00EC078B /* Bundle+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Bundle+Extension.swift"; path = "Modakbul/Data/Extensions/Bundle+Extension.swift"; sourceTree = SOURCE_ROOT; };
 		DFE0AFE02C1053E600EC078B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -307,6 +309,7 @@
 			isa = PBXGroup;
 			children = (
 				04D1C8372C11EEE1008BB1F9 /* DTOs */,
+				DFA7D0392C2EA607003547CB /* UserManagementRepository.swift */,
 				0440233B2C1F3E610029E6FA /* PlacesRepository */,
 				04D1C82B2C11B0C0008BB1F9 /* SocialLoginRepository */,
 				04D1C82A2C11B0B3008BB1F9 /* Extensions */,
@@ -651,6 +654,7 @@
 				04CFF7642BFE1D5F00EAE4DC /* LocationService.swift in Sources */,
 				04D1C7F52C0B372B008BB1F9 /* FetchUserProfileUseCase.swift in Sources */,
 				044023422C1FF2410029E6FA /* CLLocationCoordinate2D.swift in Sources */,
+				DFA7D03A2C2EA607003547CB /* UserManagementRepository.swift in Sources */,
 				DFA7D0382C2DA665003547CB /* NetworkServiceError.swift in Sources */,
 				DFA7D0362C2DA537003547CB /* NetworkSocketManager.swift in Sources */,
 				04D1C8042C0C638F008BB1F9 /* RegisterUserProfileUseCase.swift in Sources */,
