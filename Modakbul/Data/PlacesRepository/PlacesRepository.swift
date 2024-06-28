@@ -6,59 +6,45 @@
 //
 
 import Foundation
-import MapKit
 
-protocol PlacesRepository: NSObject {
-    func requestLocationUpdate() async throws -> Coordinate
-    func findPlaces(on region: MKCoordinateRegion, with keyword: String?) async throws -> [Place]
-    func suggestResults(by keyword: String) async -> [String]
+protocol PlacesRepository {
+    func findPlace(with keyword: String) async throws -> Place
+    func findPlaces(on coordinate: Coordinate) async throws -> [Place]
 }
 
 enum PlacesRepositoryError: Error {
-    
+    case fetchFailed
 }
 
-final class DefaultPlacesRepository: NSObject {
-    private let localMapService: LocalMapService
-    private let locationService: LocationService
+final class DefaultPlacesRepository {
     private let networkService: NetworkService
     
-    init(
-        localMapService: LocalMapService,
-        locationService: LocationService,
-        networkService: NetworkService
-    ) {
-        self.localMapService = localMapService
-        self.locationService = locationService
+    init(networkService: NetworkService) {
         self.networkService = networkService
-        super.init()
     }
 }
 
-// MARK: PlacesRepository confirmation
+// MARK: PlacesRepository Conformation
 extension DefaultPlacesRepository: PlacesRepository {
-    func requestLocationUpdate() async throws -> Coordinate {
-        switch await locationService.updateOnce() {
-        case .success(let coordinate): return coordinate.toDTO()
-        case .failure(let error): throw error
+    func findPlaces(on coordinate: Coordinate) async throws -> [Place] {
+        let endpoint = Endpoint.findPlaces(coordinate: coordinate.toEntity())
+        
+        do {
+            let placeEntities = try await networkService.request(endpoint: endpoint, for: [PlaceEntity].self)
+            return placeEntities.map { $0.toDTO() }
+        } catch {
+            throw PlacesRepositoryError.fetchFailed
         }
     }
     
-    func findPlaces(on region: MKCoordinateRegion, with keyword: String?) async throws -> [Place] {
-//        let locations = try await localMapService.findPlaces(on: region, with: keyword).map {
-//            return Location(name: $0.name, coordinate: $0.placemark.coordinate.toDTO())
-//        }
-//        let endpoint = Endpoint.fetchPlaces(locations: locations)
-//        return try await networkService.request(endpoint: endpoint, for: [PlaceEntity].self).map { $0.toDTO() }
-        return [
-            Place(id: "mock",
-                  name: "mock",
-                  coordinate: Coordinate(latitude: 32.1495, longitude: 32.1495),
-                  images: nil)
-        ]
-    }
-    
-    func suggestResults(by keyword: String) async -> [String] {
-        return await localMapService.suggestResults(by: keyword).map { $0.title }
+    func findPlace(with keyword: String) async throws -> Place {
+        let endpoint = Endpoint.findPlace(keyword: keyword)
+        
+        do {
+            let placeEntity = try await networkService.request(endpoint: endpoint, for: PlaceEntity.self)
+            return placeEntity.toDTO()
+        } catch {
+            throw PlacesRepositoryError.fetchFailed
+        }
     }
 }
