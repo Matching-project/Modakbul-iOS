@@ -8,8 +8,12 @@
 import SwiftUI
 
 struct MyView: View {
+    @State private var models: [Int] = [Int](0...100)
+    
     var body: some View {
-        Text("ㅎㅇ")
+        List(models, id: \.self) { num in
+            Text("\(num)")
+        }
     }
 }
 
