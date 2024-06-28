@@ -67,6 +67,8 @@
 		04D1C8502C14867D008BB1F9 /* PresentationAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D1C84F2C14867D008BB1F9 /* PresentationAssembly.swift */; };
 		04D1C8752C16B9C0008BB1F9 /* RouterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D1C8742C16B9C0008BB1F9 /* RouterView.swift */; };
 		9C8122292BF722E6007DC215 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9C8122282BF722E6007DC215 /* Preview Assets.xcassets */; };
+		DFA7D0362C2DA537003547CB /* NetworkSocketManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFA7D0352C2DA537003547CB /* NetworkSocketManager.swift */; };
+		DFA7D0382C2DA665003547CB /* NetworkServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFA7D0372C2DA665003547CB /* NetworkServiceError.swift */; };
 		DFE0AFD72C103FA800EC078B /* KakaoSDKAuth in Frameworks */ = {isa = PBXBuildFile; productRef = DFE0AFD62C103FA800EC078B /* KakaoSDKAuth */; };
 		DFE0AFD92C103FA800EC078B /* KakaoSDKCommon in Frameworks */ = {isa = PBXBuildFile; productRef = DFE0AFD82C103FA800EC078B /* KakaoSDKCommon */; };
 		DFE0AFDB2C103FA800EC078B /* KakaoSDKUser in Frameworks */ = {isa = PBXBuildFile; productRef = DFE0AFDA2C103FA800EC078B /* KakaoSDKUser */; };
@@ -136,6 +138,8 @@
 		04D1C8742C16B9C0008BB1F9 /* RouterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouterView.swift; sourceTree = "<group>"; };
 		9C81221E2BF722E4007DC215 /* Modakbul.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Modakbul.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9C8122282BF722E6007DC215 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		DFA7D0352C2DA537003547CB /* NetworkSocketManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkSocketManager.swift; sourceTree = "<group>"; };
+		DFA7D0372C2DA665003547CB /* NetworkServiceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkServiceError.swift; sourceTree = "<group>"; };
 		DFE0AFDE2C104E7A00EC078B /* Bundle+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Bundle+Extension.swift"; path = "Modakbul/Data/Extensions/Bundle+Extension.swift"; sourceTree = SOURCE_ROOT; };
 		DFE0AFE02C1053E600EC078B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -233,6 +237,8 @@
 				04CFF7542BFDEB0000EAE4DC /* Extensions */,
 				04CFF7502BFDE9E500EAE4DC /* NetworkService.swift */,
 				04CFF7522BFDEAF700EAE4DC /* NetworkSessionManager.swift */,
+				DFA7D0352C2DA537003547CB /* NetworkSocketManager.swift */,
+				DFA7D0372C2DA665003547CB /* NetworkServiceError.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -645,6 +651,8 @@
 				04CFF7642BFE1D5F00EAE4DC /* LocationService.swift in Sources */,
 				04D1C7F52C0B372B008BB1F9 /* FetchUserProfileUseCase.swift in Sources */,
 				044023422C1FF2410029E6FA /* CLLocationCoordinate2D.swift in Sources */,
+				DFA7D0382C2DA665003547CB /* NetworkServiceError.swift in Sources */,
+				DFA7D0362C2DA537003547CB /* NetworkSocketManager.swift in Sources */,
 				04D1C8042C0C638F008BB1F9 /* RegisterUserProfileUseCase.swift in Sources */,
 				04D1C8182C0C703B008BB1F9 /* HelpUserUseCase.swift in Sources */,
 				04D1C8102C0C6E75008BB1F9 /* FetchBlockedUserUseCase.swift in Sources */,
