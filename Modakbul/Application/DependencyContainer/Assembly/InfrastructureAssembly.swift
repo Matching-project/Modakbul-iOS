@@ -11,8 +11,10 @@ struct InfrastructureAssembly: Assembly {
     func assemble(container: DependencyContainer) {
         // Network
         container.register(for: NetworkSessionManager.self, DefaultNetworkSessionManager())
+        container.register(for: NetworkSocketManager.self, DefaultNetworkSocketManager())
         container.register(for: NetworkService.self) { resolver in
-            DefaultNetworkService(sessionManager: resolver.resolve(NetworkSessionManager.self))
+            DefaultNetworkService(sessionManager: resolver.resolve(NetworkSessionManager.self),
+                                  socketManager: resolver.resolve(NetworkSocketManager.self))
         }
         
         // OAuth
