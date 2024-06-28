@@ -20,33 +20,36 @@ struct HomeView<Router: AppRouter>: View where Router.Destination == Route {
         ZStack {
             localMapArea
             
-            VStack {
-                Spacer()
-                
-                HStack {
-                    Spacer()
-                    
-                    mapControlButton
-                }
-            }
-            .padding()
+            controllableArea
         }
     }
     
-    private var localMapArea: some View {
-        Map(position: $homeViewModel.cameraPosition) {
-            MapCircle(center: homeViewModel.region.center, radius: 50)
+    private var controllableArea: some View {
+        VStack {
+            SearchBar(searchingText: $homeViewModel.searchingText)
+                .frame(alignment: .top)
             
-            ForEach(homeViewModel.places, id: \.id) { place in
-                MapCircle(center: place.coordinate.toCLCoordinate(), radius: 50)
+            Spacer()
+            
+            HStack {
+                Spacer()
+                
+                currentPositionButtonArea
             }
+        }
+        .padding()
+    }
+    
+    private var localMapArea: some View {
+        Map(coordinateRegion: $homeViewModel.region, showsUserLocation: true, annotationItems: homeViewModel.places) { place in
+            MapMarker(coordinate: place.coordinate.toCLCoordinate(), tint: .primary)
         }
         .onAppear {
             homeViewModel.updateLocationOnce()
         }
     }
     
-    private var mapControlButton: some View {
+    private var currentPositionButtonArea: some View {
         CurrentPositionButton {
             homeViewModel.moveCameraOnLocation(to: nil)
         }
