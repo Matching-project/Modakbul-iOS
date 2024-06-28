@@ -11,7 +11,7 @@ protocol NetworkService {
     func request<Response: Decodable>(endpoint: Requestable, for type: Response.Type) async throws -> Response
 }
 
-fileprivate enum NetworkServiceError: Error {
+enum NetworkServiceError: Error {
     case badResponse(statusCode: Int)
     case notConnectedToInternet
     case invalidURL

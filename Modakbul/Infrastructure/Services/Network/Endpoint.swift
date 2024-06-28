@@ -13,7 +13,8 @@ protocol Requestable {
 
 enum Endpoint {
     case socialLogin(accessToken: String, refreshToken: String)
-    case fetchPlaces(locations: [Location])
+    case findPlace(keyword: String)
+    case findPlaces(coordinate: CoordinateEntity)
 }
 
 // MARK: Requestable Confirmation

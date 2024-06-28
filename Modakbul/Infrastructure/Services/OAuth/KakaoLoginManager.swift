@@ -29,10 +29,12 @@ final class DefaultKakaoLoginManager {
     private func _handler(_ continuation: CheckedContinuation<OAuthToken, any Error>, _ token: OAuthToken?, _ error: Error?) {
         if let error = error {
             continuation.resume(throwing: error)
+            return
         }
         
         if let token = token {
             continuation.resume(returning: token)
+            return
         }
     }
     

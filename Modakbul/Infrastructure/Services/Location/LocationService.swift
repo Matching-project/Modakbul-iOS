@@ -9,7 +9,7 @@ import Foundation
 import CoreLocation
 
 protocol LocationService: NSObject, AnyObject {
-    func updateOnce() async -> Result<CLLocationCoordinate2D, Error>
+    func updateOnce() async -> Result<CLLocationCoordinate2D, LocationServiceError>
 }
 
 enum LocationServiceError: Error {
@@ -24,7 +24,7 @@ enum LocationServiceError: Error {
 final class DefaultLocationService: NSObject {
     private let locationManager: LocationManager
     
-    private var updateLocationTask: ((Result<CLLocationCoordinate2D, Error>) -> Void)?
+    private var updateLocationTask: ((Result<CLLocationCoordinate2D, LocationServiceError>) -> Void)?
     
     init(
         locationManager: LocationManager = CLLocationManager()
@@ -55,7 +55,7 @@ final class DefaultLocationService: NSObject {
 
 // MARK: LocationService Confirmation
 extension DefaultLocationService: LocationService {
-    func updateOnce() async -> Result<CLLocationCoordinate2D, Error> {
+    func updateOnce() async -> Result<CLLocationCoordinate2D, LocationServiceError> {
         return await withCheckedContinuation { continuation in
             updateLocationTask = {
                 continuation.resume(returning: $0)
