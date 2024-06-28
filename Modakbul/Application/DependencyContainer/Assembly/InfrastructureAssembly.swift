@@ -23,7 +23,6 @@ struct InfrastructureAssembly: Assembly {
         
         // Location
         container.register(for: LocationService.self, DefaultLocationService())
-        container.register(for: LocalMapService.self, DefaultLocalMapService())
         
         // Storages
         container.register(for: TokenStorage.self, DefaultTokenStorage())
