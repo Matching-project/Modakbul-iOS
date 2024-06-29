@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import CoreLocation
+import MapKit
 
 struct Coordinate {
     let latitude: Double
@@ -20,5 +20,9 @@ extension Coordinate {
     
     func toEntity() -> CoordinateEntity {
         CoordinateEntity(latitude: latitude, longitude: longitude)
+    }
+    
+    func toRegion(span: MKCoordinateSpan) -> MKCoordinateRegion {
+        MKCoordinateRegion(center: self.toCLCoordinate(), span: span)
     }
 }
