@@ -66,8 +66,11 @@
 		04D1C84E2C1483B4008BB1F9 /* DomainAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D1C84D2C1483B4008BB1F9 /* DomainAssembly.swift */; };
 		04D1C8502C14867D008BB1F9 /* PresentationAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D1C84F2C14867D008BB1F9 /* PresentationAssembly.swift */; };
 		04D1C8752C16B9C0008BB1F9 /* RouterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D1C8742C16B9C0008BB1F9 /* RouterView.swift */; };
+		04E2814E2C31A6ED00C118DF /* MessageEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E2814D2C31A6ED00C118DF /* MessageEntity.swift */; };
+		04E281502C31ACC900C118DF /* JSONEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E2814F2C31ACC900C118DF /* JSONEncoder.swift */; };
+		04E281532C31B8FF00C118DF /* ChatRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E281522C31B8FF00C118DF /* ChatRepository.swift */; };
 		9C8122292BF722E6007DC215 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9C8122282BF722E6007DC215 /* Preview Assets.xcassets */; };
-		DFA7D0362C2DA537003547CB /* NetworkSocketManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFA7D0352C2DA537003547CB /* NetworkSocketManager.swift */; };
+		DFA7D0362C2DA537003547CB /* ChatService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFA7D0352C2DA537003547CB /* ChatService.swift */; };
 		DFA7D0382C2DA665003547CB /* NetworkServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFA7D0372C2DA665003547CB /* NetworkServiceError.swift */; };
 		DFA7D03A2C2EA607003547CB /* UserManagementRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFA7D0392C2EA607003547CB /* UserManagementRepository.swift */; };
 		DFE0AFD72C103FA800EC078B /* KakaoSDKAuth in Frameworks */ = {isa = PBXBuildFile; productRef = DFE0AFD62C103FA800EC078B /* KakaoSDKAuth */; };
@@ -137,9 +140,12 @@
 		04D1C84D2C1483B4008BB1F9 /* DomainAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainAssembly.swift; sourceTree = "<group>"; };
 		04D1C84F2C14867D008BB1F9 /* PresentationAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentationAssembly.swift; sourceTree = "<group>"; };
 		04D1C8742C16B9C0008BB1F9 /* RouterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouterView.swift; sourceTree = "<group>"; };
+		04E2814D2C31A6ED00C118DF /* MessageEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageEntity.swift; sourceTree = "<group>"; };
+		04E2814F2C31ACC900C118DF /* JSONEncoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONEncoder.swift; sourceTree = "<group>"; };
+		04E281522C31B8FF00C118DF /* ChatRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRepository.swift; sourceTree = "<group>"; };
 		9C81221E2BF722E4007DC215 /* Modakbul.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Modakbul.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9C8122282BF722E6007DC215 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		DFA7D0352C2DA537003547CB /* NetworkSocketManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkSocketManager.swift; sourceTree = "<group>"; };
+		DFA7D0352C2DA537003547CB /* ChatService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatService.swift; sourceTree = "<group>"; };
 		DFA7D0372C2DA665003547CB /* NetworkServiceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkServiceError.swift; sourceTree = "<group>"; };
 		DFA7D0392C2EA607003547CB /* UserManagementRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManagementRepository.swift; sourceTree = "<group>"; };
 		DFE0AFDE2C104E7A00EC078B /* Bundle+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Bundle+Extension.swift"; path = "Modakbul/Data/Extensions/Bundle+Extension.swift"; sourceTree = SOURCE_ROOT; };
@@ -214,6 +220,8 @@
 		04CFF74B2BFDE92900EAE4DC /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				04D1C8342C11EC8D008BB1F9 /* Endpoint.swift */,
+				04E2814B2C31A44A00C118DF /* ChatService */,
 				04D1C8272C11AEA5008BB1F9 /* OAuth */,
 				04CFF74F2BFDE9CF00EAE4DC /* Network */,
 				04CFF74E2BFDE9C900EAE4DC /* Location */,
@@ -234,12 +242,10 @@
 		04CFF74F2BFDE9CF00EAE4DC /* Network */ = {
 			isa = PBXGroup;
 			children = (
-				04D1C8342C11EC8D008BB1F9 /* Endpoint.swift */,
 				0440233E2C1F506C0029E6FA /* Entities */,
 				04CFF7542BFDEB0000EAE4DC /* Extensions */,
 				04CFF7502BFDE9E500EAE4DC /* NetworkService.swift */,
 				04CFF7522BFDEAF700EAE4DC /* NetworkSessionManager.swift */,
-				DFA7D0352C2DA537003547CB /* NetworkSocketManager.swift */,
 				DFA7D0372C2DA665003547CB /* NetworkServiceError.swift */,
 			);
 			path = Network;
@@ -250,6 +256,7 @@
 			children = (
 				04CFF7552BFDEB0B00EAE4DC /* URLSession.swift */,
 				04CFF7572BFDEC6A00EAE4DC /* JSONDecoder.swift */,
+				04E2814F2C31ACC900C118DF /* JSONEncoder.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -310,6 +317,7 @@
 			children = (
 				04D1C8372C11EEE1008BB1F9 /* DTOs */,
 				DFA7D0392C2EA607003547CB /* UserManagementRepository.swift */,
+				04E281512C31B8ED00C118DF /* ChatRepository */,
 				0440233B2C1F3E610029E6FA /* PlacesRepository */,
 				04D1C82B2C11B0C0008BB1F9 /* SocialLoginRepository */,
 				04D1C82A2C11B0B3008BB1F9 /* Extensions */,
@@ -491,6 +499,31 @@
 			path = Assembly;
 			sourceTree = "<group>";
 		};
+		04E2814B2C31A44A00C118DF /* ChatService */ = {
+			isa = PBXGroup;
+			children = (
+				04E2814C2C31A6DF00C118DF /* Entities */,
+				DFA7D0352C2DA537003547CB /* ChatService.swift */,
+			);
+			path = ChatService;
+			sourceTree = "<group>";
+		};
+		04E2814C2C31A6DF00C118DF /* Entities */ = {
+			isa = PBXGroup;
+			children = (
+				04E2814D2C31A6ED00C118DF /* MessageEntity.swift */,
+			);
+			path = Entities;
+			sourceTree = "<group>";
+		};
+		04E281512C31B8ED00C118DF /* ChatRepository */ = {
+			isa = PBXGroup;
+			children = (
+				04E281522C31B8FF00C118DF /* ChatRepository.swift */,
+			);
+			path = ChatRepository;
+			sourceTree = "<group>";
+		};
 		9C8122152BF722E4007DC215 = {
 			isa = PBXGroup;
 			children = (
@@ -645,6 +678,7 @@
 				049D83072C1DC97B0090578E /* Location.swift in Sources */,
 				0401489A2C21A19A0065F77D /* CurrentPositionButton.swift in Sources */,
 				04B315B82BF8608C0043A529 /* ModakbulApp.swift in Sources */,
+				04E281502C31ACC900C118DF /* JSONEncoder.swift in Sources */,
 				04D1C7E72C06E4B8008BB1F9 /* Assembler.swift in Sources */,
 				04D1C8142C0C6FB9008BB1F9 /* UnblockUserUseCase.swift in Sources */,
 				04CFF76C2C007B6000EAE4DC /* AppRouter.swift in Sources */,
@@ -655,10 +689,12 @@
 				04D1C7F52C0B372B008BB1F9 /* FetchUserProfileUseCase.swift in Sources */,
 				044023422C1FF2410029E6FA /* CLLocationCoordinate2D.swift in Sources */,
 				DFA7D03A2C2EA607003547CB /* UserManagementRepository.swift in Sources */,
+				04E2814E2C31A6ED00C118DF /* MessageEntity.swift in Sources */,
 				DFA7D0382C2DA665003547CB /* NetworkServiceError.swift in Sources */,
-				DFA7D0362C2DA537003547CB /* NetworkSocketManager.swift in Sources */,
+				DFA7D0362C2DA537003547CB /* ChatService.swift in Sources */,
 				04D1C8042C0C638F008BB1F9 /* RegisterUserProfileUseCase.swift in Sources */,
 				04D1C8182C0C703B008BB1F9 /* HelpUserUseCase.swift in Sources */,
+				04E281532C31B8FF00C118DF /* ChatRepository.swift in Sources */,
 				04D1C8102C0C6E75008BB1F9 /* FetchBlockedUserUseCase.swift in Sources */,
 				04CFF7512BFDE9E500EAE4DC /* NetworkService.swift in Sources */,
 				04D1C7F12C085981008BB1F9 /* Place.swift in Sources */,

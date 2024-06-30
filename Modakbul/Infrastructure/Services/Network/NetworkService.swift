@@ -7,30 +7,20 @@
 
 import Foundation
 
-protocol WebSocketServiceProtocol {
-    func openSocket(endpoint: any Requestable) throws
-    func closeSocket(by reason: Data)
-}
-
-protocol DataServiceProtocol {
+protocol NetworkService {
     func request<Response: Decodable>(endpoint: Requestable, for type: Response.Type) async throws -> Response
 }
-
-typealias NetworkService = DataServiceProtocol & WebSocketServiceProtocol
 
 final class DefaultNetworkService: NSObject {
     private let sessionManager: NetworkSessionManager
     private let decoder: JSONDecodable
-    private let socketManager: NetworkSocketManager
     
     init(
         sessionManager: NetworkSessionManager,
-        decoder: JSONDecodable = JSONDecoder(),
-        socketManager: NetworkSocketManager
+        decoder: JSONDecodable = JSONDecoder()
     ) {
         self.sessionManager = sessionManager
         self.decoder = decoder
-        self.socketManager = socketManager
         super.init()
     }
     
@@ -81,15 +71,5 @@ extension DefaultNetworkService: NetworkService {
         } catch {
             throw resolveError(error)
         }
-    }
-    
-    // MARK: - WebSocketServiceProtocol
-    func openSocket(endpoint: any Requestable) throws {
-        try socketManager.connect(endpoint: endpoint, sessionManager: sessionManager)
-        socketManager.run()
-    }
-    
-    func closeSocket(by reason: Data) {
-        socketManager.disconnect(by: reason)
     }
 }
