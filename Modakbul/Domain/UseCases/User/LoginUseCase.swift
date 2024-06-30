@@ -20,7 +20,7 @@ final class DefaultLoginUseCase {
     }
 }
 
-// MARK: LoginUseCase Confirmation
+// MARK: LoginUseCase Conformation
 extension DefaultLoginUseCase: LoginUseCase {
     func onOpenURL(url: URL) {
         socialLoginRepository.onOpenURL(url: url)

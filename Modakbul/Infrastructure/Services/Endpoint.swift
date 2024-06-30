@@ -17,7 +17,7 @@ enum Endpoint {
     case chatRoom(chatRoomId: String)
 }
 
-// MARK: Requestable Confirmation
+// MARK: Requestable Conformation
 extension Endpoint: Requestable {
     func asURLRequest() -> URLRequest? {
         URLRequest(url: URL(string: "")!)

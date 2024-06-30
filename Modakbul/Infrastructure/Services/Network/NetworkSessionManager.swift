@@ -20,7 +20,7 @@ final class DefaultNetworkSessionManager {
     }
 }
 
-// MARK: NetworkSessionManager Confirmation
+// MARK: NetworkSessionManager Conformation
 extension DefaultNetworkSessionManager: NetworkSessionManager {
     func data(for urlRequest: URLRequest) async throws -> (Data, URLResponse) {
         return try await session.data(for: urlRequest)

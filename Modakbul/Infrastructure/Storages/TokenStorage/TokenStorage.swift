@@ -23,7 +23,7 @@ final class DefaultTokenStorage {
     private var container: [UserID: Tokens] = [:]
 }
 
-// MARK: TokenStorage Confirmation
+// MARK: TokenStorage Conformation
 extension DefaultTokenStorage: TokenStorage {
     func fetchToken(id userId: UserID) async throws -> Tokens {
         guard let tokens = container[userId] else {

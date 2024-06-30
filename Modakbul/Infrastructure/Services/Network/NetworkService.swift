@@ -55,7 +55,7 @@ final class DefaultNetworkService: NSObject {
     }
 }
 
-// MARK: NetworkService Confirmation
+// MARK: NetworkService Conformation
 extension DefaultNetworkService: NetworkService {
     // MARK: - DataServiceProtocol
     func request<Response: Decodable>(endpoint: Requestable, for type: Response.Type) async throws -> Response {

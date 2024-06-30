@@ -35,7 +35,7 @@ final class DefaultPlacesRepository: NSObject {
     }
 }
 
-// MARK: PlacesRepository confirmation
+// MARK: PlacesRepository conformation
 extension DefaultPlacesRepository: PlacesRepository {
     func requestLocationUpdate() async throws -> Coordinate {
         switch await locationService.updateOnce() {

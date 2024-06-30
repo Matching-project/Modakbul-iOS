@@ -48,7 +48,7 @@ extension DefaultLocalMapService: LocalMapService {
     }
 }
 
-// MARK: MKLocalSearchCompleterDelegate Confirmation
+// MARK: MKLocalSearchCompleterDelegate Conformation
 extension DefaultLocalMapService: MKLocalSearchCompleterDelegate {
     func completerDidUpdateResults(_ completer: MKLocalSearchCompleter) {
         updateSuggestResultsTask?(completer.results)

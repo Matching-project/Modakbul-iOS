@@ -38,7 +38,7 @@ final class DefaultDependencyContainer {
     }
 }
 
-// MARK: DependencyContainer Confirmation
+// MARK: DependencyContainer Conformation
 extension DefaultDependencyContainer: DependencyContainer {
     func register<T>(for type: T.Type, _ instance: T) {
         _register(for: type, instance)
