@@ -9,9 +9,9 @@ import Foundation
 
 protocol ChatService {
     func connect(endpoint: Requestable) async throws
-    func disconnect(_ reason: ChatServiceDisconnectReason) throws
+    func disconnect(_ reason: ChatServiceDisconnectReason) async throws
     func send(message: MessageEntity) async throws
-    func receive() async throws -> AsyncThrowingStream<MessageEntity, Error>
+    func receive() throws -> AsyncThrowingStream<MessageEntity, Error>
 }
 
 // TODO: 네이밍 수정하기
@@ -23,10 +23,10 @@ enum ChatServiceDisconnectReason {
 
 enum ChatServiceError: Error {
     case invalidURL
-    case 형식이다른수신
-    case 디코딩에러
-    case 소켓없음
-    case 소켓이미있음ㅋ
+    case invalidMessageFormat
+    case generic(type: String)
+    case noSocket
+    case socketAlreadyExists
 }
 
 final class DefaultChatService {
@@ -35,14 +35,7 @@ final class DefaultChatService {
     private let decoder: JSONDecodable
     
     private weak var socket: URLSessionWebSocketTask?
-    private var isActivated: Bool {
-        guard let state = socket?.state else { return false }
-        
-        switch state {
-        case .running: return true
-        default: return false
-        }
-    }
+    private var isActivated: Bool { socket?.state == .running }
     
     init(
         sessionManager: NetworkSessionManager,
@@ -63,7 +56,7 @@ final class DefaultChatService {
     
     private func decode<T: Decodable>(for type: T.Type, with data: Data) throws -> T {
         guard let decodedData = try? decoder.decode(type, from: data) else {
-            throw ChatServiceError.디코딩에러
+            throw ChatServiceError.generic(type: String(describing: T.self))
         }
         return decodedData
     }
@@ -73,7 +66,7 @@ final class DefaultChatService {
 extension DefaultChatService: ChatService {
     func connect(endpoint: any Requestable) async throws {
         guard isActivated == false else {
-            throw ChatServiceError.소켓이미있음ㅋ
+            throw ChatServiceError.socketAlreadyExists
         }
         
         guard let urlRequest = endpoint.asURLRequest() else {
@@ -81,53 +74,56 @@ extension DefaultChatService: ChatService {
         }
         
         socket = sessionManager.webSocketTask(with: urlRequest)
+        socket?.resume()
     }
     
-    func disconnect(_ reason: ChatServiceDisconnectReason) throws {
+    func disconnect(_ reason: ChatServiceDisconnectReason) async throws {
         guard isActivated else {
-            throw ChatServiceError.소켓없음
+            throw ChatServiceError.noSocket
         }
         
-        let reason = resolveDisconnectReason(reason)
-        socket?.cancel(with: reason, reason: nil)
+        let closeCode = resolveDisconnectReason(reason)
+        socket?.cancel(with: closeCode, reason: nil)
+        socket = nil
     }
     
     func send(message: MessageEntity) async throws {
         guard isActivated else {
-            throw ChatServiceError.소켓없음
+            throw ChatServiceError.noSocket
         }
         
         let data = try encoder.encode(message)
         try await socket?.send(.data(data))
     }
     
-    func receive() async throws -> AsyncThrowingStream<MessageEntity, Error> {
+    func receive() throws -> AsyncThrowingStream<MessageEntity, Error> {
         guard isActivated else {
-            throw ChatServiceError.소켓없음
+            throw ChatServiceError.noSocket
         }
         
-        // TODO: 에러메세지 해결하기
         return AsyncThrowingStream(bufferingPolicy: .unbounded) { continuation in
-            while let socket = socket {
-                do {
-                    let result = try await socket.receive()
-                    switch result {
-                    case .data(let data):
-                        let message = try decode(for: MessageEntity.self, with: data)
-                        continuation.yield(message)
-                    default:
-                        continuation.finish(throwing: .형식이다른수신)
+            Task {
+                while let socket = socket {
+                    do {
+                        let result = try await socket.receive()
+                        switch result {
+                        case .data(let data):
+                            let message = try decode(for: MessageEntity.self, with: data)
+                            continuation.yield(message)
+                        default:
+                            continuation.finish(throwing: ChatServiceError.invalidMessageFormat)
+                            break
+                        }
+                    } catch {
+                        continuation.finish(throwing: error)
                         break
                     }
-                } catch {
-                    continuation.finish(throwing: error as? ChatServiceError)
-                    break
                 }
-            }
-            
-            continuation.onTermination = { @Sendable _ in
-                socket?.cancel()
-                socket = nil
+                
+                continuation.onTermination = { [weak self] _ in
+                    self?.socket?.cancel()
+                    self?.socket = nil
+                }
             }
         }
     }
