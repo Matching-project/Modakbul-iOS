@@ -47,7 +47,19 @@ extension DefaultChatRepository: ChatRepository {
         try await chatService.connect(endpoint: endpoint)
         let stream = try chatService.receive()
         for try await message in stream {
-            messages.append(message)
+            messages.append(message.toDTO())
+        }
+    }
+    
+    func openChatRoom() async throws {
+        // 그 전에 채팅기록히스토리 읽고
+        // 그 다음 네트워크서비스에 요청해서 채팅기록 확보하고 어펜드 한다음 이하 계속
+        
+        let endpoint = Endpoint.chatRoom(from: "내 이메일", to: "니 이메일")
+        try await chatService.connect(endpoint: endpoint)
+        let stream = try chatService.receive()
+        for try await message in stream {
+            messages.append(message.toDTO())
         }
     }
     

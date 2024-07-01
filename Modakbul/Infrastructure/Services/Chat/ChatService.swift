@@ -110,6 +110,12 @@ extension DefaultChatService: ChatService {
                         case .data(let data):
                             let message = try decode(for: MessageEntity.self, with: data)
                             continuation.yield(message)
+                        case .string(let message):
+                            continuation.yield(MessageEntity(from: "오",
+                                                             to: "감",
+                                                             text: message,
+                                                             timestamp: Date.now.ISO8601Format()
+                                                            ))
                         default:
                             continuation.finish(throwing: ChatServiceError.invalidMessageFormat)
                             break

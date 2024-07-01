@@ -20,6 +20,6 @@ enum Endpoint {
 // MARK: Requestable Conformation
 extension Endpoint: Requestable {
     func asURLRequest() -> URLRequest? {
-        URLRequest(url: URL(string: "")!)
+        URLRequest(url: URL(string: "wss://echo.websocket.org")!)
     }
 }
