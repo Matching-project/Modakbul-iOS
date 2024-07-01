@@ -14,7 +14,7 @@ protocol Requestable {
 enum Endpoint {
     case socialLogin(accessToken: String, refreshToken: String)
     case fetchPlaces(locations: [Location])
-    case chatRoom(chatRoomId: String)
+    case chatRoom(from: String, to: String)
 }
 
 // MARK: Requestable Conformation
