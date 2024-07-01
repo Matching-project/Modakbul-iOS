@@ -30,7 +30,8 @@ struct ContentView<Router: AppRouter>: View where Router.Destination == Route {
             router.view(to: .homeView)
                 .tabItemStyle(.home)
             
-            router.view(to: .loginView)
+            // MARK: 기존에 .loginView로 기능 테스트했었음
+            router.view(to: .chatView)
                 .tabItemStyle(.chattings)
             
             router.view(to: .myView)

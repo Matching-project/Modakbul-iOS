@@ -74,6 +74,7 @@ final class DefaultAppRouter: AppRouter {
         case .homeView: HomeView<DefaultAppRouter>(homeViewModel: resolver.resolve(HomeViewModel.self))
         case .loginView: LoginView<DefaultAppRouter>(loginViewModel: resolver.resolve(LoginViewModel.self))
         case .myView: MyView()
+        case .chatView: ChatView<DefaultAppRouter>(chatRepository: resolver.resolve(ChatRepository.self))
         }
     }
     
