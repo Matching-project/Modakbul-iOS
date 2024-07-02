@@ -47,7 +47,7 @@ extension DefaultChatRepository: ChatRepository {
         try await chatService.connect(endpoint: endpoint)
         let stream = try chatService.receive()
         for try await message in stream {
-            messages.append(message)
+            messages.append(message.toDTO())
         }
     }
     

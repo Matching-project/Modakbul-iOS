@@ -66,13 +66,13 @@
 		04D1C84E2C1483B4008BB1F9 /* DomainAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D1C84D2C1483B4008BB1F9 /* DomainAssembly.swift */; };
 		04D1C8502C14867D008BB1F9 /* PresentationAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D1C84F2C14867D008BB1F9 /* PresentationAssembly.swift */; };
 		04D1C8752C16B9C0008BB1F9 /* RouterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D1C8742C16B9C0008BB1F9 /* RouterView.swift */; };
-		04E2814E2C31A6ED00C118DF /* MessageEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E2814D2C31A6ED00C118DF /* MessageEntity.swift */; };
 		04E281502C31ACC900C118DF /* JSONEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E2814F2C31ACC900C118DF /* JSONEncoder.swift */; };
 		04E281532C31B8FF00C118DF /* ChatRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E281522C31B8FF00C118DF /* ChatRepository.swift */; };
 		04E281572C329EA000C118DF /* ChatMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E281562C329EA000C118DF /* ChatMessage.swift */; };
 		9C8122292BF722E6007DC215 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9C8122282BF722E6007DC215 /* Preview Assets.xcassets */; };
 		DF92D9932C32FBFF00C993CA /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF92D9922C32FBFF00C993CA /* ChatView.swift */; };
-		DFA7D0362C2DA537003547CB /* ChatService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFA7D0352C2DA537003547CB /* ChatService.swift */; };
+		DF92D99B2C33C99800C993CA /* MessageEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF92D9972C33C99800C993CA /* MessageEntity.swift */; };
+		DF92D99C2C33C99800C993CA /* ChatService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF92D9992C33C99800C993CA /* ChatService.swift */; };
 		DFA7D0382C2DA665003547CB /* NetworkServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFA7D0372C2DA665003547CB /* NetworkServiceError.swift */; };
 		DFA7D03A2C2EA607003547CB /* UserManagementRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFA7D0392C2EA607003547CB /* UserManagementRepository.swift */; };
 		DFE0AFD72C103FA800EC078B /* KakaoSDKAuth in Frameworks */ = {isa = PBXBuildFile; productRef = DFE0AFD62C103FA800EC078B /* KakaoSDKAuth */; };
@@ -142,14 +142,14 @@
 		04D1C84D2C1483B4008BB1F9 /* DomainAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainAssembly.swift; sourceTree = "<group>"; };
 		04D1C84F2C14867D008BB1F9 /* PresentationAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentationAssembly.swift; sourceTree = "<group>"; };
 		04D1C8742C16B9C0008BB1F9 /* RouterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouterView.swift; sourceTree = "<group>"; };
-		04E2814D2C31A6ED00C118DF /* MessageEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageEntity.swift; sourceTree = "<group>"; };
 		04E2814F2C31ACC900C118DF /* JSONEncoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONEncoder.swift; sourceTree = "<group>"; };
 		04E281522C31B8FF00C118DF /* ChatRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRepository.swift; sourceTree = "<group>"; };
 		04E281562C329EA000C118DF /* ChatMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessage.swift; sourceTree = "<group>"; };
 		9C81221E2BF722E4007DC215 /* Modakbul.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Modakbul.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9C8122282BF722E6007DC215 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		DF92D9922C32FBFF00C993CA /* ChatView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
-		DFA7D0352C2DA537003547CB /* ChatService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatService.swift; sourceTree = "<group>"; };
+		DF92D9972C33C99800C993CA /* MessageEntity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageEntity.swift; sourceTree = "<group>"; };
+		DF92D9992C33C99800C993CA /* ChatService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatService.swift; sourceTree = "<group>"; };
 		DFA7D0372C2DA665003547CB /* NetworkServiceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkServiceError.swift; sourceTree = "<group>"; };
 		DFA7D0392C2EA607003547CB /* UserManagementRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManagementRepository.swift; sourceTree = "<group>"; };
 		DFE0AFDE2C104E7A00EC078B /* Bundle+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Bundle+Extension.swift"; path = "Modakbul/Data/Extensions/Bundle+Extension.swift"; sourceTree = SOURCE_ROOT; };
@@ -225,9 +225,9 @@
 			isa = PBXGroup;
 			children = (
 				04D1C8342C11EC8D008BB1F9 /* Endpoint.swift */,
-				04E2814B2C31A44A00C118DF /* ChatService */,
 				04D1C8272C11AEA5008BB1F9 /* OAuth */,
 				04CFF74F2BFDE9CF00EAE4DC /* Network */,
+				DF92D99A2C33C99800C993CA /* Chat */,
 				04CFF74E2BFDE9C900EAE4DC /* Location */,
 			);
 			path = Services;
@@ -505,23 +505,6 @@
 			path = Assembly;
 			sourceTree = "<group>";
 		};
-		04E2814B2C31A44A00C118DF /* ChatService */ = {
-			isa = PBXGroup;
-			children = (
-				04E2814C2C31A6DF00C118DF /* Entities */,
-				DFA7D0352C2DA537003547CB /* ChatService.swift */,
-			);
-			path = ChatService;
-			sourceTree = "<group>";
-		};
-		04E2814C2C31A6DF00C118DF /* Entities */ = {
-			isa = PBXGroup;
-			children = (
-				04E2814D2C31A6ED00C118DF /* MessageEntity.swift */,
-			);
-			path = Entities;
-			sourceTree = "<group>";
-		};
 		04E281512C31B8ED00C118DF /* ChatRepository */ = {
 			isa = PBXGroup;
 			children = (
@@ -572,6 +555,23 @@
 			isa = PBXGroup;
 			children = (
 				DF92D9922C32FBFF00C993CA /* ChatView.swift */,
+			);
+			path = Chat;
+			sourceTree = "<group>";
+		};
+		DF92D9982C33C99800C993CA /* Entities */ = {
+			isa = PBXGroup;
+			children = (
+				DF92D9972C33C99800C993CA /* MessageEntity.swift */,
+			);
+			path = Entities;
+			sourceTree = "<group>";
+		};
+		DF92D99A2C33C99800C993CA /* Chat */ = {
+			isa = PBXGroup;
+			children = (
+				DF92D9982C33C99800C993CA /* Entities */,
+				DF92D9992C33C99800C993CA /* ChatService.swift */,
 			);
 			path = Chat;
 			sourceTree = "<group>";
@@ -673,6 +673,7 @@
 				04D1C84A2C147839008BB1F9 /* InfrastructureAssembly.swift in Sources */,
 				04D1C7DD2C04C138008BB1F9 /* DependencyContainer.swift in Sources */,
 				047C47EE2C1A98DC00170758 /* HomeViewModel.swift in Sources */,
+				DF92D99C2C33C99800C993CA /* ChatService.swift in Sources */,
 				04B315BA2BF860CF0043A529 /* ContentView.swift in Sources */,
 				04CFF7452BFDCE9300EAE4DC /* LoginView.swift in Sources */,
 				04D1C84C2C147B73008BB1F9 /* DataAssembly.swift in Sources */,
@@ -704,10 +705,9 @@
 				04CFF7642BFE1D5F00EAE4DC /* LocationService.swift in Sources */,
 				04D1C7F52C0B372B008BB1F9 /* FetchUserProfileUseCase.swift in Sources */,
 				044023422C1FF2410029E6FA /* CLLocationCoordinate2D.swift in Sources */,
+				DF92D99B2C33C99800C993CA /* MessageEntity.swift in Sources */,
 				DFA7D03A2C2EA607003547CB /* UserManagementRepository.swift in Sources */,
-				04E2814E2C31A6ED00C118DF /* MessageEntity.swift in Sources */,
 				DFA7D0382C2DA665003547CB /* NetworkServiceError.swift in Sources */,
-				DFA7D0362C2DA537003547CB /* ChatService.swift in Sources */,
 				04D1C8042C0C638F008BB1F9 /* RegisterUserProfileUseCase.swift in Sources */,
 				04D1C8182C0C703B008BB1F9 /* HelpUserUseCase.swift in Sources */,
 				04E281532C31B8FF00C118DF /* ChatRepository.swift in Sources */,
