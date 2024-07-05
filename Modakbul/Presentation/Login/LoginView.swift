@@ -69,6 +69,17 @@ struct LoginView<Router: AppRouter>: View where Router.Destination == Route {
                 Text("PopToRoot")
             }
             
+            Button {
+                router.alert(for: .warningBeforeSaveAlert,
+                             actions: [
+                                .destructiveAction("나가기", action: print("나감")),
+                                .cancelAction("취소", action: print("안나감"))
+                             ])
+
+            } label: {
+                Text("얼럿띄우기")
+            }
+
             Spacer()
         }
         .padding()
