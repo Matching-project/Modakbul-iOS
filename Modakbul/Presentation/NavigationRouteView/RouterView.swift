@@ -31,6 +31,7 @@ struct RouterView<Content: View, Router: AppRouter>: View {
         .fullScreenCover(item: $router.fullScreenCover) { destination in
             router.view(to: destination)
         }
+        .alert(router.alert, isPresented: $router.isAlertPresented)
         .environmentObject(router)
     }
 }
