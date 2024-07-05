@@ -77,7 +77,28 @@ struct LoginView<Router: AppRouter>: View where Router.Destination == Route {
                              ])
 
             } label: {
-                Text("얼럿띄우기")
+                Text("저장 전 얼럿")
+            }
+            
+            Button {
+                router.alert(for: .participationRequestSuccessAlert,
+                             actions: [
+                                .defaultAction("확인", action: print("참여 요청하기"))
+                             ])
+
+            } label: {
+                Text("참여 요청 얼럿")
+            }
+            
+            Button {
+                router.alert(for: .warningBeforeSaveAlert,
+                             actions: [
+                                .cancelAction("취소", action: print("취소")),
+                                .destructiveAction("전부 나가기", action: print("채팅방 전부 나가기"))
+                             ])
+
+            } label: {
+                Text("대화방 전체 삭제 얼럿")
             }
 
             Spacer()
