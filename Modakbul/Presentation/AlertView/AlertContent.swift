@@ -18,3 +18,15 @@ struct WarningBeforeSaveAlert: AlertContent {
     var message: String?
     var actions: [AlertAction?]
 }
+
+struct ParticipationRequestSuccessAlert: AlertContent {
+    var title: String
+    var message: String?
+    var actions: [AlertAction?]
+}
+
+struct AllChatsDeleteAlert: AlertContent {
+    var title: String
+    var message: String?
+    var actions: [AlertAction?]
+}
