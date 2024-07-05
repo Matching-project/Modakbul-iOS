@@ -12,5 +12,11 @@ enum AlertAction: Identifiable {
     case cancelAction(_ title: String, action: @autoclosure (() -> Void))
     case destructiveAction(_ title: String, action: @autoclosure (() -> Void))
     
-    var id: UUID { UUID() }
+    var id: String {
+        switch self {
+        case .defaultAction(let title, _): return title
+        case .cancelAction(let title, _): return title
+        case .destructiveAction(let title, _): return title
+        }
+    }
 }
