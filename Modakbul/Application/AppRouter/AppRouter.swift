@@ -15,12 +15,15 @@ protocol AppRouter: ObservableObject {
     var sheet: Destination? { get set }
     var detent: PresentationDetent { get set }
     var fullScreenCover: Destination? { get set }
-    var isPresented: Bool { get set }
+    var alert: AlertContent? { get set }
+    var isModalPresented: Bool { get set }
+    var isAlertPresented: Bool { get set }
     var assembler: Assembler { get }
     var resolver: DependencyResolver { get }
     
     @ViewBuilder func view(to destination: Destination) -> Content
     func route(to destination: Destination)
+    func alert(for type: AlertType, actions: [AlertAction])
     func dismiss()
     func popToRoot()
 }
@@ -36,7 +39,9 @@ final class DefaultAppRouter: AppRouter {
     @Published var sheet: Destination?
     @Published var detent: PresentationDetent = .large
     @Published var fullScreenCover: Destination?
-    @Published var isPresented: Bool = false
+    @Published var alert: AlertContent?
+    @Published var isModalPresented: Bool = false
+    @Published var isAlertPresented: Bool = false
     let assembler: Assembler
     
     init(
@@ -88,6 +93,11 @@ final class DefaultAppRouter: AppRouter {
         }
     }
     
+    func alert(for type: AlertType, actions: [AlertAction]) {
+        alert = type.alert(actions)
+        isAlertPresented = true
+    }
+    
     func dismiss() {
         if fullScreenCover != nil {
             fullScreenCover = nil
@@ -95,8 +105,8 @@ final class DefaultAppRouter: AppRouter {
             sheet = nil
         } else if path.isEmpty == false {
             path.removeLast()
-        } else if isPresented {
-            isPresented = false
+        } else if isModalPresented {
+            isModalPresented = false
         }
     }
     
@@ -109,8 +119,8 @@ final class DefaultAppRouter: AppRouter {
             fullScreenCover = nil
         }
         
-        if isPresented {
-            isPresented = false
+        if isModalPresented {
+            isModalPresented = false
         }
         
         path.removeLast(path.count)
