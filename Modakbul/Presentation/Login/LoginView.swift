@@ -78,7 +78,6 @@ struct LoginView<Router: AppRouter>: View where Router.Destination == Route {
                                 .destructiveAction("나가기", action: print("나감")),
                                 .cancelAction("취소", action: print("안나감"))
                              ])
-
             } label: {
                 Text("저장 전 얼럿")
             }
