@@ -70,9 +70,12 @@
 		04D1C8502C14867D008BB1F9 /* PresentationAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D1C84F2C14867D008BB1F9 /* PresentationAssembly.swift */; };
 		04D1C8752C16B9C0008BB1F9 /* RouterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D1C8742C16B9C0008BB1F9 /* RouterView.swift */; };
 		04E2816E2C37D1F200C118DF /* AlertType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E2816D2C37D1F200C118DF /* AlertType.swift */; };
-		04E281712C37EA8600C118DF /* AlertContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E281702C37EA8600C118DF /* AlertContent.swift */; };
-		04E281732C37EB0900C118DF /* AlertAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E281722C37EB0900C118DF /* AlertAction.swift */; };
+		04E281712C37EA8600C118DF /* ConfirmationContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E281702C37EA8600C118DF /* ConfirmationContent.swift */; };
+		04E281732C37EB0900C118DF /* ConfirmationAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E281722C37EB0900C118DF /* ConfirmationAction.swift */; };
 		04E281762C37F30B00C118DF /* AlertModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E281752C37F30B00C118DF /* AlertModifier.swift */; };
+		04E281782C382C2900C118DF /* ConfirmationDialogType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E281772C382C2900C118DF /* ConfirmationDialogType.swift */; };
+		04E2817A2C3936B000C118DF /* ConfirmationDialogModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E281792C3936B000C118DF /* ConfirmationDialogModifier.swift */; };
+		04E2817C2C39380F00C118DF /* ConfirmationContentPresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E2817B2C39380F00C118DF /* ConfirmationContentPresentable.swift */; };
 		04F1B40F2C2C4AF200F9AD42 /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F1B40E2C2C4AF200F9AD42 /* SearchBar.swift */; };
 		9C8122292BF722E6007DC215 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9C8122282BF722E6007DC215 /* Preview Assets.xcassets */; };
 		DFE0AFD72C103FA800EC078B /* KakaoSDKAuth in Frameworks */ = {isa = PBXBuildFile; productRef = DFE0AFD62C103FA800EC078B /* KakaoSDKAuth */; };
@@ -146,9 +149,12 @@
 		04D1C84F2C14867D008BB1F9 /* PresentationAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentationAssembly.swift; sourceTree = "<group>"; };
 		04D1C8742C16B9C0008BB1F9 /* RouterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouterView.swift; sourceTree = "<group>"; };
 		04E2816D2C37D1F200C118DF /* AlertType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertType.swift; sourceTree = "<group>"; };
-		04E281702C37EA8600C118DF /* AlertContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertContent.swift; sourceTree = "<group>"; };
-		04E281722C37EB0900C118DF /* AlertAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertAction.swift; sourceTree = "<group>"; };
+		04E281702C37EA8600C118DF /* ConfirmationContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmationContent.swift; sourceTree = "<group>"; };
+		04E281722C37EB0900C118DF /* ConfirmationAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmationAction.swift; sourceTree = "<group>"; };
 		04E281752C37F30B00C118DF /* AlertModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertModifier.swift; sourceTree = "<group>"; };
+		04E281772C382C2900C118DF /* ConfirmationDialogType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmationDialogType.swift; sourceTree = "<group>"; };
+		04E281792C3936B000C118DF /* ConfirmationDialogModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmationDialogModifier.swift; sourceTree = "<group>"; };
+		04E2817B2C39380F00C118DF /* ConfirmationContentPresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmationContentPresentable.swift; sourceTree = "<group>"; };
 		04F1B40E2C2C4AF200F9AD42 /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
 		9C81221E2BF722E4007DC215 /* Modakbul.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Modakbul.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9C8122282BF722E6007DC215 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -307,6 +313,7 @@
 		04CFF76D2C008A7600EAE4DC /* NavigationRouteView */ = {
 			isa = PBXGroup;
 			children = (
+				04E281742C37F2EC00C118DF /* Extensions */,
 				04CFF7722C00B2C700EAE4DC /* Route.swift */,
 				04D1C8742C16B9C0008BB1F9 /* RouterView.swift */,
 			);
@@ -522,10 +529,10 @@
 		04E2816C2C37D1DD00C118DF /* AlertView */ = {
 			isa = PBXGroup;
 			children = (
-				04E281742C37F2EC00C118DF /* Extensions */,
-				04E281702C37EA8600C118DF /* AlertContent.swift */,
-				04E281722C37EB0900C118DF /* AlertAction.swift */,
+				04E281702C37EA8600C118DF /* ConfirmationContent.swift */,
+				04E281722C37EB0900C118DF /* ConfirmationAction.swift */,
 				04E2816D2C37D1F200C118DF /* AlertType.swift */,
+				04E281772C382C2900C118DF /* ConfirmationDialogType.swift */,
 			);
 			path = AlertView;
 			sourceTree = "<group>";
@@ -533,7 +540,9 @@
 		04E281742C37F2EC00C118DF /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				04E2817B2C39380F00C118DF /* ConfirmationContentPresentable.swift */,
 				04E281752C37F30B00C118DF /* AlertModifier.swift */,
+				04E281792C3936B000C118DF /* ConfirmationDialogModifier.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -660,10 +669,10 @@
 				DFE0AFDF2C104E7A00EC078B /* Bundle+Extension.swift in Sources */,
 				04E2816E2C37D1F200C118DF /* AlertType.swift in Sources */,
 				04CFF7482BFDCF8300EAE4DC /* AppleLoginButton.swift in Sources */,
-				04E281732C37EB0900C118DF /* AlertAction.swift in Sources */,
+				04E281732C37EB0900C118DF /* ConfirmationAction.swift in Sources */,
 				04D1C82D2C11B0EE008BB1F9 /* SocialLoginRepository.swift in Sources */,
 				04D1C8162C0C6FF9008BB1F9 /* UnregisterUserUseCase.swift in Sources */,
-				04E281712C37EA8600C118DF /* AlertContent.swift in Sources */,
+				04E281712C37EA8600C118DF /* ConfirmationContent.swift in Sources */,
 				04D1C8082C0C6815008BB1F9 /* LoginUseCase.swift in Sources */,
 				04D1C80C2C0C69EF008BB1F9 /* ReportType.swift in Sources */,
 				04B315C42BFC90F80043A529 /* HomeView.swift in Sources */,
@@ -676,6 +685,7 @@
 				04F1B40F2C2C4AF200F9AD42 /* SearchBar.swift in Sources */,
 				047C47EE2C1A98DC00170758 /* HomeViewModel.swift in Sources */,
 				04B315BA2BF860CF0043A529 /* ContentView.swift in Sources */,
+				04E2817C2C39380F00C118DF /* ConfirmationContentPresentable.swift in Sources */,
 				04CFF7452BFDCE9300EAE4DC /* LoginView.swift in Sources */,
 				04D1C84C2C147B73008BB1F9 /* DataAssembly.swift in Sources */,
 				04D1C7E12C05B22F008BB1F9 /* DependencyRegister.swift in Sources */,
@@ -708,6 +718,8 @@
 				04D1C7F52C0B372B008BB1F9 /* FetchUserProfileUseCase.swift in Sources */,
 				044023422C1FF2410029E6FA /* CLLocationCoordinate2D.swift in Sources */,
 				04D1C8042C0C638F008BB1F9 /* RegisterUserProfileUseCase.swift in Sources */,
+				04E281782C382C2900C118DF /* ConfirmationDialogType.swift in Sources */,
+				04E2817A2C3936B000C118DF /* ConfirmationDialogModifier.swift in Sources */,
 				04D1C8182C0C703B008BB1F9 /* HelpUserUseCase.swift in Sources */,
 				04D1C8102C0C6E75008BB1F9 /* FetchBlockedUserUseCase.swift in Sources */,
 				04E281762C37F30B00C118DF /* AlertModifier.swift in Sources */,

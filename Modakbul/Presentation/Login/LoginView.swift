@@ -29,6 +29,9 @@ struct LoginView<Router: AppRouter>: View where Router.Destination == Route {
     @EnvironmentObject private var router: Router
     @ObservedObject private var loginViewModel: LoginViewModel
     
+    @State private var isPresented: Bool = false
+    let data: (title: String, message: String) = ("타이틀", "내용")
+    
     init(loginViewModel: LoginViewModel) {
         self.loginViewModel = loginViewModel
     }
@@ -81,24 +84,21 @@ struct LoginView<Router: AppRouter>: View where Router.Destination == Route {
             }
             
             Button {
-                router.alert(for: .participationRequestSuccessAlert,
-                             actions: [
-                                .defaultAction("확인", action: print("참여 요청하기"))
-                             ])
-
+                router.confirmationDialog(for: .userReportOrBlockConfirmationDialog,
+                                          actions: [
+                                            .defaultAction("신고하기", action: router.alert(for: .reportUserConfirmationAlert(user: "사용자 이름"), 
+                                                                                        actions: [
+                                                                                            .cancelAction("취소", action: print("신고안함")),
+                                                                                            .destructiveAction("확인", action: print("\"사용자 이름\"을(를) 신고하기"))
+                                                                                        ])),
+                                            .defaultAction("차단하기", action: router.alert(for: .blockUserConfirmationAlert(user: "사용자 이름"),
+                                                                                        actions: [
+                                                                                            .cancelAction("취소", action: print("차단안함")),
+                                                                                            .destructiveAction("확인", action: print("\"사용자 이름\"을(를) 차단하기"))
+                                                                                        ]))
+                                          ])
             } label: {
-                Text("참여 요청 얼럿")
-            }
-            
-            Button {
-                router.alert(for: .warningBeforeSaveAlert,
-                             actions: [
-                                .cancelAction("취소", action: print("취소")),
-                                .destructiveAction("전부 나가기", action: print("채팅방 전부 나가기"))
-                             ])
-
-            } label: {
-                Text("대화방 전체 삭제 얼럿")
+                Text("Confirmation Dialog")
             }
 
             Spacer()
