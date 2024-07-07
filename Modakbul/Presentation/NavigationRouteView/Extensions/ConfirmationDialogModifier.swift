@@ -9,7 +9,7 @@ import SwiftUI
 
 extension View {
     func confirmationDialog(isPresented: Binding<Bool>, _ content: ConfirmationContent?) -> some View {
-        self.modifier(ConfirmationDialogModifier(isPresented: isPresented, confirmationContent: content))
+        return self.modifier(ConfirmationDialogModifier(isPresented: isPresented, confirmationContent: content))
     }
 }
 
@@ -25,7 +25,10 @@ struct ConfirmationDialogModifier: ViewModifier, ConfirmationContentPresentable 
     
     func body(content: Content) -> some View {
         content
-            .confirmationDialog(confirmationContent?.title ?? "", isPresented: $isPresented, titleVisibility: confirmationContent?.title == nil ? .hidden : .automatic, presenting: confirmationContent?.actions) { actions in
+            .confirmationDialog(confirmationContent?.title ?? "",
+                                isPresented: $isPresented,
+                                titleVisibility: confirmationContent?.title == nil ? .hidden : .visible,
+                                presenting: confirmationContent?.actions) { actions in
                 confirmationButtons(actions)
             } message: { _ in
                 Text(confirmationContent?.message ?? "")

@@ -13,7 +13,7 @@ enum ConfirmationDialogType {
     func confirmationDialog(_ actions: [ConfirmationAction]) -> ConfirmationContent {
         switch self {
         case .userReportOrBlockConfirmationDialog:
-            UserReportOrBlockConfirmationDialog(actions: actions)
+            UserReportOrBlockConfirmationDialog(title: "컨포메이션 타이틀", message: "컨포메이션 메시지", actions: actions)
         }
     }
 }
