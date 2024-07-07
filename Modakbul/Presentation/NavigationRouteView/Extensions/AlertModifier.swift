@@ -28,7 +28,9 @@ struct AlertModifier: ViewModifier, ConfirmationContentPresentable {
             .alert(confirmationContent?.title ?? "", isPresented: $isPresented, presenting: confirmationContent?.actions) { actions in
                 confirmationButtons(actions)
             } message: { _ in
-                Text(confirmationContent?.message ?? "")
+                if let message = confirmationContent?.message {
+                    Text(message)
+                }
             }
     }
 }

@@ -31,7 +31,9 @@ struct ConfirmationDialogModifier: ViewModifier, ConfirmationContentPresentable 
                                 presenting: confirmationContent?.actions) { actions in
                 confirmationButtons(actions)
             } message: { _ in
-                Text(confirmationContent?.message ?? "")
+                if let message = confirmationContent?.message {
+                    Text(message)
+                }
             }
     }
 }
