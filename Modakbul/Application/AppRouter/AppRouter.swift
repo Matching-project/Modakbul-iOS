@@ -17,7 +17,8 @@ protocol AppRouter: ObservableObject {
     var fullScreenCover: Destination? { get set }
     var confirmationContent: ConfirmationContent? { get set }
     var isModalPresented: Bool { get set }
-    var isConfirmationContentPresented: Bool { get set }
+    var isAlertPresented: Bool { get set }
+    var isConfirmationDialogPresented: Bool { get set }
     var assembler: Assembler { get }
     var resolver: DependencyResolver { get }
     
@@ -42,7 +43,8 @@ final class DefaultAppRouter: AppRouter {
     @Published var fullScreenCover: Destination?
     @Published var confirmationContent: ConfirmationContent?
     @Published var isModalPresented: Bool = false
-    @Published var isConfirmationContentPresented: Bool = false
+    @Published var isAlertPresented: Bool = false
+    @Published var isConfirmationDialogPresented: Bool = false
     let assembler: Assembler
     
     init(
@@ -96,12 +98,14 @@ final class DefaultAppRouter: AppRouter {
     
     func alert(for type: AlertType, actions: [ConfirmationAction]) {
         confirmationContent = type.alert(actions)
-        isConfirmationContentPresented = true
+        isConfirmationDialogPresented = false
+        isAlertPresented = true
     }
     
     func confirmationDialog(for type: ConfirmationDialogType, actions: [ConfirmationAction]) {
         confirmationContent = type.confirmationDialog(actions)
-        isConfirmationContentPresented = true
+        isAlertPresented = false
+        isConfirmationDialogPresented = true
     }
     
     func dismiss() {
