@@ -9,7 +9,7 @@ import SwiftUI
 
 extension View {
     func confirmationDialog(isPresented: Binding<Bool>, _ content: ConfirmationContent?) -> some View {
-        return self.modifier(ConfirmationDialogModifier(isPresented: isPresented, confirmationContent: content))
+        self.modifier(ConfirmationDialogModifier(isPresented: isPresented, confirmationContent: content))
     }
 }
 
