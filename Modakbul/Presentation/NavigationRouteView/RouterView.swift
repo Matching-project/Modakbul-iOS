@@ -31,8 +31,8 @@ struct RouterView<Content: View, Router: AppRouter>: View {
         .fullScreenCover(item: $router.fullScreenCover) { destination in
             router.view(to: destination)
         }
-        .alert(router.confirmationContent, isPresented: $router.isConfirmationContentPresented)
-        .confirmationDialog(router.confirmationContent, isPresented: $router.isConfirmationContentPresented)
+        .alert(isPresented: $router.isAlertPresented, router.confirmationContent)
+        .confirmationDialog(isPresented: $router.isConfirmationDialogPresented, router.confirmationContent)
         .environmentObject(router)
     }
 }

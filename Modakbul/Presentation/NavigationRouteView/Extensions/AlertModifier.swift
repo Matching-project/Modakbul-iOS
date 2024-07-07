@@ -8,7 +8,7 @@
 import SwiftUI
 
 extension View {
-    func alert(_ content: ConfirmationContent?, isPresented: Binding<Bool>) -> some View {
+    func alert(isPresented: Binding<Bool>, _ content: ConfirmationContent?) -> some View {
         self.modifier(AlertModifier(isPresented: isPresented, content: content))
     }
 }
