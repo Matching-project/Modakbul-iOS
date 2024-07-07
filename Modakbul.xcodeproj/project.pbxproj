@@ -314,6 +314,7 @@
 			isa = PBXGroup;
 			children = (
 				04E281742C37F2EC00C118DF /* Extensions */,
+				04E2816C2C37D1DD00C118DF /* ConfirmationContent */,
 				04CFF7722C00B2C700EAE4DC /* Route.swift */,
 				04D1C8742C16B9C0008BB1F9 /* RouterView.swift */,
 			);
@@ -363,7 +364,6 @@
 			isa = PBXGroup;
 			children = (
 				04CFF76D2C008A7600EAE4DC /* NavigationRouteView */,
-				04E2816C2C37D1DD00C118DF /* AlertView */,
 				04CFF7852C0365A400EAE4DC /* Main */,
 				04CFF7432BFDCE7000EAE4DC /* Login */,
 				04B315C22BFC90E30043A529 /* Home */,
@@ -526,7 +526,7 @@
 			path = Assembly;
 			sourceTree = "<group>";
 		};
-		04E2816C2C37D1DD00C118DF /* AlertView */ = {
+		04E2816C2C37D1DD00C118DF /* ConfirmationContent */ = {
 			isa = PBXGroup;
 			children = (
 				04E281702C37EA8600C118DF /* ConfirmationContent.swift */,
@@ -534,7 +534,7 @@
 				04E2816D2C37D1F200C118DF /* AlertType.swift */,
 				04E281772C382C2900C118DF /* ConfirmationDialogType.swift */,
 			);
-			path = AlertView;
+			path = ConfirmationContent;
 			sourceTree = "<group>";
 		};
 		04E281742C37F2EC00C118DF /* Extensions */ = {
