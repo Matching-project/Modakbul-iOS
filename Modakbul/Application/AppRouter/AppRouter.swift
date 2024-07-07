@@ -15,15 +15,16 @@ protocol AppRouter: ObservableObject {
     var sheet: Destination? { get set }
     var detent: PresentationDetent { get set }
     var fullScreenCover: Destination? { get set }
-    var alert: AlertContent? { get set }
+    var confirmationContent: ConfirmationContent? { get set }
     var isModalPresented: Bool { get set }
-    var isAlertPresented: Bool { get set }
+    var isConfirmationContentPresented: Bool { get set }
     var assembler: Assembler { get }
     var resolver: DependencyResolver { get }
     
     @ViewBuilder func view(to destination: Destination) -> Content
     func route(to destination: Destination)
-    func alert(for type: AlertType, actions: [AlertAction])
+    func alert(for type: AlertType, actions: [ConfirmationAction])
+    func confirmationDialog(for type: ConfirmationDialogType, actions: [ConfirmationAction])
     func dismiss()
     func popToRoot()
 }
@@ -39,9 +40,9 @@ final class DefaultAppRouter: AppRouter {
     @Published var sheet: Destination?
     @Published var detent: PresentationDetent = .large
     @Published var fullScreenCover: Destination?
-    @Published var alert: AlertContent?
+    @Published var confirmationContent: ConfirmationContent?
     @Published var isModalPresented: Bool = false
-    @Published var isAlertPresented: Bool = false
+    @Published var isConfirmationContentPresented: Bool = false
     let assembler: Assembler
     
     init(
@@ -93,9 +94,14 @@ final class DefaultAppRouter: AppRouter {
         }
     }
     
-    func alert(for type: AlertType, actions: [AlertAction]) {
-        alert = type.alert(actions)
-        isAlertPresented = true
+    func alert(for type: AlertType, actions: [ConfirmationAction]) {
+        confirmationContent = type.alert(actions)
+        isConfirmationContentPresented = true
+    }
+    
+    func confirmationDialog(for type: ConfirmationDialogType, actions: [ConfirmationAction]) {
+        confirmationContent = type.confirmationDialog(actions)
+        isConfirmationContentPresented = true
     }
     
     func dismiss() {
