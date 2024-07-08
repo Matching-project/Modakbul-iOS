@@ -44,7 +44,7 @@ extension DefaultSocialLoginRepository: SocialLoginRepository {
             let (accessToken, refreshToken) = try await authorizationService.authorize(with: provider)
             let endpoint = Endpoint.socialLogin(accessToken: accessToken, refreshToken: refreshToken)
             let user = try await networkService.request(endpoint: endpoint, for: UserDTO.self).toDTO(provider: provider)
-            await tokenStorage.storeToken(id: user.id, tokens: (accessToken, refreshToken))
+            try await tokenStorage.store(tokens: (accessToken, refreshToken), by: user.id)
             return user
         } catch {
             throw error
