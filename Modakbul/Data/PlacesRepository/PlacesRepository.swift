@@ -10,6 +10,8 @@ import Foundation
 protocol PlacesRepository {
     func findPlace(with keyword: String) async throws -> Place
     func findPlaces(on coordinate: Coordinate) async throws -> [Place]
+    func findLocations(with keyword: String) async throws -> [Location]
+    func fetchCurrentCoordinate() async throws -> Coordinate
 }
 
 enum PlacesRepositoryError: Error {
@@ -18,9 +20,19 @@ enum PlacesRepositoryError: Error {
 
 final class DefaultPlacesRepository {
     private let networkService: NetworkService
+    private let localMapService: LocalMapService
+    private let locationService: LocationService
     
-    init(networkService: NetworkService) {
+    private var currentCoordinate: Coordinate?
+    
+    init(
+        networkService: NetworkService,
+        localMapService: LocalMapService,
+        locationService: LocationService
+    ) {
         self.networkService = networkService
+        self.localMapService = localMapService
+        self.locationService = locationService
     }
 }
 
@@ -45,6 +57,30 @@ extension DefaultPlacesRepository: PlacesRepository {
             return placeEntity.toDTO()
         } catch {
             throw PlacesRepositoryError.fetchFailed
+        }
+    }
+    
+    func findLocations(with keyword: String) async throws -> [Location] {
+        do {
+            if let currentCoordinate = currentCoordinate {
+                let locations = try await localMapService.search(by: keyword, on: currentCoordinate)
+                return locations
+            } else {
+                let coordinate = try await fetchCurrentCoordinate()
+                return try await localMapService.search(by: keyword, on: coordinate)
+            }
+        } catch {
+            throw PlacesRepositoryError.fetchFailed
+        }
+    }
+    
+    func fetchCurrentCoordinate() async throws -> Coordinate {
+        switch await locationService.updateOnce() {
+        case .success(let coordinate):
+            currentCoordinate = coordinate.toDTO()
+            return coordinate.toDTO()
+        case .failure(let error):
+            throw error
         }
     }
 }
