@@ -12,16 +12,16 @@ protocol UpdateCoordinateUseCase {
 }
 
 final class DefaultUpdateCoordinateUseCase {
-    private let coordinateRepository: CoordinateRepository
+    private let placesRepository: PlacesRepository
     
-    init(coordinateRepository: CoordinateRepository) {
-        self.coordinateRepository = coordinateRepository
+    init(placesRepository: PlacesRepository) {
+        self.placesRepository = placesRepository
     }
 }
 
 // MARK: UpdateLocationUseCase Conformation
 extension DefaultUpdateCoordinateUseCase: UpdateCoordinateUseCase {
     func updateLocation() async throws -> Coordinate {
-        try await coordinateRepository.fetchCurrentCoordinate()
+        try await placesRepository.fetchCurrentCoordinate()
     }
 }

@@ -10,6 +10,7 @@ import Foundation
 protocol FetchPlacesUseCase {
     func fetchPlaces(on coordinate: Coordinate) async throws -> [Place]
     func fetchPlace(with keyword: String) async throws -> Place
+    func fetchLocations(with keyword: String) async throws -> [Location]
 }
 
 final class DefaultFetchPlacesUseCase {
@@ -28,5 +29,9 @@ extension DefaultFetchPlacesUseCase: FetchPlacesUseCase {
     
     func fetchPlace(with keyword: String) async throws -> Place {
         try await placesRepository.findPlace(with: keyword)
+    }
+    
+    func fetchLocations(with keyword: String) async throws -> [Location] {
+        try await placesRepository.findLocations(with: keyword)
     }
 }

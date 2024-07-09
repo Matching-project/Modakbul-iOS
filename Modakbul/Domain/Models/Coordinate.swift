@@ -18,6 +18,10 @@ extension Coordinate {
         CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
     }
     
+    func toCLLocation() -> CLLocation {
+        CLLocation(latitude: latitude, longitude: longitude)
+    }
+    
     func toEntity() -> CoordinateEntity {
         CoordinateEntity(latitude: latitude, longitude: longitude)
     }
