@@ -10,6 +10,8 @@ import CoreLocation
 
 protocol LocationService: NSObject, AnyObject {
     func updateOnce() async -> Result<CLLocationCoordinate2D, LocationServiceError>
+    func reverseGeocode(on coordinate: Coordinate) async throws -> [Location]
+    func geocode(address: String) async throws -> [Location]
 }
 
 enum LocationServiceError: Error {
@@ -23,15 +25,18 @@ enum LocationServiceError: Error {
 
 final class DefaultLocationService: NSObject {
     private let locationManager: LocationManager
+    private let geocodeManager: GeocodeManager
     
     private var updateLocationTask: ((Result<CLLocationCoordinate2D, LocationServiceError>) -> Void)?
     
     init(
-        locationManager: LocationManager = CLLocationManager()
+        locationManager: LocationManager = CLLocationManager(),
+        geocodeManager: GeocodeManager
     ) {
         locationManager.desiredAccuracy = kCLLocationAccuracyThreeKilometers
         locationManager.distanceFilter = kCLDistanceFilterNone
         self.locationManager = locationManager
+        self.geocodeManager = geocodeManager
         super.init()
         locationManager.delegate = self
         self.requestAuthorization()
@@ -61,6 +66,18 @@ extension DefaultLocationService: LocationService {
                 continuation.resume(returning: $0)
             }
             locationManager.requestLocation()
+        }
+    }
+    
+    func reverseGeocode(on coordinate: Coordinate) async throws -> [Location] {
+        try await geocodeManager.reverseGeocode(from: coordinate.toCLLocation()).map { placemark in
+            Location(placemark)
+        }
+    }
+    
+    func geocode(address: String) async throws -> [Location] {
+        try await geocodeManager.geocode(address: address).map { placemark in
+            Location(placemark)
         }
     }
 }
