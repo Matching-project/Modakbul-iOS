@@ -7,16 +7,14 @@
 
 import SwiftUI
 
-struct MyView: View {
-    @State private var models: [Int] = [Int](0...100)
+struct MyView<Router: AppRouter>: View where Router.Destination == Route {
+    @EnvironmentObject private var router: Router
     
     var body: some View {
-        List(models, id: \.self) { num in
-            Text("\(num)")
+        Button {
+            router.route(to: .placeShowcaseView)
+        } label: {
+            Text("카페 제보하기")
         }
     }
-}
-
-#Preview {
-    MyView()
 }
