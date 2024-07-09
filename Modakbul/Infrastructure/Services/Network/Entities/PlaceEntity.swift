@@ -10,6 +10,7 @@ import Foundation
 struct PlaceEntity: Decodable {
     let id: String
     let name: String
+    let address: String
     let latitude: Double
     let longitude: Double
     let images: [String]?
@@ -18,6 +19,7 @@ struct PlaceEntity: Decodable {
         return Place(id: id,
                      name: name,
                      coordinate: Coordinate(latitude: latitude, longitude: longitude),
+                     address: address,
                      images: images)
     }
 }
