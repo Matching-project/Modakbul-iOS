@@ -78,11 +78,7 @@ final class DefaultAppRouter: AppRouter {
     }
     
     @ViewBuilder func view(to destination: Destination) -> some View {
-        switch destination {
-        case .homeView: HomeView<DefaultAppRouter>(homeViewModel: resolver.resolve(HomeViewModel.self))
-        case .loginView: LoginView<DefaultAppRouter>(loginViewModel: resolver.resolve(LoginViewModel.self))
-        case .myView: MyView()
-        }
+        destination.view(with: self)
     }
     
     func route(to destination: Destination) {

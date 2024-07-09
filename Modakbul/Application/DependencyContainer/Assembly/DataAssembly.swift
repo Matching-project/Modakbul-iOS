@@ -19,11 +19,12 @@ struct DataAssembly: Assembly {
         }
         
         container.register(for: PlacesRepository.self) { resolver in
-            DefaultPlacesRepository(networkService: resolver.resolve(NetworkService.self))
-        }
-        
-        container.register(for: CoordinateRepository.self) { resolver in
-            DefaultCoordinateRepository(locationService: resolver.resolve(LocationService.self))
+            let networkService = resolver.resolve(NetworkService.self)
+            let localMapService = resolver.resolve(LocalMapService.self)
+            let locationService = resolver.resolve(LocationService.self)
+            return DefaultPlacesRepository(networkService: networkService,
+                                    localMapService: localMapService,
+                                    locationService: locationService)
         }
     }
     

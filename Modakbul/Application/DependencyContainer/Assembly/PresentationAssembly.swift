@@ -16,6 +16,10 @@ struct PresentationAssembly: Assembly {
             HomeViewModel(fetchPlacesUseCase: resolver.resolve(FetchPlacesUseCase.self),
                           updateCoordinateUseCase: resolver.resolve(UpdateCoordinateUseCase.self))
         }
+        
+        container.register(for: PlaceShowcaseViewModel.self) { resolver in
+            PlaceShowcaseViewModel(fetchPlaceUseCase: resolver.resolve(FetchPlacesUseCase.self))
+        }
     }
     
     func loaded(resolver: DependencyResolver) {

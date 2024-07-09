@@ -18,7 +18,7 @@ struct DomainAssembly: Assembly {
         }
         
         container.register(for: UpdateCoordinateUseCase.self) { resolver in
-            DefaultUpdateCoordinateUseCase(coordinateRepository: resolver.resolve(CoordinateRepository.self))
+            DefaultUpdateCoordinateUseCase(placesRepository: resolver.resolve(PlacesRepository.self))
         }
     }
     

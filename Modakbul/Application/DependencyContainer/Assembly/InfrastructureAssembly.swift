@@ -21,8 +21,14 @@ struct InfrastructureAssembly: Assembly {
             DefaultAuthorizationService(kakaoLoginManager: resolver.resolve(KakaoLoginManager.self))
         }
         
+        // LocalMap
+        container.register(for: LocalMapService.self, DefaultLocalMapService())
+        
         // Location
-        container.register(for: LocationService.self, DefaultLocationService())
+        container.register(for: GeocodeManager.self, DefaultGeocodeManager())
+        container.register(for: LocationService.self) { resolver in
+            DefaultLocationService(geocodeManager: resolver.resolve(GeocodeManager.self))
+        }
         
         // Storages
         container.register(for: TokenStorage.self, DefaultTokenStorage())
