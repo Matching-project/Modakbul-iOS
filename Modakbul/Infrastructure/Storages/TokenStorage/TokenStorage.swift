@@ -9,13 +9,13 @@
 import Foundation
 import Security
 
-enum TokenCommand {
+private enum TokenCommand {
     case store
     case fetch
     case delete
 }
 
-enum TokenStorageError: Error {
+private enum TokenStorageError: Error {
     case unknown
     case failedFindToken
     case failedUnwrapToData
