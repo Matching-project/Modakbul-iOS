@@ -30,7 +30,7 @@ struct HomeView<Router: AppRouter>: View where Router.Destination == Route {
     
     private var controllableArea: some View {
         VStack {
-            SearchBar(searchingText: $homeViewModel.searchingText)
+            SearchBar("카페 이름으로 검색", text: $homeViewModel.searchingText)
                 .frame(alignment: .top)
             
             Spacer()

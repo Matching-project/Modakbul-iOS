@@ -15,10 +15,23 @@ enum HomeViewFocus {
 struct SearchBar: View {
     @Binding var searchingText: String
     
+    private let placeholder: String
+    private let iconName: String
+    
+    init(
+        _ prompt: String,
+        text: Binding<String>,
+        iconName: String = "magnifyingglass"
+    ) {
+        self.placeholder = prompt
+        self._searchingText = text
+        self.iconName = iconName
+    }
+    
     var body: some View {
-        VStack {
+        VStack(spacing: 10) {
             HStack {
-                Image(systemName: "magnifyingglass")
+                Image(systemName: iconName)
                     .foregroundStyle(searchingText.isEmpty ? .secondary : .primary)
                 
                 textFieldArea
@@ -35,7 +48,7 @@ struct SearchBar: View {
     }
     
     private var textFieldArea: some View {
-        TextField("카페 이름으로 찾기", text: $searchingText)
+        TextField(placeholder, text: $searchingText)
     }
     
     private var removeButton: some View {
