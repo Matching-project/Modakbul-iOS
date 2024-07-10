@@ -9,6 +9,7 @@
 import Foundation
 import Security
 
+// TODO: 이거 꼭 필요한가? -> 네스티드로 갈건지 지금 현상유지할지?
 private enum TokenCommand {
     case store
     case fetch
@@ -22,6 +23,7 @@ private enum TokenStorageError: Error {
     case failedConvertToData
 }
 
+// TODO: Tokens 도메인 모델은 아닌 것 같음. 오타 수정
 protocol TokenStorage {
     typealias Query = [String: Any]
     typealias UserID = String
@@ -37,14 +39,16 @@ final class DefaultTokenStorage {
     private let encoder: JSONEncodable
     private let decoder: JSONDecodable
     
-    init(encoder: JSONEncodable = JSONEncoder(),
-         decoder: JSONDecodable = JSONDecoder()
+    init(
+        encoder: JSONEncodable = JSONEncoder(),
+        decoder: JSONDecodable = JSONDecoder()
     ) {
         self.encoder = encoder
         self.decoder = decoder
     }
     
-    private func _store(_ query: Query, as: TokenCommand) throws {
+    // TODO: 외부메서드랑 내부메서드 CRUD 맞춰서 조정하다보면 해결될 수도 있음.
+    private func _store(_ query: Query) throws {
         // MARK: - SecItemUpdate() 사용을 고려했으나, 새로저장과 업데이트를 한번에 처리하기 위해 해당 로직으로 작성함
         SecItemDelete(query as CFDictionary)
         let status = SecItemAdd(query as CFDictionary, nil)
@@ -96,6 +100,7 @@ extension DefaultTokenStorage {
         return query
     }
     
+    // TODO: 에러 상황 자주 발생할 거 같은거 몇개만 추가도 고려해볼만 함, 일단 놔둬도 될 것 같음.
     private func check(_ status: OSStatus, which function: String) throws {
         if status == errSecItemNotFound {
             print("Error in", function, ":", SecCopyErrorMessageString(status, nil) ?? TokenStorageError.unknown)
@@ -122,7 +127,7 @@ extension DefaultTokenStorage: TokenStorage {
         let data = try makeData(from: tokens)
         let query = try makeQuery(as: .store, from: data, by: userId)
         
-        try _store(query, as: .store)
+        try _store(query)
     }
     
     func fetch(TokensBy userId: UserID) throws -> Tokens {
