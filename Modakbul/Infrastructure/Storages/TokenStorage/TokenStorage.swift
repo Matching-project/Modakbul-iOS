@@ -9,28 +9,20 @@
 import Foundation
 import Security
 
-// TODO: 이거 꼭 필요한가? -> 네스티드로 갈건지 지금 현상유지할지?
-private enum TokenCommand {
-    case store
-    case fetch
-    case delete
-}
-
 private enum TokenStorageError: Error {
     case unknown
     case failedFindToken
     case failedUnwrapToData
-    case failedConvertToData
+    case failedEncodeToData
 }
 
-// TODO: Tokens 도메인 모델은 아닌 것 같음. 오타 수정
 protocol TokenStorage {
     typealias Query = [String: Any]
     typealias UserID = String
     
-    func store(tokens: Tokens, by userId: UserID) throws
-    func fetch(TokensBy userId: UserID) throws -> Tokens
-    func delete(TokensBy userId: UserID) throws
+    func store(_ tokens: TokensProtocol, by userId: UserID) throws
+    func fetch(by userId: UserID) throws -> TokensProtocol
+    func delete(by userId: UserID) throws
 }
 
 // MARK: CRUD Methods
@@ -47,20 +39,31 @@ final class DefaultTokenStorage {
         self.decoder = decoder
     }
     
-    // TODO: 외부메서드랑 내부메서드 CRUD 맞춰서 조정하다보면 해결될 수도 있음.
-    private func _store(_ query: Query) throws {
-        // MARK: - SecItemUpdate() 사용을 고려했으나, 새로저장과 업데이트를 한번에 처리하기 위해 해당 로직으로 작성함
-        SecItemDelete(query as CFDictionary)
+    private func _create(_ data: Data, in query: Query) throws {
+        var query = query
+        query[kSecValueData as String] = data
+        
         let status = SecItemAdd(query as CFDictionary, nil)
         try check(status, which: #function)
     }
     
-    private func _fetch(_ query: Query) throws -> CFTypeRef? {
+    private func _read(_ query: Query) throws -> CFTypeRef? {
+        var query = query
+        query[kSecReturnData as String] = true
+        query[kSecMatchLimit as String] = kSecMatchLimitOne
+        
         var dataTypeRef: CFTypeRef? = nil
         let status = SecItemCopyMatching(query as CFDictionary, &dataTypeRef)
         try check(status, which: #function)
         
         return dataTypeRef
+    }
+    
+    private func _update(_ data: Data, in query: Query) throws {
+        let queryToUpdate: Query = [kSecValueData as String: data]
+
+        let status = SecItemUpdate(query as CFDictionary, queryToUpdate as CFDictionary)
+        try check(status, which: #function)
     }
     
     private func _delete(_ query: Query) throws {
@@ -69,76 +72,71 @@ final class DefaultTokenStorage {
     }
 }
 
-// MARK: Utility Method for CRUD Methods
+// MARK: Utility Methods for CRUD Methods
 extension DefaultTokenStorage {
-    private func makeData(from tokens: Tokens) throws -> Data {
+    private func encode<T: Encodable>(from tokens: T) throws -> Data {
         try encoder.encode(tokens)
     }
     
-    private func makeQuery(as tokenCommand: TokenCommand,
-                           from data: Data?,
-                           by userId: UserID) throws -> Query {
-        
-        var query: Query = [
+    private func makeQuery(by userId: UserID) throws -> Query {
+        [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrService as String: service,
             kSecAttrAccount as String: userId
         ]
-        
-        switch tokenCommand {
-        case .store:
-            guard let data = data else {
-                throw TokenStorageError.failedUnwrapToData
-            }
-            
-            query.updateValue(data, forKey: kSecValueData as String)
-        case .fetch:
-            query.updateValue(true, forKey: kSecReturnData as String)
-            query.updateValue(kSecMatchLimitOne, forKey: kSecMatchLimit as String)
-        default: break
-        }
-        return query
     }
     
-    // TODO: 에러 상황 자주 발생할 거 같은거 몇개만 추가도 고려해볼만 함, 일단 놔둬도 될 것 같음.
     private func check(_ status: OSStatus, which function: String) throws {
+        guard status != noErr else { return }
+        
+        let errorMessage = SecCopyErrorMessageString(status, nil) as String? ?? "\(TokenStorageError.unknown)"
+        print("Error in \(function): \(errorMessage)")
+        
         if status == errSecItemNotFound {
-            print("Error in", function, ":", SecCopyErrorMessageString(status, nil) ?? TokenStorageError.unknown)
             throw TokenStorageError.failedFindToken
-        } else if status != noErr {
-            print("Error in", function, ":", SecCopyErrorMessageString(status, nil) ?? TokenStorageError.unknown)
+        } else {
             throw TokenStorageError.unknown
         }
     }
     
-    private func convertToTokens(from data: CFTypeRef?) throws -> Tokens {
-        guard let data = data as? Data else {
-            throw TokenStorageError.failedConvertToData
+    private func decode<T: Decodable>(_ type: T.Type, from data: CFTypeRef?) throws -> T {
+        guard let data = data else {
+            throw TokenStorageError.failedUnwrapToData
         }
         
-        let tokens = try decoder.decode(Tokens.self, from: data)
+        guard let data = data as? Data else {
+            throw TokenStorageError.failedEncodeToData
+        }
+
+        let tokens = try decoder.decode(T.self, from: data)
         return tokens
     }
 }
 
 // MARK: TokenStorage Confirmation
 extension DefaultTokenStorage: TokenStorage {
-    func store(tokens: Tokens, by userId: UserID) throws {
-        let data = try makeData(from: tokens)
-        let query = try makeQuery(as: .store, from: data, by: userId)
+    func store(_ tokens: TokensProtocol, by userId: UserID) throws {
+        let data = try encode(from: tokens)
+        let query = try makeQuery(by: userId)
         
-        try _store(query)
+        do {
+            if let _ =  try _read(query) {
+                try _update(data, in: query)
+            }
+        } catch TokenStorageError.failedFindToken {
+            try _create(data, in: query)
+        }
     }
     
-    func fetch(TokensBy userId: UserID) throws -> Tokens {
-        let query = try makeQuery(as: .fetch, from: nil, by: userId)
-        let data = try _fetch(query)
+    func fetch(by userId: UserID) throws -> TokensProtocol {
+        let query = try makeQuery(by: userId)
+        let data = try _read(query)
         
-        return try convertToTokens(from: data)
+        return try decode(TokensEntity.self, from: data)
     }
     
-    func delete(TokensBy userId: UserID) throws {
-        let query = try makeQuery(as: .delete, from: nil, by: userId)
+    func delete(by userId: UserID) throws {
+        let query = try makeQuery(by: userId)
         try _delete(query)
     }
 }
