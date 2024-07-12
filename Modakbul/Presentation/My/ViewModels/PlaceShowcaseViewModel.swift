@@ -14,11 +14,25 @@ final class PlaceShowcaseViewModel: ObservableObject {
         self.fetchPlaceUseCase = fetchPlaceUseCase
     }
     
-    @Published var searchingText: String = String()
+    @Published var searchingText: String = String() {
+        willSet {
+            if newValue.isEmpty {
+                searchedLocations = []
+                suggestedResults = []
+            } else {
+                provideSuggestions(newValue)
+            }
+        }
+    }
+    @Published var selectedLocation: Location?
     @Published var searchedLocations: [Location] = []
+    @Published var suggestedResults: [SuggestedResult] = []
+    
+    private var updateSuggestedResultsTask: Task<Void, Never>?
     
     @MainActor func searchLocation() {
         guard searchingText.isEmpty == false else { return }
+        suggestedResults = []
         
         Task {
             do {
@@ -27,5 +41,28 @@ final class PlaceShowcaseViewModel: ObservableObject {
                 searchedLocations = []
             }
         }
+    }
+    
+    func startSuggestion() {
+        let suggestedResultsStream = AsyncStream<[SuggestedResult]>.makeStream()
+        fetchPlaceUseCase.startSuggestion(with: suggestedResultsStream.continuation)
+        updateSuggestedResultsTask = updateSuggestedResultsTask ?? Task { @MainActor in
+            for await suggestedResults in suggestedResultsStream.stream {
+                self.suggestedResults = suggestedResults
+            }
+        }
+    }
+    
+    func stopSuggestion() {
+        fetchPlaceUseCase.stopSuggestion()
+        searchingText.removeAll()
+        searchedLocations = []
+        suggestedResults = []
+        updateSuggestedResultsTask?.cancel()
+        updateSuggestedResultsTask = nil
+    }
+    
+    private func provideSuggestions(_ keyword: String) {
+        fetchPlaceUseCase.provideSuggestions(by: keyword)
     }
 }

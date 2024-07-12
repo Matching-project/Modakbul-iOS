@@ -11,6 +11,9 @@ protocol FetchPlacesUseCase {
     func fetchPlaces(on coordinate: Coordinate) async throws -> [Place]
     func fetchPlace(with keyword: String) async throws -> Place
     func fetchLocations(with keyword: String) async throws -> [Location]
+    func startSuggestion(with continuation: AsyncStream<[SuggestedResult]>.Continuation)
+    func stopSuggestion()
+    func provideSuggestions(by keyword: String)
 }
 
 final class DefaultFetchPlacesUseCase {
@@ -33,5 +36,17 @@ extension DefaultFetchPlacesUseCase: FetchPlacesUseCase {
     
     func fetchLocations(with keyword: String) async throws -> [Location] {
         try await placesRepository.findLocations(with: keyword)
+    }
+    
+    func startSuggestion(with continuation: AsyncStream<[SuggestedResult]>.Continuation) {
+        placesRepository.startSuggestion(with: continuation)
+    }
+    
+    func stopSuggestion() {
+        placesRepository.stopSuggestion()
+    }
+    
+    func provideSuggestions(by keyword: String) {
+        placesRepository.provideSuggestions(by: keyword)
     }
 }

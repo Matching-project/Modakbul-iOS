@@ -12,10 +12,14 @@ protocol PlacesRepository {
     func findPlaces(on coordinate: Coordinate) async throws -> [Place]
     func findLocations(with keyword: String) async throws -> [Location]
     func fetchCurrentCoordinate() async throws -> Coordinate
+    func startSuggestion(with continuation: AsyncStream<[SuggestedResult]>.Continuation)
+    func stopSuggestion()
+    func provideSuggestions(by keyword: String)
 }
 
 enum PlacesRepositoryError: Error {
     case fetchFailed
+    case coordinateNotUpdated
 }
 
 final class DefaultPlacesRepository {
@@ -63,11 +67,11 @@ extension DefaultPlacesRepository: PlacesRepository {
     func findLocations(with keyword: String) async throws -> [Location] {
         do {
             if let currentCoordinate = currentCoordinate {
-                let locations = try await localMapService.search(by: keyword, on: currentCoordinate)
+                let locations = await localMapService.search(by: keyword, on: currentCoordinate)
                 return locations
             } else {
                 let coordinate = try await fetchCurrentCoordinate()
-                return try await localMapService.search(by: keyword, on: coordinate)
+                return await localMapService.search(by: keyword, on: coordinate)
             }
         } catch {
             throw PlacesRepositoryError.fetchFailed
@@ -81,6 +85,20 @@ extension DefaultPlacesRepository: PlacesRepository {
             return coordinate.toDTO()
         case .failure(let error):
             throw error
+        }
+    }
+    
+    func startSuggestion(with continuation: AsyncStream<[SuggestedResult]>.Continuation) {
+        localMapService.startSuggestion(with: continuation)
+    }
+    
+    func stopSuggestion() {
+        localMapService.stopSuggestion()
+    }
+    
+    func provideSuggestions(by keyword: String) {
+        if let currentCoordinate = currentCoordinate {
+            localMapService.provideSuggestions(by: keyword, on: currentCoordinate)
         }
     }
 }
