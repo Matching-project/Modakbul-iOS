@@ -8,7 +8,7 @@
 import SwiftUI
 import MapKit
 
-struct HomeView<Router: AppRouter>: View where Router.Destination == Route {
+struct HomeView<Router: AppRouter>: View {
     @EnvironmentObject private var router: Router
     @ObservedObject private var homeViewModel: HomeViewModel
     
