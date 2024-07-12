@@ -11,8 +11,6 @@ struct PlaceShowcaseView<Router: AppRouter>: View where Router.Destination == Ro
     @EnvironmentObject private var router: Router
     @ObservedObject private var placeShowcaseViewModel: PlaceShowcaseViewModel
     
-    @State private var selectedLocation: Location?
-    
     init(placeShowcaseViewModel: PlaceShowcaseViewModel) {
         self.placeShowcaseViewModel = placeShowcaseViewModel
     }
@@ -33,6 +31,22 @@ struct PlaceShowcaseView<Router: AppRouter>: View where Router.Destination == Ro
                 .buttonStyle(BorderedButtonStyle())
             }
             
+            List(placeShowcaseViewModel.suggestedResults, id: \.id) { result in
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(result.title)
+                        .font(.headline)
+                    
+                    Text(result.subtitle)
+                        .font(.caption)
+                }
+                .onTapGesture {
+                    placeShowcaseViewModel.searchingText = result.title
+                    placeShowcaseViewModel.searchLocation()
+                }
+            }
+            .listStyle(.plain)
+            .frame(maxWidth: .infinity, maxHeight: placeShowcaseViewModel.suggestedResults.isEmpty ? 0 : 300)
+            
             List(placeShowcaseViewModel.searchedLocations, id: \.id) { location in
                 VStack(alignment: .leading, spacing: 4) {
                     Text(location.name)
@@ -42,25 +56,31 @@ struct PlaceShowcaseView<Router: AppRouter>: View where Router.Destination == Ro
                         .font(.caption)
                 }
                 .onTapGesture {
-                    selectedLocation = location
+                    placeShowcaseViewModel.selectedLocation = location
                 }
             }
             .listStyle(.plain)
-            .frame(maxWidth: .infinity, maxHeight: 300)
+            .frame(maxWidth: .infinity, maxHeight: placeShowcaseViewModel.searchedLocations.isEmpty ? 0 : 300)
             
             Spacer()
             
             VStack(alignment: .leading, spacing: 4) {
                 Text("선택한 장소")
-                Text(selectedLocation?.name ?? String())
+                Text(placeShowcaseViewModel.selectedLocation?.name ?? String())
                     .font(.headline)
                 
-                Text(selectedLocation?.address ?? String())
+                Text(placeShowcaseViewModel.selectedLocation?.address ?? String())
                     .font(.caption)
             }
             
             Spacer()
         }
         .padding()
+        .onAppear {
+            placeShowcaseViewModel.startSuggestion()
+        }
+        .onDisappear {
+            placeShowcaseViewModel.stopSuggestion()
+        }
     }
 }
