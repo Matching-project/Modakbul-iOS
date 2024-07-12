@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct MyView<Router: AppRouter>: View where Router.Destination == Route {
+struct MyView<Router: AppRouter>: View {
     @EnvironmentObject private var router: Router
     
     var body: some View {

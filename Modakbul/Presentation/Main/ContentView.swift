@@ -22,7 +22,7 @@ enum PageType {
     }
 }
 
-struct ContentView<Router: AppRouter>: View where Router.Destination == Route {
+struct ContentView<Router: AppRouter>: View {
     @EnvironmentObject private var router: Router
     
     var body: some View {

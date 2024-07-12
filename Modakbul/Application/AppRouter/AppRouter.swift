@@ -8,7 +8,7 @@
 import SwiftUI
 
 protocol AppRouter: ObservableObject {
-    associatedtype Destination: Routable
+    associatedtype Destination: Routable where Destination == Route
     associatedtype Content: View
     
     var path: NavigationPath { get set }

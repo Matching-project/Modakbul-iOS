@@ -9,9 +9,7 @@ struct ModakbulApp: App {
     
     var body: some Scene {
         WindowGroup {
-            RouterView<ContentView<DefaultAppRouter>, DefaultAppRouter>(router: router) {
-                ContentView<DefaultAppRouter>()
-            }
+            router.view(to: .routerView)
         }
     }
 }

@@ -29,6 +29,8 @@ enum PresentingType {
 enum Route: Routable {
     typealias Router = DefaultAppRouter
     
+    case routerView
+    case contentView
     case loginView
     case homeView
     case myView
@@ -36,6 +38,8 @@ enum Route: Routable {
     
     var presentingType: PresentingType {
         switch self {
+        case .routerView: return .push
+        case .contentView: return .push
         case .loginView: return .fullScreenCover
         case .homeView: return .push
         case .myView: return .sheet(detent: .medium)
@@ -45,6 +49,10 @@ enum Route: Routable {
     
     @ViewBuilder func view(with router: Router) -> some View {
         switch self {
+        case .routerView:
+            RouterView<Router>(router: router, root: .contentView)
+        case .contentView:
+            ContentView<Router>()
         case .loginView:
             LoginView<Router>(loginViewModel: router.resolver.resolve(LoginViewModel.self))
         case .homeView:

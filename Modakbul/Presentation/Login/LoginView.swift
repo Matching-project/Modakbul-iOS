@@ -25,7 +25,7 @@ final class LoginViewModel: ObservableObject {
     }
 }
 
-struct LoginView<Router: AppRouter>: View where Router.Destination == Route {
+struct LoginView<Router: AppRouter>: View {
     @EnvironmentObject private var router: Router
     @ObservedObject private var loginViewModel: LoginViewModel
     

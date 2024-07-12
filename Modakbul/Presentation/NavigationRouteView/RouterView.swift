@@ -7,19 +7,19 @@
 
 import SwiftUI
 
-struct RouterView<Content: View, Router: AppRouter>: View {
+struct RouterView<Router: AppRouter>: View {
     @StateObject private var router: Router
-    private let content: Content
+    private let root: Router.Destination
     private let detents: Set<PresentationDetent> = [.large, .medium]
     
-    init(router: Router, @ViewBuilder content: () -> Content) {
+    init(router: Router, root: Router.Destination) {
         self._router = StateObject(wrappedValue: router)
-        self.content = content()
+        self.root = root
     }
     
     var body: some View {
         NavigationStack(path: $router.path) {
-            content
+            router.view(to: root)
                 .navigationDestination(for: Router.Destination.self) { destination in
                     router.view(to: destination)
                 }
