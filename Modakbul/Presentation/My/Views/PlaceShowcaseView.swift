@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct PlaceShowcaseView<Router: AppRouter>: View where Router.Destination == Route {
+struct PlaceShowcaseView<Router: AppRouter>: View {
     @EnvironmentObject private var router: Router
     @ObservedObject private var placeShowcaseViewModel: PlaceShowcaseViewModel
     
