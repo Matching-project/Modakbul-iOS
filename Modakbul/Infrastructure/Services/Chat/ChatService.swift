@@ -8,10 +8,9 @@
 import Foundation
 
 protocol ChatService {
-    func connect(endpoint: Requestable) async throws
-    func disconnect(_ reason: ChatServiceDisconnectReason) async throws
-    func send(message: MessageEntity) async throws
-    func receive() throws -> AsyncThrowingStream<MessageEntity, Error>
+    func connect(endpoint: Requestable, _ continuation: AsyncThrowingStream<ChatMessage, Error>.Continuation) throws
+    func disconnect(_ reason: ChatServiceDisconnectReason?)
+    func send(message: ChatMessage) async throws
 }
 
 // TODO: 네이밍 수정하기
@@ -35,6 +34,7 @@ final class DefaultChatService {
     private let decoder: JSONDecodable
     
     private weak var socket: URLSessionWebSocketTask?
+    private var chatStreamContinuation: AsyncThrowingStream<ChatMessage, Error>.Continuation?
     private var isActivated: Bool { socket?.state == .running }
     
     init(
@@ -47,9 +47,9 @@ final class DefaultChatService {
         self.decoder = decoder
     }
     
-    private func resolveDisconnectReason(_ reason: ChatServiceDisconnectReason) -> URLSessionWebSocketTask.CloseCode {
+    private func resolveDisconnectReason(_ reason: ChatServiceDisconnectReason?) -> URLSessionWebSocketTask.CloseCode {
         switch reason {
-        case .endChatting: return .goingAway
+        case .endChatting, .none: return .goingAway
         case .abnormalClosure: return .abnormalClosure
         }
     }
@@ -60,71 +60,55 @@ final class DefaultChatService {
         }
         return decodedData
     }
+    
+    private func performReceivedResult(_ result: URLSessionWebSocketTask.Message, _ continuation: AsyncThrowingStream<ChatMessage, Error>.Continuation) {
+        do {
+            switch result {
+            case .data(let data):
+                let message = try decode(for: MessageEntity.self, with: data)
+                continuation.yield(message.toDTO())
+            default:
+                continuation.finish(throwing: ChatServiceError.invalidMessageFormat)
+            }
+        } catch {
+            continuation.finish(throwing: error)
+        }
+    }
 }
 
 // MARK: ChatService Conformation
 extension DefaultChatService: ChatService {
-    func connect(endpoint: any Requestable) async throws {
-        guard isActivated == false else {
-            throw ChatServiceError.socketAlreadyExists
-        }
-        
-        guard let urlRequest = endpoint.asURLRequest() else {
-            throw ChatServiceError.invalidURL
-        }
-        
+    func connect(endpoint: any Requestable, _ continuation: AsyncThrowingStream<ChatMessage, Error>.Continuation) throws {
+        guard let urlRequest = endpoint.asURLRequest() else { throw ChatServiceError.invalidURL }
         socket = sessionManager.webSocketTask(with: urlRequest)
-        socket?.resume()
-    }
-    
-    func disconnect(_ reason: ChatServiceDisconnectReason) async throws {
-        guard isActivated else {
-            throw ChatServiceError.noSocket
-        }
+        chatStreamContinuation = continuation
         
-        let closeCode = resolveDisconnectReason(reason)
-        socket?.cancel(with: closeCode, reason: nil)
-        socket = nil
-    }
-    
-    func send(message: MessageEntity) async throws {
-        guard isActivated else {
-            throw ChatServiceError.noSocket
-        }
-        
-        let data = try encoder.encode(message)
-        try await socket?.send(.data(data))
-    }
-    
-    func receive() throws -> AsyncThrowingStream<MessageEntity, Error> {
-        guard isActivated else {
-            throw ChatServiceError.noSocket
-        }
-        
-        return AsyncThrowingStream(bufferingPolicy: .unbounded) { continuation in
-            Task {
-                while let socket = socket {
-                    do {
-                        let result = try await socket.receive()
-                        switch result {
-                        case .data(let data):
-                            let message = try decode(for: MessageEntity.self, with: data)
-                            continuation.yield(message)
-                        default:
-                            continuation.finish(throwing: ChatServiceError.invalidMessageFormat)
-                            break
-                        }
-                    } catch {
-                        continuation.finish(throwing: error)
-                        break
-                    }
-                }
-                
-                continuation.onTermination = { [weak self] _ in
-                    self?.socket?.cancel()
-                    self?.socket = nil
+        Task {
+            while let socket = socket, socket.state == .running {
+                do {
+                    let result = try await socket.receive()
+                    performReceivedResult(result, continuation)
+                } catch {
+                    continuation.finish(throwing: error)
+                    break
                 }
             }
+            
+            continuation.onTermination = { [weak self] _ in
+                self?.disconnect(nil)
+            }
         }
+    }
+    
+    func disconnect(_ reason: ChatServiceDisconnectReason?) {
+        socket?.cancel(with: resolveDisconnectReason(reason), reason: nil)
+        socket = nil
+        chatStreamContinuation?.finish()
+        chatStreamContinuation = nil
+    }
+    
+    func send(message: ChatMessage) async throws {
+        let data = try encoder.encode(message.toEntity())
+        try await socket?.send(.data(data))
     }
 }
