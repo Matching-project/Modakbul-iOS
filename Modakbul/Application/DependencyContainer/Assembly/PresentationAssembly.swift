@@ -10,15 +10,14 @@ import Foundation
 struct PresentationAssembly: Assembly {
     func assemble(container: DependencyContainer) {
         container.register(for: LoginViewModel.self) { resolver in
-            LoginViewModel(loginUseCase: resolver.resolve(LoginUseCase.self))
+            LoginViewModel(userRegistrationUseCase: resolver.resolve(UserRegistrationUseCase.self))
         }
         container.register(for: HomeViewModel.self) { resolver in
-            HomeViewModel(fetchPlacesUseCase: resolver.resolve(FetchPlacesUseCase.self),
-                          updateCoordinateUseCase: resolver.resolve(UpdateCoordinateUseCase.self))
+            HomeViewModel(localMapUseCase: resolver.resolve(LocalMapUseCase.self))
         }
         
         container.register(for: PlaceShowcaseViewModel.self) { resolver in
-            PlaceShowcaseViewModel(fetchPlaceUseCase: resolver.resolve(FetchPlacesUseCase.self))
+            PlaceShowcaseViewModel(localMapUseCase: resolver.resolve(LocalMapUseCase.self))
         }
     }
     

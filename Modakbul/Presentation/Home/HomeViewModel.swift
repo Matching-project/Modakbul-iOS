@@ -8,26 +8,21 @@
 import Foundation
 
 final class HomeViewModel: ObservableObject {
-    private let fetchPlacesUseCase: FetchPlacesUseCase
-    private let updateCoordinateUseCase: UpdateCoordinateUseCase
+    private let localMapUseCase: LocalMapUseCase
     
     @Published var currentCoordinate: Coordinate = Coordinate(latitude: .zero, longitude: .zero)
     @Published var searchingText: String = String()
     var places: [Place] = []
     var selectedPlace: Place?
     
-    init(
-        fetchPlacesUseCase: FetchPlacesUseCase,
-        updateCoordinateUseCase: UpdateCoordinateUseCase
-    ) {
-        self.fetchPlacesUseCase = fetchPlacesUseCase
-        self.updateCoordinateUseCase = updateCoordinateUseCase
+    init(localMapUseCase: LocalMapUseCase) {
+        self.localMapUseCase = localMapUseCase
     }
     
     @MainActor func updateLocationOnce() {
         Task {
             do {
-                currentCoordinate = try await updateCoordinateUseCase.updateLocation()
+                currentCoordinate = try await localMapUseCase.updateLocation()
             } catch {
                 print(error)
             }
@@ -38,9 +33,9 @@ final class HomeViewModel: ObservableObject {
         Task {
             do {
                 if let keyword = keyword {
-                    self.selectedPlace = try await fetchPlacesUseCase.fetchPlace(with: keyword)
+                    self.selectedPlace = try await localMapUseCase.fetchPlace(with: keyword)
                 } else {
-                    self.places = try await fetchPlacesUseCase.fetchPlaces(on: currentCoordinate)
+                    self.places = try await localMapUseCase.fetchPlaces(on: currentCoordinate)
                 }
             } catch {
                 print(error)

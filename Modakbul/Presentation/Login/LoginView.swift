@@ -8,19 +8,19 @@
 import SwiftUI
 
 final class LoginViewModel: ObservableObject {
-    private let loginUseCase: LoginUseCase
+    private let userRegistrationUseCase: UserRegistrationUseCase
     
-    init(loginUseCase: LoginUseCase) {
-        self.loginUseCase = loginUseCase
+    init(userRegistrationUseCase: UserRegistrationUseCase) {
+        self.userRegistrationUseCase = userRegistrationUseCase
     }
     
     func onOpenURL(url: URL) {
-        loginUseCase.onOpenURL(url: url)
+        userRegistrationUseCase.onOpenURL(url: url)
     }
     
     func loginWithKakaoTalk() {
         Task {
-            guard let user = try? await loginUseCase.login(with: .kakao) else { return print("로그인 실패") }
+            guard let user = try? await userRegistrationUseCase.login(with: .kakao) else { return print("로그인 실패") }
         }
     }
 }

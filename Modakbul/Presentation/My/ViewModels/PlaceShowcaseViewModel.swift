@@ -8,10 +8,10 @@
 import Foundation
 
 final class PlaceShowcaseViewModel: ObservableObject {
-    private let fetchPlaceUseCase: FetchPlacesUseCase
+    private let localMapUseCase: LocalMapUseCase
     
-    init(fetchPlaceUseCase: FetchPlacesUseCase) {
-        self.fetchPlaceUseCase = fetchPlaceUseCase
+    init(localMapUseCase: LocalMapUseCase) {
+        self.localMapUseCase = localMapUseCase
     }
     
     @Published var searchingText: String = String() {
@@ -36,7 +36,7 @@ final class PlaceShowcaseViewModel: ObservableObject {
         
         Task {
             do {
-                searchedLocations = try await fetchPlaceUseCase.fetchLocations(with: searchingText)
+                searchedLocations = try await localMapUseCase.fetchLocations(with: searchingText)
             } catch {
                 searchedLocations = []
             }
@@ -45,7 +45,7 @@ final class PlaceShowcaseViewModel: ObservableObject {
     
     func startSuggestion() {
         let suggestedResultsStream = AsyncStream<[SuggestedResult]>.makeStream()
-        fetchPlaceUseCase.startSuggestion(with: suggestedResultsStream.continuation)
+        localMapUseCase.startSuggestion(with: suggestedResultsStream.continuation)
         updateSuggestedResultsTask = updateSuggestedResultsTask ?? Task { @MainActor in
             for await suggestedResults in suggestedResultsStream.stream {
                 self.suggestedResults = suggestedResults
@@ -54,7 +54,7 @@ final class PlaceShowcaseViewModel: ObservableObject {
     }
     
     func stopSuggestion() {
-        fetchPlaceUseCase.stopSuggestion()
+        localMapUseCase.stopSuggestion()
         searchingText.removeAll()
         searchedLocations = []
         suggestedResults = []
@@ -63,6 +63,6 @@ final class PlaceShowcaseViewModel: ObservableObject {
     }
     
     private func provideSuggestions(_ keyword: String) {
-        fetchPlaceUseCase.provideSuggestions(by: keyword)
+        localMapUseCase.provideSuggestions(by: keyword)
     }
 }

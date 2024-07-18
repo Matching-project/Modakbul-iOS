@@ -9,16 +9,16 @@ import Foundation
 
 struct DomainAssembly: Assembly {
     func assemble(container: DependencyContainer) {
-        container.register(for: LoginUseCase.self) { resolver in
-            DefaultLoginUseCase(socialLoginRepository: resolver.resolve(SocialLoginRepository.self))
+        container.register(for: LocalMapUseCase.self) { resolver in
+            DefaultLocalMapUseCase(placesRepository: resolver.resolve(PlacesRepository.self))
         }
         
-        container.register(for: FetchPlacesUseCase.self) { resolver in
-            DefaultFetchPlacesUseCase(placesRepository: resolver.resolve(PlacesRepository.self))
+        container.register(for: UserBusinessUseCase.self) { resolver in
+            <#code#>
         }
         
-        container.register(for: UpdateCoordinateUseCase.self) { resolver in
-            DefaultUpdateCoordinateUseCase(placesRepository: resolver.resolve(PlacesRepository.self))
+        container.register(for: UserRegistrationUseCase.self) { resolver in
+            DefaultUserRegistrationUseCase(socialLoginRepository: resolver.resolve(SocialLoginRepository.self))
         }
     }
     
