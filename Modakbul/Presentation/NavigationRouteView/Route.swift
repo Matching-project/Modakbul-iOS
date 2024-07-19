@@ -63,6 +63,8 @@ enum Route: Routable {
             MyView<Router>()
         case .placeShowcaseView:
             PlaceShowcaseView<Router>(placeShowcaseViewModel: router.resolver.resolve(PlaceShowcaseViewModel.self))
+        case .chatView:
+            ChatView<Router>(chatRepository: router.resolver.resolve(ChatRepository.self))
         }
     }
 }

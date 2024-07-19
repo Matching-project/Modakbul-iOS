@@ -7,7 +7,8 @@
 
 import SwiftUI
 
-struct ChatView<Router: AppRouter>: View where Router.Destination == Route {
+// TODO: ChatViewModel 만들어야 함
+struct ChatView<Router: AppRouter>: View {
     @EnvironmentObject private var router: Router
     @State var message: [ChatMessage] = []
     private var chatRepository: ChatRepository
