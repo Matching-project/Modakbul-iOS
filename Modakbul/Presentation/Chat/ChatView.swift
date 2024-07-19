@@ -10,9 +10,9 @@ import SwiftUI
 struct ChatView<Router: AppRouter>: View where Router.Destination == Route {
     @EnvironmentObject private var router: Router
     @State var message: [ChatMessage] = []
-    private var chatRepository: DefaultChatRepository
+    private var chatRepository: ChatRepository
     
-    init(chatRepository: DefaultChatRepository) {
+    init(chatRepository: ChatRepository) {
         self.chatRepository = chatRepository
     }
     
