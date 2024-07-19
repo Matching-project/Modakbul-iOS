@@ -75,6 +75,8 @@
 		DFE0AFD92C103FA800EC078B /* KakaoSDKCommon in Frameworks */ = {isa = PBXBuildFile; productRef = DFE0AFD82C103FA800EC078B /* KakaoSDKCommon */; };
 		DFE0AFDB2C103FA800EC078B /* KakaoSDKUser in Frameworks */ = {isa = PBXBuildFile; productRef = DFE0AFDA2C103FA800EC078B /* KakaoSDKUser */; };
 		DFE0AFDF2C104E7A00EC078B /* Bundle+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFE0AFDE2C104E7A00EC078B /* Bundle+Extension.swift */; };
+		DFE9F5B72C3D7BE500616FEC /* JSONEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFE9F5B62C3D7BE500616FEC /* JSONEncoder.swift */; };
+		DFE9F5BC2C3E6CE200616FEC /* TokensEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFE9F5BB2C3E6CE200616FEC /* TokensEntity.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -146,6 +148,8 @@
 		9C8122282BF722E6007DC215 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		DFE0AFDE2C104E7A00EC078B /* Bundle+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Bundle+Extension.swift"; path = "Modakbul/Data/Extensions/Bundle+Extension.swift"; sourceTree = SOURCE_ROOT; };
 		DFE0AFE02C1053E600EC078B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		DFE9F5B62C3D7BE500616FEC /* JSONEncoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONEncoder.swift; sourceTree = "<group>"; };
+		DFE9F5BB2C3E6CE200616FEC /* TokensEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokensEntity.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -175,6 +179,7 @@
 			children = (
 				0440233F2C1F50790029E6FA /* PlaceEntity.swift */,
 				04A86C8E2C2E8E2000A328B1 /* CoordinateEntity.swift */,
+				DFE9F5BB2C3E6CE200616FEC /* TokensEntity.swift */,
 			);
 			path = Entities;
 			sourceTree = "<group>";
@@ -276,6 +281,7 @@
 			isa = PBXGroup;
 			children = (
 				04CFF7552BFDEB0B00EAE4DC /* URLSession.swift */,
+				DFE9F5B62C3D7BE500616FEC /* JSONEncoder.swift */,
 				04CFF7572BFDEC6A00EAE4DC /* JSONDecoder.swift */,
 			);
 			path = Extensions;
@@ -680,6 +686,8 @@
 				04D1C8062C0C644B008BB1F9 /* AuthenticationProvider.swift in Sources */,
 				04D1C8332C11E803008BB1F9 /* TokenStorage.swift in Sources */,
 				049D83072C1DC97B0090578E /* Location.swift in Sources */,
+				DFE9F5BC2C3E6CE200616FEC /* TokensEntity.swift in Sources */,
+				DFE9F5B72C3D7BE500616FEC /* JSONEncoder.swift in Sources */,
 				0401489A2C21A19A0065F77D /* CurrentPositionButton.swift in Sources */,
 				046D50F52C48F71B0047F25D /* UserRegistrationUseCase.swift in Sources */,
 				04B315B82BF8608C0043A529 /* ModakbulApp.swift in Sources */,
