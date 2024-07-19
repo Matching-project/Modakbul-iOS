@@ -30,7 +30,6 @@ final class DefaultNetworkService {
     ) {
         self.sessionManager = sessionManager
         self.decoder = decoder
-        super.init()
     }
     
     private func handleResponse(_ response: URLResponse) throws {

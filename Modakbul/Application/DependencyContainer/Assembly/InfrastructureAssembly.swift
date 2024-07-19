@@ -25,10 +25,7 @@ struct InfrastructureAssembly: Assembly {
         container.register(for: LocalMapService.self, DefaultLocalMapService())
         
         // Location
-        container.register(for: GeocodeManager.self, DefaultGeocodeManager())
-        container.register(for: LocationService.self) { resolver in
-            DefaultLocationService(geocodeManager: resolver.resolve(GeocodeManager.self))
-        }
+        container.register(for: LocationService.self, DefaultLocationService())
         
         // Chat
         container.register(for: ChatService.self) { resolver in
