@@ -9,12 +9,11 @@ import Foundation
 
 protocol ChatService {
     func connect(endpoint: Requestable, _ continuation: AsyncThrowingStream<ChatMessage, Error>.Continuation) throws
-    func disconnect(_ reason: ChatServiceDisconnectReason?)
+    func disconnect(_ closeCode: ChatServiceCloseCode?)
     func send(message: ChatMessage) async throws
 }
 
-// TODO: 네이밍 수정하기
-enum ChatServiceDisconnectReason {
+enum ChatServiceCloseCode {
     case endChatting // goingAway랑 유사한 사유로 종료
     case abnormalClosure // abnormalClosure랑 유사한 사유로 종료
     // 종료 사유 추가해도 괜찮음, 상황 별로 소켓이 닫히는 사유가 '정상', '비정상' 케이스가 많이 있을거임
@@ -35,7 +34,6 @@ final class DefaultChatService {
     
     private weak var socket: URLSessionWebSocketTask?
     private var chatStreamContinuation: AsyncThrowingStream<ChatMessage, Error>.Continuation?
-    private var isActivated: Bool { socket?.state == .running }
     
     init(
         sessionManager: NetworkSessionManager,
@@ -47,7 +45,7 @@ final class DefaultChatService {
         self.decoder = decoder
     }
     
-    private func resolveDisconnectReason(_ reason: ChatServiceDisconnectReason?) -> URLSessionWebSocketTask.CloseCode {
+    private func resolve(_ reason: ChatServiceCloseCode?) -> URLSessionWebSocketTask.CloseCode {
         switch reason {
         case .endChatting, .none: return .goingAway
         case .abnormalClosure: return .abnormalClosure
@@ -100,8 +98,8 @@ extension DefaultChatService: ChatService {
         }
     }
     
-    func disconnect(_ reason: ChatServiceDisconnectReason?) {
-        socket?.cancel(with: resolveDisconnectReason(reason), reason: nil)
+    func disconnect(_ closeCode: ChatServiceCloseCode?) {
+        socket?.cancel(with: resolve(closeCode), reason: nil)
         socket = nil
         chatStreamContinuation?.finish()
         chatStreamContinuation = nil
