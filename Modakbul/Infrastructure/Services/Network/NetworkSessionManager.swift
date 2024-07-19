@@ -8,7 +8,8 @@
 import Foundation
 
 protocol NetworkSessionManager {
-    func request(_ urlRequest: URLRequest) async throws -> (Data, URLResponse)
+    func data(for urlRequest: URLRequest) async throws -> (Data, URLResponse)
+    func webSocketTask(with urlRequest: URLRequest) -> URLSessionWebSocketTask
 }
 
 final class DefaultNetworkSessionManager {
@@ -19,9 +20,13 @@ final class DefaultNetworkSessionManager {
     }
 }
 
-// MARK: NetworkSessionManager Confirmation
+// MARK: NetworkSessionManager Conformation
 extension DefaultNetworkSessionManager: NetworkSessionManager {
-    func request(_ urlRequest: URLRequest) async throws -> (Data, URLResponse) {
+    func data(for urlRequest: URLRequest) async throws -> (Data, URLResponse) {
         return try await session.data(for: urlRequest)
+    }
+    
+    func webSocketTask(with urlRequest: URLRequest) -> URLSessionWebSocketTask {
+        return session.webSocketTask(with: urlRequest)
     }
 }

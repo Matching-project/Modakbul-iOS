@@ -33,7 +33,7 @@ final class DefaultSocialLoginRepository {
     }
 }
 
-// MARK: SocialLoginRepository Confirmation
+// MARK: SocialLoginRepository Conformation
 extension DefaultSocialLoginRepository: SocialLoginRepository {
     func onOpenURL(url: URL) {
         authorizationService.handleOpenURL(url: url)

@@ -51,7 +51,7 @@ final class DefaultKakaoLoginManager {
     }
 }
 
-// MARK: KakaoLoginManager Confirmation
+// MARK: KakaoLoginManager Conformation
 extension DefaultKakaoLoginManager: KakaoLoginManager {
     func handleOpenUrl(url: URL) {
         if AuthApi.isKakaoTalkLoginUrl(url) {

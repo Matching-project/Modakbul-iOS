@@ -15,9 +15,10 @@ enum Endpoint {
     case socialLogin(accessToken: String, refreshToken: String)
     case findPlace(keyword: String)
     case findPlaces(coordinate: CoordinateEntity)
+    case chatRoom(from: String, to: String)
 }
 
-// MARK: Requestable Confirmation
+// MARK: Requestable Conformation
 extension Endpoint: Requestable {
     func asURLRequest() -> URLRequest? {
         URLRequest(url: URL(string: "")!)

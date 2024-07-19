@@ -30,6 +30,7 @@ final class DefaultNetworkService {
     ) {
         self.sessionManager = sessionManager
         self.decoder = decoder
+        super.init()
     }
     
     private func handleResponse(_ response: URLResponse) throws {
@@ -63,15 +64,16 @@ final class DefaultNetworkService {
     }
 }
 
-// MARK: NetworkService Confirmation
+// MARK: NetworkService Conformation
 extension DefaultNetworkService: NetworkService {
+    // MARK: - DataServiceProtocol
     func request<Response: Decodable>(endpoint: Requestable, for type: Response.Type) async throws -> Response {
         guard let urlRequest = endpoint.asURLRequest() else {
             throw NetworkServiceError.invalidURL
         }
         
         do {
-            let (data, response) = try await sessionManager.request(urlRequest)
+            let (data, response) = try await sessionManager.data(for: urlRequest)
             try handleResponse(response)
             let decodedData = try decode(for: type, with: data)
             return decodedData

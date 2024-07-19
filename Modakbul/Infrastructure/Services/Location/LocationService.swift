@@ -58,7 +58,7 @@ final class DefaultLocationService: NSObject {
     }
 }
 
-// MARK: LocationService Confirmation
+// MARK: LocationService Conformation
 extension DefaultLocationService: LocationService {
     func updateOnce() async -> Result<CLLocationCoordinate2D, LocationServiceError> {
         return await withCheckedContinuation { continuation in
@@ -82,7 +82,7 @@ extension DefaultLocationService: LocationService {
     }
 }
 
-// MARK: CLLocationManagerDelegate Confirmation
+// MARK: CLLocationManagerDelegate Conformation
 extension DefaultLocationService: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let coordinate = locations.first?.coordinate else { return }

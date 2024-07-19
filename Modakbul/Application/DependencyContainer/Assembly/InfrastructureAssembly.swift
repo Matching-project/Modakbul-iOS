@@ -30,6 +30,11 @@ struct InfrastructureAssembly: Assembly {
             DefaultLocationService(geocodeManager: resolver.resolve(GeocodeManager.self))
         }
         
+        // Chat
+        container.register(for: ChatService.self) { resolver in
+            DefaultChatService(sessionManager: resolver.resolve(NetworkSessionManager.self))
+        }
+        
         // Storages
         container.register(for: TokenStorage.self, DefaultTokenStorage())
     }

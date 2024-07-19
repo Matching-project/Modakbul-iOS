@@ -20,7 +20,7 @@ final class DefaultAuthorizationService {
     }
 }
 
-// MARK: AuthorizationService Confirmation
+// MARK: AuthorizationService Conformation
 extension DefaultAuthorizationService: AuthorizationService {
     func handleOpenURL(url: URL) {
         kakaoLoginManager.handleOpenUrl(url: url)

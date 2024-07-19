@@ -113,7 +113,7 @@ extension DefaultTokenStorage {
     }
 }
 
-// MARK: TokenStorage Confirmation
+// MARK: TokenStorage Conformation
 extension DefaultTokenStorage: TokenStorage {
     func store(_ tokens: TokensProtocol, by userId: UserID) throws {
         let data = try encode(from: tokens)

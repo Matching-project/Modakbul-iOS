@@ -34,6 +34,7 @@ enum Route: Routable {
     case loginView
     case homeView
     case myView
+    case chatView
     case placeShowcaseView
     
     var presentingType: PresentingType {
@@ -43,6 +44,7 @@ enum Route: Routable {
         case .loginView: return .fullScreenCover
         case .homeView: return .push
         case .myView: return .sheet(detent: .medium)
+        case .chatView: return .push
         case .placeShowcaseView: return .push
         }
     }
