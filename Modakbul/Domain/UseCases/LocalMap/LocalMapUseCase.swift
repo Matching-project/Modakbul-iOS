@@ -10,10 +10,7 @@ import Foundation
 protocol LocalMapUseCase {
     func fetchPlaces(on coordinate: Coordinate) async throws -> [Place]
     func fetchPlace(with keyword: String) async throws -> Place
-    func fetchLocations(with keyword: String) async throws -> [Location]
-    func startSuggestion(with continuation: AsyncStream<[SuggestedResult]>.Continuation)
-    func stopSuggestion()
-    func provideSuggestions(by keyword: String)
+    
     func updateLocation() async throws -> Coordinate
 }
 
@@ -28,30 +25,15 @@ final class DefaultLocalMapUseCase {
 // MARK: LocalMapUseCase Confirmation
 extension DefaultLocalMapUseCase: LocalMapUseCase {
     func fetchPlaces(on coordinate: Coordinate) async throws -> [Place] {
-        try await placesRepository.findPlaces(on: coordinate)
+        <#code#>
     }
     
     func fetchPlace(with keyword: String) async throws -> Place {
-        try await placesRepository.findPlace(with: keyword)
-    }
-    
-    func fetchLocations(with keyword: String) async throws -> [Location] {
-        try await placesRepository.findLocations(with: keyword)
-    }
-    
-    func startSuggestion(with continuation: AsyncStream<[SuggestedResult]>.Continuation) {
-        placesRepository.startSuggestion(with: continuation)
-    }
-    
-    func stopSuggestion() {
-        placesRepository.stopSuggestion()
-    }
-    
-    func provideSuggestions(by keyword: String) {
-        placesRepository.provideSuggestions(by: keyword)
+        <#code#>
     }
     
     func updateLocation() async throws -> Coordinate {
-        try await placesRepository.fetchCurrentCoordinate()
+        <#code#>
     }
+    
 }
