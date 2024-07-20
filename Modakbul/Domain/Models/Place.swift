@@ -7,10 +7,10 @@
 
 import Foundation
 
+// TODO: 네이밍 아이디어 떠오르면 수정 예정
 struct Place: Identifiable {
     let id: String
-    let name: String
-    let coordinate: Coordinate
-    let address: String
+    let location: Location
+    let communities: Community
     let images: [String]?
 }
