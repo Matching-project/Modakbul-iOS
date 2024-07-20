@@ -22,7 +22,7 @@ final class HomeViewModel: ObservableObject {
     @MainActor func updateLocationOnce() {
         Task {
             do {
-                currentCoordinate = try await localMapUseCase.updateLocation()
+                currentCoordinate = try await localMapUseCase.updateCoordinate()
             } catch {
                 print(error)
             }
