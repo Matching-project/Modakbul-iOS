@@ -7,15 +7,18 @@
 
 import Foundation
 
-struct User: Identifiable {
-    let id: String
+/**
+ 사용자 정보를 나타냅니다.
+ */
+struct User {
+    let name: String
+    let nickname: String
     let email: String
     let provider: AuthenticationProvider
-    let name: String
     let gender: Gender
+    let job: Job
+    let categoriesOfInterest: Set<Category>
     let isGenderVisible: Bool
-    let birth: String
-    let nickname: String
+    let birth: Date
     let imageURL: String?
-    let category: Category
 }
