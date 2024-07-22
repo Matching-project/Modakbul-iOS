@@ -31,24 +31,30 @@ struct SearchBar: View {
     var body: some View {
         VStack(spacing: 10) {
             HStack {
-                Image(systemName: iconName)
-                    .foregroundStyle(searchingText.isEmpty ? .secondary : .primary)
-                
                 textFieldArea
                 
                 if searchingText.isEmpty == false {
                     removeButton
+                } else {
+                    icon
                 }
             }
         }
         .font(.headline)
-        .padding()
-        .background(.ultraThinMaterial)
-        .clipShape(RoundedRectangle(cornerRadius: 14))
+        .padding(10)
+        .background(.white)
+        .clipShape(Capsule())
+        .shadow(color: .secondary, radius: 4, y: 4)
     }
     
     private var textFieldArea: some View {
         TextField(placeholder, text: $searchingText)
+            .padding(.horizontal, 4)
+    }
+    
+    private var icon: some View {
+        Image(systemName: iconName)
+            .foregroundStyle(.secondary)
     }
     
     private var removeButton: some View {

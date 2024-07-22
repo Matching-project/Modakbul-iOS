@@ -13,6 +13,7 @@ struct HomeView<Router: AppRouter>: View {
     @ObservedObject private var homeViewModel: HomeViewModel
     
     @State private var region: MKCoordinateRegion
+    @State private var isMapShowing: Bool = true
     
     init(homeViewModel: HomeViewModel) {
         self.homeViewModel = homeViewModel
@@ -22,7 +23,11 @@ struct HomeView<Router: AppRouter>: View {
     
     var body: some View {
         ZStack {
-            localMapArea
+            if isMapShowing {
+                localMapArea
+            } else {
+                placesListArea
+            }
             
             controllableArea
         }
@@ -30,16 +35,36 @@ struct HomeView<Router: AppRouter>: View {
     
     private var controllableArea: some View {
         VStack {
-            SearchBar("카페 이름으로 검색", text: $homeViewModel.searchingText)
-                .frame(alignment: .top)
+            HStack {
+                SearchBar("카페 이름으로 검색", text: $homeViewModel.searchingText)
+                    .frame(alignment: .top)
+                
+                // TODO: Notification Button (WIP)
+                Image(systemName: "bell")
+                    .font(.headline)
+                    .padding(10)
+            }
+            .frame(alignment: .top)
             
             Spacer()
             
             HStack {
+                StrokedButton(shape: .capsule) {
+                    Text("리스트")
+                        .padding(.horizontal, 4)
+                } action: {
+                    isMapShowing.toggle()
+                }
+                
                 Spacer()
                 
-                currentPositionButtonArea
+                StrokedButton(shape: .circle) {
+                    Image(systemName: "location.fill")
+                } action: {
+                    homeViewModel.moveCameraOnLocation(to: nil)
+                }
             }
+            .frame(alignment: .bottom)
         }
         .padding()
     }
@@ -54,11 +79,12 @@ struct HomeView<Router: AppRouter>: View {
         .onReceive(homeViewModel.$currentCoordinate) { coordinate in
             self.region = coordinate.toRegion(span: region.span)
         }
+        .ignoresSafeArea(edges: .top)
     }
     
-    private var currentPositionButtonArea: some View {
-        CurrentPositionButton {
-            homeViewModel.moveCameraOnLocation(to: nil)
+    private var placesListArea: some View {
+        List(homeViewModel.places, id: \.id) { place in
+            Text(place.name)
         }
     }
 }
