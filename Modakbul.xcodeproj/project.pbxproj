@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0401489A2C21A19A0065F77D /* CurrentPositionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 040148992C21A19A0065F77D /* CurrentPositionButton.swift */; };
 		0440233D2C1F3E9E0029E6FA /* PlacesRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0440233C2C1F3E9E0029E6FA /* PlacesRepository.swift */; };
 		044023402C1F50790029E6FA /* PlaceEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0440233F2C1F50790029E6FA /* PlaceEntity.swift */; };
 		044023422C1FF2410029E6FA /* CLLocationCoordinate2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 044023412C1FF2410029E6FA /* CLLocationCoordinate2D.swift */; };
@@ -15,6 +14,8 @@
 		046D50F02C48F4EF0047F25D /* LocalMapUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046D50EF2C48F4EF0047F25D /* LocalMapUseCase.swift */; };
 		046D50F22C48F66A0047F25D /* UserBusinessUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046D50F12C48F66A0047F25D /* UserBusinessUseCase.swift */; };
 		046D50F52C48F71B0047F25D /* UserRegistrationUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046D50F42C48F71B0047F25D /* UserRegistrationUseCase.swift */; };
+		046D51142C4E40150047F25D /* PreviewHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046D51132C4E40150047F25D /* PreviewHelper.swift */; };
+		046D51162C4E4A610047F25D /* StrokedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046D51152C4E4A610047F25D /* StrokedButton.swift */; };
 		047C47EE2C1A98DC00170758 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047C47ED2C1A98DC00170758 /* HomeViewModel.swift */; };
 		049D82FE2C1DBB830090578E /* Coordinate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 049D82FD2C1DBB830090578E /* Coordinate.swift */; };
 		049D83072C1DC97B0090578E /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 049D83062C1DC97B0090578E /* Location.swift */; };
@@ -86,7 +87,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		040148992C21A19A0065F77D /* CurrentPositionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentPositionButton.swift; sourceTree = "<group>"; };
 		0440233C2C1F3E9E0029E6FA /* PlacesRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlacesRepository.swift; sourceTree = "<group>"; };
 		0440233F2C1F50790029E6FA /* PlaceEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceEntity.swift; sourceTree = "<group>"; };
 		044023412C1FF2410029E6FA /* CLLocationCoordinate2D.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CLLocationCoordinate2D.swift; sourceTree = "<group>"; };
@@ -94,6 +94,8 @@
 		046D50EF2C48F4EF0047F25D /* LocalMapUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalMapUseCase.swift; sourceTree = "<group>"; };
 		046D50F12C48F66A0047F25D /* UserBusinessUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserBusinessUseCase.swift; sourceTree = "<group>"; };
 		046D50F42C48F71B0047F25D /* UserRegistrationUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRegistrationUseCase.swift; sourceTree = "<group>"; };
+		046D51132C4E40150047F25D /* PreviewHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewHelper.swift; sourceTree = "<group>"; };
+		046D51152C4E4A610047F25D /* StrokedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrokedButton.swift; sourceTree = "<group>"; };
 		047C47ED2C1A98DC00170758 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		049D82FD2C1DBB830090578E /* Coordinate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinate.swift; sourceTree = "<group>"; };
 		049D83062C1DC97B0090578E /* Location.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
@@ -204,6 +206,14 @@
 			path = LocalMap;
 			sourceTree = "<group>";
 		};
+		046D51122C4E40010047F25D /* PreviewHelper */ = {
+			isa = PBXGroup;
+			children = (
+				046D51132C4E40150047F25D /* PreviewHelper.swift */,
+			);
+			path = PreviewHelper;
+			sourceTree = "<group>";
+		};
 		04B1B6C92C3BE9810070AD38 /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -225,7 +235,7 @@
 			isa = PBXGroup;
 			children = (
 				04CFF7472BFDCF8300EAE4DC /* AppleLoginButton.swift */,
-				040148992C21A19A0065F77D /* CurrentPositionButton.swift */,
+				046D51152C4E4A610047F25D /* StrokedButton.swift */,
 				04F1B40E2C2C4AF200F9AD42 /* SearchBar.swift */,
 			);
 			path = Components;
@@ -381,6 +391,7 @@
 		04CFF77F2C035CA700EAE4DC /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				046D51122C4E40010047F25D /* PreviewHelper */,
 				04B1B6CD2C3BEA790070AD38 /* Components */,
 				04CFF76D2C008A7600EAE4DC /* NavigationRouteView */,
 				04CFF7852C0365A400EAE4DC /* Main */,
@@ -722,7 +733,9 @@
 				04B315BA2BF860CF0043A529 /* ContentView.swift in Sources */,
 				04E2817C2C39380F00C118DF /* ConfirmationContentPresentable.swift in Sources */,
 				046D50CA2C40059C0047F25D /* SuggestedResult.swift in Sources */,
+				046D51142C4E40150047F25D /* PreviewHelper.swift in Sources */,
 				04CFF7452BFDCE9300EAE4DC /* LoginView.swift in Sources */,
+				046D51162C4E4A610047F25D /* StrokedButton.swift in Sources */,
 				04D1C84C2C147B73008BB1F9 /* DataAssembly.swift in Sources */,
 				04D1C7E12C05B22F008BB1F9 /* DependencyRegister.swift in Sources */,
 				04D1C8752C16B9C0008BB1F9 /* RouterView.swift in Sources */,
@@ -741,7 +754,6 @@
 				049D83072C1DC97B0090578E /* Location.swift in Sources */,
 				DFE9F5BC2C3E6CE200616FEC /* TokensEntity.swift in Sources */,
 				DFE9F5B72C3D7BE500616FEC /* JSONEncoder.swift in Sources */,
-				0401489A2C21A19A0065F77D /* CurrentPositionButton.swift in Sources */,
 				046D50F52C48F71B0047F25D /* UserRegistrationUseCase.swift in Sources */,
 				04B315B82BF8608C0043A529 /* ModakbulApp.swift in Sources */,
 				04E281502C31ACC900C118DF /* JSONEncoder.swift in Sources */,
