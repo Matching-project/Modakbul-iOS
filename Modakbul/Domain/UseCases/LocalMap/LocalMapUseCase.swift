@@ -35,4 +35,5 @@ extension DefaultLocalMapUseCase: LocalMapUseCase {
     func updateLocation() async throws -> Coordinate {
         <#code#>
     }
+    
 }

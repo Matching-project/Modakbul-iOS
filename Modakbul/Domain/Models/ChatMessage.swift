@@ -7,10 +7,19 @@
 
 import Foundation
 
-struct ChatMessage: Identifiable {
+struct ChatMessage {
     let id: UUID = UUID()
-    let sender: User
+    let from: String
+    let to: String
     let text: String
     let timestamp: Date
-    let isRead: Bool
+}
+
+extension ChatMessage {
+    func toEntity() -> MessageEntity {
+        MessageEntity(from: from,
+                      to: to,
+                      text: text,
+                      timestamp: timestamp.ISO8601Format())
+    }
 }

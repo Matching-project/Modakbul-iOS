@@ -7,18 +7,15 @@
 
 import Foundation
 
-/**
- 사용자 정보를 나타냅니다.
- */
-struct User {
-    let name: String
-    let nickname: String
+struct User: Identifiable {
+    let id: String
     let email: String
     let provider: AuthenticationProvider
+    let name: String
     let gender: Gender
-    let job: Job
-    let categoriesOfInterest: Set<Category>
     let isGenderVisible: Bool
-    let birth: Date
+    let birth: String
+    let nickname: String
     let imageURL: String?
+    let category: Category
 }
