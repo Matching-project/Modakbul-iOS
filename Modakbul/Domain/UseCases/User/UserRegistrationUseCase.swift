@@ -12,6 +12,7 @@ protocol UserRegistrationUseCase {
     func register(_ user: User, encoded imageData: String) async throws
     func onOpenURL(url: URL)
     func login(with provider: AuthenticationProvider) async throws -> User
+    func logout(with user: User) async
 }
 
 final class DefaultUserRegistrationUseCase {
@@ -38,5 +39,9 @@ extension DefaultUserRegistrationUseCase: UserRegistrationUseCase {
     
     func login(with provider: AuthenticationProvider) async throws -> User {
         try await socialLoginRepository.login(with: provider)
+    }
+    
+    func logout(with user: User) async {
+        
     }
 }
