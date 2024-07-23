@@ -7,7 +7,6 @@
 
 import Foundation
 
-// TODO: 네이밍 아이디어 떠오르면 수정 예정
 struct Place: Identifiable {
     struct OpeningHours {
         let open: DateComponents

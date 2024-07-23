@@ -56,7 +56,7 @@
 		04D1C7F32C085AF7008BB1F9 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D1C7F22C085AF7008BB1F9 /* User.swift */; };
 		04D1C7F72C0B38A7008BB1F9 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D1C7F62C0B38A7008BB1F9 /* Category.swift */; };
 		04D1C8062C0C644B008BB1F9 /* AuthenticationProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D1C8052C0C644B008BB1F9 /* AuthenticationProvider.swift */; };
-		04D1C80C2C0C69EF008BB1F9 /* ReportType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D1C80B2C0C69EF008BB1F9 /* ReportType.swift */; };
+		04D1C80C2C0C69EF008BB1F9 /* Report.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D1C80B2C0C69EF008BB1F9 /* Report.swift */; };
 		04D1C8122C0C6EE3008BB1F9 /* BlockedUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D1C8112C0C6EE3008BB1F9 /* BlockedUser.swift */; };
 		04D1C8292C11AEE2008BB1F9 /* AuthorizationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D1C8282C11AEE2008BB1F9 /* AuthorizationService.swift */; };
 		04D1C82D2C11B0EE008BB1F9 /* SocialLoginRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D1C82C2C11B0EE008BB1F9 /* SocialLoginRepository.swift */; };
@@ -143,7 +143,7 @@
 		04D1C7F22C085AF7008BB1F9 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		04D1C7F62C0B38A7008BB1F9 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
 		04D1C8052C0C644B008BB1F9 /* AuthenticationProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationProvider.swift; sourceTree = "<group>"; };
-		04D1C80B2C0C69EF008BB1F9 /* ReportType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportType.swift; sourceTree = "<group>"; };
+		04D1C80B2C0C69EF008BB1F9 /* Report.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Report.swift; sourceTree = "<group>"; };
 		04D1C8112C0C6EE3008BB1F9 /* BlockedUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockedUser.swift; sourceTree = "<group>"; };
 		04D1C8282C11AEE2008BB1F9 /* AuthorizationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationService.swift; sourceTree = "<group>"; };
 		04D1C82C2C11B0EE008BB1F9 /* SocialLoginRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialLoginRepository.swift; sourceTree = "<group>"; };
@@ -372,7 +372,7 @@
 				046D51072C4BF8090047F25D /* ChatRoomConfiguration.swift */,
 				04E281562C329EA000C118DF /* ChatMessage.swift */,
 				04D1C8052C0C644B008BB1F9 /* AuthenticationProvider.swift */,
-				04D1C80B2C0C69EF008BB1F9 /* ReportType.swift */,
+				04D1C80B2C0C69EF008BB1F9 /* Report.swift */,
 				046D50C92C40059C0047F25D /* SuggestedResult.swift */,
 				046D51032C4BDCCA0047F25D /* Notification.swift */,
 			);
@@ -766,7 +766,7 @@
 				046D50F22C48F66A0047F25D /* UserBusinessUseCase.swift in Sources */,
 				DF92D9932C32FBFF00C993CA /* ChatView.swift in Sources */,
 				046D51022C4BDB2C0047F25D /* NotificationUseCase.swift in Sources */,
-				04D1C80C2C0C69EF008BB1F9 /* ReportType.swift in Sources */,
+				04D1C80C2C0C69EF008BB1F9 /* Report.swift in Sources */,
 				04B315C42BFC90F80043A529 /* HomeView.swift in Sources */,
 				046D51042C4BDCCA0047F25D /* Notification.swift in Sources */,
 				04D1C8352C11EC8D008BB1F9 /* Endpoint.swift in Sources */,
