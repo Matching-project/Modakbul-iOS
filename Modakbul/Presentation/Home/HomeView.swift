@@ -49,7 +49,7 @@ struct HomeView<Router: AppRouter>: View {
             Spacer()
             
             HStack {
-                StrokedButton(shape: .capsule) {
+                StrokedButton(.capsule) {
                     Text("리스트")
                         .padding(.horizontal, 4)
                 } action: {
@@ -58,7 +58,7 @@ struct HomeView<Router: AppRouter>: View {
                 
                 Spacer()
                 
-                StrokedButton(shape: .circle) {
+                StrokedButton(.circle) {
                     Image(systemName: "location.fill")
                 } action: {
                     homeViewModel.moveCameraOnLocation(to: nil)

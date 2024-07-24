@@ -2,26 +2,26 @@
 //  StrokedButton.swift
 //  Modakbul
 //
-//  Created by Swain Yun on 7/22/24.
+//  Created by Swain Yun on 7/23/24.
 //
 
 import SwiftUI
 
-struct StrokedButton<Content: View, Style: Shape>: View {
-    private let shape: Style
+struct StrokedButton<Content: View, ClipShape: Shape>: View {
+    private let clipShape: ClipShape
     private let edge: Edge.Set
     private let length: CGFloat
     private let content: () -> Content
     private let action: () -> Void
     
     init(
-        shape: Style,
+        _ shape: ClipShape,
         _ padding: Edge.Set = .all,
         _ length: CGFloat = 10,
         content: @escaping () -> Content,
         action: @escaping () -> Void
     ) {
-        self.shape = shape
+        self.clipShape = shape
         self.edge = padding
         self.length = length
         self.content = content
@@ -37,10 +37,10 @@ struct StrokedButton<Content: View, Style: Shape>: View {
                 .padding(edge, length)
                 .background(.white)
                 .overlay(
-                    shape
+                    clipShape
                         .stroke(.accent, lineWidth: 4)
                 )
-                .clipShape(shape)
+                .clipShape(clipShape)
                 .shadow(color: .secondary, radius: 4, y: 4)
         }
     }
