@@ -79,6 +79,7 @@ final class DefaultAppRouter: AppRouter {
     
     @ViewBuilder func view(to destination: Destination) -> some View {
         destination.view(with: self)
+            .environmentObject(self)
     }
     
     func route(to destination: Destination) {
