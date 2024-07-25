@@ -33,6 +33,5 @@ struct RouterView<Router: AppRouter>: View {
         }
         .alert(isPresented: $router.isAlertPresented, router.confirmationContent)
         .confirmationDialog(isPresented: $router.isConfirmationDialogPresented, router.confirmationContent)
-        .environmentObject(router)
     }
 }
