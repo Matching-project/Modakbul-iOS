@@ -8,10 +8,10 @@
 import Foundation
 
 final class PlaceShowcaseViewModel: ObservableObject {
-    private let localMapUseCase: LocalMapUseCase
+    private let placeShowcaseAndReviewUseCase: PlaceShowcaseAndReviewUseCase
     
-    init(localMapUseCase: LocalMapUseCase) {
-        self.localMapUseCase = localMapUseCase
+    init(placeShowcaseAndReviewUseCase: PlaceShowcaseAndReviewUseCase) {
+        self.placeShowcaseAndReviewUseCase = placeShowcaseAndReviewUseCase
     }
     
     @Published var searchingText: String = String() {
@@ -36,7 +36,7 @@ final class PlaceShowcaseViewModel: ObservableObject {
         
         Task {
             do {
-                searchedLocations = try await localMapUseCase.fetchLocations(with: searchingText)
+                searchedLocations = try await placeShowcaseAndReviewUseCase.fetchLocations(with: searchingText)
             } catch {
                 searchedLocations = []
             }
@@ -45,7 +45,7 @@ final class PlaceShowcaseViewModel: ObservableObject {
     
     func startSuggestion() {
         let suggestedResultsStream = AsyncStream<[SuggestedResult]>.makeStream()
-        localMapUseCase.startSuggestion(with: suggestedResultsStream.continuation)
+        placeShowcaseAndReviewUseCase.startSuggestion(with: suggestedResultsStream.continuation)
         updateSuggestedResultsTask = updateSuggestedResultsTask ?? Task { @MainActor in
             for await suggestedResults in suggestedResultsStream.stream {
                 self.suggestedResults = suggestedResults
@@ -54,7 +54,7 @@ final class PlaceShowcaseViewModel: ObservableObject {
     }
     
     func stopSuggestion() {
-        localMapUseCase.stopSuggestion()
+        placeShowcaseAndReviewUseCase.stopSuggestion()
         searchingText.removeAll()
         searchedLocations = []
         suggestedResults = []
@@ -63,6 +63,6 @@ final class PlaceShowcaseViewModel: ObservableObject {
     }
     
     private func provideSuggestions(_ keyword: String) {
-        localMapUseCase.provideSuggestions(by: keyword)
+        placeShowcaseAndReviewUseCase.provideSuggestions(by: keyword)
     }
 }

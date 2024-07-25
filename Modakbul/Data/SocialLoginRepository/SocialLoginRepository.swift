@@ -44,10 +44,10 @@ extension DefaultSocialLoginRepository: SocialLoginRepository {
             // TODO: 소셜 로그인 전에 TokenStorage에서 토큰 정보 확인. 이 때, user.id가 필요한데 막상 로그인 전까지 user.id를 모름
             let (accessToken, refreshToken) = try await authorizationService.authorize(with: provider)
             let endpoint = Endpoint.socialLogin(accessToken: accessToken, refreshToken: refreshToken)
-            let user = try await networkService.request(endpoint: endpoint, for: UserDTO.self).toDTO(provider: provider)
+            let user = try await networkService.request(endpoint: endpoint, for: UserEntity.self)
             let tokens = TokensEntity(accessToken: accessToken, refreshToken: refreshToken)
-            try tokenStorage.store(tokens, by: user.id)
-            return user
+            try tokenStorage.store(tokens, by: user.email)
+            return user.toDTO()
         } catch {
             throw error
         }

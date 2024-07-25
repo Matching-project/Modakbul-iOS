@@ -6,8 +6,11 @@
 //
 
 import Foundation
+import CoreLocation
 
 protocol PlacesRepository {
+    typealias Coordinate = CLLocationCoordinate2D
+    
     func findPlace(with keyword: String) async throws -> Place
     func findPlaces(on coordinate: Coordinate) async throws -> [Place]
     func findLocations(with keyword: String) async throws -> [Location]
@@ -43,7 +46,7 @@ final class DefaultPlacesRepository {
 // MARK: PlacesRepository Conformation
 extension DefaultPlacesRepository: PlacesRepository {
     func findPlaces(on coordinate: Coordinate) async throws -> [Place] {
-        let endpoint = Endpoint.findPlaces(coordinate: coordinate.toEntity())
+        let endpoint = Endpoint.findPlaces(coordinate: coordinate)
         
         do {
             let placeEntities = try await networkService.request(endpoint: endpoint, for: [PlaceEntity].self)
@@ -81,8 +84,8 @@ extension DefaultPlacesRepository: PlacesRepository {
     func fetchCurrentCoordinate() async throws -> Coordinate {
         switch await locationService.updateOnce() {
         case .success(let coordinate):
-            currentCoordinate = coordinate.toDTO()
-            return coordinate.toDTO()
+            currentCoordinate = coordinate
+            return coordinate
         case .failure(let error):
             throw error
         }

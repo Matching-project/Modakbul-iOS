@@ -71,20 +71,20 @@ struct HomeView<Router: AppRouter>: View {
     
     private var localMapArea: some View {
         Map(coordinateRegion: $region, showsUserLocation: true, annotationItems: homeViewModel.places) { place in
-            MapMarker(coordinate: place.coordinate.toCLCoordinate(), tint: .primary)
+            MapMarker(coordinate: place.location.coordinate, tint: .primary)
         }
         .onAppear {
             homeViewModel.updateLocationOnce()
         }
         .onReceive(homeViewModel.$currentCoordinate) { coordinate in
-            self.region = coordinate.toRegion(span: region.span)
+            region.center = coordinate
         }
         .ignoresSafeArea(edges: .top)
     }
     
     private var placesListArea: some View {
-        List(homeViewModel.places, id: \.id) { place in
-            Text(place.name)
+        List(homeViewModel.places) { place in
+            Text(place.location.name)
         }
     }
 }

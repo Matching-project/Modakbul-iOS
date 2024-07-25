@@ -6,11 +6,12 @@
 //
 
 import Foundation
+import CoreLocation
 
 final class HomeViewModel: ObservableObject {
     private let localMapUseCase: LocalMapUseCase
     
-    @Published var currentCoordinate: Coordinate = Coordinate(latitude: .zero, longitude: .zero)
+    @Published var currentCoordinate: CLLocationCoordinate2D = CLLocationCoordinate2D()
     @Published var searchingText: String = String()
     var places: [Place] = []
     var selectedPlace: Place?
@@ -48,7 +49,7 @@ final class HomeViewModel: ObservableObject {
             guard let place = place else {
                 return updateLocationOnce()
             }
-            findPlace(by: place.name)
+            findPlace(by: place.location.name)
         }
     }
 }
