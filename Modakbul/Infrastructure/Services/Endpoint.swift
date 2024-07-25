@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CoreLocation
 
 protocol Requestable {
     func asURLRequest() -> URLRequest?
@@ -14,8 +15,8 @@ protocol Requestable {
 enum Endpoint {
     case socialLogin(accessToken: String, refreshToken: String)
     case findPlace(keyword: String)
-    case findPlaces(coordinate: CoordinateEntity)
-    case chatRoom(from: String, to: String)
+    case findPlaces(coordinate: CLLocationCoordinate2D)
+    case chatRoom(from: UserEntity, to: UserEntity)
 }
 
 // MARK: Requestable Conformation

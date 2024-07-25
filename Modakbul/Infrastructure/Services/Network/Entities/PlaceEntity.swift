@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CoreLocation
 
 struct PlaceEntity: Decodable {
     let id: String
@@ -17,9 +18,14 @@ struct PlaceEntity: Decodable {
     
     func toDTO() -> Place {
         return Place(id: id,
-                     name: name,
-                     coordinate: Coordinate(latitude: latitude, longitude: longitude),
-                     address: address,
-                     images: images)
+                     location: Location(name: name,
+                                        address: address,
+                                        coordinate: CLLocationCoordinate2D(latitude: latitude, longitude: longitude)),
+                     openingHoursOfWeek: [:],
+                     powerSocketState: .moderate,
+                     noiseLevel: .moderate,
+                     groupSeatingState: .yes,
+                     communities: [],
+                     images: nil)
     }
 }

@@ -106,7 +106,8 @@ extension DefaultChatService: ChatService {
     }
     
     func send(message: ChatMessage) async throws {
-        let data = try encoder.encode(message.toEntity())
+        let entity: MessageEntity = .init(message)
+        let data = try encoder.encode(entity)
         try await socket?.send(.data(data))
     }
 }

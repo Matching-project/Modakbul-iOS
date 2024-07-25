@@ -7,19 +7,18 @@
 
 import Foundation
 
-/**
- 채팅 메세지
- 
- ### 프로퍼티
- - from: 메세지 송신자
- - text: 메세지의 내용
- - timestamp: 메세지 발송 시각
- */
 struct MessageEntity: Codable {
-    let from: String
-    let to: String
+    let from: UserEntity
     let text: String
     let timestamp: String
+    let isRead: Bool
+    
+    init(_ dto: ChatMessage) {
+        self.from = .init(dto.sender)
+        self.text = dto.text
+        self.timestamp = dto.timestamp.toString()
+        self.isRead = dto.isRead
+    }
 }
 
 extension MessageEntity {
@@ -36,9 +35,9 @@ extension MessageEntity {
     }
     
     func toDTO() -> ChatMessage {
-        ChatMessage(from: from,
-                    to: to,
-                    text: text,
-                    timestamp: stringToDate())
+        return ChatMessage(sender: from.toDTO(),
+                           text: text,
+                           timestamp: .now,
+                           isRead: isRead)
     }
 }

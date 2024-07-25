@@ -9,6 +9,8 @@ import Foundation
 import MapKit
 
 protocol LocalMapService: NSObject, MKLocalSearchCompleterDelegate {
+    typealias Coordinate = CLLocationCoordinate2D
+    
     func search(by keyword: String, on coordinate: Coordinate) async -> [Location]
     func startSuggestion(with continuation: AsyncStream<[SuggestedResult]>.Continuation)
     func stopSuggestion()
@@ -46,7 +48,7 @@ extension DefaultLocalMapService: LocalMapService {
     func search(by keyword: String, on coordinate: Coordinate) async -> [Location] {
         let request = MKLocalSearch.Request()
         request.naturalLanguageQuery = keyword
-        request.region = MKCoordinateRegion(center: coordinate.toCLCoordinate(), span: span)
+        request.region = MKCoordinateRegion(center: coordinate, span: span)
         return await performSearch(request)
     }
     
@@ -64,7 +66,7 @@ extension DefaultLocalMapService: LocalMapService {
     
     func provideSuggestions(by keyword: String, on coordinate: Coordinate) {
         completer?.resultTypes = .pointOfInterest
-        completer?.region = MKCoordinateRegion(center: coordinate.toCLCoordinate(), span: span)
+        completer?.region = MKCoordinateRegion(center: coordinate, span: span)
         completer?.queryFragment = keyword
     }
 }
