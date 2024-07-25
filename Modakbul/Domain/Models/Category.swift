@@ -18,6 +18,10 @@ enum Category {
     case extracurricularActivities
     case other
     
+    var identifier: String {
+        String(describing: self)
+    }
+    
     init(string: String) {
         switch string {
         case "INTERVIEW": self = .interview

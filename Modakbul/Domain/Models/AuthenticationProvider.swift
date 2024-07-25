@@ -7,8 +7,9 @@
 
 import Foundation
 
-enum AuthenticationProvider {
-    case apple, kakao
+enum AuthenticationProvider: String {
+    case apple = "APPLE"
+    case kakao = "KAKAO"
     
     var identifier: String {
         switch self {

@@ -6,24 +6,24 @@
 //
 
 import Foundation
-import MapKit
+import CoreLocation
 
 /**
  지도에 표시된 지점입니다.
  
  - Note: `Location`은 지도에 표시된 지점에 대한 단순한 정보입니다. 특별히 식별된 장소는 `Place`로 표현합니다.
  */
-struct Location {
+struct Location: Identifiable {
     let id: UUID
     let name: String
     let address: String
-    let coordinate: Coordinate?
+    let coordinate: CLLocationCoordinate2D
     
     init(
         id: UUID = UUID(),
         name: String?,
         address: String = String(),
-        coordinate: Coordinate? = nil
+        coordinate: CLLocationCoordinate2D
     ) {
         self.id = id
         self.name = name ?? "Unknown Location"
@@ -51,6 +51,6 @@ struct Location {
             address = cityAndState.isEmpty ? address : "\(cityAndState) \(address)"
         }
         
-        self.init(name: placemark.name, address: address, coordinate: placemark.location?.coordinate.toDTO())
+        self.init(name: placemark.name, address: address, coordinate: placemark.location?.coordinate ?? CLLocationCoordinate2D())
     }
 }

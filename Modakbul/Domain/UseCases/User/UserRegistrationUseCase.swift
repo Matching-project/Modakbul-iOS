@@ -26,11 +26,11 @@ final class DefaultUserRegistrationUseCase {
 // MARK: UserRegistrationUseCase Confirmation
 extension DefaultUserRegistrationUseCase: UserRegistrationUseCase {
     func validate(_ nickname: String) async throws -> Bool {
-        <#code#>
+        return false
     }
     
     func register(_ user: User, encoded imageData: String) async throws {
-        <#code#>
+        //
     }
     
     func onOpenURL(url: URL) {

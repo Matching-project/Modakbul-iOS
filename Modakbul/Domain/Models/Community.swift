@@ -28,8 +28,8 @@ struct Community {
     let promiseDate: PromiseDate
 }
 
-struct CommunityReqruitingContent: Identifiable {
-    let id: UUID = UUID()
+struct CommunityReqruitingContent {
+    let id: String
     let title: String
     let content: String
     let writtenDate: Date
