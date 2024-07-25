@@ -49,6 +49,7 @@ struct SearchBar: View {
     
     private var textFieldArea: some View {
         TextField(placeholder, text: $searchingText)
+            .automaticFunctionDisabled()
             .padding(.horizontal, 4)
     }
     
