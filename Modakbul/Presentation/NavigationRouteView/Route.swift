@@ -36,6 +36,8 @@ enum Route: Routable {
     case myView
     case chatView
     case placeShowcaseView
+    case mapArea
+    case placesListArea
     
     var presentingType: PresentingType {
         switch self {
@@ -46,6 +48,8 @@ enum Route: Routable {
         case .myView: return .sheet(detent: .medium)
         case .chatView: return .push
         case .placeShowcaseView: return .push
+        case .mapArea: return .push
+        case .placesListArea: return .push
         }
     }
     
@@ -65,6 +69,10 @@ enum Route: Routable {
             PlaceShowcaseView<Router>(placeShowcaseViewModel: router.resolver.resolve(PlaceShowcaseViewModel.self))
         case .chatView:
             ChatView<Router>(chatRepository: router.resolver.resolve(ChatRepository.self))
+        case .mapArea:
+            MapArea<Router>(router.resolver.resolve(HomeViewModel.self))
+        case .placesListArea:
+            PlacesListArea<Router>(router.resolver.resolve(HomeViewModel.self))
         }
     }
 }

@@ -11,9 +11,10 @@ import CoreLocation
 final class HomeViewModel: ObservableObject {
     private let localMapUseCase: LocalMapUseCase
     
+    @Published var isMapShowing: Bool = true
     @Published var currentCoordinate: CLLocationCoordinate2D = CLLocationCoordinate2D()
     @Published var searchingText: String = String()
-    var places: [Place] = []
+    var places: [Place] = PreviewHelper.shared.places
     var selectedPlace: Place?
     
     init(localMapUseCase: LocalMapUseCase) {
