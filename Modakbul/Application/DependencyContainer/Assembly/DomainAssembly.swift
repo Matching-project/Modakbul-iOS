@@ -13,9 +13,9 @@ struct DomainAssembly: Assembly {
             DefaultLocalMapUseCase(placesRepository: resolver.resolve(PlacesRepository.self))
         }
         
-        container.register(for: UserBusinessUseCase.self) { resolver in
-            <#code#>
-        }
+//        container.register(for: UserBusinessUseCase.self) { resolver in
+//            <#code#>
+//        }
         
         container.register(for: UserRegistrationUseCase.self) { resolver in
             DefaultUserRegistrationUseCase(socialLoginRepository: resolver.resolve(SocialLoginRepository.self))

@@ -17,7 +17,7 @@ struct PresentationAssembly: Assembly {
         }
         
         container.register(for: PlaceShowcaseViewModel.self) { resolver in
-            PlaceShowcaseViewModel(localMapUseCase: resolver.resolve(LocalMapUseCase.self))
+            PlaceShowcaseViewModel(placeShowcaseAndReviewUseCase: resolver.resolve(PlaceShowcaseAndReviewUseCase.self))
         }
     }
     
