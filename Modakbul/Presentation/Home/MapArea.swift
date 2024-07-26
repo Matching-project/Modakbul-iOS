@@ -48,27 +48,29 @@ struct MapArea<Router: AppRouter>: View {
                     .frame(alignment: .top)
                 
                 // TODO: Notification Button (WIP)
-                Image(systemName: "bell")
+                Image(systemName: "bell.fill")
                     .font(.headline)
                     .padding(10)
+                    .foregroundStyle(.accent)
             }
             
             Spacer()
             
             HStack {
-                StrokedButton(.capsule) {
-                    Text("리스트")
-                        .padding(.horizontal, 4)
-                } action: {
-                    homeViewModel.isMapShowing.toggle()
-                }
-                
                 Spacer()
                 
-                StrokedButton(.circle) {
-                    Image(systemName: "location.fill")
-                } action: {
-                    homeViewModel.moveCameraOnLocation(to: nil)
+                VStack(alignment: .trailing) {
+                    StrokedButton(.circle) {
+                        Image(systemName: "list.bullet")
+                    } action: {
+                        homeViewModel.isMapShowing.toggle()
+                    }
+                    
+                    StrokedButton(.circle) {
+                        Image(systemName: "location.fill")
+                    } action: {
+                        homeViewModel.moveCameraOnLocation(to: nil)
+                    }
                 }
             }
         }
