@@ -39,3 +39,9 @@ struct ContentView<Router: AppRouter>: View {
         }
     }
 }
+
+struct ContentView_Preview: PreviewProvider {
+    static var previews: some View {
+        router.view(to: .contentView)
+    }
+}
