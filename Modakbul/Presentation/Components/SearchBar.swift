@@ -42,7 +42,7 @@ struct SearchBar: View {
         }
         .font(.headline)
         .padding(10)
-        .background(.white)
+        .background(.ultraThinMaterial)
         .clipShape(Capsule())
         .shadow(color: .secondary, radius: 4, y: 4)
     }
