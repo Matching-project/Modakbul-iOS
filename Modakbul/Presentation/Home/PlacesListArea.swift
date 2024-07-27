@@ -28,38 +28,10 @@ struct PlacesListArea<Router: AppRouter>: View {
             }
             
             List(homeViewModel.places, id: \.id) { place in
-                Cell(place)
+                router.view(to: .placeInformationView(place: place))
             }
             .listStyle(.plain)
         }
         .padding()
-    }
-}
-
-struct PlacesListArea_Preview: PreviewProvider {
-    static var previews: some View {
-        PlacesListArea<DefaultAppRouter>(router.resolver.resolve(HomeViewModel.self))
-    }
-}
-
-extension PlacesListArea {
-    struct Cell: View {
-        private let place: Place
-        
-        init(_ place: Place) {
-            self.place = place
-        }
-        
-        var body: some View {
-            HStack {
-                VStack(alignment: .leading) {
-                    Text(place.location.name)
-                        .font(.headline)
-                    
-                    Text(place.location.address)
-                        .font(.caption)
-                }
-            }
-        }
     }
 }
