@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-protocol Routable: Hashable, Identifiable {
+protocol Routable: Identifiable, Hashable {
     associatedtype Content: View
     associatedtype Router: AppRouter
     
@@ -38,6 +38,7 @@ enum Route: Routable {
     case placeShowcaseView
     case mapArea
     case placesListArea
+    case placeInformationView(place: Place)
     
     var presentingType: PresentingType {
         switch self {
@@ -50,6 +51,7 @@ enum Route: Routable {
         case .placeShowcaseView: return .push
         case .mapArea: return .push
         case .placesListArea: return .push
+        case .placeInformationView: return .sheet(detent: .medium)
         }
     }
     
@@ -73,6 +75,22 @@ enum Route: Routable {
             MapArea<Router>(router.resolver.resolve(HomeViewModel.self))
         case .placesListArea:
             PlacesListArea<Router>(router.resolver.resolve(HomeViewModel.self))
+        case .placeInformationView(let place):
+            PlaceInformationView<Router>(place: place)
         }
+    }
+}
+
+// MARK: Equatable Confirmation
+extension Route: Equatable {
+    static func == (lhs: Route, rhs: Route) -> Bool {
+        lhs.hashValue == rhs.hashValue
+    }
+}
+
+// MARK: Hashable Confirmation
+extension Route: Hashable {
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(self)
     }
 }
