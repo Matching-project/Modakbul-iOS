@@ -13,7 +13,7 @@ protocol Requestable {
 }
 
 enum Endpoint {
-    case socialLogin(accessToken: String, refreshToken: String)
+    case login(email: String, provider: String)
     case findPlace(keyword: String)
     case findPlaces(coordinate: CLLocationCoordinate2D)
     case chatRoom(from: UserEntity, to: UserEntity)
