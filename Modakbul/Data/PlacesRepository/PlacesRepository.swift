@@ -49,8 +49,8 @@ extension DefaultPlacesRepository: PlacesRepository {
         let endpoint = Endpoint.findPlaces(coordinate: coordinate)
         
         do {
-            let placeEntities = try await networkService.request(endpoint: endpoint, for: [PlaceEntity].self)
-            return placeEntities.map { $0.toDTO() }
+            let response = try await networkService.request(endpoint: endpoint, for: [PlaceEntity].self)
+            return response.body.map { $0.toDTO() }
         } catch {
             throw PlacesRepositoryError.fetchFailed
         }
@@ -60,8 +60,8 @@ extension DefaultPlacesRepository: PlacesRepository {
         let endpoint = Endpoint.findPlace(keyword: keyword)
         
         do {
-            let placeEntity = try await networkService.request(endpoint: endpoint, for: PlaceEntity.self)
-            return placeEntity.toDTO()
+            let response = try await networkService.request(endpoint: endpoint, for: PlaceEntity.self)
+            return response.body.toDTO()
         } catch {
             throw PlacesRepositoryError.fetchFailed
         }
