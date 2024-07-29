@@ -8,48 +8,46 @@
 import Foundation
 
 protocol SocialLoginRepository {
-    func onOpenURL(url: URL)
-    func login(with provider: AuthenticationProvider) async throws -> User
+    func login(_ credential: UserCredential) async -> Bool
+    func logout() async
 }
 
 fileprivate enum SocialLoginRepositoryError: Error {
     case authorizeFailed
-    case authorizeCancelled
 }
 
 final class DefaultSocialLoginRepository {
     private let tokenStorage: TokenStorage
-    private let authorizationService: AuthorizationService
     private let networkService: NetworkService
     
     init(
         tokenStorage: TokenStorage,
-        authorizationService: AuthorizationService,
         networkService: NetworkService
     ) {
         self.tokenStorage = tokenStorage
-        self.authorizationService = authorizationService
         self.networkService = networkService
     }
 }
 
 // MARK: SocialLoginRepository Conformation
 extension DefaultSocialLoginRepository: SocialLoginRepository {
-    func onOpenURL(url: URL) {
-        authorizationService.handleOpenURL(url: url)
+    func login(_ credential: UserCredential) async -> Bool {
+        do {
+            let endpoint = Endpoint.login(email: credential.email, provider: credential.provider.identifier)
+            let response = try await networkService.request(endpoint: endpoint, for: Bool.self)
+            guard let accessToken = response.accessToken,
+                  let refreshToken = response.refreshToken
+            else { return response.body }
+            let tokens = TokensEntity(accessToken: accessToken, refreshToken: refreshToken)
+            try tokenStorage.store(tokens, by: credential.email)
+            return response.body
+        } catch {
+            print(error)
+            return false
+        }
     }
     
-    func login(with provider: AuthenticationProvider) async throws -> User {
-        do {
-            // TODO: 소셜 로그인 전에 TokenStorage에서 토큰 정보 확인. 이 때, user.id가 필요한데 막상 로그인 전까지 user.id를 모름
-            let (accessToken, refreshToken) = try await authorizationService.authorize(with: provider)
-            let endpoint = Endpoint.socialLogin(accessToken: accessToken, refreshToken: refreshToken)
-            let user = try await networkService.request(endpoint: endpoint, for: UserEntity.self)
-            let tokens = TokensEntity(accessToken: accessToken, refreshToken: refreshToken)
-            try tokenStorage.store(tokens, by: user.email)
-            return user.toDTO()
-        } catch {
-            throw error
-        }
+    func logout() async {
+        
     }
 }
