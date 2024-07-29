@@ -40,7 +40,7 @@ extension DefaultChatRepository: ChatRepository {
     func createChatRoom(from: User, to: User, on communityId: CommunityId) async throws -> ChatRoomId {
         let endpoint = Endpoint.chatRoom(from: .init(from), to: .init(to))
         let chatRoomInfo = try await networkService.request(endpoint: endpoint, for: ChatRoomInfoEntity.self)
-        return chatRoomInfo.chatRoomId
+        return ""
     }
     
     func readChatHistory(on chatRoomId: ChatRoomId) async -> [ChatMessage] {
