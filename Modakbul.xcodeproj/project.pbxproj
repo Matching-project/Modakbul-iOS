@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0438149D2C58C14700FE12A1 /* DateFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0438149C2C58C14700FE12A1 /* DateFormat.swift */; };
 		0440233D2C1F3E9E0029E6FA /* PlacesRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0440233C2C1F3E9E0029E6FA /* PlacesRepository.swift */; };
 		044023402C1F50790029E6FA /* PlaceEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0440233F2C1F50790029E6FA /* PlaceEntity.swift */; };
 		046D50CA2C40059C0047F25D /* SuggestedResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046D50C92C40059C0047F25D /* SuggestedResult.swift */; };
@@ -99,6 +100,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0438149C2C58C14700FE12A1 /* DateFormat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormat.swift; sourceTree = "<group>"; };
 		0440233C2C1F3E9E0029E6FA /* PlacesRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlacesRepository.swift; sourceTree = "<group>"; };
 		0440233F2C1F50790029E6FA /* PlaceEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceEntity.swift; sourceTree = "<group>"; };
 		046D50C92C40059C0047F25D /* SuggestedResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestedResult.swift; sourceTree = "<group>"; };
@@ -394,6 +396,7 @@
 				04D1C80B2C0C69EF008BB1F9 /* Report.swift */,
 				046D50C92C40059C0047F25D /* SuggestedResult.swift */,
 				046D51032C4BDCCA0047F25D /* Notification.swift */,
+				0438149C2C58C14700FE12A1 /* DateFormat.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -842,6 +845,7 @@
 				046D51322C5223420047F25D /* PlacesListArea.swift in Sources */,
 				04E281762C37F30B00C118DF /* AlertModifier.swift in Sources */,
 				DF92D99B2C33C99800C993CA /* MessageEntity.swift in Sources */,
+				0438149D2C58C14700FE12A1 /* DateFormat.swift in Sources */,
 				DFA7D03A2C2EA607003547CB /* UserManagementRepository.swift in Sources */,
 				04E281532C31B8FF00C118DF /* ChatRepository.swift in Sources */,
 				04CFF7512BFDE9E500EAE4DC /* NetworkService.swift in Sources */,

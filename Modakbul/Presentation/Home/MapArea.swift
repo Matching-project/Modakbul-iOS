@@ -30,7 +30,10 @@ struct MapArea<Router: AppRouter>: View {
     
     private var localMapArea: some View {
         Map(coordinateRegion: $region, showsUserLocation: true, annotationItems: homeViewModel.places) { place in
-            MapMarker(coordinate: place.location.coordinate, tint: .primary)
+            MapAnnotation(coordinate: place.location.coordinate) {
+                Image(systemName: "heart.fill")
+                    .foregroundStyle(.accent)
+            }
         }
         .onAppear {
             homeViewModel.updateLocationOnce()
