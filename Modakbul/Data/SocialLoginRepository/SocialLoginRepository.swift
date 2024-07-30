@@ -42,6 +42,7 @@ extension DefaultSocialLoginRepository: SocialLoginRepository {
             try tokenStorage.store(tokens, by: credential.email)
             return response.body
         } catch {
+            // TODO: 에러 핸들링 필요
             print(error)
             return false
         }
