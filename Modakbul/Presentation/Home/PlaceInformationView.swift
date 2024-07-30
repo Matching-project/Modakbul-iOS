@@ -58,9 +58,9 @@ struct PlaceInformationView<Router: AppRouter>: View {
                     Image(systemName: "person.fill")
                     Text("\(recruitingContent.community.participants.count) / \(recruitingContent.community.participantsLimit)")
                     Image(systemName: "calendar")
-                    Text(recruitingContent.community.promiseDate.date.toSimpleString())
+                    Text(recruitingContent.community.promiseDate.date.toString(by: .yyyyMMddKorean))
                     Image(systemName: "clock")
-                    Text(recruitingContent.community.promiseDate.date.toSimpleString())
+                    Text(recruitingContent.community.promiseDate.date.toString(by: .HHmm))
                 }
             }
             .listStyle(.plain)
