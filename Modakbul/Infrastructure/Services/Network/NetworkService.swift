@@ -25,18 +25,12 @@ struct HTTPResponse<T: Decodable> {
     let body: T
     
     var accessToken: String? {
-        guard let header = headers["Authorization"] as? [String],
-              let token = header.first
-        else { return nil }
-        
+        guard let token = headers["Authorization"] as? String else { return nil }
         return token
     }
     
     var refreshToken: String? {
-        guard let header = headers["Authorization_refresh"] as? [String],
-              let token = header.first
-        else { return nil }
-        
+        guard let token = headers["Authorization_refresh"] as? String else { return nil }
         return token
     }
 }
