@@ -95,6 +95,123 @@ final class PreviewHelper {
                         promiseDate: .init(date: .now, startTime: .now, endTime: .now)
                     )
                 ),
+                
+                CommunityReqruitingContent(
+                    id: UUID().uuidString,
+                    title: "개발 모각코 하실 분 구합니다!",
+                    content: "글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. ",
+                    writtenDate: .now,
+                    writer: User(
+                        name: "SwainYun",
+                        nickname: "SwainYun",
+                        email: "destap@naver.com",
+                        provider: .apple,
+                        gender: .male,
+                        job: .jobSeeker,
+                        categoriesOfInterest: [.coding, .design, .selfImprovement],
+                        isGenderVisible: true,
+                        birth: .now,
+                        imageURL: nil
+                    ),
+                    community: Community(
+                        routine: .daily,
+                        category: .coding,
+                        participants: [
+                            User(
+                                name: "SwainYun",
+                                nickname: "SwainYun",
+                                email: "destap@naver.com",
+                                provider: .apple,
+                                gender: .male,
+                                job: .jobSeeker,
+                                categoriesOfInterest: [.coding, .design, .selfImprovement],
+                                isGenderVisible: true,
+                                birth: .now,
+                                imageURL: nil
+                            )
+                        ],
+                        participantsLimit: 5,
+                        promiseDate: .init(date: .now, startTime: .now, endTime: .now)
+                    )
+                ),
+                
+                CommunityReqruitingContent(
+                    id: UUID().uuidString,
+                    title: "개발 모각코 하실 분 구합니다!",
+                    content: "글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. ",
+                    writtenDate: .now,
+                    writer: User(
+                        name: "SwainYun",
+                        nickname: "SwainYun",
+                        email: "destap@naver.com",
+                        provider: .apple,
+                        gender: .male,
+                        job: .jobSeeker,
+                        categoriesOfInterest: [.coding, .design, .selfImprovement],
+                        isGenderVisible: true,
+                        birth: .now,
+                        imageURL: nil
+                    ),
+                    community: Community(
+                        routine: .daily,
+                        category: .coding,
+                        participants: [
+                            User(
+                                name: "SwainYun",
+                                nickname: "SwainYun",
+                                email: "destap@naver.com",
+                                provider: .apple,
+                                gender: .male,
+                                job: .jobSeeker,
+                                categoriesOfInterest: [.coding, .design, .selfImprovement],
+                                isGenderVisible: true,
+                                birth: .now,
+                                imageURL: nil
+                            )
+                        ],
+                        participantsLimit: 5,
+                        promiseDate: .init(date: .now, startTime: .now, endTime: .now)
+                    )
+                ),
+                
+                CommunityReqruitingContent(
+                    id: UUID().uuidString,
+                    title: "개발 모각코 하실 분 구합니다!",
+                    content: "글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. ",
+                    writtenDate: .now,
+                    writer: User(
+                        name: "SwainYun",
+                        nickname: "SwainYun",
+                        email: "destap@naver.com",
+                        provider: .apple,
+                        gender: .male,
+                        job: .jobSeeker,
+                        categoriesOfInterest: [.coding, .design, .selfImprovement],
+                        isGenderVisible: true,
+                        birth: .now,
+                        imageURL: nil
+                    ),
+                    community: Community(
+                        routine: .daily,
+                        category: .coding,
+                        participants: [
+                            User(
+                                name: "SwainYun",
+                                nickname: "SwainYun",
+                                email: "destap@naver.com",
+                                provider: .apple,
+                                gender: .male,
+                                job: .jobSeeker,
+                                categoriesOfInterest: [.coding, .design, .selfImprovement],
+                                isGenderVisible: true,
+                                birth: .now,
+                                imageURL: nil
+                            )
+                        ],
+                        participantsLimit: 5,
+                        promiseDate: .init(date: .now, startTime: .now, endTime: .now)
+                    )
+                ),
             ],
             images: ["image1.png", "image2.png"]
         ),
@@ -165,7 +282,163 @@ final class PreviewHelper {
             powerSocketState: .few,
             noiseLevel: .noisy,
             groupSeatingState: .yes,
-            communities: [],
+            communities: [
+                CommunityReqruitingContent(
+                    id: UUID().uuidString,
+                    title: "개발 모각코 하실 분 구합니다!",
+                    content: "글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. ",
+                    writtenDate: .now,
+                    writer: User(
+                        name: "SwainYun",
+                        nickname: "SwainYun",
+                        email: "destap@naver.com",
+                        provider: .apple,
+                        gender: .male,
+                        job: .jobSeeker,
+                        categoriesOfInterest: [.coding, .design, .selfImprovement],
+                        isGenderVisible: true,
+                        birth: .now,
+                        imageURL: nil
+                    ),
+                    community: Community(
+                        routine: .daily,
+                        category: .coding,
+                        participants: [
+                            User(
+                                name: "SwainYun",
+                                nickname: "SwainYun",
+                                email: "destap@naver.com",
+                                provider: .apple,
+                                gender: .male,
+                                job: .jobSeeker,
+                                categoriesOfInterest: [.coding, .design, .selfImprovement],
+                                isGenderVisible: true,
+                                birth: .now,
+                                imageURL: nil
+                            )
+                        ],
+                        participantsLimit: 5,
+                        promiseDate: .init(date: .now, startTime: .now, endTime: .now)
+                    )
+                ),
+                
+                CommunityReqruitingContent(
+                    id: UUID().uuidString,
+                    title: "개발 모각코 하실 분 구합니다!",
+                    content: "글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. ",
+                    writtenDate: .now,
+                    writer: User(
+                        name: "SwainYun",
+                        nickname: "SwainYun",
+                        email: "destap@naver.com",
+                        provider: .apple,
+                        gender: .male,
+                        job: .jobSeeker,
+                        categoriesOfInterest: [.coding, .design, .selfImprovement],
+                        isGenderVisible: true,
+                        birth: .now,
+                        imageURL: nil
+                    ),
+                    community: Community(
+                        routine: .daily,
+                        category: .coding,
+                        participants: [
+                            User(
+                                name: "SwainYun",
+                                nickname: "SwainYun",
+                                email: "destap@naver.com",
+                                provider: .apple,
+                                gender: .male,
+                                job: .jobSeeker,
+                                categoriesOfInterest: [.coding, .design, .selfImprovement],
+                                isGenderVisible: true,
+                                birth: .now,
+                                imageURL: nil
+                            )
+                        ],
+                        participantsLimit: 5,
+                        promiseDate: .init(date: .now, startTime: .now, endTime: .now)
+                    )
+                ),
+                
+                CommunityReqruitingContent(
+                    id: UUID().uuidString,
+                    title: "개발 모각코 하실 분 구합니다!",
+                    content: "글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. ",
+                    writtenDate: .now,
+                    writer: User(
+                        name: "SwainYun",
+                        nickname: "SwainYun",
+                        email: "destap@naver.com",
+                        provider: .apple,
+                        gender: .male,
+                        job: .jobSeeker,
+                        categoriesOfInterest: [.coding, .design, .selfImprovement],
+                        isGenderVisible: true,
+                        birth: .now,
+                        imageURL: nil
+                    ),
+                    community: Community(
+                        routine: .daily,
+                        category: .coding,
+                        participants: [
+                            User(
+                                name: "SwainYun",
+                                nickname: "SwainYun",
+                                email: "destap@naver.com",
+                                provider: .apple,
+                                gender: .male,
+                                job: .jobSeeker,
+                                categoriesOfInterest: [.coding, .design, .selfImprovement],
+                                isGenderVisible: true,
+                                birth: .now,
+                                imageURL: nil
+                            )
+                        ],
+                        participantsLimit: 5,
+                        promiseDate: .init(date: .now, startTime: .now, endTime: .now)
+                    )
+                ),
+                
+                CommunityReqruitingContent(
+                    id: UUID().uuidString,
+                    title: "개발 모각코 하실 분 구합니다!",
+                    content: "글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. ",
+                    writtenDate: .now,
+                    writer: User(
+                        name: "SwainYun",
+                        nickname: "SwainYun",
+                        email: "destap@naver.com",
+                        provider: .apple,
+                        gender: .male,
+                        job: .jobSeeker,
+                        categoriesOfInterest: [.coding, .design, .selfImprovement],
+                        isGenderVisible: true,
+                        birth: .now,
+                        imageURL: nil
+                    ),
+                    community: Community(
+                        routine: .daily,
+                        category: .coding,
+                        participants: [
+                            User(
+                                name: "SwainYun",
+                                nickname: "SwainYun",
+                                email: "destap@naver.com",
+                                provider: .apple,
+                                gender: .male,
+                                job: .jobSeeker,
+                                categoriesOfInterest: [.coding, .design, .selfImprovement],
+                                isGenderVisible: true,
+                                birth: .now,
+                                imageURL: nil
+                            )
+                        ],
+                        participantsLimit: 5,
+                        promiseDate: .init(date: .now, startTime: .now, endTime: .now)
+                    )
+                ),
+            ],
             images: nil
         ),
         Place(
