@@ -23,15 +23,15 @@ struct RouterView<Router: AppRouter>: View {
                 .navigationDestination(for: Router.Destination.self) { destination in
                     router.view(to: destination)
                 }
+                .sheet(item: $router.sheet) { destination in
+                    router.view(to: destination)
+                        .presentationDetents(router.detents)
+                }
+                .fullScreenCover(item: $router.fullScreenCover) { destination in
+                    router.view(to: destination)
+                }
+                .alert(isPresented: $router.isAlertPresented, router.confirmationContent)
+                .confirmationDialog(isPresented: $router.isConfirmationDialogPresented, router.confirmationContent)
         }
-        .sheet(item: $router.sheet) { destination in
-            router.view(to: destination)
-                .presentationDetents(detents, selection: $router.detent)
-        }
-        .fullScreenCover(item: $router.fullScreenCover) { destination in
-            router.view(to: destination)
-        }
-        .alert(isPresented: $router.isAlertPresented, router.confirmationContent)
-        .confirmationDialog(isPresented: $router.isConfirmationDialogPresented, router.confirmationContent)
     }
 }

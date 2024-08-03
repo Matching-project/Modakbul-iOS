@@ -17,12 +17,12 @@ protocol Routable: Identifiable, Hashable {
 }
 
 extension Routable {
-    var id: Self { self }
+    var id: String { String(describing: self) }
 }
 
 enum PresentingType {
     case push
-    case sheet(detent: PresentationDetent)
+    case sheet(detents: Set<PresentationDetent>)
     case fullScreenCover
 }
 
@@ -46,12 +46,12 @@ enum Route: Routable {
         case .contentView: return .push
         case .loginView: return .fullScreenCover
         case .homeView: return .push
-        case .myView: return .sheet(detent: .medium)
+        case .myView: return .sheet(detents: [.medium, .large])
         case .chatView: return .push
         case .placeShowcaseView: return .push
         case .mapArea: return .push
         case .placesListArea: return .push
-        case .placeInformationView: return .sheet(detent: .medium)
+        case .placeInformationView: return .sheet(detents: [.medium, .large])
         }
     }
     
@@ -91,6 +91,6 @@ extension Route: Equatable {
 // MARK: Hashable Confirmation
 extension Route: Hashable {
     func hash(into hasher: inout Hasher) {
-        hasher.combine(self)
+        hasher.combine(id)
     }
 }

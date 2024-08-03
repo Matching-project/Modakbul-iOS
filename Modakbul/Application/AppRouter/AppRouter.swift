@@ -13,10 +13,10 @@ protocol AppRouter: ObservableObject {
     
     var path: NavigationPath { get set }
     var sheet: Destination? { get set }
-    var detent: PresentationDetent { get set }
+    var detents: Set<PresentationDetent> { get set }
     var fullScreenCover: Destination? { get set }
     var confirmationContent: ConfirmationContent? { get set }
-    var isModalPresented: Bool { get set }
+    var isModalPresented: Bool { get }
     var isAlertPresented: Bool { get set }
     var isConfirmationDialogPresented: Bool { get set }
     var assembler: Assembler { get }
@@ -39,10 +39,10 @@ final class DefaultAppRouter: AppRouter {
     
     @Published var path: NavigationPath
     @Published var sheet: Destination?
-    @Published var detent: PresentationDetent = .large
+    var detents: Set<PresentationDetent> = []
     @Published var fullScreenCover: Destination?
     @Published var confirmationContent: ConfirmationContent?
-    @Published var isModalPresented: Bool = false
+    var isModalPresented: Bool { sheet != nil || fullScreenCover != nil }
     @Published var isAlertPresented: Bool = false
     @Published var isConfirmationDialogPresented: Bool = false
     let assembler: Assembler
@@ -66,14 +66,14 @@ final class DefaultAppRouter: AppRouter {
         path.append(destination)
     }
     
-    private func _sheet(_ destination: Destination, _ detent: PresentationDetent) {
-        guard fullScreenCover == nil else { return }
+    private func _sheet(_ destination: Destination, _ detents: Set<PresentationDetent>) {
+        guard isModalPresented == false else { return }
         sheet = destination
-        self.detent = detent
+        self.detents = detents
     }
     
     private func _fullScreenCover(_ destination: Destination) {
-        guard sheet == nil else { return }
+        guard isModalPresented == false else { return }
         fullScreenCover = destination
     }
     
@@ -86,8 +86,8 @@ final class DefaultAppRouter: AppRouter {
         switch destination.presentingType {
         case .push:
             _push(destination)
-        case .sheet(let detent):
-            _sheet(destination, detent)
+        case .sheet(let detents):
+            _sheet(destination, detents)
         case .fullScreenCover:
             _fullScreenCover(destination)
         }
@@ -106,30 +106,24 @@ final class DefaultAppRouter: AppRouter {
     }
     
     func dismiss() {
-        if fullScreenCover != nil {
+        if isModalPresented {
             fullScreenCover = nil
-        } else if sheet != nil {
             sheet = nil
-        } else if path.isEmpty == false {
+        }
+        
+        if path.isEmpty == false {
             path.removeLast()
-        } else if isModalPresented {
-            isModalPresented = false
         }
     }
     
     func popToRoot() {
-        if sheet != nil {
+        if isModalPresented {
             sheet = nil
-        }
-        
-        if fullScreenCover != nil {
             fullScreenCover = nil
         }
         
-        if isModalPresented {
-            isModalPresented = false
+        if path.isEmpty == false {
+            path.removeLast(path.count)
         }
-        
-        path.removeLast(path.count)
     }
 }
