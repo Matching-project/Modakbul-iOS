@@ -9,6 +9,7 @@ import SwiftUI
 import AuthenticationServices
 
 struct LoginView<Router: AppRouter>: View {
+    @Environment(\.colorScheme) private var scheme
     @EnvironmentObject private var router: Router
     @ObservedObject private var loginViewModel: LoginViewModel
     
@@ -53,6 +54,7 @@ struct LoginView<Router: AppRouter>: View {
     private var signInWithAppleButton: some View {
         SignInWithAppleButton(.signIn) { request in
             request.requestedScopes = [.email, .fullName]
+            request.nonce = UUID().uuidString
         } onCompletion: { result in
             switch result {
             case .success(let auth):
@@ -61,6 +63,7 @@ struct LoginView<Router: AppRouter>: View {
                 print(error)
             }
         }
+        .signInWithAppleButtonStyle(scheme == .dark ? .white : .black)
         .clipShape(RoundedRectangle(cornerRadius: 14))
         .frame(height: 44)
     }
@@ -68,6 +71,11 @@ struct LoginView<Router: AppRouter>: View {
 
 struct LoginView_Preview: PreviewProvider {
     static var previews: some View {
-        router.view(to: .loginView)
+        Group {
+            router.view(to: .loginView)
+            
+            router.view(to: .loginView)
+                .preferredColorScheme(.dark)
+        }
     }
 }
