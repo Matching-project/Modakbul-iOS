@@ -21,9 +21,14 @@ extension Routable {
 }
 
 enum PresentingType {
-    case push
-    case sheet(detent: PresentationDetent)
+    case push(isNavigationBarBackButtonHidden: Bool)
+    case sheet(detents: Set<PresentationDetent>)
     case fullScreenCover
+    
+    // MARK: Default PresentingType without parameter
+    static var push: PresentingType {
+        .push(isNavigationBarBackButtonHidden: false)
+    }
 }
 
 enum Route: Routable {
@@ -32,6 +37,8 @@ enum Route: Routable {
     case routerView
     case contentView
     case loginView
+    case requiredTermsView
+    case registrationView
     case homeView
     case myView
     case chatView
@@ -42,8 +49,10 @@ enum Route: Routable {
         case .routerView: return .push
         case .contentView: return .push
         case .loginView: return .fullScreenCover
+        case .requiredTermsView: return .sheet(detents: [.medium])
+        case .registrationView: return .push(isNavigationBarBackButtonHidden: true)
         case .homeView: return .push
-        case .myView: return .sheet(detent: .medium)
+        case .myView: return .sheet(detents: [.medium])
         case .chatView: return .push
         case .placeShowcaseView: return .push
         }
@@ -57,6 +66,10 @@ enum Route: Routable {
             ContentView<Router>()
         case .loginView:
             LoginView<Router>(loginViewModel: router.resolver.resolve(LoginViewModel.self))
+        case .requiredTermsView:
+            RequiredTermView<Router>()
+        case .registrationView:
+            RegistrationView<Router>(registrationViewModel: router.resolver.resolve(RegistrationViewModel.self))
         case .homeView:
             HomeView<Router>(homeViewModel: router.resolver.resolve(HomeViewModel.self))
         case .myView:
