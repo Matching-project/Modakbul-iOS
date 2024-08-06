@@ -6,9 +6,11 @@
 //
 
 import Foundation
+import Alamofire
 
 protocol NetworkService {
     func request<T: Decodable>(endpoint: Requestable, for type: T.Type) async throws -> HTTPResponse<T>
+    func upload<T: Decodable>(endpoint: Requestable, for type: T.Type) async throws -> HTTPResponse<T>
 }
 
 enum NetworkServiceError: Error {
@@ -21,48 +23,44 @@ enum NetworkServiceError: Error {
 }
 
 struct HTTPResponse<T: Decodable> {
-    let headers: [AnyHashable: Any]
+    let headers: HTTPHeaders?
     let body: T
     
     var accessToken: String? {
-        guard let token = headers["Authorization"] as? String else { return nil }
-        return token
+        headers?["Authorization"]
     }
     
     var refreshToken: String? {
-        guard let token = headers["Authorization_refresh"] as? String else { return nil }
-        return token
+        headers?["Authorization_refresh"]
     }
 }
 
 final class DefaultNetworkService {
-    private let sessionManager: NetworkSessionManager
     private let decoder: JSONDecodable
     
-    init(
-        sessionManager: NetworkSessionManager,
-        decoder: JSONDecodable = JSONDecoder()
-    ) {
-        self.sessionManager = sessionManager
+    init(decoder: JSONDecodable = JSONDecoder()) {
         self.decoder = decoder
     }
     
-    private func handleResponse(_ response: URLResponse) throws -> HTTPURLResponse {
-        guard let response = response as? HTTPURLResponse else {
-            throw NetworkServiceError.generic(type: String(describing: response))
+    private func handleResponse(_ response: HTTPURLResponse?) throws -> HTTPHeaders {
+        guard let response = response else {
+            throw NetworkServiceError.requestFailed
         }
         
         guard (200..<300).contains(response.statusCode) else {
             throw NetworkServiceError.badResponse(statusCode: response.statusCode)
         }
         
-        return response
+        return response.headers
     }
     
-    private func decode<T: Decodable>(for type: T.Type, with data: Data) throws -> T {
-        guard let decodedData = try? decoder.decode(type, from: data) else {
+    private func decode<T: Decodable>(for type: T.Type, with data: Data?) throws -> T {
+        guard let data = data,
+              let decodedData = try? decoder.decode(type, from: data)
+        else {
             throw NetworkServiceError.decodingError(type: String(describing: type))
         }
+        
         return decodedData
     }
     
@@ -82,19 +80,59 @@ final class DefaultNetworkService {
 
 // MARK: NetworkService Conformation
 extension DefaultNetworkService: NetworkService {
-    // MARK: - DataServiceProtocol
     func request<T: Decodable>(endpoint: Requestable, for type: T.Type) async throws -> HTTPResponse<T> {
-        guard let urlRequest = endpoint.asURLRequest() else {
-            throw NetworkServiceError.invalidURL
-        }
+        let urlComponents = endpoint.asURLComponents()
+        let method = endpoint.httpMethod
+        let headers = endpoint.httpHeaders
         
-        do {
-            let (data, response) = try await sessionManager.data(for: urlRequest)
-            let headers = try handleResponse(response).allHeaderFields
-            let decodedData = try decode(for: type, with: data)
-            return HTTPResponse(headers: headers, body: decodedData)
-        } catch {
-            throw resolveError(error)
+        return try await withCheckedThrowingContinuation { [weak self] continuation in
+            guard let self = self else { return }
+            
+            AF.request(
+                urlComponents,
+                method: method,
+                headers: headers
+            )
+            .response {
+                do {
+                    let headers = try self.handleResponse($0.response)
+                    let decodedData = try self.decode(for: T.self, with: $0.data)
+                    let httpResponse = HTTPResponse(headers: headers, body: decodedData)
+                    continuation.resume(returning: httpResponse)
+                } catch {
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+    
+    func upload<T: Decodable>(endpoint: Requestable, for type: T.Type) async throws -> HTTPResponse<T> {
+        let urlComponents = endpoint.asURLComponents()
+        let headers = endpoint.httpHeaders
+        let bodies = endpoint.httpBodies
+        
+        return try await withCheckedThrowingContinuation { [weak self] continuation in
+            guard let self = self else { return }
+            
+            AF.upload(
+                multipartFormData: { formData in
+                    bodies?.forEach {
+                        formData.append($0, withName: "\($0)")
+                    }
+                },
+                to: urlComponents,
+                headers: headers
+            )
+            .response {
+                do {
+                    let headers = try self.handleResponse($0.response)
+                    let decodedData = try self.decode(for: T.self, with: $0.data)
+                    let httpResponse = HTTPResponse(headers: headers, body: decodedData)
+                    continuation.resume(returning: httpResponse)
+                } catch {
+                    continuation.resume(throwing: error)
+                }
+            }
         }
     }
 }

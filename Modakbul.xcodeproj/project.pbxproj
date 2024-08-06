@@ -28,6 +28,7 @@
 		046D51222C50BCAA0047F25D /* UserEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046D51212C50BCAA0047F25D /* UserEntity.swift */; };
 		046D51242C50BCEE0047F25D /* AuthenticationProviderEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046D51232C50BCEE0047F25D /* AuthenticationProviderEntity.swift */; };
 		047C47EE2C1A98DC00170758 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047C47ED2C1A98DC00170758 /* HomeViewModel.swift */; };
+		047F7E1B2C62203900131837 /* CommunityRecruitingContentEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047F7E1A2C62203900131837 /* CommunityRecruitingContentEntity.swift */; };
 		048496D92C549D3400BECC21 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048496D82C549D3400BECC21 /* LoginViewModel.swift */; };
 		048496E62C54E3F700BECC21 /* UserCredential.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048496E52C54E3F700BECC21 /* UserCredential.swift */; };
 		048496EB2C54FBBF00BECC21 /* AuthenticationProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048496EA2C54FBBF00BECC21 /* AuthenticationProvider.swift */; };
@@ -116,6 +117,7 @@
 		046D51212C50BCAA0047F25D /* UserEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserEntity.swift; sourceTree = "<group>"; };
 		046D51232C50BCEE0047F25D /* AuthenticationProviderEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationProviderEntity.swift; sourceTree = "<group>"; };
 		047C47ED2C1A98DC00170758 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
+		047F7E1A2C62203900131837 /* CommunityRecruitingContentEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityRecruitingContentEntity.swift; sourceTree = "<group>"; };
 		048496D82C549D3400BECC21 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		048496E52C54E3F700BECC21 /* UserCredential.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCredential.swift; sourceTree = "<group>"; };
 		048496EA2C54FBBF00BECC21 /* AuthenticationProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthenticationProvider.swift; sourceTree = "<group>"; };
@@ -317,7 +319,6 @@
 		04CFF74B2BFDE92900EAE4DC /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				04D1C8342C11EC8D008BB1F9 /* Endpoint.swift */,
 				04B1B6D02C3BFE800070AD38 /* LocalMap */,
 				04CFF74F2BFDE9CF00EAE4DC /* Network */,
 				DF92D99A2C33C99800C993CA /* Chat */,
@@ -340,6 +341,7 @@
 			children = (
 				0440233E2C1F506C0029E6FA /* Entities */,
 				04CFF7542BFDEB0000EAE4DC /* Extensions */,
+				04D1C8342C11EC8D008BB1F9 /* Endpoint.swift */,
 				04CFF7502BFDE9E500EAE4DC /* NetworkService.swift */,
 				04CFF7522BFDEAF700EAE4DC /* NetworkSessionManager.swift */,
 			);
@@ -658,6 +660,7 @@
 				046D511F2C50BB800047F25D /* ChatRoomInfoEntity.swift */,
 				046D51212C50BCAA0047F25D /* UserEntity.swift */,
 				046D51232C50BCEE0047F25D /* AuthenticationProviderEntity.swift */,
+				047F7E1A2C62203900131837 /* CommunityRecruitingContentEntity.swift */,
 			);
 			path = Entities;
 			sourceTree = "<group>";
@@ -821,6 +824,7 @@
 				DF92D99B2C33C99800C993CA /* MessageEntity.swift in Sources */,
 				DFA7D03A2C2EA607003547CB /* UserManagementRepository.swift in Sources */,
 				04E281532C31B8FF00C118DF /* ChatRepository.swift in Sources */,
+				047F7E1B2C62203900131837 /* CommunityRecruitingContentEntity.swift in Sources */,
 				04CFF7512BFDE9E500EAE4DC /* NetworkService.swift in Sources */,
 				04D1C7F12C085981008BB1F9 /* Place.swift in Sources */,
 				0440233D2C1F3E9E0029E6FA /* PlacesRepository.swift in Sources */,

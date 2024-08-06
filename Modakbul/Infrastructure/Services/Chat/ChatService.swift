@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Alamofire
 
 protocol ChatService {
     func connect(endpoint: Requestable, _ continuation: AsyncThrowingStream<ChatMessage, Error>.Continuation) throws
@@ -28,7 +29,7 @@ enum ChatServiceError: Error {
 }
 
 final class DefaultChatService {
-    private let sessionManager: NetworkSessionManager
+    private let session: URLSessionProtocol
     private let encoder: JSONEncodable
     private let decoder: JSONDecodable
     
@@ -36,11 +37,11 @@ final class DefaultChatService {
     private var chatStreamContinuation: AsyncThrowingStream<ChatMessage, Error>.Continuation?
     
     init(
-        sessionManager: NetworkSessionManager,
+        session: URLSessionProtocol = AF.session,
         encoder: JSONEncodable = JSONEncoder(),
         decoder: JSONDecodable = JSONDecoder()
     ) {
-        self.sessionManager = sessionManager
+        self.session = session
         self.encoder = encoder
         self.decoder = decoder
     }
@@ -77,8 +78,9 @@ final class DefaultChatService {
 // MARK: ChatService Conformation
 extension DefaultChatService: ChatService {
     func connect(endpoint: any Requestable, _ continuation: AsyncThrowingStream<ChatMessage, Error>.Continuation) throws {
-        guard let urlRequest = endpoint.asURLRequest() else { throw ChatServiceError.invalidURL }
-        socket = sessionManager.webSocketTask(with: urlRequest)
+        guard let url = endpoint.asURLComponents().url else { throw ChatServiceError.invalidURL }
+        let urlRequest = URLRequest(url: url)
+        socket = session.webSocketTask(with: urlRequest)
         chatStreamContinuation = continuation
         
         Task {
