@@ -14,6 +14,7 @@ private enum TokenStorageError: Error {
     case failedFindToken
     case failedUnwrapToData
     case failedEncodeToData
+    case decodingError(type: String)
 }
 
 protocol TokenStorage {
@@ -108,7 +109,9 @@ extension DefaultTokenStorage {
             throw TokenStorageError.failedEncodeToData
         }
 
-        let tokens = try decoder.decode(T.self, from: data)
+        guard let tokens = try? decoder.decode(T.self, from: data) else {
+            throw TokenStorageError.decodingError(type: String(describing: type))
+        }
         return tokens
     }
 }
