@@ -13,12 +13,13 @@ protocol AppRouter: ObservableObject {
     
     var path: NavigationPath { get set }
     var sheet: Destination? { get set }
-    var detent: PresentationDetent { get set }
+    var detents: Set<PresentationDetent> { get }
     var fullScreenCover: Destination? { get set }
     var confirmationContent: ConfirmationContent? { get set }
     var isModalPresented: Bool { get set }
     var isAlertPresented: Bool { get set }
     var isConfirmationDialogPresented: Bool { get set }
+    var isNavigationBarBackButtonHidden: Bool { get set }
     var assembler: Assembler { get }
     var resolver: DependencyResolver { get }
     
@@ -39,12 +40,14 @@ final class DefaultAppRouter: AppRouter {
     
     @Published var path: NavigationPath
     @Published var sheet: Destination?
-    @Published var detent: PresentationDetent = .large
     @Published var fullScreenCover: Destination?
     @Published var confirmationContent: ConfirmationContent?
     @Published var isModalPresented: Bool = false
     @Published var isAlertPresented: Bool = false
     @Published var isConfirmationDialogPresented: Bool = false
+    @Published var isNavigationBarBackButtonHidden: Bool = false
+    
+    private(set) var detents: Set<PresentationDetent> = [.large, .medium]
     let assembler: Assembler
     
     init(
@@ -62,14 +65,15 @@ final class DefaultAppRouter: AppRouter {
         self.init(assembler: assembler)
     }
     
-    private func _push(_ destination: Destination) {
+    private func _push(_ destination: Destination, _ isNavigationBarBackButtonHidden: Bool) {
         path.append(destination)
+        self.isNavigationBarBackButtonHidden = isNavigationBarBackButtonHidden
     }
     
-    private func _sheet(_ destination: Destination, _ detent: PresentationDetent) {
+    private func _sheet(_ destination: Destination, _ detents: Set<PresentationDetent>) {
         guard fullScreenCover == nil else { return }
         sheet = destination
-        self.detent = detent
+        self.detents = detents
     }
     
     private func _fullScreenCover(_ destination: Destination) {
@@ -83,10 +87,10 @@ final class DefaultAppRouter: AppRouter {
     
     func route(to destination: Destination) {
         switch destination.presentingType {
-        case .push:
-            _push(destination)
-        case .sheet(let detent):
-            _sheet(destination, detent)
+        case .push(let isNavigationBarBackButtonHidden):
+            _push(destination, isNavigationBarBackButtonHidden)
+        case .sheet(let detents):
+            _sheet(destination, detents)
         case .fullScreenCover:
             _fullScreenCover(destination)
         }
