@@ -85,6 +85,16 @@
 		DF6BB7DF2C60AA0800787C4D /* FlatButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF6BB7DE2C60AA0800787C4D /* FlatButton.swift */; };
 		DF6BB7E12C60AAD700787C4D /* RegisterField.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF6BB7E02C60AAD700787C4D /* RegisterField.swift */; };
 		DF6BB7E52C60AB7300787C4D /* RoundedTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF6BB7E42C60AB7300787C4D /* RoundedTextField.swift */; };
+		DF7F18862C620399009FAF6F /* Selectable.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF7F18852C620399009FAF6F /* Selectable.swift */; };
+		DF7F18892C620411009FAF6F /* NicknameTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF7F18882C620411009FAF6F /* NicknameTextField.swift */; };
+		DF7F188B2C620439009FAF6F /* BirthPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF7F188A2C620439009FAF6F /* BirthPicker.swift */; };
+		DF7F188E2C620550009FAF6F /* SingleSelectionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF7F188D2C620550009FAF6F /* SingleSelectionButton.swift */; };
+		DF7F18912C620593009FAF6F /* MultipleSelectionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF7F18902C620593009FAF6F /* MultipleSelectionButton.swift */; };
+		DF7F18942C6205BC009FAF6F /* GenderSelectionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF7F18932C6205BC009FAF6F /* GenderSelectionButton.swift */; };
+		DF7F18962C6205D2009FAF6F /* DefaultSingleSelectionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF7F18952C6205D2009FAF6F /* DefaultSingleSelectionButton.swift */; };
+		DF7F18982C6205E2009FAF6F /* DefaultMultipleSelectionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF7F18972C6205E2009FAF6F /* DefaultMultipleSelectionButton.swift */; };
+		DF7F189A2C620655009FAF6F /* PhotosUploaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF7F18992C620655009FAF6F /* PhotosUploaderView.swift */; };
+		DF7F189C2C620686009FAF6F /* RegistrationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF7F189B2C620686009FAF6F /* RegistrationViewModel.swift */; };
 		DF92D9932C32FBFF00C993CA /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF92D9922C32FBFF00C993CA /* ChatView.swift */; };
 		DF92D99B2C33C99800C993CA /* MessageEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF92D9972C33C99800C993CA /* MessageEntity.swift */; };
 		DF92D99C2C33C99800C993CA /* ChatService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF92D9992C33C99800C993CA /* ChatService.swift */; };
@@ -184,6 +194,16 @@
 		DF6BB7DE2C60AA0800787C4D /* FlatButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlatButton.swift; sourceTree = "<group>"; };
 		DF6BB7E02C60AAD700787C4D /* RegisterField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterField.swift; sourceTree = "<group>"; };
 		DF6BB7E42C60AB7300787C4D /* RoundedTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedTextField.swift; sourceTree = "<group>"; };
+		DF7F18852C620399009FAF6F /* Selectable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Selectable.swift; sourceTree = "<group>"; };
+		DF7F18882C620411009FAF6F /* NicknameTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NicknameTextField.swift; sourceTree = "<group>"; };
+		DF7F188A2C620439009FAF6F /* BirthPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BirthPicker.swift; sourceTree = "<group>"; };
+		DF7F188D2C620550009FAF6F /* SingleSelectionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleSelectionButton.swift; sourceTree = "<group>"; };
+		DF7F18902C620593009FAF6F /* MultipleSelectionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipleSelectionButton.swift; sourceTree = "<group>"; };
+		DF7F18932C6205BC009FAF6F /* GenderSelectionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenderSelectionButton.swift; sourceTree = "<group>"; };
+		DF7F18952C6205D2009FAF6F /* DefaultSingleSelectionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultSingleSelectionButton.swift; sourceTree = "<group>"; };
+		DF7F18972C6205E2009FAF6F /* DefaultMultipleSelectionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultMultipleSelectionButton.swift; sourceTree = "<group>"; };
+		DF7F18992C620655009FAF6F /* PhotosUploaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosUploaderView.swift; sourceTree = "<group>"; };
+		DF7F189B2C620686009FAF6F /* RegistrationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationViewModel.swift; sourceTree = "<group>"; };
 		DF92D9922C32FBFF00C993CA /* ChatView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
 		DF92D9972C33C99800C993CA /* MessageEntity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageEntity.swift; sourceTree = "<group>"; };
 		DF92D9992C33C99800C993CA /* ChatService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatService.swift; sourceTree = "<group>"; };
@@ -389,6 +409,7 @@
 		04CFF7652BFF17C300EAE4DC /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				DF7F18842C62037B009FAF6F /* Interface */,
 				04CFF7662BFF17CF00EAE4DC /* Gender.swift */,
 				049D83062C1DC97B0090578E /* Location.swift */,
 				04D1C7F02C085981008BB1F9 /* Place.swift */,
@@ -675,6 +696,53 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
+		DF7F18842C62037B009FAF6F /* Interface */ = {
+			isa = PBXGroup;
+			children = (
+				DF7F18852C620399009FAF6F /* Selectable.swift */,
+			);
+			path = Interface;
+			sourceTree = "<group>";
+		};
+		DF7F18872C6203FE009FAF6F /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				DF7F18882C620411009FAF6F /* NicknameTextField.swift */,
+				DF7F188A2C620439009FAF6F /* BirthPicker.swift */,
+				DF7F188C2C620469009FAF6F /* Button */,
+				DF7F18992C620655009FAF6F /* PhotosUploaderView.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		DF7F188C2C620469009FAF6F /* Button */ = {
+			isa = PBXGroup;
+			children = (
+				DF7F18922C6205A0009FAF6F /* Types */,
+				DF7F188F2C620580009FAF6F /* Builders */,
+			);
+			path = Button;
+			sourceTree = "<group>";
+		};
+		DF7F188F2C620580009FAF6F /* Builders */ = {
+			isa = PBXGroup;
+			children = (
+				DF7F188D2C620550009FAF6F /* SingleSelectionButton.swift */,
+				DF7F18902C620593009FAF6F /* MultipleSelectionButton.swift */,
+			);
+			path = Builders;
+			sourceTree = "<group>";
+		};
+		DF7F18922C6205A0009FAF6F /* Types */ = {
+			isa = PBXGroup;
+			children = (
+				DF7F18932C6205BC009FAF6F /* GenderSelectionButton.swift */,
+				DF7F18972C6205E2009FAF6F /* DefaultMultipleSelectionButton.swift */,
+				DF7F18952C6205D2009FAF6F /* DefaultSingleSelectionButton.swift */,
+			);
+			path = Types;
+			sourceTree = "<group>";
+		};
 		DF92D98D2C32FBB800C993CA /* Chat */ = {
 			isa = PBXGroup;
 			children = (
@@ -706,10 +774,12 @@
 		DFEBEA9F2C57BDFA008F95C3 /* Registration */ = {
 			isa = PBXGroup;
 			children = (
+				DF7F18872C6203FE009FAF6F /* Components */,
 				DFEBEAA22C57D7C8008F95C3 /* Extensions */,
 				DFEBEAA72C57FB9B008F95C3 /* RequiredTermView.swift */,
 				DFEBEAA02C57BE09008F95C3 /* RegistrationView.swift */,
 				DFEBEAA92C5B442E008F95C3 /* RegistrationViewValue.swift */,
+				DF7F189B2C620686009FAF6F /* RegistrationViewModel.swift */,
 			);
 			path = Registration;
 			sourceTree = "<group>";
@@ -800,6 +870,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DF7F188E2C620550009FAF6F /* SingleSelectionButton.swift in Sources */,
+				DF7F189C2C620686009FAF6F /* RegistrationViewModel.swift in Sources */,
 				04D1C7E52C06E435008BB1F9 /* Assembly.swift in Sources */,
 				DFE0AFDF2C104E7A00EC078B /* Bundle+Extension.swift in Sources */,
 				04E2816E2C37D1F200C118DF /* AlertType.swift in Sources */,
@@ -821,7 +893,9 @@
 				04D1C84A2C147839008BB1F9 /* InfrastructureAssembly.swift in Sources */,
 				04D1C7DD2C04C138008BB1F9 /* DependencyContainer.swift in Sources */,
 				04F1B40F2C2C4AF200F9AD42 /* SearchBar.swift in Sources */,
+				DF7F18982C6205E2009FAF6F /* DefaultMultipleSelectionButton.swift in Sources */,
 				046D51202C50BB800047F25D /* ChatRoomInfoEntity.swift in Sources */,
+				DF7F18942C6205BC009FAF6F /* GenderSelectionButton.swift in Sources */,
 				047C47EE2C1A98DC00170758 /* HomeViewModel.swift in Sources */,
 				04B1B6CC2C3BE9920070AD38 /* PlaceShowcaseViewModel.swift in Sources */,
 				DF92D99C2C33C99800C993CA /* ChatService.swift in Sources */,
@@ -834,6 +908,7 @@
 				04D1C84C2C147B73008BB1F9 /* DataAssembly.swift in Sources */,
 				04D1C7E12C05B22F008BB1F9 /* DependencyRegister.swift in Sources */,
 				DF6BB7E12C60AAD700787C4D /* RegisterField.swift in Sources */,
+				DF7F18892C620411009FAF6F /* NicknameTextField.swift in Sources */,
 				04D1C8752C16B9C0008BB1F9 /* RouterView.swift in Sources */,
 				04B1B6C82C3BE8C20070AD38 /* PlaceShowcaseView.swift in Sources */,
 				046D511C2C4FB3AD0047F25D /* PreviewHelper.swift in Sources */,
@@ -845,6 +920,7 @@
 				DF6BB7E52C60AB7300787C4D /* RoundedTextField.swift in Sources */,
 				DFEBEAA12C57BE09008F95C3 /* RegistrationView.swift in Sources */,
 				046D51082C4BF8090047F25D /* ChatRoomConfiguration.swift in Sources */,
+				DF7F18862C620399009FAF6F /* Selectable.swift in Sources */,
 				046D51192C4FB3950047F25D /* StrokedButton.swift in Sources */,
 				04E281572C329EA000C118DF /* ChatMessage.swift in Sources */,
 				04D1C82F2C11C0FE008BB1F9 /* KakaoLoginManager.swift in Sources */,
@@ -858,6 +934,7 @@
 				DFE9F5B72C3D7BE500616FEC /* JSONEncoder.swift in Sources */,
 				046D50F52C48F71B0047F25D /* UserRegistrationUseCase.swift in Sources */,
 				DFEBEAAA2C5B442E008F95C3 /* RegistrationViewValue.swift in Sources */,
+				DF7F18962C6205D2009FAF6F /* DefaultSingleSelectionButton.swift in Sources */,
 				04B315B82BF8608C0043A529 /* ModakbulApp.swift in Sources */,
 				DFEBEAAE2C5B45AD008F95C3 /* DefaultCheckBox.swift in Sources */,
 				046D51222C50BCAA0047F25D /* UserEntity.swift in Sources */,
@@ -881,10 +958,13 @@
 				DFA7D03A2C2EA607003547CB /* UserManagementRepository.swift in Sources */,
 				04E281532C31B8FF00C118DF /* ChatRepository.swift in Sources */,
 				04CFF7512BFDE9E500EAE4DC /* NetworkService.swift in Sources */,
+				DF7F189A2C620655009FAF6F /* PhotosUploaderView.swift in Sources */,
 				04D1C7F12C085981008BB1F9 /* Place.swift in Sources */,
 				0440233D2C1F3E9E0029E6FA /* PlacesRepository.swift in Sources */,
 				04CFF7532BFDEAF700EAE4DC /* NetworkSessionManager.swift in Sources */,
 				04D1C8292C11AEE2008BB1F9 /* AuthorizationService.swift in Sources */,
+				DF7F18912C620593009FAF6F /* MultipleSelectionButton.swift in Sources */,
+				DF7F188B2C620439009FAF6F /* BirthPicker.swift in Sources */,
 				04D1C8502C14867D008BB1F9 /* PresentationAssembly.swift in Sources */,
 				04CFF7622BFDF51200EAE4DC /* CLLocationManager.swift in Sources */,
 				046D51062C4BE8870047F25D /* Community.swift in Sources */,
