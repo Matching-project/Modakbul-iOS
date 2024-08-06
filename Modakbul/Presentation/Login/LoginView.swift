@@ -18,11 +18,16 @@ final class LoginViewModel: ObservableObject {
         userRegistrationUseCase.onOpenURL(url: url)
     }
     
-    func loginWithKakaoTalk() {
-        Task {
-            guard let user = try? await userRegistrationUseCase.login(with: .kakao) else { return print("로그인 실패") }
+    @MainActor
+        func loginWithKakaoTalk() {
+            Task {
+                do {
+                    let user = try await userRegistrationUseCase.login(with: .kakao)
+                } catch {
+                    print(error)
+                }
+            }
         }
-    }
 }
 
 struct LoginView<Router: AppRouter>: View {
@@ -114,9 +119,15 @@ struct LoginView<Router: AppRouter>: View {
     
     private var signInWithKakaoButton: some View {
         Button {
-            loginViewModel.loginWithKakaoTalk()
+             loginViewModel.loginWithKakaoTalk()
+            // TODO: - 소셜 로그인 결과에 따라 회원가입 분기 필요
+//            router.route(to: .requiredTermsView)
+            
         } label: {
             Text("카카오로 로그인")
+            // Image(.kakaoLogin)
+            //     .resizable()
+            //     .scaledToFit()
         }
         .onOpenURL { url in
             loginViewModel.onOpenURL(url: url)
