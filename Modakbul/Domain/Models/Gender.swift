@@ -7,13 +7,20 @@
 
 import Foundation
 
-enum Gender {
+enum Gender: Selectable {
     case female, male
     
     var identifier: String {
         switch self {
         case .female: "FEMALE"
         case .male: "MALE"
+        }
+    }
+    
+    var description: String {
+        switch self {
+        case .female: "여성"
+        case .male: "남성"
         }
     }
     
