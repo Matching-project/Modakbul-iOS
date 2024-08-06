@@ -10,11 +10,14 @@ import SwiftUI
 struct GenderSelectionButton<T: Selectable>: View {
     let item: T
     let selectedItem: T?
-    
+    @Environment(\.colorScheme) var colorScheme
+
     var body: some View {
         VStack {
             Image(item.description)
-                .foregroundStyle(.gray)
+                .resizable()
+                .padding(10)
+                .frame(maxHeight: 150)
             Text(item.description)
                 .foregroundStyle(item == selectedItem ? .white : .accent)
                 .padding(RegistrationViewValue.GenderSelectionButton.padding)
@@ -29,6 +32,6 @@ struct GenderSelectionButton<T: Selectable>: View {
                             y: RegistrationViewValue.DefaultSelectionButton.shadowYAxisPosition)
                 )
         }
-        .foregroundStyle(item == selectedItem ? .accent : .white)
+        .foregroundStyle(item == selectedItem ? .accent : (colorScheme == .dark ? .black : .white))
     }
 }

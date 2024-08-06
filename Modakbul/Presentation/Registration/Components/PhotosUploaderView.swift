@@ -11,16 +11,16 @@ import PhotosUI
 struct PhotosUploaderView: View {
     @State private var selectedPhoto: PhotosPickerItem? = nil
     @Binding var image: Data?
+    @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
         PhotosPicker(
             selection: $selectedPhoto,
             matching: .images,
             photoLibrary: .shared()) {
-                // TODO: 이미지 추가해야함
-                Circle()
-                    .foregroundStyle(.gray)
-                    .opacity(0.6)
+                Image(colorScheme == .dark ? .photoUploadMainLight : .photoUploadMainDark)
+                    .resizable()
+                    .frame(maxWidth: 200, maxHeight: 200)
                     .overlay {
                         if let userImage = image,
                            let uiImage = UIImage(data: userImage) {
@@ -31,9 +31,9 @@ struct PhotosUploaderView: View {
                         }
                     }
                     .overlay(alignment: .bottomTrailing) {
-                        // TODO: 이미지 추가해야함
-                        Image(systemName: "pencil.circle")
-                            .font(.system(size: 50).weight(.light))
+                        Image(.photoUploadSub)
+                            .resizable()
+                            .frame(maxWidth: 50, maxHeight: 50)
                     }
                     .getPhoto(selectedPhoto: $selectedPhoto, image: $image)
             }
