@@ -23,12 +23,12 @@ final class RegistrationViewModel: ObservableObject {
     @Published var image: Data? = nil
     
     // MARK: For Binding
-    @Published var currentField: RegisterField = .username
+    @Published var currentField: RegisterField = .name
     @Published var isOverlappedNickname: Bool? = nil
     
     var isNextButtonEnabled: Bool {
         switch currentField {
-        case .username:
+        case .name:
             return !name.isEmpty && name.count <= 30
         case .nickname:
             return !(isOverlappedNickname ?? true)
@@ -47,7 +47,6 @@ final class RegistrationViewModel: ObservableObject {
     }
     
     // MARK: - Private Methods
-    
     private func dateComponentsToDate(_ dateComponents: DateComponents) -> Date {
         var calendar = Calendar.current
         calendar.timeZone = TimeZone(secondsFromGMT: 0)!
@@ -111,7 +110,7 @@ final class RegistrationViewModel: ObservableObject {
         job = nil
         categoriesOfInterest = []
         image = nil
-        currentField = .username
+        currentField = .name
         isOverlappedNickname = nil
     }
 }

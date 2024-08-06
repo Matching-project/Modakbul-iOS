@@ -14,8 +14,8 @@ struct RegistrationView<Router: AppRouter>: View {
     init(registrationViewModel: RegistrationViewModel) {
         self.registrationViewModel = registrationViewModel
     }
-    
     var body: some View {
+    
         view()
             .padding([.leading, .trailing], RegistrationViewValue.xAxisPadding)
             .onDisappear {
@@ -29,7 +29,7 @@ extension RegistrationView {
     @ViewBuilder
     private func view() -> some View {
         switch registrationViewModel.currentField {
-        case .username:
+        case .name:
             contentStackView(isZStack: true) {
                 RoundedTextField("30자 내로 입력해주세요", text: $registrationViewModel.name)
             }
