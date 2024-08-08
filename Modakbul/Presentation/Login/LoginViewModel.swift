@@ -22,7 +22,7 @@ final class LoginViewModel: ObservableObject {
                 return print("카카오 로그인 실패")
             }
             // TODO: 결과값 처리
-            _ = await userRegistrationUseCase.login(token)
+            _ = await userRegistrationUseCase.login(token, by: .kakao)
         }
     }
     
@@ -34,7 +34,7 @@ final class LoginViewModel: ObservableObject {
                 return print("애플 아이디로 로그인만 지원함")
             }
             // TODO: 결과값 처리
-            _ = await userRegistrationUseCase.login(token)
+            _ = await userRegistrationUseCase.login(token, by: .apple)
         }
     }
     

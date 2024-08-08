@@ -8,7 +8,7 @@
 import Foundation
 
 protocol SocialLoginRepository {
-    func login(_ token: Data) async -> Bool
+    func login(_ token: Data, by provider: AuthenticationProvider) async -> Bool
     func logout() async
 }
 
@@ -31,7 +31,7 @@ final class DefaultSocialLoginRepository {
 
 // MARK: SocialLoginRepository Conformation
 extension DefaultSocialLoginRepository: SocialLoginRepository {
-    func login(_ token: Data) async -> Bool {
+    func login(_ token: Data, by provider: AuthenticationProvider) async -> Bool {
         true
     }
     
