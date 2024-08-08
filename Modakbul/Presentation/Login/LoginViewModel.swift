@@ -7,7 +7,7 @@
 
 import Foundation
 import AuthenticationServices
-import KakaoSDKUser
+import KakaoSDKAuth
 
 final class LoginViewModel: ObservableObject {
     private let userRegistrationUseCase: UserRegistrationUseCase
@@ -16,30 +16,25 @@ final class LoginViewModel: ObservableObject {
         self.userRegistrationUseCase = userRegistrationUseCase
     }
     
-    func loginWithKakaoTalk(_ kakaoUser: KakaoUser) {
+    func loginWithKakaoTalk(_ token: OAuthToken) {
         Task {
-            guard let email = kakaoUser.kakaoAccount?.email else {
-                return print("동의항목 문제일 가능성 높음")
+            guard let token = try? JSONEncoder().encode(token) else {
+                return print("카카오 로그인 실패")
             }
-            let credential = UserCredential(email: email, provider: .kakao)
             // TODO: 결과값 처리
-            _ = await userRegistrationUseCase.login(credential)
+            _ = await userRegistrationUseCase.login(token)
         }
     }
     
     func loginWithApple(_ credential: ASAuthorizationCredential) {
         Task {
             guard let appleIDCredential = credential as? ASAuthorizationAppleIDCredential,
-                  let familyName = appleIDCredential.fullName?.familyName,
-                  let givenName = appleIDCredential.fullName?.givenName,
-                  let email = appleIDCredential.email
+                  let token = appleIDCredential.identityToken
             else {
                 return print("애플 아이디로 로그인만 지원함")
             }
-            
-            let credential = UserCredential(familyName: familyName, givenName: givenName, email: email, provider: .apple)
             // TODO: 결과값 처리
-            _ = await userRegistrationUseCase.login(credential)
+            _ = await userRegistrationUseCase.login(token)
         }
     }
     

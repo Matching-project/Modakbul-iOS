@@ -41,8 +41,8 @@ struct LoginView<Router: AppRouter>: View {
     private var signInWithKakaoButton: some View {
         SignInKakaoButton { result in
             switch result {
-            case .success(let kakaoUser):
-                loginViewModel.loginWithKakaoTalk(kakaoUser)
+            case .success(let token):
+                loginViewModel.loginWithKakaoTalk(token)
                 router.dismiss()
             case .failure(let error):
                 print(error)

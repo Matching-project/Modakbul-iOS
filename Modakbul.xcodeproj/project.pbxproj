@@ -27,9 +27,9 @@
 		046D51202C50BB800047F25D /* ChatRoomInfoEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046D511F2C50BB800047F25D /* ChatRoomInfoEntity.swift */; };
 		046D51222C50BCAA0047F25D /* UserEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046D51212C50BCAA0047F25D /* UserEntity.swift */; };
 		046D51242C50BCEE0047F25D /* AuthenticationProviderEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046D51232C50BCEE0047F25D /* AuthenticationProviderEntity.swift */; };
+		04747CC12C64A31F008982E6 /* JSONEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04747CC02C64A31F008982E6 /* JSONEncoder.swift */; };
 		047C47EE2C1A98DC00170758 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047C47ED2C1A98DC00170758 /* HomeViewModel.swift */; };
 		048496D92C549D3400BECC21 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048496D82C549D3400BECC21 /* LoginViewModel.swift */; };
-		048496E62C54E3F700BECC21 /* UserCredential.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048496E52C54E3F700BECC21 /* UserCredential.swift */; };
 		048496EB2C54FBBF00BECC21 /* AuthenticationProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048496EA2C54FBBF00BECC21 /* AuthenticationProvider.swift */; };
 		048496FA2C55FF9B00BECC21 /* SignInKakaoButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048496F92C55FF9B00BECC21 /* SignInKakaoButton.swift */; };
 		049D83072C1DC97B0090578E /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 049D83062C1DC97B0090578E /* Location.swift */; };
@@ -90,7 +90,6 @@
 		DFE0AFD92C103FA800EC078B /* KakaoSDKCommon in Frameworks */ = {isa = PBXBuildFile; productRef = DFE0AFD82C103FA800EC078B /* KakaoSDKCommon */; };
 		DFE0AFDB2C103FA800EC078B /* KakaoSDKUser in Frameworks */ = {isa = PBXBuildFile; productRef = DFE0AFDA2C103FA800EC078B /* KakaoSDKUser */; };
 		DFE0AFDF2C104E7A00EC078B /* Bundle+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFE0AFDE2C104E7A00EC078B /* Bundle+Extension.swift */; };
-		DFE9F5B72C3D7BE500616FEC /* JSONEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFE9F5B62C3D7BE500616FEC /* JSONEncoder.swift */; };
 		DFE9F5BC2C3E6CE200616FEC /* TokensEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFE9F5BB2C3E6CE200616FEC /* TokensEntity.swift */; };
 /* End PBXBuildFile section */
 
@@ -115,9 +114,9 @@
 		046D511F2C50BB800047F25D /* ChatRoomInfoEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomInfoEntity.swift; sourceTree = "<group>"; };
 		046D51212C50BCAA0047F25D /* UserEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserEntity.swift; sourceTree = "<group>"; };
 		046D51232C50BCEE0047F25D /* AuthenticationProviderEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationProviderEntity.swift; sourceTree = "<group>"; };
+		04747CC02C64A31F008982E6 /* JSONEncoder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONEncoder.swift; sourceTree = "<group>"; };
 		047C47ED2C1A98DC00170758 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		048496D82C549D3400BECC21 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
-		048496E52C54E3F700BECC21 /* UserCredential.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCredential.swift; sourceTree = "<group>"; };
 		048496EA2C54FBBF00BECC21 /* AuthenticationProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthenticationProvider.swift; sourceTree = "<group>"; };
 		048496F92C55FF9B00BECC21 /* SignInKakaoButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInKakaoButton.swift; sourceTree = "<group>"; };
 		049D83062C1DC97B0090578E /* Location.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
@@ -178,7 +177,6 @@
 		DFA7D0392C2EA607003547CB /* UserManagementRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManagementRepository.swift; sourceTree = "<group>"; };
 		DFE0AFDE2C104E7A00EC078B /* Bundle+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Bundle+Extension.swift"; path = "Modakbul/Data/Extensions/Bundle+Extension.swift"; sourceTree = SOURCE_ROOT; };
 		DFE0AFE02C1053E600EC078B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		DFE9F5B62C3D7BE500616FEC /* JSONEncoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONEncoder.swift; sourceTree = "<group>"; };
 		DFE9F5BB2C3E6CE200616FEC /* TokensEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokensEntity.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -350,8 +348,8 @@
 			isa = PBXGroup;
 			children = (
 				04CFF7552BFDEB0B00EAE4DC /* URLSession.swift */,
-				DFE9F5B62C3D7BE500616FEC /* JSONEncoder.swift */,
 				04CFF7572BFDEC6A00EAE4DC /* JSONDecoder.swift */,
+				04747CC02C64A31F008982E6 /* JSONEncoder.swift */,
 				04E2814F2C31ACC900C118DF /* JSONEncoder.swift */,
 			);
 			path = Extensions;
@@ -375,7 +373,6 @@
 				046D51052C4BE8870047F25D /* Community.swift */,
 				04D1C7F22C085AF7008BB1F9 /* User.swift */,
 				04D1C8112C0C6EE3008BB1F9 /* BlockedUser.swift */,
-				048496E52C54E3F700BECC21 /* UserCredential.swift */,
 				048496EA2C54FBBF00BECC21 /* AuthenticationProvider.swift */,
 				04D1C7F62C0B38A7008BB1F9 /* Category.swift */,
 				046D51092C4CD31A0047F25D /* Job.swift */,
@@ -770,7 +767,6 @@
 				04F1B40F2C2C4AF200F9AD42 /* SearchBar.swift in Sources */,
 				046D51202C50BB800047F25D /* ChatRoomInfoEntity.swift in Sources */,
 				047C47EE2C1A98DC00170758 /* HomeViewModel.swift in Sources */,
-				048496E62C54E3F700BECC21 /* UserCredential.swift in Sources */,
 				04B1B6CC2C3BE9920070AD38 /* PlaceShowcaseViewModel.swift in Sources */,
 				DF92D99C2C33C99800C993CA /* ChatService.swift in Sources */,
 				04B315BA2BF860CF0043A529 /* ContentView.swift in Sources */,
@@ -780,6 +776,7 @@
 				046D510A2C4CD31A0047F25D /* Job.swift in Sources */,
 				048496EB2C54FBBF00BECC21 /* AuthenticationProvider.swift in Sources */,
 				04CFF7452BFDCE9300EAE4DC /* LoginView.swift in Sources */,
+				04747CC12C64A31F008982E6 /* JSONEncoder.swift in Sources */,
 				04D1C84C2C147B73008BB1F9 /* DataAssembly.swift in Sources */,
 				04D1C7E12C05B22F008BB1F9 /* DependencyRegister.swift in Sources */,
 				04D1C8752C16B9C0008BB1F9 /* RouterView.swift in Sources */,
@@ -798,7 +795,6 @@
 				04D1C8332C11E803008BB1F9 /* TokenStorage.swift in Sources */,
 				049D83072C1DC97B0090578E /* Location.swift in Sources */,
 				DFE9F5BC2C3E6CE200616FEC /* TokensEntity.swift in Sources */,
-				DFE9F5B72C3D7BE500616FEC /* JSONEncoder.swift in Sources */,
 				046D50F52C48F71B0047F25D /* UserRegistrationUseCase.swift in Sources */,
 				04B315B82BF8608C0043A529 /* ModakbulApp.swift in Sources */,
 				046D51222C50BCAA0047F25D /* UserEntity.swift in Sources */,
