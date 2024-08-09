@@ -17,11 +17,15 @@ struct CapsuleTag: View {
     
     var body: some View {
         Text(title)
-            .frame(minWidth: 80)
             .lineLimit(1)
-            .foregroundStyle(.white)
-            .background(.accent)
+            .padding(5)
+            .background(.white)
             .clipShape(.capsule)
+            .overlay(
+                Capsule()
+                    .stroke(.accent)
+            )
+            .foregroundStyle(.accent)
     }
 }
 
