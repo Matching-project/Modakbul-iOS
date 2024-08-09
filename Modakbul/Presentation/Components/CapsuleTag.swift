@@ -18,12 +18,12 @@ struct CapsuleTag: View {
     var body: some View {
         Text(title)
             .lineLimit(1)
-            .padding(5)
+            .padding(6)
             .background(.white)
             .clipShape(.capsule)
             .overlay(
                 Capsule()
-                    .stroke(.accent)
+                    .strokeBorder(.accent)
             )
             .foregroundStyle(.accent)
     }
