@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum DayOfWeek: CaseIterable {
+enum DayOfWeek: CaseIterable, Identifiable, CustomStringConvertible {
     case mon
     case tue
     case wed
@@ -15,4 +15,25 @@ enum DayOfWeek: CaseIterable {
     case fri
     case sat
     case sun
+    
+    var id: Self { self }
+    
+    var description: String {
+        switch self {
+        case .mon:
+            "월"
+        case .tue:
+            "화"
+        case .wed:
+            "수"
+        case .thu:
+            "목"
+        case .fri:
+            "금"
+        case .sat:
+            "토"
+        case .sun:
+            "일"
+        }
+    }
 }
