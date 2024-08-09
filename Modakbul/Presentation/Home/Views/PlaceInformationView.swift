@@ -124,13 +124,13 @@ struct PlaceInformationView<Router: AppRouter>: View {
 
 extension PlaceInformationView {
     struct Cell: View {
-        private let communityRecruitingContent: CommunityReqruitingContent
+        private let communityRecruitingContent: CommunityRecruitingContent
         
         private var community: Community {
             self.communityRecruitingContent.community
         }
         
-        init(_ communityRecruitingContent: CommunityReqruitingContent) {
+        init(_ communityRecruitingContent: CommunityRecruitingContent) {
             self.communityRecruitingContent = communityRecruitingContent
         }
         

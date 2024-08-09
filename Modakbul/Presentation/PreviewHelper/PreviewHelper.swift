@@ -44,7 +44,7 @@ final class PreviewHelper {
             noiseLevel: .quiet,
             groupSeatingState: .yes,
             communities: [
-                CommunityReqruitingContent(
+                CommunityRecruitingContent(
                     id: UUID().uuidString,
                     title: "개발 모각코 하실 분 구합니다!",
                     content: "글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다.",
@@ -83,7 +83,7 @@ final class PreviewHelper {
                     )
                 ),
                 
-                CommunityReqruitingContent(
+                CommunityRecruitingContent(
                     id: UUID().uuidString,
                     title: "개발 모각코 하실 분 구합니다!",
                     content: "글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. ",
@@ -122,7 +122,7 @@ final class PreviewHelper {
                     )
                 ),
                 
-                CommunityReqruitingContent(
+                CommunityRecruitingContent(
                     id: UUID().uuidString,
                     title: "개발 모각코 하실 분 구합니다!",
                     content: "글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. ",
@@ -161,7 +161,7 @@ final class PreviewHelper {
                     )
                 ),
                 
-                CommunityReqruitingContent(
+                CommunityRecruitingContent(
                     id: UUID().uuidString,
                     title: "개발 모각코 하실 분 구합니다!",
                     content: "글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. ",
@@ -244,7 +244,7 @@ final class PreviewHelper {
             noiseLevel: .noisy,
             groupSeatingState: .yes,
             communities: [
-                CommunityReqruitingContent(
+                CommunityRecruitingContent(
                     id: UUID().uuidString,
                     title: "개발 모각코 하실 분 구합니다!",
                     content: "글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. ",
@@ -283,7 +283,7 @@ final class PreviewHelper {
                     )
                 ),
                 
-                CommunityReqruitingContent(
+                CommunityRecruitingContent(
                     id: UUID().uuidString,
                     title: "개발 모각코 하실 분 구합니다!",
                     content: "글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. ",
@@ -322,7 +322,7 @@ final class PreviewHelper {
                     )
                 ),
                 
-                CommunityReqruitingContent(
+                CommunityRecruitingContent(
                     id: UUID().uuidString,
                     title: "개발 모각코 하실 분 구합니다!",
                     content: "글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. ",
@@ -361,7 +361,7 @@ final class PreviewHelper {
                     )
                 ),
                 
-                CommunityReqruitingContent(
+                CommunityRecruitingContent(
                     id: UUID().uuidString,
                     title: "개발 모각코 하실 분 구합니다!",
                     content: "글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. ",

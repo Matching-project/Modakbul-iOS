@@ -28,7 +28,7 @@ struct Community {
     let promiseDate: PromiseDate
 }
 
-struct CommunityReqruitingContent {
+struct CommunityRecruitingContent {
     let id: String
     let title: String
     let content: String
