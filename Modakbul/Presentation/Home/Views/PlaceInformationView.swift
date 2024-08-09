@@ -9,44 +9,116 @@ import SwiftUI
 
 struct PlaceInformationView<Router: AppRouter>: View {
     @EnvironmentObject private var router: Router
+    @State private var selectedDayOfWeek: DayOfWeek
     
     private let place: Place
     
     init(place: Place) {
         self.place = place
+        let calendar = Calendar.current
+        let weekDay = calendar.component(.weekday, from: .now)
+        switch weekDay {
+        case 1: self.selectedDayOfWeek = .sun
+        case 2: self.selectedDayOfWeek = .mon
+        case 3: self.selectedDayOfWeek = .tue
+        case 4: self.selectedDayOfWeek = .wed
+        case 5: self.selectedDayOfWeek = .thu
+        case 6: self.selectedDayOfWeek = .fri
+        default: self.selectedDayOfWeek = .sat
+        }
     }
     
     var body: some View {
-        VStack {
-            PlaceInformationHeader(place)
+        GeometryReader { proxy in
+            VStack {
+                HStack {
+                    AsyncDynamicSizingImageView(imageData: Data(), width: proxy.size.width / 3, height: proxy.size.width / 3)
+                    
+                    Spacer()
+                    
+                    informationArea
+                }
                 .padding(.top)
                 .overlay(alignment: .topTrailing) {
-                    Button {
-                        // TODO: 모집글 작성 뷰로 이동
-                    } label: {
-                        Image(systemName: "pencil.circle.fill")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 30, height: 30)
-                    }
-                    .padding(.trailing)
-                    .alignmentGuide(.top) { dimension in
-                        dimension.height / 2 - 30
-                    }
-                    .alignmentGuide(.trailing) { dimension in
-                        dimension.width / 2 + 14
-                    }
+                    communityRecruitingContentEditButton
                 }
-            
-            ScrollView {
-                LazyVStack {
-                    ForEach(place.communities, id: \.id) { communityRecruitingContent in
-                        Cell(communityRecruitingContent)
-                    }
-                }
+                
+                communityRecruitingContentListArea
             }
         }
         .padding()
+    }
+    
+    private var informationArea: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            VStack(alignment: .leading, spacing: 4) {
+                Text(place.location.name)
+                    .font(.title2.bold())
+                
+                Text(place.location.address)
+                    .font(.subheadline)
+            }
+            
+            HStack {
+                Text("운영시간: ")
+                    .font(.subheadline)
+                
+                Menu {
+                    Picker(selection: $selectedDayOfWeek) {
+                        ForEach(DayOfWeek.allCases) { dayOfWeek in
+                            Text(displayOpeningHours(dayOfWeek))
+                        }
+                    } label: {}
+                } label: {
+                    Text(displayOpeningHours(selectedDayOfWeek))
+                    Image(systemName: "chevron.down")
+                }
+                .font(.subheadline)
+            }
+            
+            HStack {
+                CapsuleTag(place.powerSocketState.description)
+                CapsuleTag(place.noiseLevel.description)
+                CapsuleTag(place.groupSeatingState.description)
+            }
+            .font(.caption)
+        }
+    }
+    
+    private var communityRecruitingContentEditButton: some View {
+        Button {
+            // TODO: 모집글 작성 뷰로 이동
+        } label: {
+            Image(systemName: "pencil.circle.fill")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 30, height: 30)
+        }
+        .padding(.trailing)
+        .alignmentGuide(.top) { dimension in
+            dimension.height / 2 - 30
+        }
+        .alignmentGuide(.trailing) { dimension in
+            dimension.width / 2 + 14
+        }
+    }
+    
+    private var communityRecruitingContentListArea: some View {
+        ScrollView {
+            LazyVStack {
+                ForEach(place.communities, id: \.id) { communityRecruitingContent in
+                    Cell(communityRecruitingContent)
+                }
+            }
+        }
+    }
+    
+    private func displayOpeningHours(_ dayOfWeek: DayOfWeek) -> String {
+        let day = dayOfWeek.description
+        guard let openingHours = place.openingHoursOfWeek[dayOfWeek] else {
+            return day + " " + "정보 없음"
+        }
+        return day + " " + openingHours.open + " - " + openingHours.close
     }
 }
 
@@ -84,7 +156,11 @@ extension PlaceInformationView {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding()
-            .border(.accent)
+            .background(
+                RoundedRectangle(cornerRadius: 14)
+                    .strokeBorder(.accent)
+            )
+//            .border(.accent)
         }
     }
 }

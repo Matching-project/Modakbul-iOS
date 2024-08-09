@@ -76,7 +76,7 @@
 		04D1C84E2C1483B4008BB1F9 /* DomainAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D1C84D2C1483B4008BB1F9 /* DomainAssembly.swift */; };
 		04D1C8502C14867D008BB1F9 /* PresentationAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D1C84F2C14867D008BB1F9 /* PresentationAssembly.swift */; };
 		04D1C8752C16B9C0008BB1F9 /* RouterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D1C8742C16B9C0008BB1F9 /* RouterView.swift */; };
-		04DF0B372C65E1870001831A /* PlaceInformationHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04DF0B362C65E1870001831A /* PlaceInformationHeader.swift */; };
+		04DF0B392C6630FF0001831A /* AsyncDynamicSizingImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04DF0B382C6630FF0001831A /* AsyncDynamicSizingImageView.swift */; };
 		04E281532C31B8FF00C118DF /* ChatRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E281522C31B8FF00C118DF /* ChatRepository.swift */; };
 		04E281572C329EA000C118DF /* ChatMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E281562C329EA000C118DF /* ChatMessage.swift */; };
 		04E2816E2C37D1F200C118DF /* AlertType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E2816D2C37D1F200C118DF /* AlertType.swift */; };
@@ -171,7 +171,7 @@
 		04D1C84D2C1483B4008BB1F9 /* DomainAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainAssembly.swift; sourceTree = "<group>"; };
 		04D1C84F2C14867D008BB1F9 /* PresentationAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentationAssembly.swift; sourceTree = "<group>"; };
 		04D1C8742C16B9C0008BB1F9 /* RouterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouterView.swift; sourceTree = "<group>"; };
-		04DF0B362C65E1870001831A /* PlaceInformationHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceInformationHeader.swift; sourceTree = "<group>"; };
+		04DF0B382C6630FF0001831A /* AsyncDynamicSizingImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncDynamicSizingImageView.swift; sourceTree = "<group>"; };
 		04E281522C31B8FF00C118DF /* ChatRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRepository.swift; sourceTree = "<group>"; };
 		04E281562C329EA000C118DF /* ChatMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessage.swift; sourceTree = "<group>"; };
 		04E2816D2C37D1F200C118DF /* AlertType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertType.swift; sourceTree = "<group>"; };
@@ -297,7 +297,7 @@
 				04F1B40E2C2C4AF200F9AD42 /* SearchBar.swift */,
 				046D51182C4FB3950047F25D /* StrokedButton.swift */,
 				048496D62C53801700BECC21 /* CapsuleTag.swift */,
-				04DF0B362C65E1870001831A /* PlaceInformationHeader.swift */,
+				04DF0B382C6630FF0001831A /* AsyncDynamicSizingImageView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -818,7 +818,6 @@
 				DF92D99C2C33C99800C993CA /* ChatService.swift in Sources */,
 				04B315BA2BF860CF0043A529 /* ContentView.swift in Sources */,
 				04E2817C2C39380F00C118DF /* ConfirmationContentPresentable.swift in Sources */,
-				04DF0B372C65E1870001831A /* PlaceInformationHeader.swift in Sources */,
 				046D50CA2C40059C0047F25D /* SuggestedResult.swift in Sources */,
 				046D50FE2C4BDACA0047F25D /* CommunityUseCase.swift in Sources */,
 				046D510A2C4CD31A0047F25D /* Job.swift in Sources */,
@@ -859,6 +858,7 @@
 				04B1B6D22C3BFE8A0070AD38 /* LocalMapService.swift in Sources */,
 				046D51002C4BDAD00047F25D /* PlaceShowcaseAndReviewUseCase.swift in Sources */,
 				04E281782C382C2900C118DF /* ConfirmationDialogType.swift in Sources */,
+				04DF0B392C6630FF0001831A /* AsyncDynamicSizingImageView.swift in Sources */,
 				046D51302C5221010047F25D /* MapArea.swift in Sources */,
 				046D51242C50BCEE0047F25D /* AuthenticationProviderEntity.swift in Sources */,
 				04E2817A2C3936B000C118DF /* ConfirmationDialogModifier.swift in Sources */,
