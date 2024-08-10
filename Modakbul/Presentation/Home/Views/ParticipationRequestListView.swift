@@ -71,11 +71,3 @@ struct ParticipationRequestListView<Router: AppRouter>: View {
         .navigationBarTitleDisplayMode(.inline)
     }
 }
-
-struct ParticipationRequestListView_Preview: PreviewProvider {
-    static var previews: some View {
-        NavigationStack {
-            ParticipationRequestListView<DefaultAppRouter>(participationRequestListViewModel: router.resolver.resolve(ParticipationRequestListViewModel.self), communityRecruitingContent: previewHelper.places.first!.communities.first!)
-        }
-    }
-}

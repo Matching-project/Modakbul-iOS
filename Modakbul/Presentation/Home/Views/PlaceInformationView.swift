@@ -108,6 +108,10 @@ struct PlaceInformationView<Router: AppRouter>: View {
             LazyVStack {
                 ForEach(place.communities, id: \.id) { communityRecruitingContent in
                     Cell(communityRecruitingContent)
+                        .onTapGesture {
+                            router.dismiss()
+                            router.route(to: .placeInformationDetailView(communityRecruitingContentId: communityRecruitingContent.id))
+                        }
                 }
             }
         }
@@ -160,7 +164,6 @@ extension PlaceInformationView {
                 RoundedRectangle(cornerRadius: 14)
                     .strokeBorder(.accent)
             )
-//            .border(.accent)
         }
     }
 }
