@@ -33,13 +33,18 @@ final class DefaultSocialLoginRepository {
 extension DefaultSocialLoginRepository: SocialLoginRepository {
     func login(_ credential: UserCredential) async -> Bool {
         do {
-            let endpoint = Endpoint.login(email: credential.email, provider: credential.provider.identifier)
+            
+            let endpoint = Endpoint.login(token: credential.authorizationCode, provider: credential.provider.identifier)
             let response = try await networkService.request(endpoint: endpoint, for: Bool.self)
+            
             guard let accessToken = response.accessToken,
                   let refreshToken = response.refreshToken
             else { return response.body }
+            
             let tokens = TokensEntity(accessToken: accessToken, refreshToken: refreshToken)
             try tokenStorage.store(tokens, by: credential.email)
+            // TODO: - [id: tokens] 으로 저장해야 되지 않을까?
+            // try tokenStorage.store(tokens, by: credential.id)
             return response.body
         } catch {
             // TODO: 에러 핸들링 필요

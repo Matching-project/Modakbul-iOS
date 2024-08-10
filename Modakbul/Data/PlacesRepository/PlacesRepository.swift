@@ -46,7 +46,7 @@ final class DefaultPlacesRepository {
 // MARK: PlacesRepository Conformation
 extension DefaultPlacesRepository: PlacesRepository {
     func findPlaces(on coordinate: Coordinate) async throws -> [Place] {
-        let endpoint = Endpoint.readPlaceList(lat: coordinate.latitude, lon: coordinate.longitude)
+        let endpoint = Endpoint.readPlacesByDistance(lat: coordinate.latitude, lon: coordinate.longitude)
         
         do {
             let response = try await networkService.request(endpoint: endpoint, for: [PlaceEntity].self)
@@ -57,7 +57,7 @@ extension DefaultPlacesRepository: PlacesRepository {
     }
     
     func findPlace(with keyword: String) async throws -> Place {
-        let endpoint = Endpoint.readPlaceList(lat: 0, lon: 0)
+        let endpoint = Endpoint.readPlacesByDistance(lat: 0, lon: 0)
         
         do {
             let response = try await networkService.request(endpoint: endpoint, for: PlaceEntity.self)
