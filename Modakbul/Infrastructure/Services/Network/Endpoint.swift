@@ -21,7 +21,7 @@ enum Endpoint {
     case logout(token: String)                                  // 로그아웃
     case reissueToken(refreshToken: String)                     // 토큰 재발행
     case updateProfile(token: String, user: UserEntity)         // 프로필 수정
-    case readProfile(token: String)                             // 회원 정보 조회
+    case readMyProfile(token: String)                             // 회원 정보 조회
     case readMyBoards(token: String)                            // 나의 모집글 목록 조회
     case readMyMatches(token: String)                           // 참여 모임 내역 조회
     case readMyRequestMatches(token: String)                    // 나의 참여 요청 목록 조회
@@ -60,7 +60,7 @@ extension Endpoint {
 }
 // MARK: Requestable Conformation
 extension Endpoint: TargetType {
-    var baseURL: URL { URL(string:"modakbul.com")! } // TODO: 도메인 호스트는 서버 배포 이후에 나올 예정
+    var baseURL: URL { URL(string:"https://modakbul.com")! } // TODO: 도메인 호스트는 서버 배포 이후에 나올 예정
     
     var path: String {
         switch self {
@@ -76,7 +76,7 @@ extension Endpoint: TargetType {
             return "/token/reissue"
         case .updateProfile:
             return "/users/profile"
-        case .readProfile:
+        case .readMyProfile:
             return "/users/mypage/profile"
         case .readMyBoards:
             return "/users/boards"
@@ -121,7 +121,7 @@ extension Endpoint: TargetType {
     
     var method: Moya.Method {
         switch self {
-        case .checkNicknameForOverlap, .readProfile, .readMyBoards, .readMyMatches, .readMyRequestMatches, .readPlaces, .readPlacesByMatches, .readPlacesByDistance, .readBoards, .readBoardForUpdate, .readBoardDetail, .readMatches, .readChatrooms: return .get
+        case .checkNicknameForOverlap, .readMyProfile, .readMyBoards, .readMyMatches, .readMyRequestMatches, .readPlaces, .readPlacesByMatches, .readPlacesByDistance, .readBoards, .readBoardForUpdate, .readBoardDetail, .readMatches, .readChatrooms: return .get
         case .login, .register, .reissueToken, .createBoard, .requestMatch, .createChatRoom: return .post
         case .logout, .deleteBoard: return .delete
         case .updateProfile, .updateBoard, .acceptMatchRequest, .rejectMatchRequest, .exitChatRoom: return .patch
@@ -186,7 +186,7 @@ extension Endpoint: TargetType {
 //            }
 
             return .uploadMultipart(formData)
-        case .readProfile:
+        case .readMyProfile:
             return .requestPlain
         case .readMyBoards:
             return .requestPlain
@@ -245,7 +245,7 @@ extension Endpoint: TargetType {
         case .updateProfile(let token, let user):
             ["Content-type": "application/json",
              "Authorization": "\(token)"]
-        case .readProfile(let token):
+        case .readMyProfile(let token):
             ["Authorization": "\(token)"]
         case .readMyBoards(let token):
             ["Authorization": "\(token)"]
@@ -280,4 +280,16 @@ extension Endpoint: TargetType {
         default: nil
         }
     }
+    
+    var validationType: ValidationType {
+        .successCodes
+    }
+    
+    var authorizationType: AuthorizationType? {
+          switch self {
+          case .login, .logout, .reissueToken, .updateProfile, .readMyProfile, .readMyBoards, .readMyMatches, .readMyRequestMatches, .createBoard, .readBoardForUpdate, .updateBoard, .deleteBoard, .readMatches, .requestMatch, .acceptMatchRequest, .rejectMatchRequest, .createChatRoom, .readChatrooms, .exitChatRoom:
+                  .bearer
+          default: .none
+          }
+      }
 }
