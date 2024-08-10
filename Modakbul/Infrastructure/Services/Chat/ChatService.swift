@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import Alamofire
 
 protocol ChatService {
     func connect(endpoint: Requestable, _ continuation: AsyncThrowingStream<ChatMessage, Error>.Continuation) throws
@@ -29,7 +28,7 @@ enum ChatServiceError: Error {
 }
 
 final class DefaultChatService {
-    private let session: URLSessionProtocol
+    private let socketManager: SocketManager
     private let encoder: JSONEncodable
     private let decoder: JSONDecodable
     
@@ -37,11 +36,11 @@ final class DefaultChatService {
     private var chatStreamContinuation: AsyncThrowingStream<ChatMessage, Error>.Continuation?
     
     init(
-        session: URLSessionProtocol = AF.session,
+        socketManager: SocketManager,
         encoder: JSONEncodable = JSONEncoder(),
         decoder: JSONDecodable = JSONDecoder()
     ) {
-        self.session = session
+        self.socketManager = socketManager
         self.encoder = encoder
         self.decoder = decoder
     }
@@ -60,7 +59,8 @@ final class DefaultChatService {
         return decodedData
     }
     
-    private func performReceivedResult(_ result: URLSessionWebSocketTask.Message, _ continuation: AsyncThrowingStream<ChatMessage, Error>.Continuation) {
+    private func performReceivedResult(_ result: URLSessionWebSocketTask.Message,
+                                       _ continuation: AsyncThrowingStream<ChatMessage, Error>.Continuation) {
         do {
             switch result {
             case .data(let data):
@@ -80,10 +80,10 @@ extension DefaultChatService: ChatService {
     func connect(endpoint: any Requestable, _ continuation: AsyncThrowingStream<ChatMessage, Error>.Continuation) throws {
         guard let url = endpoint.asURLComponents().url else { throw ChatServiceError.invalidURL }
         let urlRequest = URLRequest(url: url)
-        socket = session.webSocketTask(with: urlRequest)
+        socket = socketManager.webSocketTask(with: urlRequest)
         chatStreamContinuation = continuation
         
-        Task {
+        _Concurrency.Task {
             while let socket = socket, socket.state == .running {
                 do {
                     let result = try await socket.receive()
