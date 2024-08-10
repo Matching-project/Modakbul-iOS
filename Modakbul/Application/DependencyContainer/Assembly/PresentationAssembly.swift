@@ -19,6 +19,10 @@ struct PresentationAssembly: Assembly {
         container.register(for: PlaceShowcaseViewModel.self) { resolver in
             PlaceShowcaseViewModel(placeShowcaseAndReviewUseCase: resolver.resolve(PlaceShowcaseAndReviewUseCase.self))
         }
+        
+        container.register(for: ParticipationRequestListViewModel.self) { resolver in
+            ParticipationRequestListViewModel()
+        }
     }
     
     func loaded(resolver: DependencyResolver) {
