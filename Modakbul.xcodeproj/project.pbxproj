@@ -43,6 +43,9 @@
 		04B315BC2BF8612D0043A529 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 04B315BB2BF8612D0043A529 /* Assets.xcassets */; };
 		04B315C42BFC90F80043A529 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B315C32BFC90F80043A529 /* HomeView.swift */; };
 		04C651F52C66F3F70048A196 /* ButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C651F42C66F3F70048A196 /* ButtonStyle.swift */; };
+		04C651F72C6709F20048A196 /* PlaceInformationDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C651F62C6709F20048A196 /* PlaceInformationDetailView.swift */; };
+		04C651F92C670BB40048A196 /* PlaceInformationDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C651F82C670BB40048A196 /* PlaceInformationDetailViewModel.swift */; };
+		04C651FD2C6742880048A196 /* CustomPageControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C651FC2C6742880048A196 /* CustomPageControl.swift */; };
 		04CFF7452BFDCE9300EAE4DC /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04CFF7442BFDCE9300EAE4DC /* LoginView.swift */; };
 		04CFF7482BFDCF8300EAE4DC /* AppleLoginButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04CFF7472BFDCF8300EAE4DC /* AppleLoginButton.swift */; };
 		04CFF7512BFDE9E500EAE4DC /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04CFF7502BFDE9E500EAE4DC /* NetworkService.swift */; };
@@ -140,6 +143,9 @@
 		04B315BB2BF8612D0043A529 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		04B315C32BFC90F80043A529 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		04C651F42C66F3F70048A196 /* ButtonStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonStyle.swift; sourceTree = "<group>"; };
+		04C651F62C6709F20048A196 /* PlaceInformationDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceInformationDetailView.swift; sourceTree = "<group>"; };
+		04C651F82C670BB40048A196 /* PlaceInformationDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceInformationDetailViewModel.swift; sourceTree = "<group>"; };
+		04C651FC2C6742880048A196 /* CustomPageControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPageControl.swift; sourceTree = "<group>"; };
 		04CFF7442BFDCE9300EAE4DC /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		04CFF7472BFDCF8300EAE4DC /* AppleLoginButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleLoginButton.swift; sourceTree = "<group>"; };
 		04CFF7502BFDE9E500EAE4DC /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
@@ -305,6 +311,7 @@
 				046D51182C4FB3950047F25D /* StrokedButton.swift */,
 				048496D62C53801700BECC21 /* CapsuleTag.swift */,
 				04DF0B382C6630FF0001831A /* AsyncDynamicSizingImageView.swift */,
+				04C651FC2C6742880048A196 /* CustomPageControl.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -613,6 +620,7 @@
 			isa = PBXGroup;
 			children = (
 				047C47ED2C1A98DC00170758 /* HomeViewModel.swift */,
+				04C651F82C670BB40048A196 /* PlaceInformationDetailViewModel.swift */,
 				04DF0B3D2C66487F0001831A /* ParticipationRequestListViewModel.swift */,
 			);
 			path = ViewModels;
@@ -625,6 +633,7 @@
 				046D512F2C5221010047F25D /* MapArea.swift */,
 				046D51312C5223420047F25D /* PlacesListArea.swift */,
 				048496D42C528A9200BECC21 /* PlaceInformationView.swift */,
+				04C651F62C6709F20048A196 /* PlaceInformationDetailView.swift */,
 				04DF0B3B2C6647B40001831A /* ParticipationRequestListView.swift */,
 			);
 			path = Views;
@@ -840,6 +849,7 @@
 				04D1C82F2C11C0FE008BB1F9 /* KakaoLoginManager.swift in Sources */,
 				04C651F52C66F3F70048A196 /* ButtonStyle.swift in Sources */,
 				044023402C1F50790029E6FA /* PlaceEntity.swift in Sources */,
+				04C651F72C6709F20048A196 /* PlaceInformationDetailView.swift in Sources */,
 				046D510E2C4CD9290047F25D /* DayOfWeek.swift in Sources */,
 				04D1C7DF2C05B041008BB1F9 /* DependencyResolver.swift in Sources */,
 				04D1C8062C0C644B008BB1F9 /* AuthenticationProvider.swift in Sources */,
@@ -876,7 +886,9 @@
 				04D1C7F12C085981008BB1F9 /* Place.swift in Sources */,
 				0440233D2C1F3E9E0029E6FA /* PlacesRepository.swift in Sources */,
 				04CFF7532BFDEAF700EAE4DC /* NetworkSessionManager.swift in Sources */,
+				04C651F92C670BB40048A196 /* PlaceInformationDetailViewModel.swift in Sources */,
 				04D1C8292C11AEE2008BB1F9 /* AuthorizationService.swift in Sources */,
+				04C651FD2C6742880048A196 /* CustomPageControl.swift in Sources */,
 				04D1C8502C14867D008BB1F9 /* PresentationAssembly.swift in Sources */,
 				04CFF7622BFDF51200EAE4DC /* CLLocationManager.swift in Sources */,
 				046D51062C4BE8870047F25D /* Community.swift in Sources */,

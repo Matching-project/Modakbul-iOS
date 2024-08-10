@@ -39,6 +39,7 @@ enum Route: Routable {
     case mapArea
     case placesListArea
     case placeInformationView(place: Place)
+    case placeInformationDetailView(communityRecruitingContentId: String)
     case participationRequestListView(communityRecruitingContent: CommunityRecruitingContent)
     
     var presentingType: PresentingType {
@@ -53,6 +54,7 @@ enum Route: Routable {
         case .mapArea: return .push
         case .placesListArea: return .push
         case .placeInformationView: return .sheet(detents: [.medium, .large])
+        case .placeInformationDetailView: return .push
         case .participationRequestListView: return .push
         }
     }
@@ -79,6 +81,8 @@ enum Route: Routable {
             PlacesListArea<Router>(router.resolver.resolve(HomeViewModel.self))
         case .placeInformationView(let place):
             PlaceInformationView<Router>(place: place)
+        case .placeInformationDetailView(let communityRecruitingContentId):
+            PlaceInformationDetailView<Router>(communityRecruitingContentId: communityRecruitingContentId)
         case .participationRequestListView(let communityRecruitingContent):
             ParticipationRequestListView<Router>(participationRequestListViewModel: router.resolver.resolve(ParticipationRequestListViewModel.self), communityRecruitingContent: communityRecruitingContent)
         }
