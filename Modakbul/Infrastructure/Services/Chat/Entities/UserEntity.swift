@@ -29,7 +29,7 @@ struct UserEntity: Codable {
         self.categoriesOfInterest = [String](dto.categoriesOfInterest.map({$0.identifier}))
         self.isGenderVisible = dto.isGenderVisible
         self.birth = dto.birth.toString()
-        self.imageURL = dto.imageURL
+        self.imageURL = dto.imageURL?.absoluteString
     }
 }
 
@@ -44,6 +44,6 @@ extension UserEntity {
                     categoriesOfInterest: [],
                     isGenderVisible: true,
                     birth: .now,
-                    imageURL: imageURL)
+                    imageURL: URL(string: imageURL!))
     }
 }

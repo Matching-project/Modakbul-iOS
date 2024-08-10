@@ -7,18 +7,22 @@
 
 import Foundation
 
-enum Job {
+enum Job: CustomStringConvertible {
     case collegeStudent
     case jobSeeker
     case officeWorker
     case other
     
-    var identifier: String {
+    var description: String {
         switch self {
-        case .collegeStudent: return "CollegeStudent"
-        case .jobSeeker: return "JobSeeker"
-        case .officeWorker: return "OfficeWorker"
-        case .other: return "Other"
+        case .collegeStudent: return "대학생"
+        case .jobSeeker: return "취준생"
+        case .officeWorker: return "직장인"
+        case .other: return "기타"
         }
+    }
+    
+    var identifier: String {
+        String(describing: self)
     }
 }
