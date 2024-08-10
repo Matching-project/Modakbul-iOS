@@ -14,7 +14,7 @@ struct CapsuledInsetButton: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .foregroundStyle(foregroundColor)
-            .padding(.horizontal, 24)
+            .padding(.horizontal, 20)
             .padding(.vertical, 6)
             .background(
                 Capsule()
