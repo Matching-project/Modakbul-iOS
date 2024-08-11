@@ -17,7 +17,7 @@ enum Endpoint {
     case logout(token: String)                                  // 로그아웃
     case reissueToken(refreshToken: String)                     // 토큰 재발행
     case updateProfile(token: String, user: UserEntity)         // 프로필 수정
-    case readMyProfile(token: String)                             // 회원 정보 조회
+    case readMyProfile(token: String)                           // 회원 정보 조회
     case readMyBoards(token: String)                            // 나의 모집글 목록 조회
     case readMyMatches(token: String)                           // 참여 모임 내역 조회
     case readMyRequestMatches(token: String)                    // 나의 참여 요청 목록 조회
@@ -154,7 +154,6 @@ extension Endpoint: TargetType {
             return .requestPlain
         case .reissueToken:
             return .requestPlain
-        // MARK: - API image String or data 인지 질문함
         case .updateProfile(_, let user):
             var formData = [MultipartFormData]()
 
