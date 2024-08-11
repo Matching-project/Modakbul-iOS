@@ -7,6 +7,12 @@
 
 import SwiftUI
 
+extension View {
+    func tabItemStyle(_ pageType: PageType, color: Color = .primary) -> some View {
+        self.modifier(TabItemModifier(type: pageType, color: color))
+    }
+}
+
 struct TabItemModifier: ViewModifier {
     let pageType: PageType
     let tint: Color
@@ -23,11 +29,5 @@ struct TabItemModifier: ViewModifier {
         content
             .tabItem { pageType.label }
             .tag(pageType)
-    }
-}
-
-extension View {
-    func tabItemStyle(_ pageType: PageType, color: Color = .primary) -> some View {
-        self.modifier(TabItemModifier(type: pageType, color: color))
     }
 }

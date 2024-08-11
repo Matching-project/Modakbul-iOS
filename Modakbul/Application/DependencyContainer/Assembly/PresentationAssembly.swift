@@ -12,10 +12,15 @@ struct PresentationAssembly: Assembly {
         container.register(for: LoginViewModel.self) { resolver in
             LoginViewModel(userRegistrationUseCase: resolver.resolve(UserRegistrationUseCase.self))
         }
+        
         container.register(for: HomeViewModel.self) { resolver in
             HomeViewModel(localMapUseCase: resolver.resolve(LocalMapUseCase.self))
         }
         
+        container.register(for: RegistrationViewModel.self) { resolver in
+            RegistrationViewModel(userRegistrationUseCase: resolver.resolve(UserRegistrationUseCase.self))
+        }
+                
         container.register(for: PlaceShowcaseViewModel.self) { resolver in
             PlaceShowcaseViewModel(placeShowcaseAndReviewUseCase: resolver.resolve(PlaceShowcaseAndReviewUseCase.self))
         }
