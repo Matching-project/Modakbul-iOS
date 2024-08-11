@@ -35,6 +35,9 @@
 		04B315BA2BF860CF0043A529 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B315B92BF860CF0043A529 /* ContentView.swift */; };
 		04B315BC2BF8612D0043A529 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 04B315BB2BF8612D0043A529 /* Assets.xcassets */; };
 		04B315C42BFC90F80043A529 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B315C32BFC90F80043A529 /* HomeView.swift */; };
+		04C651FF2C675E4C0048A196 /* NicknameOverlappedEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C651FE2C675E4C0048A196 /* NicknameOverlappedEntity.swift */; };
+		04C652012C675FFE0048A196 /* DefaultResponseEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C652002C675FFE0048A196 /* DefaultResponseEntity.swift */; };
+		04C652052C6762DE0048A196 /* UserInformationEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C652042C6762DE0048A196 /* UserInformationEntity.swift */; };
 		04CFF7452BFDCE9300EAE4DC /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04CFF7442BFDCE9300EAE4DC /* LoginView.swift */; };
 		04CFF7482BFDCF8300EAE4DC /* AppleLoginButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04CFF7472BFDCF8300EAE4DC /* AppleLoginButton.swift */; };
 		04CFF7512BFDE9E500EAE4DC /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04CFF7502BFDE9E500EAE4DC /* NetworkService.swift */; };
@@ -120,6 +123,9 @@
 		04B315B92BF860CF0043A529 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		04B315BB2BF8612D0043A529 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		04B315C32BFC90F80043A529 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		04C651FE2C675E4C0048A196 /* NicknameOverlappedEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NicknameOverlappedEntity.swift; sourceTree = "<group>"; };
+		04C652002C675FFE0048A196 /* DefaultResponseEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultResponseEntity.swift; sourceTree = "<group>"; };
+		04C652042C6762DE0048A196 /* UserInformationEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInformationEntity.swift; sourceTree = "<group>"; };
 		04CFF7442BFDCE9300EAE4DC /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		04CFF7472BFDCF8300EAE4DC /* AppleLoginButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleLoginButton.swift; sourceTree = "<group>"; };
 		04CFF7502BFDE9E500EAE4DC /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
@@ -201,6 +207,9 @@
 		0440233E2C1F506C0029E6FA /* Entities */ = {
 			isa = PBXGroup;
 			children = (
+				04C652002C675FFE0048A196 /* DefaultResponseEntity.swift */,
+				04C651FE2C675E4C0048A196 /* NicknameOverlappedEntity.swift */,
+				04C652042C6762DE0048A196 /* UserInformationEntity.swift */,
 				0440233F2C1F50790029E6FA /* PlaceEntity.swift */,
 				DFE9F5BB2C3E6CE200616FEC /* TokensEntity.swift */,
 				047F7E0A2C5E3DDF00131837 /* UserEntity.swift */,
@@ -756,6 +765,7 @@
 				04D1C8352C11EC8D008BB1F9 /* Endpoint.swift in Sources */,
 				04CFF7582BFDEC6A00EAE4DC /* JSONDecoder.swift in Sources */,
 				04D1C84E2C1483B4008BB1F9 /* DomainAssembly.swift in Sources */,
+				04C652012C675FFE0048A196 /* DefaultResponseEntity.swift in Sources */,
 				04CFF7892C0365C700EAE4DC /* TabItemModifier.swift in Sources */,
 				04D1C84A2C147839008BB1F9 /* InfrastructureAssembly.swift in Sources */,
 				04D1C7DD2C04C138008BB1F9 /* DependencyContainer.swift in Sources */,
@@ -778,6 +788,8 @@
 				04CFF77A2C01BC2A00EAE4DC /* MyView.swift in Sources */,
 				04CFF7562BFDEB0B00EAE4DC /* URLSession.swift in Sources */,
 				04CFF7732C00B2C700EAE4DC /* Route.swift in Sources */,
+				04C651FF2C675E4C0048A196 /* NicknameOverlappedEntity.swift in Sources */,
+				04C652052C6762DE0048A196 /* UserInformationEntity.swift in Sources */,
 				046D51082C4BF8090047F25D /* ChatRoomConfiguration.swift in Sources */,
 				046D51192C4FB3950047F25D /* StrokedButton.swift in Sources */,
 				04E281572C329EA000C118DF /* ChatMessage.swift in Sources */,
