@@ -8,10 +8,6 @@
 import Foundation
 import Moya
 
-enum EndpointError: Error {
-    case encode
-}
-
 enum Endpoint {
     // MARK: - User Related
     // TODO: - 로그인할 때 소셜로그인 후 받은 토큰을 던지는데 이걸 모닥불 로그인할때도 Data?로 넘기는지 String으로 넘기는지?
