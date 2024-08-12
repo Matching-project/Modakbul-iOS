@@ -85,7 +85,7 @@ struct LoginView<Router: AppRouter>: View {
             Button {
                 router.confirmationDialog(for: .userReportOrBlockConfirmationDialog,
                                           actions: [
-                                            .defaultAction("신고하기", action: router.alert(for: .reportUserConfirmationAlert(user: "사용자 이름"), 
+                                            .defaultAction("신고하기", action: router.alert(for: .reportUserConfirmationAlert(user: "사용자 이름"),
                                                                                         actions: [
                                                                                             .cancelAction("취소", action: print("신고안함")),
                                                                                             .destructiveAction("확인", action: print("\"사용자 이름\"을(를) 신고하기"))
@@ -113,21 +113,10 @@ struct LoginView<Router: AppRouter>: View {
     }
     
     private var signInWithKakaoButton: some View {
-<<<<<<< Updated upstream
         Button {
             loginViewModel.loginWithKakaoTalk()
         } label: {
             Text("카카오로 로그인")
-=======
-        SignInKakaoButton { result in
-            switch result {
-            case .success(let kakaoUser, let oAuthToken):
-                loginViewModel.loginWithKakaoTalk(kakaouser, oAuthToken)
-                router.dismiss()
-            case .failure(let error):
-                print(error)
-            }
->>>>>>> Stashed changes
         }
         .onOpenURL { url in
             loginViewModel.onOpenURL(url: url)

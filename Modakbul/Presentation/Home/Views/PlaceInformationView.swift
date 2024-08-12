@@ -88,6 +88,7 @@ struct PlaceInformationView<Router: AppRouter>: View {
     private var communityRecruitingContentEditButton: some View {
         Button {
             // TODO: 모집글 작성 뷰로 이동
+            router.route(to: .placeInformationDetailMakingView)
         } label: {
             Image(systemName: "pencil.circle.fill")
                 .resizable()

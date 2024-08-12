@@ -126,28 +126,3 @@ struct PlaceInformationDetailView_Preview: PreviewProvider {
         PlaceInformationDetailView<DefaultAppRouter>(communityRecruitingContentId: previewHelper.places.first!.communities.first!.id)
     }
 }
-
-struct FlatButton: View {
-    let label: String
-    let action: () -> Void
-    
-    init(_ label: String, action: @escaping () -> Void) {
-        self.label = label
-        self.action = action
-    }
-    
-    var body: some View {
-        Button {
-            action()
-        } label: {
-            Text(label)
-                .tint(.white)
-                .bold()
-                .padding()
-                .frame(maxWidth: .infinity, alignment: .center)
-                .background {
-                    RoundedRectangle(cornerRadius: 14)
-                }
-        }
-    }
-}
