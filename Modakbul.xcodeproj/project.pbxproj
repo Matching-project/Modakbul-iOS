@@ -295,15 +295,12 @@
 			children = (
 				04F1B40E2C2C4AF200F9AD42 /* SearchBar.swift */,
 				046D51182C4FB3950047F25D /* StrokedButton.swift */,
-<<<<<<< Updated upstream
 				048496F92C55FF9B00BECC21 /* SignInKakaoButton.swift */,
-=======
 				048496D62C53801700BECC21 /* CapsuleTag.swift */,
 				04DF0B382C6630FF0001831A /* AsyncDynamicSizingImageView.swift */,
 				04C651FC2C6742880048A196 /* CustomPageControl.swift */,
 				DFC561D42C68C2FF00A32DB3 /* RoundedTextField.swift */,
 				DFC561D62C68C39A00A32DB3 /* FlatButton.swift */,
->>>>>>> Stashed changes
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -598,8 +595,6 @@
 			path = Assembly;
 			sourceTree = "<group>";
 		};
-<<<<<<< Updated upstream
-=======
 		04D69AAF2C65DCA5009D866D /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
@@ -624,7 +619,6 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
->>>>>>> Stashed changes
 		04E281512C31B8ED00C118DF /* ChatRepository */ = {
 			isa = PBXGroup;
 			children = (
@@ -869,11 +863,8 @@
 				046D51002C4BDAD00047F25D /* PlaceShowcaseAndReviewUseCase.swift in Sources */,
 				04E281782C382C2900C118DF /* ConfirmationDialogType.swift in Sources */,
 				046D51242C50BCEE0047F25D /* AuthenticationProviderEntity.swift in Sources */,
-<<<<<<< Updated upstream
 				048496FA2C55FF9B00BECC21 /* SignInKakaoButton.swift in Sources */,
-=======
 				DFC561D92C69C18A00A32DB3 /* PlaceInformationDetailMakingView.swift in Sources */,
->>>>>>> Stashed changes
 				04E2817A2C3936B000C118DF /* ConfirmationDialogModifier.swift in Sources */,
 				04E281762C37F30B00C118DF /* AlertModifier.swift in Sources */,
 				DF92D99B2C33C99800C993CA /* MessageEntity.swift in Sources */,
