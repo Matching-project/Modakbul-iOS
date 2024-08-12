@@ -47,13 +47,13 @@ enum Endpoint {
     case exitChatRoom(token: String, chatRoomId: String)        // 채팅방 나가기
 }
 
-
 extension Endpoint {
     private func encode<T: Encodable>(_ value: T, encoder: JSONEncoder = JSONEncoder()) throws -> Data {
         let encodedData = try encoder.encode(value)
         return encodedData
     }
 }
+
 // MARK: Requestable Conformation
 extension Endpoint: TargetType {
     var baseURL: URL { URL(string:"https://modakbul.com")! } // TODO: 도메인 호스트는 서버 배포 이후에 나올 예정
@@ -197,14 +197,28 @@ extension Endpoint: TargetType {
             return .requestCompositeData(bodyData: Data(), urlParameters: ["latitude": "\(lat)", "longitude": "\(lon)"])
         case .readBoards:
             return .requestPlain
-        // TODO: - Object로 보내도 되는지 물어봄
         case .createBoard(_, _, let communityRecruitingContent):
-            <#code#>
+            return .requestParameters(parameters: ["cafe_name": "\(communityRecruitingContent.placeName)",
+                                                   "address": "\(communityRecruitingContent.address)",
+                                                   "category_name": "\(communityRecruitingContent.category)",
+                                                   "recruitCount": "\(communityRecruitingContent.recruitCount)",
+                                                   "meetingDate": "\(communityRecruitingContent.meetingDate)",
+                                                   "startTime": "\(communityRecruitingContent.start)",
+                                                   "endTime": "\(communityRecruitingContent.end)",
+                                                   "title": "\(communityRecruitingContent.title)",
+                                                   "content": "\(communityRecruitingContent.content)"],
+                                      encoding: JSONEncoding.default)
         case .readBoardForUpdate:
             return .requestPlain
-        // TODO: - Object로 보내도 되는지 물어봄
         case .updateBoard(_, let communityRecruitingContent):
-            <#code#>
+            return .requestParameters(parameters: ["categoryName": "\(communityRecruitingContent.category)",
+                                                   "recruitCount": "\(communityRecruitingContent.recruitCount)",
+                                                   "meetingDate": "\(communityRecruitingContent.meetingDate)",
+                                                   "startTime": "\(communityRecruitingContent.start)",
+                                                   "endTime": "\(communityRecruitingContent.end)",
+                                                   "title": "\(communityRecruitingContent.title)",
+                                                   "content": "\(communityRecruitingContent.content)"],
+                                      encoding: JSONEncoding.default)
         case .deleteBoard:
             return .requestPlain
         case .readBoardDetail:
