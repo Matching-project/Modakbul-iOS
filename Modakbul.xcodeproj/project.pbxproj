@@ -89,6 +89,9 @@
 		DF92D99B2C33C99800C993CA /* MessageEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF92D9972C33C99800C993CA /* MessageEntity.swift */; };
 		DF92D99C2C33C99800C993CA /* ChatService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF92D9992C33C99800C993CA /* ChatService.swift */; };
 		DFA7D03A2C2EA607003547CB /* UserManagementRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFA7D0392C2EA607003547CB /* UserManagementRepository.swift */; };
+		DFC561D52C68C2FF00A32DB3 /* RoundedTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFC561D42C68C2FF00A32DB3 /* RoundedTextField.swift */; };
+		DFC561D72C68C39A00A32DB3 /* FlatButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFC561D62C68C39A00A32DB3 /* FlatButton.swift */; };
+		DFC561D92C69C18A00A32DB3 /* PlaceInformationDetailMakingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFC561D82C69C18A00A32DB3 /* PlaceInformationDetailMakingView.swift */; };
 		DFE0AFD72C103FA800EC078B /* KakaoSDKAuth in Frameworks */ = {isa = PBXBuildFile; productRef = DFE0AFD62C103FA800EC078B /* KakaoSDKAuth */; };
 		DFE0AFD92C103FA800EC078B /* KakaoSDKCommon in Frameworks */ = {isa = PBXBuildFile; productRef = DFE0AFD82C103FA800EC078B /* KakaoSDKCommon */; };
 		DFE0AFDB2C103FA800EC078B /* KakaoSDKUser in Frameworks */ = {isa = PBXBuildFile; productRef = DFE0AFDA2C103FA800EC078B /* KakaoSDKUser */; };
@@ -181,6 +184,9 @@
 		DF92D9972C33C99800C993CA /* MessageEntity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageEntity.swift; sourceTree = "<group>"; };
 		DF92D9992C33C99800C993CA /* ChatService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatService.swift; sourceTree = "<group>"; };
 		DFA7D0392C2EA607003547CB /* UserManagementRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManagementRepository.swift; sourceTree = "<group>"; };
+		DFC561D42C68C2FF00A32DB3 /* RoundedTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedTextField.swift; sourceTree = "<group>"; };
+		DFC561D62C68C39A00A32DB3 /* FlatButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlatButton.swift; sourceTree = "<group>"; };
+		DFC561D82C69C18A00A32DB3 /* PlaceInformationDetailMakingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceInformationDetailMakingView.swift; sourceTree = "<group>"; };
 		DFE0AFDE2C104E7A00EC078B /* Bundle+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Bundle+Extension.swift"; path = "Modakbul/Data/Extensions/Bundle+Extension.swift"; sourceTree = SOURCE_ROOT; };
 		DFE0AFE02C1053E600EC078B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		DFE9F5B62C3D7BE500616FEC /* JSONEncoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONEncoder.swift; sourceTree = "<group>"; };
@@ -289,7 +295,15 @@
 			children = (
 				04F1B40E2C2C4AF200F9AD42 /* SearchBar.swift */,
 				046D51182C4FB3950047F25D /* StrokedButton.swift */,
+<<<<<<< Updated upstream
 				048496F92C55FF9B00BECC21 /* SignInKakaoButton.swift */,
+=======
+				048496D62C53801700BECC21 /* CapsuleTag.swift */,
+				04DF0B382C6630FF0001831A /* AsyncDynamicSizingImageView.swift */,
+				04C651FC2C6742880048A196 /* CustomPageControl.swift */,
+				DFC561D42C68C2FF00A32DB3 /* RoundedTextField.swift */,
+				DFC561D62C68C39A00A32DB3 /* FlatButton.swift */,
+>>>>>>> Stashed changes
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -584,6 +598,33 @@
 			path = Assembly;
 			sourceTree = "<group>";
 		};
+<<<<<<< Updated upstream
+=======
+		04D69AAF2C65DCA5009D866D /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				047C47ED2C1A98DC00170758 /* HomeViewModel.swift */,
+				04C651F82C670BB40048A196 /* PlaceInformationDetailViewModel.swift */,
+				04DF0B3D2C66487F0001831A /* ParticipationRequestListViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		04D69AB02C65DCAC009D866D /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				04B315C32BFC90F80043A529 /* HomeView.swift */,
+				046D512F2C5221010047F25D /* MapArea.swift */,
+				046D51312C5223420047F25D /* PlacesListArea.swift */,
+				048496D42C528A9200BECC21 /* PlaceInformationView.swift */,
+				DFC561D82C69C18A00A32DB3 /* PlaceInformationDetailMakingView.swift */,
+				04C651F62C6709F20048A196 /* PlaceInformationDetailView.swift */,
+				04DF0B3B2C6647B40001831A /* ParticipationRequestListView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+>>>>>>> Stashed changes
 		04E281512C31B8ED00C118DF /* ChatRepository */ = {
 			isa = PBXGroup;
 			children = (
@@ -759,6 +800,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DFC561D72C68C39A00A32DB3 /* FlatButton.swift in Sources */,
 				04D1C7E52C06E435008BB1F9 /* Assembly.swift in Sources */,
 				DFE0AFDF2C104E7A00EC078B /* Bundle+Extension.swift in Sources */,
 				04E2816E2C37D1F200C118DF /* AlertType.swift in Sources */,
@@ -797,6 +839,7 @@
 				046D511C2C4FB3AD0047F25D /* PreviewHelper.swift in Sources */,
 				04D1C7F72C0B38A7008BB1F9 /* Category.swift in Sources */,
 				04CFF77A2C01BC2A00EAE4DC /* MyView.swift in Sources */,
+				DFC561D52C68C2FF00A32DB3 /* RoundedTextField.swift in Sources */,
 				04CFF7562BFDEB0B00EAE4DC /* URLSession.swift in Sources */,
 				04CFF7732C00B2C700EAE4DC /* Route.swift in Sources */,
 				046D51082C4BF8090047F25D /* ChatRoomConfiguration.swift in Sources */,
@@ -826,7 +869,11 @@
 				046D51002C4BDAD00047F25D /* PlaceShowcaseAndReviewUseCase.swift in Sources */,
 				04E281782C382C2900C118DF /* ConfirmationDialogType.swift in Sources */,
 				046D51242C50BCEE0047F25D /* AuthenticationProviderEntity.swift in Sources */,
+<<<<<<< Updated upstream
 				048496FA2C55FF9B00BECC21 /* SignInKakaoButton.swift in Sources */,
+=======
+				DFC561D92C69C18A00A32DB3 /* PlaceInformationDetailMakingView.swift in Sources */,
+>>>>>>> Stashed changes
 				04E2817A2C3936B000C118DF /* ConfirmationDialogModifier.swift in Sources */,
 				04E281762C37F30B00C118DF /* AlertModifier.swift in Sources */,
 				DF92D99B2C33C99800C993CA /* MessageEntity.swift in Sources */,

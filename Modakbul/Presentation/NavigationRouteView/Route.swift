@@ -36,6 +36,15 @@ enum Route: Routable {
     case myView
     case chatView
     case placeShowcaseView
+<<<<<<< Updated upstream
+=======
+    case mapArea
+    case placesListArea
+    case placeInformationView(place: Place)
+    case placeInformationDetailView(communityRecruitingContentId: String)
+    case placeInformationDetailMakingView
+    case participationRequestListView(communityRecruitingContent: CommunityRecruitingContent)
+>>>>>>> Stashed changes
     
     var presentingType: PresentingType {
         switch self {
@@ -46,6 +55,15 @@ enum Route: Routable {
         case .myView: return .sheet(detent: .medium)
         case .chatView: return .push
         case .placeShowcaseView: return .push
+<<<<<<< Updated upstream
+=======
+        case .mapArea: return .push
+        case .placesListArea: return .push
+        case .placeInformationView: return .sheet(detents: [.medium, .large])
+        case .placeInformationDetailView: return .push
+        case .placeInformationDetailMakingView: return .push
+        case .participationRequestListView: return .push
+>>>>>>> Stashed changes
         }
     }
     
@@ -65,6 +83,21 @@ enum Route: Routable {
             PlaceShowcaseView<Router>(placeShowcaseViewModel: router.resolver.resolve(PlaceShowcaseViewModel.self))
         case .chatView:
             ChatView<Router>(chatRepository: router.resolver.resolve(ChatRepository.self))
+<<<<<<< Updated upstream
+=======
+        case .mapArea:
+            MapArea<Router>(router.resolver.resolve(HomeViewModel.self))
+        case .placesListArea:
+            PlacesListArea<Router>(router.resolver.resolve(HomeViewModel.self))
+        case .placeInformationView(let place):
+            PlaceInformationView<Router>(place: place)
+        case .placeInformationDetailView(let communityRecruitingContentId):
+            PlaceInformationDetailView<Router>(communityRecruitingContentId: communityRecruitingContentId)
+        case .placeInformationDetailMakingView:
+            PlaceInformationDetailMakingView<Router>()
+        case .participationRequestListView(let communityRecruitingContent):
+            ParticipationRequestListView<Router>(participationRequestListViewModel: router.resolver.resolve(ParticipationRequestListViewModel.self), communityRecruitingContent: communityRecruitingContent)
+>>>>>>> Stashed changes
         }
     }
 }
