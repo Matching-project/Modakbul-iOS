@@ -113,10 +113,21 @@ struct LoginView<Router: AppRouter>: View {
     }
     
     private var signInWithKakaoButton: some View {
+<<<<<<< Updated upstream
         Button {
             loginViewModel.loginWithKakaoTalk()
         } label: {
             Text("카카오로 로그인")
+=======
+        SignInKakaoButton { result in
+            switch result {
+            case .success(let kakaoUser, let oAuthToken):
+                loginViewModel.loginWithKakaoTalk(kakaouser, oAuthToken)
+                router.dismiss()
+            case .failure(let error):
+                print(error)
+            }
+>>>>>>> Stashed changes
         }
         .onOpenURL { url in
             loginViewModel.onOpenURL(url: url)
