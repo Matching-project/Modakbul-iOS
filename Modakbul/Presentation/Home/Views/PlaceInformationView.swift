@@ -78,7 +78,6 @@ struct PlaceInformationView<Router: AppRouter>: View {
             
             HStack {
                 CapsuleTag(place.powerSocketState.description)
-                CapsuleTag(place.noiseLevel.description)
                 CapsuleTag(place.groupSeatingState.description)
             }
             .font(.caption)
@@ -116,6 +115,7 @@ struct PlaceInformationView<Router: AppRouter>: View {
                 }
             }
         }
+        .padding(.top)
     }
     
     private func displayOpeningHours(_ dayOfWeek: DayOfWeek) -> String {
