@@ -78,7 +78,6 @@ struct PlaceInformationView<Router: AppRouter>: View {
             
             HStack {
                 CapsuleTag(place.powerSocketState.description)
-                CapsuleTag(place.noiseLevel.description)
                 CapsuleTag(place.groupSeatingState.description)
             }
             .font(.caption)
@@ -90,12 +89,14 @@ struct PlaceInformationView<Router: AppRouter>: View {
             // TODO: 모집글 작성 뷰로 이동
             router.route(to: .placeInformationDetailMakingView)
         } label: {
+            // TODO: 이미지 제공 받아야함
             Image(systemName: "pencil.circle.fill")
                 .resizable()
                 .scaledToFit()
                 .frame(width: 30, height: 30)
         }
         .padding(.trailing)
+        .shadow(color: .secondary, radius: 4, y: 4)
         .alignmentGuide(.top) { dimension in
             dimension.height / 2 - 30
         }
@@ -116,6 +117,7 @@ struct PlaceInformationView<Router: AppRouter>: View {
                 }
             }
         }
+        .padding(.top)
     }
     
     private func displayOpeningHours(_ dayOfWeek: DayOfWeek) -> String {
