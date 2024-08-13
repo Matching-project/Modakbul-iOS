@@ -95,6 +95,7 @@ struct PlaceInformationView<Router: AppRouter>: View {
                 .frame(width: 30, height: 30)
         }
         .padding(.trailing)
+        .shadow(color: .secondary, radius: 6)
         .alignmentGuide(.top) { dimension in
             dimension.height / 2 - 30
         }
