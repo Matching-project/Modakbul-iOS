@@ -8,6 +8,6 @@
 import Foundation
 
 protocol NotificationUseCase {
-    func fetchNotifications() async -> [Notification]
+    func fetchNotifications() async -> [PushNotification]
     func fetchNotificationsCount() async -> Int
 }
