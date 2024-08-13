@@ -18,15 +18,7 @@ struct PlaceInformationDetailMakingView<Router: AppRouter>: View {
     init(_ placeInformationDetailMakingViewModel: PlaceInformationDetailMakingViewModel) {
         self.vm = placeInformationDetailMakingViewModel
     }
-    
-    var backButton: some View {
-        Button{
-            router.dismiss()
-        } label: {
-            Image(systemName: "chevron.left")
-        }
-    }
-    
+
     var body: some View {
         VStack {
             ScrollView {
@@ -139,7 +131,8 @@ struct PlaceInformationDetailMakingView<Router: AppRouter>: View {
                     RoundedTextField("내용", text: $vm.content, axis: .vertical)
                         .lineLimit(10...10)
                 }
-                .padding(3)
+                .padding([.leading, .trailing], 32)
+                .padding(.bottom, 10)
             }
             
             // TODO: - 최초 게시 여부에 따라 게시하기 / 수정하기로 분기 필요
@@ -149,13 +142,15 @@ struct PlaceInformationDetailMakingView<Router: AppRouter>: View {
                 vm.initialize()
                 router.dismiss()
             }
+            .padding([.leading, .trailing], 30)
         }
         .navigationBarBackButtonHidden()
-        .navigationBarItems(leading: backButton)
+        .navigationBarItems(leading: BackButton {
+            vm.initialize()
+            router.dismiss()
+        })
         // TODO: - 최초 게시 여부에 따라 모집글 작성 / 모집글 수정으로 분기 필요
         .navigationTitle("모집글 작성")
-        .scrollIndicators(.hidden)
-        .padding([.leading, .trailing], 30)
     }
     
     private func makeRow(title: String, @ViewBuilder content: () -> some View) -> some View {
