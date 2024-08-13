@@ -476,5 +476,20 @@ final class PreviewHelper {
         User(name: "조성규", nickname: "yagom", email: "yagom@academy.co.kr", provider: .apple, gender: .male, job: .officeWorker, categoriesOfInterest: .init(arrayLiteral: .coding, .interview, .selfImprovement), isGenderVisible: false, birth: Date(), imageURL: nil)
     ]
     
+    var notifications: [PushNotification] = [
+        PushNotification(imageURL: nil, title: "디자인초보", subtitle: "UI/UX디자인", timestamp: "1초전", type: .request),
+        PushNotification(imageURL: nil, title: "또봐요", subtitle: "면접합격꿀팁", timestamp: "10분전", type: .exit),
+        PushNotification(imageURL: nil, title: "개발좋아", subtitle: "웹개발", timestamp: "12분전", type: .accept),
+        PushNotification(imageURL: nil, title: "열공생", subtitle: "열공생", timestamp: "13분전", type: .newChat),
+        PushNotification(imageURL: nil, title: "디자인초보", subtitle: "UI/UX디자인", timestamp: "1초전", type: .request),
+        PushNotification(imageURL: nil, title: "또봐요", subtitle: "면접합격꿀팁", timestamp: "10분전", type: .exit),
+        PushNotification(imageURL: nil, title: "개발좋아", subtitle: "웹개발", timestamp: "12분전", type: .accept),
+        PushNotification(imageURL: nil, title: "열공생", subtitle: "열공생", timestamp: "13분전", type: .newChat),
+        PushNotification(imageURL: nil, title: "디자인초보", subtitle: "UI/UX디자인", timestamp: "1초전", type: .request),
+        PushNotification(imageURL: nil, title: "또봐요", subtitle: "면접합격꿀팁", timestamp: "10분전", type: .exit),
+        PushNotification(imageURL: nil, title: "개발좋아", subtitle: "웹개발", timestamp: "12분전", type: .accept),
+        PushNotification(imageURL: nil, title: "열공생", subtitle: "열공생", timestamp: "13분전", type: .newChat),
+    ]
+    
     private init() {}
 }
