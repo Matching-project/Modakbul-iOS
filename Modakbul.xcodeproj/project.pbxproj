@@ -46,6 +46,7 @@
 		04C651F72C6709F20048A196 /* PlaceInformationDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C651F62C6709F20048A196 /* PlaceInformationDetailView.swift */; };
 		04C651F92C670BB40048A196 /* PlaceInformationDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C651F82C670BB40048A196 /* PlaceInformationDetailViewModel.swift */; };
 		04C651FD2C6742880048A196 /* CustomPageControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C651FC2C6742880048A196 /* CustomPageControl.swift */; };
+		04C652282C6B6D8C0048A196 /* ChatRoomListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C652272C6B6D8C0048A196 /* ChatRoomListView.swift */; };
 		04CFF7452BFDCE9300EAE4DC /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04CFF7442BFDCE9300EAE4DC /* LoginView.swift */; };
 		04CFF7482BFDCF8300EAE4DC /* AppleLoginButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04CFF7472BFDCF8300EAE4DC /* AppleLoginButton.swift */; };
 		04CFF7512BFDE9E500EAE4DC /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04CFF7502BFDE9E500EAE4DC /* NetworkService.swift */; };
@@ -153,6 +154,7 @@
 		04C651F62C6709F20048A196 /* PlaceInformationDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceInformationDetailView.swift; sourceTree = "<group>"; };
 		04C651F82C670BB40048A196 /* PlaceInformationDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceInformationDetailViewModel.swift; sourceTree = "<group>"; };
 		04C651FC2C6742880048A196 /* CustomPageControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPageControl.swift; sourceTree = "<group>"; };
+		04C652272C6B6D8C0048A196 /* ChatRoomListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomListView.swift; sourceTree = "<group>"; };
 		04CFF7442BFDCE9300EAE4DC /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		04CFF7472BFDCF8300EAE4DC /* AppleLoginButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleLoginButton.swift; sourceTree = "<group>"; };
 		04CFF7502BFDE9E500EAE4DC /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
@@ -719,6 +721,7 @@
 		DF92D98D2C32FBB800C993CA /* Chat */ = {
 			isa = PBXGroup;
 			children = (
+				04C652272C6B6D8C0048A196 /* ChatRoomListView.swift */,
 				DF92D9922C32FBFF00C993CA /* ChatView.swift */,
 			);
 			path = Chat;
@@ -901,6 +904,7 @@
 				04DF0B392C6630FF0001831A /* AsyncDynamicSizingImageView.swift in Sources */,
 				046D51302C5221010047F25D /* MapArea.swift in Sources */,
 				046D51242C50BCEE0047F25D /* AuthenticationProviderEntity.swift in Sources */,
+				04C652282C6B6D8C0048A196 /* ChatRoomListView.swift in Sources */,
 				04E2817A2C3936B000C118DF /* ConfirmationDialogModifier.swift in Sources */,
 				DFC561F12C69E83600A32DB3 /* FlatButton.swift in Sources */,
 				046D51322C5223420047F25D /* PlacesListArea.swift in Sources */,
