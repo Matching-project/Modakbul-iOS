@@ -86,7 +86,6 @@ struct PlaceInformationView<Router: AppRouter>: View {
     
     private var communityRecruitingContentEditButton: some View {
         Button {
-            // TODO: 모집글 작성 뷰로 이동
             router.route(to: .placeInformationDetailMakingView)
         } label: {
             // TODO: 이미지 제공 받아야함
