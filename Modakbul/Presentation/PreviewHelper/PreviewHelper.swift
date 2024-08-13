@@ -470,5 +470,11 @@ final class PreviewHelper {
         ),
     ]
     
+    var users: [User] = [
+        User(name: "팀쿡", nickname: "빌게이츠", email: "timcook@apple.com", provider: .apple, gender: .female, job: .officeWorker, categoriesOfInterest: .init(arrayLiteral: .coding, .design), isGenderVisible: true, birth: Date(), imageURL: URL(string: "apple.com")),
+        User(name: "이재용", nickname: "삼성", email: "jaeyounglee@samsung.co.kr", provider: .kakao, gender: .male, job: .other, categoriesOfInterest: .init(arrayLiteral: .coding, .design), isGenderVisible: false, birth: Date(), imageURL: nil),
+        User(name: "조성규", nickname: "yagom", email: "yagom@academy.co.kr", provider: .apple, gender: .male, job: .officeWorker, categoriesOfInterest: .init(arrayLiteral: .coding, .interview, .selfImprovement), isGenderVisible: false, birth: Date(), imageURL: nil)
+    ]
+    
     private init() {}
 }
