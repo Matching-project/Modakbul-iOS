@@ -7,18 +7,13 @@
 
 import Foundation
 
-enum Job {
-    case collegeStudent
-    case jobSeeker
-    case officeWorker
-    case other
+enum Job: String, Codable {
+    case collegeStudent = "COLLEGE"
+    case jobSeeker = "JOB_SEEKER"
+    case officeWorker = "OFFICE"
+    case other = "ETC"
     
     var identifier: String {
-        switch self {
-        case .collegeStudent: return "CollegeStudent"
-        case .jobSeeker: return "JobSeeker"
-        case .officeWorker: return "OfficeWorker"
-        case .other: return "Other"
-        }
+        self.rawValue
     }
 }

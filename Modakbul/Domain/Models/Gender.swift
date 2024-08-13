@@ -7,14 +7,12 @@
 
 import Foundation
 
-enum Gender {
-    case female, male
+enum Gender: String, Codable {
+    case female = "FEMALE"
+    case male = "MALE"
     
     var identifier: String {
-        switch self {
-        case .female: "FEMALE"
-        case .male: "MALE"
-        }
+        self.rawValue
     }
     
     init(string: String) {
