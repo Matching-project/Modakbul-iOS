@@ -121,8 +121,8 @@ struct PlaceInformationDetailView<Router: AppRouter>: View {
     }
 }
 
-struct PlaceInformationDetailView_Preview: PreviewProvider {
-    static var previews: some View {
-        PlaceInformationDetailView<DefaultAppRouter>(communityRecruitingContentId: previewHelper.places.first!.communities.first!.id)
-    }
-}
+//struct PlaceInformationDetailView_Preview: PreviewProvider {
+//    static var previews: some View {
+//        router.view(to: .placeInformationDetailView(communityRecruitingContentId: previewHelper.places.first!.communities.first!.id))
+//    }
+//}
