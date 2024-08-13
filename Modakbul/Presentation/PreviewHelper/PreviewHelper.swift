@@ -10,18 +10,18 @@ import CoreLocation
 
 extension PreviewProvider {
     static var previewHelper: PreviewHelper { PreviewHelper.shared }
-    static var router: DefaultAppRouter { previewHelper.router }
+    static var router: DefaultAppRouter { PreviewHelper.router }
 }
 
 final class PreviewHelper {
     static let shared = PreviewHelper()
     
-    let router = DefaultAppRouter(by: InfrastructureAssembly(),
-                                 DataAssembly(),
-                                 DomainAssembly(),
-                                 PresentationAssembly())
+    static let router = DefaultAppRouter(by: InfrastructureAssembly(),
+                                         DataAssembly(),
+                                         DomainAssembly(),
+                                         PresentationAssembly())
     
-    var resolver: DependencyResolver { router.resolver }
+    var resolver: DependencyResolver { Self.router.resolver }
     
     var places: [Place] = [
         Place(
