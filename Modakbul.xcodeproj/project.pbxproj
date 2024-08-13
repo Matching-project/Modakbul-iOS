@@ -97,6 +97,8 @@
 		DF92D99B2C33C99800C993CA /* MessageEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF92D9972C33C99800C993CA /* MessageEntity.swift */; };
 		DF92D99C2C33C99800C993CA /* ChatService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF92D9992C33C99800C993CA /* ChatService.swift */; };
 		DFA7D03A2C2EA607003547CB /* UserManagementRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFA7D0392C2EA607003547CB /* UserManagementRepository.swift */; };
+		DFAAA89C2C6B5CEA0068B635 /* View+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFAAA89B2C6B5CEA0068B635 /* View+Extension.swift */; };
+		DFAAA89E2C6B69450068B635 /* PlaceInformationDetailMakingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFAAA89D2C6B69450068B635 /* PlaceInformationDetailMakingViewModel.swift */; };
 		DFC561E92C69E56200A32DB3 /* PlaceInformationDetailMakingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFC561E82C69E56200A32DB3 /* PlaceInformationDetailMakingView.swift */; };
 		DFC561F12C69E83600A32DB3 /* FlatButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFC561F02C69E83600A32DB3 /* FlatButton.swift */; };
 		DFC561F32C69E89400A32DB3 /* RoundedTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFC561F22C69E89400A32DB3 /* RoundedTextField.swift */; };
@@ -204,6 +206,8 @@
 		DF92D9972C33C99800C993CA /* MessageEntity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageEntity.swift; sourceTree = "<group>"; };
 		DF92D9992C33C99800C993CA /* ChatService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatService.swift; sourceTree = "<group>"; };
 		DFA7D0392C2EA607003547CB /* UserManagementRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManagementRepository.swift; sourceTree = "<group>"; };
+		DFAAA89B2C6B5CEA0068B635 /* View+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extension.swift"; sourceTree = "<group>"; };
+		DFAAA89D2C6B69450068B635 /* PlaceInformationDetailMakingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceInformationDetailMakingViewModel.swift; sourceTree = "<group>"; };
 		DFC561E82C69E56200A32DB3 /* PlaceInformationDetailMakingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceInformationDetailMakingView.swift; sourceTree = "<group>"; };
 		DFC561F02C69E83600A32DB3 /* FlatButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlatButton.swift; sourceTree = "<group>"; };
 		DFC561F22C69E89400A32DB3 /* RoundedTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedTextField.swift; sourceTree = "<group>"; };
@@ -355,6 +359,7 @@
 				04CFF7882C0365C700EAE4DC /* TabItemModifier.swift */,
 				048496D22C5241D900BECC21 /* TextFieldModifier.swift */,
 				04C651F42C66F3F70048A196 /* ButtonStyle.swift */,
+				DFAAA89B2C6B5CEA0068B635 /* View+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -636,6 +641,7 @@
 				047C47ED2C1A98DC00170758 /* HomeViewModel.swift */,
 				04C651F82C670BB40048A196 /* PlaceInformationDetailViewModel.swift */,
 				04DF0B3D2C66487F0001831A /* ParticipationRequestListViewModel.swift */,
+				DFAAA89D2C6B69450068B635 /* PlaceInformationDetailMakingViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -842,6 +848,7 @@
 				046D51202C50BB800047F25D /* ChatRoomInfoEntity.swift in Sources */,
 				047C47EE2C1A98DC00170758 /* HomeViewModel.swift in Sources */,
 				04B1B6CC2C3BE9920070AD38 /* PlaceShowcaseViewModel.swift in Sources */,
+				DFAAA89C2C6B5CEA0068B635 /* View+Extension.swift in Sources */,
 				DF92D99C2C33C99800C993CA /* ChatService.swift in Sources */,
 				04B315BA2BF860CF0043A529 /* ContentView.swift in Sources */,
 				04DF0B3E2C66487F0001831A /* ParticipationRequestListViewModel.swift in Sources */,
@@ -877,6 +884,7 @@
 				DFE9F5B72C3D7BE500616FEC /* JSONEncoder.swift in Sources */,
 				046D50F52C48F71B0047F25D /* UserRegistrationUseCase.swift in Sources */,
 				048496D32C5241D900BECC21 /* TextFieldModifier.swift in Sources */,
+				DFAAA89E2C6B69450068B635 /* PlaceInformationDetailMakingViewModel.swift in Sources */,
 				04B315B82BF8608C0043A529 /* ModakbulApp.swift in Sources */,
 				046D51222C50BCAA0047F25D /* UserEntity.swift in Sources */,
 				048496D72C53801700BECC21 /* CapsuleTag.swift in Sources */,
@@ -1049,7 +1057,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Modakbul/Application/Resources/Preview Content\"";
-				DEVELOPMENT_TEAM = P85DW78LYM;
+				DEVELOPMENT_TEAM = TTKL6566T6;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Modakbul/Info.plist;
@@ -1066,7 +1074,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.team.modakbul2;
+				PRODUCT_BUNDLE_IDENTIFIER = com.team.modakbul0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -1088,7 +1096,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Modakbul/Application/Resources/Preview Content\"";
-				DEVELOPMENT_TEAM = P85DW78LYM;
+				DEVELOPMENT_TEAM = TTKL6566T6;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Modakbul/Info.plist;
@@ -1105,7 +1113,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.team.modakbul2;
+				PRODUCT_BUNDLE_IDENTIFIER = com.team.modakbul0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
