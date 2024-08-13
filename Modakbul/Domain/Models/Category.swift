@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum Category: CustomStringConvertible {
+enum Category: CaseIterable, Identifiable, CustomStringConvertible {
     case interview
     case coding
     case design
@@ -18,10 +18,13 @@ enum Category: CustomStringConvertible {
     case extracurricularActivities
     case other
     
+    // TODO: - 네이밍 고려
+    var id: Self { self }
+    
     var identifier: String {
         String(describing: self)
     }
-    
+        
     var description: String {
         switch self {
         case .interview: "면접"

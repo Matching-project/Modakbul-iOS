@@ -7,6 +7,7 @@
 
 import Foundation
 
+// TODO: - Selectable로 바꿔도 되지 않을까?
 enum DayOfWeek: CaseIterable, Identifiable, CustomStringConvertible {
     case mon
     case tue

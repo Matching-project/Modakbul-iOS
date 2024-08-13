@@ -27,3 +27,8 @@ protocol CommunityUseCase {
     
     func write(on location: Location, content: CommunityRecruitingContent) async throws
 }
+
+// TODO: - UseCase 채택 필요
+final class DefaultCommunityUseCase {
+    
+}
