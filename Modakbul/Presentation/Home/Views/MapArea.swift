@@ -53,11 +53,15 @@ struct MapArea<Router: AppRouter>: View {
                 SearchBar("카페 이름으로 검색", text: $homeViewModel.searchingText)
                     .frame(alignment: .top)
                 
-                // TODO: Notification Button (WIP)
-                Image(systemName: "bell.fill")
-                    .font(.headline)
-                    .padding(10)
-                    .foregroundStyle(.accent)
+                // TODO: PushNotification Button (WIP)
+                Button {
+                    router.route(to: .notificationView)
+                } label: {
+                    Image(systemName: "bell")
+                        .font(.headline)
+                        .padding(10)
+                        .foregroundStyle(.accent)
+                }
             }
             
             Spacer()

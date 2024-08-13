@@ -21,10 +21,14 @@ struct PlacesListArea<Router: AppRouter>: View {
                 SearchBar("카페 이름으로 검색", text: $homeViewModel.searchingText)
                     .frame(alignment: .top)
                 
-                // TODO: Notification Button (WIP)
-                Image(systemName: "bell")
-                    .font(.headline)
-                    .padding(10)
+                // TODO: PushNotification Button (WIP)
+                Button {
+                    router.route(to: .notificationView)
+                } label: {
+                    Image(systemName: "bell")
+                        .font(.headline)
+                        .padding(10)
+                }
             }
             
             List(homeViewModel.places, id: \.id) { place in

@@ -35,6 +35,7 @@ enum Route: Routable {
     case homeView
     case myView
     case chatView
+    case notificationView
     case placeShowcaseView
     case mapArea
     case placesListArea
@@ -52,6 +53,7 @@ enum Route: Routable {
         case .myView: return .sheet(detents: [.medium, .large])
         case .chatView: return .push
         case .placeShowcaseView: return .push
+        case .notificationView: return .push
         case .mapArea: return .push
         case .placesListArea: return .push
         case .placeInformationView: return .sheet(detents: [.medium, .large])
@@ -75,6 +77,8 @@ enum Route: Routable {
             MyView<Router>()
         case .placeShowcaseView:
             PlaceShowcaseView<Router>(placeShowcaseViewModel: router.resolver.resolve(PlaceShowcaseViewModel.self))
+        case .notificationView:
+            NotificationView<Router>(router.resolver.resolve(NotificationViewModel.self))
         case .chatView:
             ChatView<Router>(chatRepository: router.resolver.resolve(ChatRepository.self))
         case .mapArea:

@@ -18,7 +18,7 @@
 		046D50FE2C4BDACA0047F25D /* CommunityUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046D50FD2C4BDACA0047F25D /* CommunityUseCase.swift */; };
 		046D51002C4BDAD00047F25D /* PlaceShowcaseAndReviewUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046D50FF2C4BDAD00047F25D /* PlaceShowcaseAndReviewUseCase.swift */; };
 		046D51022C4BDB2C0047F25D /* NotificationUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046D51012C4BDB2C0047F25D /* NotificationUseCase.swift */; };
-		046D51042C4BDCCA0047F25D /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046D51032C4BDCCA0047F25D /* Notification.swift */; };
+		046D51042C4BDCCA0047F25D /* PushNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046D51032C4BDCCA0047F25D /* PushNotification.swift */; };
 		046D51062C4BE8870047F25D /* Community.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046D51052C4BE8870047F25D /* Community.swift */; };
 		046D51082C4BF8090047F25D /* ChatRoomConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046D51072C4BF8090047F25D /* ChatRoomConfiguration.swift */; };
 		046D510A2C4CD31A0047F25D /* Job.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046D51092C4CD31A0047F25D /* Job.swift */; };
@@ -100,6 +100,7 @@
 		DFA7D03A2C2EA607003547CB /* UserManagementRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFA7D0392C2EA607003547CB /* UserManagementRepository.swift */; };
 		DFAAA89C2C6B5CEA0068B635 /* View+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFAAA89B2C6B5CEA0068B635 /* View+Extension.swift */; };
 		DFAAA89E2C6B69450068B635 /* PlaceInformationDetailMakingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFAAA89D2C6B69450068B635 /* PlaceInformationDetailMakingViewModel.swift */; };
+		DFAAA8A02C6B75460068B635 /* NotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFAAA89F2C6B75460068B635 /* NotificationView.swift */; };
 		DFC561E92C69E56200A32DB3 /* PlaceInformationDetailMakingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFC561E82C69E56200A32DB3 /* PlaceInformationDetailMakingView.swift */; };
 		DFC561F12C69E83600A32DB3 /* FlatButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFC561F02C69E83600A32DB3 /* FlatButton.swift */; };
 		DFC561F32C69E89400A32DB3 /* RoundedTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFC561F22C69E89400A32DB3 /* RoundedTextField.swift */; };
@@ -112,6 +113,7 @@
 		DFE0AFDF2C104E7A00EC078B /* Bundle+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFE0AFDE2C104E7A00EC078B /* Bundle+Extension.swift */; };
 		DFE9F5B72C3D7BE500616FEC /* JSONEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFE9F5B62C3D7BE500616FEC /* JSONEncoder.swift */; };
 		DFE9F5BC2C3E6CE200616FEC /* TokensEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFE9F5BB2C3E6CE200616FEC /* TokensEntity.swift */; };
+		DFF272702C6BB3BD0086F161 /* BackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFF2726F2C6BB3BD0086F161 /* BackButton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -126,7 +128,7 @@
 		046D50FD2C4BDACA0047F25D /* CommunityUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityUseCase.swift; sourceTree = "<group>"; };
 		046D50FF2C4BDAD00047F25D /* PlaceShowcaseAndReviewUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceShowcaseAndReviewUseCase.swift; sourceTree = "<group>"; };
 		046D51012C4BDB2C0047F25D /* NotificationUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationUseCase.swift; sourceTree = "<group>"; };
-		046D51032C4BDCCA0047F25D /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
+		046D51032C4BDCCA0047F25D /* PushNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotification.swift; sourceTree = "<group>"; };
 		046D51052C4BE8870047F25D /* Community.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Community.swift; sourceTree = "<group>"; };
 		046D51072C4BF8090047F25D /* ChatRoomConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomConfiguration.swift; sourceTree = "<group>"; };
 		046D51092C4CD31A0047F25D /* Job.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Job.swift; sourceTree = "<group>"; };
@@ -210,6 +212,7 @@
 		DFA7D0392C2EA607003547CB /* UserManagementRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManagementRepository.swift; sourceTree = "<group>"; };
 		DFAAA89B2C6B5CEA0068B635 /* View+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extension.swift"; sourceTree = "<group>"; };
 		DFAAA89D2C6B69450068B635 /* PlaceInformationDetailMakingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceInformationDetailMakingViewModel.swift; sourceTree = "<group>"; };
+		DFAAA89F2C6B75460068B635 /* NotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationView.swift; sourceTree = "<group>"; };
 		DFC561E82C69E56200A32DB3 /* PlaceInformationDetailMakingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceInformationDetailMakingView.swift; sourceTree = "<group>"; };
 		DFC561F02C69E83600A32DB3 /* FlatButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlatButton.swift; sourceTree = "<group>"; };
 		DFC561F22C69E89400A32DB3 /* RoundedTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedTextField.swift; sourceTree = "<group>"; };
@@ -220,6 +223,7 @@
 		DFE0AFE02C1053E600EC078B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		DFE9F5B62C3D7BE500616FEC /* JSONEncoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONEncoder.swift; sourceTree = "<group>"; };
 		DFE9F5BB2C3E6CE200616FEC /* TokensEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokensEntity.swift; sourceTree = "<group>"; };
+		DFF2726F2C6BB3BD0086F161 /* BackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -331,6 +335,7 @@
 				04C651FC2C6742880048A196 /* CustomPageControl.swift */,
 				DFC561F02C69E83600A32DB3 /* FlatButton.swift */,
 				DFC561F22C69E89400A32DB3 /* RoundedTextField.swift */,
+				DFF2726F2C6BB3BD0086F161 /* BackButton.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -443,7 +448,7 @@
 				04D1C8052C0C644B008BB1F9 /* AuthenticationProvider.swift */,
 				04D1C80B2C0C69EF008BB1F9 /* Report.swift */,
 				046D50C92C40059C0047F25D /* SuggestedResult.swift */,
-				046D51032C4BDCCA0047F25D /* Notification.swift */,
+				046D51032C4BDCCA0047F25D /* PushNotification.swift */,
 				0438149C2C58C14700FE12A1 /* DateFormat.swift */,
 			);
 			path = Models;
@@ -658,6 +663,7 @@
 				04C651F62C6709F20048A196 /* PlaceInformationDetailView.swift */,
 				04DF0B3B2C6647B40001831A /* ParticipationRequestListView.swift */,
 				DFC561E82C69E56200A32DB3 /* PlaceInformationDetailMakingView.swift */,
+				DFAAA89F2C6B75460068B635 /* NotificationView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -840,7 +846,7 @@
 				046D51022C4BDB2C0047F25D /* NotificationUseCase.swift in Sources */,
 				04D1C80C2C0C69EF008BB1F9 /* Report.swift in Sources */,
 				04B315C42BFC90F80043A529 /* HomeView.swift in Sources */,
-				046D51042C4BDCCA0047F25D /* Notification.swift in Sources */,
+				046D51042C4BDCCA0047F25D /* PushNotification.swift in Sources */,
 				04CFF7582BFDEC6A00EAE4DC /* JSONDecoder.swift in Sources */,
 				04D1C84E2C1483B4008BB1F9 /* DomainAssembly.swift in Sources */,
 				DFC561F72C69E91600A32DB3 /* Endpoint.swift in Sources */,
@@ -852,6 +858,7 @@
 				047C47EE2C1A98DC00170758 /* HomeViewModel.swift in Sources */,
 				04B1B6CC2C3BE9920070AD38 /* PlaceShowcaseViewModel.swift in Sources */,
 				DFAAA89C2C6B5CEA0068B635 /* View+Extension.swift in Sources */,
+				DFF272702C6BB3BD0086F161 /* BackButton.swift in Sources */,
 				DF92D99C2C33C99800C993CA /* ChatService.swift in Sources */,
 				04B315BA2BF860CF0043A529 /* ContentView.swift in Sources */,
 				04DF0B3E2C66487F0001831A /* ParticipationRequestListViewModel.swift in Sources */,
@@ -884,6 +891,7 @@
 				04D1C8332C11E803008BB1F9 /* TokenStorage.swift in Sources */,
 				049D83072C1DC97B0090578E /* Location.swift in Sources */,
 				DFE9F5BC2C3E6CE200616FEC /* TokensEntity.swift in Sources */,
+				DFAAA8A02C6B75460068B635 /* NotificationView.swift in Sources */,
 				DFE9F5B72C3D7BE500616FEC /* JSONEncoder.swift in Sources */,
 				046D50F52C48F71B0047F25D /* UserRegistrationUseCase.swift in Sources */,
 				048496D32C5241D900BECC21 /* TextFieldModifier.swift in Sources */,

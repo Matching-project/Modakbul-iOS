@@ -20,6 +20,8 @@ struct PresentationAssembly: Assembly {
         container.register(for: PlaceShowcaseViewModel.self) { resolver in
             PlaceShowcaseViewModel(placeShowcaseAndReviewUseCase: resolver.resolve(PlaceShowcaseAndReviewUseCase.self))
         }
+
+        container.register(for: NotificationViewModel.self, NotificationViewModel())
         
 //        container.register(for: PlaceInformationDetailViewModel.self) { resolver in
 //            PlaceInformationDetailViewModel()
