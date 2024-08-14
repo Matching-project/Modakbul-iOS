@@ -25,7 +25,6 @@ struct PlaceEntity: Decodable {
                      powerSocketState: .moderate,
                      noiseLevel: .moderate,
                      groupSeatingState: .yes,
-                     communities: [],
                      images: nil)
     }
 }

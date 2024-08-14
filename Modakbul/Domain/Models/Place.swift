@@ -60,6 +60,5 @@ struct Place: Identifiable {
     let powerSocketState: PowerSocketState
     let noiseLevel: NoiseLevel
     let groupSeatingState: GroupSeatingState
-    let communities: [CommunityRecruitingContent]
     let images: [String]?
 }
