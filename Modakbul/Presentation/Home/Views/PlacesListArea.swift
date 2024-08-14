@@ -16,6 +16,14 @@ struct PlacesListArea<Router: AppRouter>: View {
     }
     
     var body: some View {
+        ZStack {
+            listArea
+            
+            hoveringButtonsArea
+        }
+    }
+    
+    private var listArea: some View {
         VStack {
             HStack {
                 SearchBar("카페 이름으로 검색", text: $homeViewModel.searchingText)
@@ -30,11 +38,29 @@ struct PlacesListArea<Router: AppRouter>: View {
                         .padding(10)
                 }
             }
+            .padding()
             
             List(homeViewModel.places, id: \.id) { place in
                 router.view(to: .placeInformationView(place: place))
             }
             .listStyle(.plain)
+        }
+    }
+    
+    private var hoveringButtonsArea: some View {
+        VStack {
+            Spacer()
+            
+            HStack {
+                StrokedButton(.circle) {
+                    Image(systemName: "map")
+                        .padding(.horizontal, 4)
+                } action: {
+                    homeViewModel.isMapShowing.toggle()
+                }
+                
+                Spacer()
+            }
         }
         .padding()
     }
