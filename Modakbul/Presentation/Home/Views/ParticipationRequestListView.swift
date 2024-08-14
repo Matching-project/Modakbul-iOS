@@ -24,7 +24,8 @@ struct ParticipationRequestListView<Router: AppRouter>: View {
     var body: some View {
         List(communityRecruitingContent.community.participants, id: \.email) { user in
             HStack {
-                AsyncDynamicSizingImageView(url: user.imageURL, width: 64, height: 64)
+                AsyncImageView(url: user.imageURL)
+                    .frame(maxWidth: 64, maxHeight: 64)
                     .clipShape(.circle)
                 
                 VStack(alignment: .leading, spacing: 10) {

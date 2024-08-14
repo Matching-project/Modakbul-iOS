@@ -31,7 +31,7 @@ extension ChatRoomListView {
         
         var body: some View {
             HStack {
-                AsyncDynamicSizingImageView(url: chatRoom.image, width: 64, height: 64)
+                AsyncImageView(url: chatRoom.image)
                 
                 VStack(alignment: .leading, spacing: 10) {
                     Text(chatRoom.nickname)
