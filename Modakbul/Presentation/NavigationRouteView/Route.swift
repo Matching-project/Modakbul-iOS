@@ -31,35 +31,35 @@ enum Route: Routable {
     
     case routerView
     case contentView
-    case loginView
-    case homeView
-    case myView
-    case chatView
-    case notificationView
+    case loginView  // MARK: - Login
+    case myView     // MARK: - My
     case placeShowcaseView
+    case homeView   // MARK: - Home
     case mapArea
     case placesListArea
     case placeInformationView(place: Place)
     case placeInformationDetailView(communityRecruitingContentId: String)
     case placeInformationDetailMakingView
     case participationRequestListView(communityRecruitingContent: CommunityRecruitingContent)
+    case notificationView
+    case chatView   // MARK: - Chat
     
     var presentingType: PresentingType {
         switch self {
         case .routerView: return .push
         case .contentView: return .push
-        case .loginView: return .fullScreenCover
-        case .homeView: return .push
-        case .myView: return .sheet(detents: [.medium, .large])
-        case .chatView: return .push
+        case .loginView: return .fullScreenCover                // MARK: - Login
+        case .myView: return .sheet(detents: [.medium, .large]) // MARK: - My
         case .placeShowcaseView: return .push
-        case .notificationView: return .push
+        case .homeView: return .push                            // MARK: - Home
         case .mapArea: return .push
         case .placesListArea: return .push
         case .placeInformationView: return .sheet(detents: [.medium, .large])
         case .placeInformationDetailView: return .push
         case .placeInformationDetailMakingView: return .push
         case .participationRequestListView: return .push
+        case .notificationView: return .push
+        case .chatView: return .push                            // MARK: - Chat
         }
     }
     
@@ -69,18 +69,14 @@ enum Route: Routable {
             RouterView<Router>(router: router, root: .contentView)
         case .contentView:
             ContentView<Router>()
-        case .loginView:
+        case .loginView:    // MARK: - Login
             LoginView<Router>(loginViewModel: router.resolver.resolve(LoginViewModel.self))
-        case .homeView:
-            HomeView<Router>(homeViewModel: router.resolver.resolve(HomeViewModel.self))
-        case .myView:
+        case .myView:       // MARK: - My
             MyView<Router>()
         case .placeShowcaseView:
             PlaceShowcaseView<Router>(placeShowcaseViewModel: router.resolver.resolve(PlaceShowcaseViewModel.self))
-        case .notificationView:
-            NotificationView<Router>(router.resolver.resolve(NotificationViewModel.self))
-        case .chatView:
-            ChatView<Router>(chatRepository: router.resolver.resolve(ChatRepository.self))
+        case .homeView:     // MARK: - Home
+            HomeView<Router>(homeViewModel: router.resolver.resolve(HomeViewModel.self))
         case .mapArea:
             MapArea<Router>(router.resolver.resolve(HomeViewModel.self))
         case .placesListArea:
@@ -93,6 +89,10 @@ enum Route: Routable {
             PlaceInformationDetailMakingView<Router>(router.resolver.resolve(PlaceInformationDetailMakingViewModel.self))
         case .participationRequestListView(let communityRecruitingContent):
             ParticipationRequestListView<Router>(participationRequestListViewModel: router.resolver.resolve(ParticipationRequestListViewModel.self), communityRecruitingContent: communityRecruitingContent)
+        case .notificationView:
+            NotificationView<Router>(router.resolver.resolve(NotificationViewModel.self))
+        case .chatView:     // MARK: - Chat
+            ChatView<Router>(chatRepository: router.resolver.resolve(ChatRepository.self))
         }
     }
 }
