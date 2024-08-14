@@ -9,11 +9,15 @@ import SwiftUI
 
 struct PlaceInformationView<Router: AppRouter>: View {
     @EnvironmentObject private var router: Router
+    
     @State private var selectedDayOfWeek: DayOfWeek
+    @State private var communityRecruitingContents: [CommunityRecruitingContent] = []
     
     private let place: Place
     
-    init(place: Place) {
+    init(
+        place: Place
+    ) {
         self.place = place
         let calendar = Calendar.current
         let weekDay = calendar.component(.weekday, from: .now)
@@ -29,20 +33,25 @@ struct PlaceInformationView<Router: AppRouter>: View {
     }
     
     var body: some View {
-        GeometryReader { proxy in
-            VStack {
-                HStack {
-                    AsyncDynamicSizingImageView(imageData: Data(), width: proxy.size.width / 3, height: proxy.size.width / 3)
-                    
-                    Spacer()
-                    
-                    informationArea
-                }
-                .padding(.top)
-                .overlay(alignment: .topTrailing) {
-                    communityRecruitingContentEditButton
-                }
+        VStack {
+            HStack {
+                AsyncImageView(imageData: Data())
+                    .background(.gray)
                 
+                Spacer()
+                
+                informationArea
+                
+                Spacer()
+            }
+            .frame(maxWidth: .infinity)
+            .overlay(alignment: .topTrailing) {
+                communityRecruitingContentEditButton
+            }
+            
+            if communityRecruitingContents.isEmpty {
+                // TODO: 모임 개수 표시 영역
+            } else {
                 communityRecruitingContentListArea
             }
         }
@@ -107,7 +116,7 @@ struct PlaceInformationView<Router: AppRouter>: View {
     private var communityRecruitingContentListArea: some View {
         ScrollView {
             LazyVStack {
-                ForEach(place.communities, id: \.id) { communityRecruitingContent in
+                ForEach(communityRecruitingContents, id: \.id) { communityRecruitingContent in
                     Cell(communityRecruitingContent)
                         .onTapGesture {
                             router.dismiss()

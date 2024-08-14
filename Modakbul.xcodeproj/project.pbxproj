@@ -80,7 +80,7 @@
 		04D1C84E2C1483B4008BB1F9 /* DomainAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D1C84D2C1483B4008BB1F9 /* DomainAssembly.swift */; };
 		04D1C8502C14867D008BB1F9 /* PresentationAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D1C84F2C14867D008BB1F9 /* PresentationAssembly.swift */; };
 		04D1C8752C16B9C0008BB1F9 /* RouterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D1C8742C16B9C0008BB1F9 /* RouterView.swift */; };
-		04DF0B392C6630FF0001831A /* AsyncDynamicSizingImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04DF0B382C6630FF0001831A /* AsyncDynamicSizingImageView.swift */; };
+		04DF0B392C6630FF0001831A /* AsyncImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04DF0B382C6630FF0001831A /* AsyncImageView.swift */; };
 		04DF0B3C2C6647B40001831A /* ParticipationRequestListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04DF0B3B2C6647B40001831A /* ParticipationRequestListView.swift */; };
 		04DF0B3E2C66487F0001831A /* ParticipationRequestListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04DF0B3D2C66487F0001831A /* ParticipationRequestListViewModel.swift */; };
 		04E281532C31B8FF00C118DF /* ChatRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E281522C31B8FF00C118DF /* ChatRepository.swift */; };
@@ -191,7 +191,7 @@
 		04D1C84D2C1483B4008BB1F9 /* DomainAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainAssembly.swift; sourceTree = "<group>"; };
 		04D1C84F2C14867D008BB1F9 /* PresentationAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentationAssembly.swift; sourceTree = "<group>"; };
 		04D1C8742C16B9C0008BB1F9 /* RouterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouterView.swift; sourceTree = "<group>"; };
-		04DF0B382C6630FF0001831A /* AsyncDynamicSizingImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncDynamicSizingImageView.swift; sourceTree = "<group>"; };
+		04DF0B382C6630FF0001831A /* AsyncImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncImageView.swift; sourceTree = "<group>"; };
 		04DF0B3B2C6647B40001831A /* ParticipationRequestListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticipationRequestListView.swift; sourceTree = "<group>"; };
 		04DF0B3D2C66487F0001831A /* ParticipationRequestListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticipationRequestListViewModel.swift; sourceTree = "<group>"; };
 		04E281522C31B8FF00C118DF /* ChatRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRepository.swift; sourceTree = "<group>"; };
@@ -331,7 +331,7 @@
 				04F1B40E2C2C4AF200F9AD42 /* SearchBar.swift */,
 				046D51182C4FB3950047F25D /* StrokedButton.swift */,
 				048496D62C53801700BECC21 /* CapsuleTag.swift */,
-				04DF0B382C6630FF0001831A /* AsyncDynamicSizingImageView.swift */,
+				04DF0B382C6630FF0001831A /* AsyncImageView.swift */,
 				04C651FC2C6742880048A196 /* CustomPageControl.swift */,
 				DFC561F02C69E83600A32DB3 /* FlatButton.swift */,
 				DFC561F22C69E89400A32DB3 /* RoundedTextField.swift */,
@@ -909,7 +909,7 @@
 				04B1B6D22C3BFE8A0070AD38 /* LocalMapService.swift in Sources */,
 				046D51002C4BDAD00047F25D /* PlaceShowcaseAndReviewUseCase.swift in Sources */,
 				04E281782C382C2900C118DF /* ConfirmationDialogType.swift in Sources */,
-				04DF0B392C6630FF0001831A /* AsyncDynamicSizingImageView.swift in Sources */,
+				04DF0B392C6630FF0001831A /* AsyncImageView.swift in Sources */,
 				046D51302C5221010047F25D /* MapArea.swift in Sources */,
 				046D51242C50BCEE0047F25D /* AuthenticationProviderEntity.swift in Sources */,
 				04C652282C6B6D8C0048A196 /* ChatRoomListView.swift in Sources */,
@@ -1069,7 +1069,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Modakbul/Application/Resources/Preview Content\"";
-				DEVELOPMENT_TEAM = TTKL6566T6;
+				DEVELOPMENT_TEAM = P85DW78LYM;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Modakbul/Info.plist;
@@ -1086,7 +1086,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.team.modakbul0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.team.modakbul2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -1108,7 +1108,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Modakbul/Application/Resources/Preview Content\"";
-				DEVELOPMENT_TEAM = TTKL6566T6;
+				DEVELOPMENT_TEAM = P85DW78LYM;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Modakbul/Info.plist;
@@ -1125,7 +1125,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.team.modakbul0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.team.modakbul2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
