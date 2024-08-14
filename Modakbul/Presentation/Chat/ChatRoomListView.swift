@@ -10,7 +10,11 @@ import SwiftUI
 typealias Item = (id: UUID, image: URL?, nickname: String, lastMessage: String, time: Date, unreadCount: Int)
 
 struct ChatRoomListView: View {
-    @State private var chatRooms: [Item] = [Item](repeating: (UUID(), nil, "디자인 천재", "네 오늘 너무 유익했어요!", .now, 30), count: 5)
+    @State private var chatRooms: [Item] = [
+        (UUID(), nil, "디자인 천재", "네 오늘 너무 유익했어요!", .now, 10),
+        (UUID(), nil, "웹 개발 10년차", "좋아요!", .now, 1),
+        (UUID(), nil, "똑똑똑한박사", "알겠습니다~감사합니다.", .now, 11)
+    ]
     
     var body: some View {
         List(chatRooms, id: \.id) { item in
@@ -44,18 +48,11 @@ extension ChatRoomListView {
                 
                 Spacer()
                 
-                VStack(alignment: .trailing) {
+                VStack(alignment: .trailing, spacing: 10) {
                     Text(chatRoom.time.toString(by: .ahmm))
                         .font(.subheadline)
                     
-                    Text("\(chatRoom.unreadCount)")
-                        .font(.subheadline)
-                        .foregroundStyle(.white)
-                        .padding(2)
-                        .background(
-                            Capsule()
-                                .foregroundStyle(.accent)
-                        )
+                    Badge(count: chatRoom.unreadCount)
                 }
             }
         }

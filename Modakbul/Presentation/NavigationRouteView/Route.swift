@@ -31,10 +31,10 @@ enum Route: Routable {
     
     case routerView
     case contentView
-    case loginView  // MARK: - Login
-    case myView     // MARK: - My
+    case loginView            // MARK: - Login
+    case myView               // MARK: - My
     case placeShowcaseView
-    case homeView   // MARK: - Home
+    case homeView             // MARK: - Home
     case mapArea
     case placesListArea
     case placeInformationView(place: Place)
@@ -42,7 +42,8 @@ enum Route: Routable {
     case placeInformationDetailMakingView
     case participationRequestListView(communityRecruitingContent: CommunityRecruitingContent)
     case notificationView
-    case chatView   // MARK: - Chat
+    case chatRoomListView     // MARK: - Chat
+    case chatView
     
     var presentingType: PresentingType {
         switch self {
@@ -59,7 +60,8 @@ enum Route: Routable {
         case .placeInformationDetailMakingView: return .push
         case .participationRequestListView: return .push
         case .notificationView: return .push
-        case .chatView: return .push                            // MARK: - Chat
+        case .chatRoomListView: return .push                    // MARK: - Chat
+        case .chatView: return .push
         }
     }
     
@@ -91,7 +93,9 @@ enum Route: Routable {
             ParticipationRequestListView<Router>(participationRequestListViewModel: router.resolver.resolve(ParticipationRequestListViewModel.self), communityRecruitingContent: communityRecruitingContent)
         case .notificationView:
             NotificationView<Router>(router.resolver.resolve(NotificationViewModel.self))
-        case .chatView:     // MARK: - Chat
+        case .chatRoomListView: // MARK: - Chat
+            ChatRoomListView()
+        case .chatView:
             ChatView<Router>(chatRepository: router.resolver.resolve(ChatRepository.self))
         }
     }
