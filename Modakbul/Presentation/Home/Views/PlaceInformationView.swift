@@ -54,6 +54,8 @@ struct PlaceInformationView<Router: AppRouter>: View {
             } else {
                 communityRecruitingContentListArea
             }
+            
+            Spacer()
         }
         .padding()
     }
