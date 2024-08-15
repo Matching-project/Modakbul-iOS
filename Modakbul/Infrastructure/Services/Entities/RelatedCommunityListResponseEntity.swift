@@ -19,11 +19,7 @@ struct RelatedCommunityListResponseEntity: Decodable {
         let boardStatus: BoardStatusEntity
         
         enum CodingKeys: String, CodingKey {
-            case title, category, address
-            case meetingDate = "meeting_date"
-            case startTime = "start_time"
-            case endTime = "end_time"
-            case boardStatus = "board_status"
+            case title, category, address, meetingDate, startTime, endTime, boardStatus
             case placeName = "cafe_name"
         }
     }

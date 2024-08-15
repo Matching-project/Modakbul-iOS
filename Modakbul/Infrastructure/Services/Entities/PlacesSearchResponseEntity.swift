@@ -25,11 +25,8 @@ struct PlacesSearchResponseEntity: Decodable {
         let groupSeatingState: GroupSeatingStateEntity
         
         enum CodingKeys: String, CodingKey {
-            case location, id
-            case openingHour = "opening_hour"
-            case meetingCount = "meeting_count"
+            case location, id, openingHour, meetingCount, name
             case imageURL = "image"
-            case name = "name"
             case powerSocketState = "outlet"
             case noiseLevel = "congestion"
             case groupSeatingState = "groupSeat"
@@ -49,8 +46,7 @@ struct OpeningHourEntity: Decodable {
     let openingState: OpeningState
     
     enum CodingKeys: String, CodingKey {
-        case open, close
-        case dayOfWeek = "day_of_week"
+        case open, close, dayOfWeek
         case openingState = "status"
     }
 }

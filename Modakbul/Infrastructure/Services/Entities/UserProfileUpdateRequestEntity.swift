@@ -12,9 +12,4 @@ struct UserProfileUpdateRequestEntity: Encodable {
     let isGenderVisible: Bool
     let job: Job
     let categories: Set<Category>
-    
-    enum CodingKeys: String, CodingKey {
-        case nickname, job, categories
-        case isGenderVisible = "is_gender_visible"
-    }
 }

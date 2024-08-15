@@ -12,7 +12,7 @@ struct ChatRoomCreateRequestEntity: Encodable {
     let opponentUserId: Int64
     
     enum CodingKeys: String, CodingKey {
+        case opponentUserId
         case communityRecruitingContentId = "board_id"
-        case opponentUserId = "opponent_user_id"
     }
 }

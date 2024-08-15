@@ -20,10 +20,8 @@ struct UserProfileResponseEntity: Decodable {
         let categories: Set<String>
         
         enum CodingKeys: String, CodingKey {
-            case nickname, categories
+            case nickname, categories, job, isGenderVisible
             case imageURL = "image"
-            case isGenderVisible = "is_gender_visible"
-            case job = "job"
         }
     }
 }

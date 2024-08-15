@@ -27,9 +27,8 @@ struct CommunityRecruitingContentListEntity: Decodable {
         let groupSeatingState: GroupSeatingStateEntity
         
         enum CodingKeys: String, CodingKey {
-            case name, address
+            case name, address, openingHour
             case imageURL = "image"
-            case openingHour = "opening_hour"
             case powerSocketState = "outlet"
             case noiseLevel = "congestion"
             case groupSeatingState = "groupSeat"
@@ -39,15 +38,5 @@ struct CommunityRecruitingContentListEntity: Decodable {
     struct CommunityRecruitingContent: Decodable {
         let writerId, id, recruitCount, currentCount: Int
         let title, category, meetingDate, startTime, endTime: String
-        
-        enum CodingKeys: String, CodingKey {
-            case id, title, category
-            case writerId = "writer_id"
-            case recruitCount = "recruit_count"
-            case currentCount = "current_count"
-            case meetingDate = "meeting_date"
-            case startTime = "start_time"
-            case endTime = "end_time"
-        }
     }
 }

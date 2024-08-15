@@ -19,7 +19,7 @@ struct CommunityRecruitingContentSearchEntity: Decodable {
         
         enum CodingKeys: String, CodingKey {
             case address
-            case placeName = "cafe_name"
+            case placeName = "cafeName"
             case communityRecruitingContent = "board"
         }
     }
@@ -56,16 +56,5 @@ struct CommunityRecruitingContentSearchDetailEntity: Decodable {
     struct CommunityRecruitingContentDetail: Decodable {
         let title, content, category, createdDate, createdTime, meetingDate, startTime, endTime: String
         let recruitCount, currentCount: Int
-        
-        enum CodingKeys: String, CodingKey {
-            case title, content, category
-            case createdDate = "created_date"
-            case createdTime = "created_time"
-            case meetingDate = "meeting_date"
-            case startTime = "startTime"
-            case endTime = "endTime"
-            case recruitCount = "recruit_count"
-            case currentCount = "current_count"
-        }
     }
 }
