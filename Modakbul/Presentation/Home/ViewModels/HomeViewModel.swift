@@ -17,14 +17,33 @@ final class HomeViewModel: ObservableObject {
     var places: [Place] = PreviewHelper.shared.places
     var selectedPlace: Place?
     
+    private var locationNeeded: Bool = true
+    
     init(localMapUseCase: LocalMapUseCase) {
         self.localMapUseCase = localMapUseCase
+    }
+    
+    @MainActor func updateLocationOnceIfNeeded() {
+        if locationNeeded {
+            updateLocationOnce()
+            locationNeeded = false
+        }
     }
     
     @MainActor func updateLocationOnce() {
         Task {
             do {
                 currentCoordinate = try await localMapUseCase.updateCoordinate()
+            } catch {
+                print(error)
+            }
+        }
+    }
+    
+    @MainActor func findPlaces(on coordinate: CLLocationCoordinate2D) {
+        Task {
+            do {
+                places = try await localMapUseCase.fetchPlaces(on: coordinate)
             } catch {
                 print(error)
             }
