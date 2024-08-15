@@ -29,11 +29,13 @@ struct AsyncImageView: View {
                 ProgressView()
             case .success(let image):
                 image
+                    .resizable()
             case .failure(let error):
-                // TODO: 기본 이미지 필요
-                Image(systemName: "heart.fill")
+                Image(.modakbulMainDark)
+                    .resizable()
             @unknown default:
-                Image(systemName: "heart.fill")
+                Image(.modakbulMainDark)
+                    .resizable()
             }
         }
         .aspectRatio(contentMode: .fit)
