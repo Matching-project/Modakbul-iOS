@@ -17,4 +17,12 @@ extension View {
                     .stroke(color, lineWidth: lineWidth)
             )
     }
+    
+    func navigationModifier(title: String, backButtonAction: @escaping () -> Void) -> some View {
+        modifier(NavigationModifier(title: title, backButtonAction: backButtonAction))
+    }
+    
+    func navigationPopGestureRecognizerEnabled() -> some View {
+        background(GestureRecognizerEnabled())
+    }
 }
