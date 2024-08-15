@@ -18,9 +18,8 @@ struct PlaceInformationDetailMakingView<Router: AppRouter>: View {
     init(_ placeInformationDetailMakingViewModel: PlaceInformationDetailMakingViewModel) {
         self.vm = placeInformationDetailMakingViewModel
     }
-
+    
     var body: some View {
-        VStack {
             ScrollView {
                 LazyVStack(spacing: 20) {
                     makeRow(title: "장소") {
@@ -76,8 +75,6 @@ struct PlaceInformationDetailMakingView<Router: AppRouter>: View {
                         
                     }
                     
-                    // TODO: - 오늘날짜 기준, 시작시간은 현재시간 이전으로 선택할 수 없음 -> 해결
-                    // TODO: - 끝시간은 무조건 시작시간 이후여야함 -> 해결
                     // TODO: - DatePicker 8:59일때 돌리면 9:00이 되면 UX가 좋아지긴 함.. 참고로 당근은 대응 안했음
                     // TODO: - 글 작성하다 보면 현재시각 보다는 한 10분정도 뒤로 시작시간을 기본값으로 둔다던가 / 5분 or 30분 이런식으로 분단위를 설정하는방식의 의견이 필요할 듯.
                     // TODO: - 23:00 ~ 다음날 01:00인 경우는 어떻게 해야하는지...? 날짜도 범위로 지정할 수 있어야 하나?
@@ -127,9 +124,7 @@ struct PlaceInformationDetailMakingView<Router: AppRouter>: View {
                     RoundedTextField("제목", text: $vm.title)
                         .padding(.top)
                     
-                    // TextEditor가 multiline에 적합한 용도이나, titleKey를 표현하기 위해 TextField를 사용함
-                    RoundedTextField("내용", text: $vm.content, axis: .vertical)
-                        .lineLimit(10...10)
+                    RoundedTextField("내용", text: $vm.content, axis: .vertical, lineLimit: 10)
                 }
                 .padding([.leading, .trailing], 32)
                 .padding(.bottom, 10)
@@ -142,15 +137,14 @@ struct PlaceInformationDetailMakingView<Router: AppRouter>: View {
                 vm.initialize()
                 router.dismiss()
             }
-            .padding([.leading, .trailing], 30)
-        }
-        .navigationBarBackButtonHidden()
-        .navigationBarItems(leading: BackButton {
+            .padding(.horizontal, 30)
+            .padding(.vertical, 5)
+        
+        // TODO: - 최초 게시 여부에 따라 모집글 작성 / 모집글 수정으로 분기 필요
+        .navigationModifier(title: "모집글 작성") {
             vm.initialize()
             router.dismiss()
-        })
-        // TODO: - 최초 게시 여부에 따라 모집글 작성 / 모집글 수정으로 분기 필요
-        .navigationTitle("모집글 작성")
+        }
     }
     
     private func makeRow(title: String, @ViewBuilder content: () -> some View) -> some View {
