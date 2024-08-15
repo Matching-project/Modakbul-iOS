@@ -78,12 +78,9 @@ struct ReportView<Router: AppRouter>: View {
 
 struct ReportView_Preview: PreviewProvider {
     static var previews: some View {
-//        NavigationStack {
+        NavigationStack {
             router.view(to: .reportView)
-//                .navigationModifier(title: "신고하기") {
-//                    router.dismiss()
-//                }
-//        }
+        }
     }
 }
 
