@@ -55,6 +55,12 @@ struct LoginView<Router: AppRouter>: View {
             }
             
             Button {
+                router.route(to: .reportView)
+            } label: {
+                Text("신고뷰")
+            }
+            
+            Button {
                 router.route(to: .loginView)
             } label: {
                 Text("LoginView 풀스크린")
