@@ -13,11 +13,6 @@ final class NotificationViewModel: ObservableObject {
     
     @Published var notifications: [PushNotification] = PreviewHelper.shared.notifications
     @Published var multiSelection = Set<UUID>()
-    @Environment(\.editMode) var editMode
-
-    var isEditingEnabled: Bool {
-        editMode?.wrappedValue.isEditing == true && !notifications.isEmpty
-    }
     
     func deleteNotification(_ notification: PushNotification) {
         if let index = notifications.firstIndex(where: { $0.id == notification.id }) {
@@ -35,10 +30,5 @@ final class NotificationViewModel: ObservableObject {
     
     func deleteAllNotifications() {
        notifications.removeAll()
-       toggleEditMode()
    }
-    
-    func toggleEditMode() {
-        editMode?.wrappedValue = editMode?.wrappedValue.isEditing == true ? .inactive : .active
-    }
 }

@@ -11,6 +11,7 @@ import SwiftUI
 struct NotificationView<Router: AppRouter>: View {
     @ObservedObject private var vm: NotificationViewModel
     @EnvironmentObject private var router: Router
+    @Environment(\.editMode) var editMode
     
     init(_ notificationViewModel: NotificationViewModel) {
         self.vm = notificationViewModel
@@ -30,19 +31,11 @@ struct NotificationView<Router: AppRouter>: View {
         }
         .toolbar {
             ToolbarItemGroup(placement: .topBarTrailing) {
-                if vm.isEditingEnabled {
+                if isEditingEnabled {
                     deleteButton
                 }
                 editButton
             }
-        }
-    }
-    
-    private func deleteSwipeAction(for notification: PushNotification) -> some View {
-        Button(role: .destructive) {
-            vm.deleteNotification(notification)
-        } label: {
-            Label("삭제하기", systemImage: "trash")
         }
     }
     
@@ -55,16 +48,33 @@ struct NotificationView<Router: AppRouter>: View {
             } else {
                 Button("전체삭제") {
                     vm.deleteAllNotifications()
+                    toggleEditMode()
                 }
             }
         }
     }
     
     private var editButton: some View {
-        Button(action: vm.toggleEditMode) {
-            Text(vm.editMode?.wrappedValue.isEditing == true ? "확인" : "편집")
+        Button(action: toggleEditMode) {
+            Text(editMode?.wrappedValue.isEditing == true ? "확인" : "편집")
         }
         .disabled(vm.notifications.isEmpty)
+    }
+    
+    private var isEditingEnabled: Bool {
+        editMode?.wrappedValue.isEditing == true && !vm.notifications.isEmpty
+    }
+    
+    private func deleteSwipeAction(for notification: PushNotification) -> some View {
+        Button(role: .destructive) {
+            vm.deleteNotification(notification)
+        } label: {
+            Label("삭제하기", systemImage: "trash")
+        }
+    }
+    
+    private func toggleEditMode() {
+        editMode?.wrappedValue = editMode?.wrappedValue.isEditing == true ? .inactive : .active
     }
 }
 
