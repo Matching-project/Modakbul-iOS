@@ -18,7 +18,7 @@ struct PhotosUploaderView: View {
             selection: $selectedPhoto,
             matching: .images,
             photoLibrary: .shared()) {
-                Image(colorScheme == .dark ? .photoUploadMainLight : .photoUploadMainDark)
+                Image(colorScheme == .dark ? .modakbulMainLight: .modakbulMainDark)
                     .resizable()
                     .frame(maxWidth: 200, maxHeight: 200)
                     .overlay {
@@ -31,7 +31,7 @@ struct PhotosUploaderView: View {
                         }
                     }
                     .overlay(alignment: .bottomTrailing) {
-                        Image(.photoUploadSub)
+                        Image(.photoUploadSelection)
                             .resizable()
                             .frame(maxWidth: 50, maxHeight: 50)
                     }
