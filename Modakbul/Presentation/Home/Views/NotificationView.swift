@@ -10,7 +10,7 @@ import SwiftUI
 // TODO: - 토스, 당근 같은 서비스는 당겨서 새로고침(Refreshable) 및 해당 화면으로 이동 지원함.
 // 다만, 명세에는 언급되어 있지 않음.
 struct NotificationView<Router: AppRouter>: View {
-    @Environment(\.colorScheme) var colorScheme
+    @Environment(\.colorScheme) private var colorScheme
     @EnvironmentObject private var router: Router
     @ObservedObject private var vm: NotificationViewModel
 
