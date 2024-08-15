@@ -95,6 +95,7 @@
 		04E2817C2C39380F00C118DF /* ConfirmationContentPresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E2817B2C39380F00C118DF /* ConfirmationContentPresentable.swift */; };
 		04F1B40F2C2C4AF200F9AD42 /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F1B40E2C2C4AF200F9AD42 /* SearchBar.swift */; };
 		9C8122292BF722E6007DC215 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9C8122282BF722E6007DC215 /* Preview Assets.xcassets */; };
+		DF1CC7A22C6CD542009A8A97 /* NavigationModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF1CC7A12C6CD542009A8A97 /* NavigationModifier.swift */; };
 		DF92D9932C32FBFF00C993CA /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF92D9922C32FBFF00C993CA /* ChatView.swift */; };
 		DF92D99B2C33C99800C993CA /* MessageEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF92D9972C33C99800C993CA /* MessageEntity.swift */; };
 		DF92D99C2C33C99800C993CA /* ChatService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF92D9992C33C99800C993CA /* ChatService.swift */; };
@@ -209,6 +210,7 @@
 		04F1B40E2C2C4AF200F9AD42 /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
 		9C81221E2BF722E4007DC215 /* Modakbul.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Modakbul.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9C8122282BF722E6007DC215 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		DF1CC7A12C6CD542009A8A97 /* NavigationModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationModifier.swift; sourceTree = "<group>"; };
 		DF92D9922C32FBFF00C993CA /* ChatView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
 		DF92D9972C33C99800C993CA /* MessageEntity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageEntity.swift; sourceTree = "<group>"; };
 		DF92D9992C33C99800C993CA /* ChatService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatService.swift; sourceTree = "<group>"; };
@@ -372,6 +374,7 @@
 				048496D22C5241D900BECC21 /* TextFieldModifier.swift */,
 				04C651F42C66F3F70048A196 /* ButtonStyle.swift */,
 				DFAAA89B2C6B5CEA0068B635 /* View+Extension.swift */,
+				DF1CC7A12C6CD542009A8A97 /* NavigationModifier.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -874,6 +877,7 @@
 				046D510A2C4CD31A0047F25D /* Job.swift in Sources */,
 				04CFF7452BFDCE9300EAE4DC /* LoginView.swift in Sources */,
 				04D1C84C2C147B73008BB1F9 /* DataAssembly.swift in Sources */,
+				DF1CC7A22C6CD542009A8A97 /* NavigationModifier.swift in Sources */,
 				04D1C7E12C05B22F008BB1F9 /* DependencyRegister.swift in Sources */,
 				04D1C8752C16B9C0008BB1F9 /* RouterView.swift in Sources */,
 				04B1B6C82C3BE8C20070AD38 /* PlaceShowcaseView.swift in Sources */,
