@@ -39,7 +39,7 @@ struct MapArea<Router: AppRouter>: View {
             }
         }
         .onAppear {
-            homeViewModel.updateLocationOnce()
+            homeViewModel.updateLocationOnceIfNeeded()
         }
         .onReceive(homeViewModel.$currentCoordinate) { coordinate in
             region.center = coordinate
@@ -66,7 +66,7 @@ struct MapArea<Router: AppRouter>: View {
             
             Spacer()
             
-            HStack {
+            HStack(alignment: .bottom) {
                 StrokedButton(.circle) {
                     Image(systemName: "list.bullet")
                         .padding(.horizontal, 4)
@@ -74,13 +74,20 @@ struct MapArea<Router: AppRouter>: View {
                     homeViewModel.isMapShowing.toggle()
                 }
                 
-                
                 Spacer()
                 
-                StrokedButton(.circle) {
-                    Image(systemName: "location.fill")
-                } action: {
-                    homeViewModel.moveCameraOnLocation(to: nil)
+                VStack {
+                    StrokedButton(.circle) {
+                        Image(systemName: "arrow.clockwise")
+                    } action: {
+                        homeViewModel.findPlaces(on: region.center)
+                    }
+                    
+                    StrokedButton(.circle) {
+                        Image(systemName: "location.fill")
+                    } action: {
+                        homeViewModel.updateLocationOnce()
+                    }
                 }
             }
         }
