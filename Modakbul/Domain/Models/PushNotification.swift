@@ -34,14 +34,14 @@ struct PushNotification: Identifiable {
     }
     
     let id = UUID()
-    let imageURL: String?
+    let imageURL: URL?
     let title: String
     let titlePostfix: String
     let subtitle: String
     let timestamp: String
     let type: `Type`
     
-    init(imageURL: String?, title: String, subtitle: String, timestamp: String, type: `Type`) {
+    init(imageURL: URL?, title: String, subtitle: String, timestamp: String, type: `Type`) {
         self.imageURL = imageURL
         self.title = title
         self.titlePostfix = type.title
