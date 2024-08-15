@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct RoundedTextFieldStyle: TextFieldStyle {
+    let color: Color
     let disabled: Bool
     
     func _body(configuration: TextField<Self._Label>) -> some View {
@@ -17,7 +18,7 @@ struct RoundedTextFieldStyle: TextFieldStyle {
                 RoundedRectangle(cornerRadius: 8)
                 // TODO: - When merging homeView to main branch...
                 // 기존 RoundedRectangle(cornerRadius: RegistrationViewValue.RoundedTextField.cornerRadius)으로 바꿔놓을 것
-                    .stroke(Color.accent)
+                    .stroke(color)
             }
             .background {
                 RoundedRectangle(cornerRadius: 8)
@@ -31,22 +32,31 @@ struct RoundedTextField: View {
     let titleKey: String
     let text: Binding<String>
     let axis: Axis
+    let lineLimit: Int
     let disabled: Bool
+    let color: Color
     
-    init(_ titleKey: String,
+    init(_ titleKey: String = "",
          text: Binding<String>,
          axis: Axis = .horizontal,
-         disabled: Bool = false
+         lineLimit: Int = 1,
+         disabled: Bool = false,
+         color: Color = .accent
     ) {
         self.titleKey = titleKey
         self.text = text
         self.axis = axis
+        self.lineLimit = lineLimit
         self.disabled = disabled
+        self.color = color
     }
     
     var body: some View {
         TextField(titleKey, text: text, axis: axis)
-            .textFieldStyle(RoundedTextFieldStyle(disabled: disabled))
+            .textFieldStyle(RoundedTextFieldStyle(color: color, disabled: disabled))
             .disabled(disabled)
+            .lineLimit(lineLimit...lineLimit)
+            .autocorrectionDisabled()
+            .replaceDisabled()
     }
 }
