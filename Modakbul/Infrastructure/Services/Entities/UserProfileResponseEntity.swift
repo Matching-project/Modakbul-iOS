@@ -24,4 +24,8 @@ struct UserProfileResponseEntity: Decodable {
             case imageURL = "image"
         }
     }
+    
+    func toDTO() -> User {
+        User(result.nickname, result.job, result.isGenderVisible, result.categories, result.imageURL)
+    }
 }
