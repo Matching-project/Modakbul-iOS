@@ -38,6 +38,8 @@ struct PresentationAssembly: Assembly {
         
         // MARK: - Chat
         container.register(for: ReportViewModel.self, ReportViewModel())
+        
+        container.register(for: ChatViewModel.self, ChatViewModel())
     }
     
     func loaded(resolver: DependencyResolver) {

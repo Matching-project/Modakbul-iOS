@@ -96,7 +96,7 @@ enum Route: Routable {
         case .notificationView:
             NotificationView<Router>(router.resolver.resolve(NotificationViewModel.self))
         case .chatView:     // MARK: - Chat
-            ChatView<Router>(chatRepository: router.resolver.resolve(ChatRepository.self))
+            ChatView<Router>(router.resolver.resolve(ChatViewModel.self))
         case .chatRoomListView:
             ChatRoomListView()
         case .reportView:
