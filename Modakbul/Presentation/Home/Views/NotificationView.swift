@@ -7,63 +7,131 @@
 
 import SwiftUI
 
-// TODO: - 토스, 당근 같은 서비스는 당겨서 새로고침(Refreshable) 및 해당 화면으로 이동 지원함.
-// 다만, 명세에는 언급되어 있지 않음.
+// TODO: - 명세에 없으나, 토스, 당근 같은 서비스는 당겨서 새로고침(Refreshable) 및 해당 화면으로 이동 지원함.
 struct NotificationView<Router: AppRouter>: View {
-    @Environment(\.colorScheme) private var colorScheme
-    @EnvironmentObject private var router: Router
     @ObservedObject private var vm: NotificationViewModel
-
+    @EnvironmentObject private var router: Router
+    @Environment(\.editMode) var editMode
+    
     init(_ notificationViewModel: NotificationViewModel) {
         self.vm = notificationViewModel
     }
     
     var body: some View {
-        List(vm.notifications) { notification in
-            VStack(alignment: .leading, spacing: 4) {
-                HStack {
-                    Text(notification.title)
-                        .foregroundColor(.accent)
-                        .bold()
-                    Text(notification.titlePostfix)
-                        .bold()
+        List(vm.notifications, selection: $vm.multiSelection) { notification in
+            NotificationRow(notification)
+                .swipeActions(edge: .trailing) {
+                    deleteSwipeAction(for: notification)
                 }
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .overlay(alignment: .topTrailing) {
-                    Text(notification.timestamp)
-                        .font(.caption)
-                        .bold()
-                }
-                
-                Text(notification.subtitle)
-                    .foregroundColor(.accent)
-                    .font(.caption)
-            }
-            .padding(.leading, 10)
-            .padding()
-            .background(colorScheme == .dark ? Color.black : Color.white)
-            .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
-            .shadow(color: Color.gray.opacity(0.4), radius: 10, x: 0, y: 1)
-            .listRowSeparator(.hidden)
+                .listRowSeparator(.hidden)
         }
         .listStyle(.inset)
-        .navigationBarBackButtonHidden()
-        .navigationBarItems(leading: BackButton {
+        .navigationModifier(title: "알림") {
             router.dismiss()
-        })
-        .navigationTitle("알림")
+        }
+        .toolbar {
+            ToolbarItemGroup(placement: .topBarTrailing) {
+                if isEditingEnabled {
+                    deleteButton
+                }
+                editButton
+            }
+        }
+    }
+    
+    private var deleteButton: some View {
+        Group {
+            if !vm.multiSelection.isEmpty {
+                Button("삭제") {
+                    vm.deleteSelectedNotifications()
+                }
+            } else {
+                Button("전체삭제") {
+                    vm.deleteAllNotifications()
+                    toggleEditMode()
+                }
+            }
+        }
+    }
+    
+    private var editButton: some View {
+        Button(action: toggleEditMode) {
+            Text(editMode?.wrappedValue.isEditing == true ? "확인" : "편집")
+        }
+        .disabled(vm.notifications.isEmpty)
+    }
+    
+    private var isEditingEnabled: Bool {
+        editMode?.wrappedValue.isEditing == true && !vm.notifications.isEmpty
+    }
+    
+    private func deleteSwipeAction(for notification: PushNotification) -> some View {
+        Button(role: .destructive) {
+            vm.deleteNotification(notification)
+        } label: {
+            Label("삭제하기", systemImage: "trash")
+        }
+    }
+    
+    private func toggleEditMode() {
+        editMode?.wrappedValue = editMode?.wrappedValue.isEditing == true ? .inactive : .active
+    }
+}
+
+struct NotificationRow: View {
+    private let notification: PushNotification
+    @Environment(\.colorScheme) private var colorScheme
+    
+    init(_ notification: PushNotification) {
+        self.notification = notification
+    }
+    
+    var body: some View {
+        HStack {
+            // TODO: - Image Caching 필요
+            AsyncImageView(url: notification.imageURL)
+                .frame(width: 45, height: 45)
+                .clipShape(.circle)
+            
+            VStack(alignment: .leading, spacing: 5) {
+                titleView
+                subtitleView
+            }
+            .padding(.vertical, 15)
+        }
+        .padding(.horizontal)
+        .background(colorScheme == .dark ? Color.black : Color.white)
+        .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
+        .shadow(color: Color.gray.opacity(0.4), radius: 10)
+    }
+    
+    private var titleView: some View {
+        HStack {
+            Text(notification.title)
+                .foregroundColor(.accent)
+                .bold()
+            Text(notification.titlePostfix)
+                .bold()
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .overlay(alignment: .topTrailing) {
+            Text(notification.timestamp)
+                .font(.caption)
+                .bold()
+        }
+    }
+    
+    private var subtitleView: some View {
+        Text(notification.subtitle)
+            .foregroundColor(.accent)
+            .font(.caption)
     }
 }
 
 struct NotificationView_Preview: PreviewProvider {
     static var previews: some View {
-        router.view(to: .notificationView)
+        NavigationStack {
+            router.view(to: .notificationView)
+        }
     }
-}
-
-final class NotificationViewModel: ObservableObject {
-    // TODO: - UseCase 연결 필요
-//    private let notificationUseCase: NotificationUseCase
-    
-    var notifications: [PushNotification] = PreviewHelper.shared.notifications
 }

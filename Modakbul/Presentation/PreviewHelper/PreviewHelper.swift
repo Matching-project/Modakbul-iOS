@@ -316,20 +316,26 @@ final class PreviewHelper {
         )
     ]
     
+    static let url1 = URL(string: "https://res.heraldm.com/content/image/2023/12/24/20231224000165_0.jpg")!
+    static let url2 = URL(string: "https://image.ajunews.com/content/image/2022/07/06/20220706160753669738.jpg")!
+    static let url3 = URL(string: "https://menu.moneys.co.kr/moneyweek/thumb/2024/04/19/06/2024041916030557751_1.jpg/dims/optimize/")!
+    static let url4 = URL(string: "https://developer.apple.com/documentation/swiftui/asyncimagephase")
+    
     let notifications: [PushNotification] = [
-        PushNotification(imageURL: nil, title: "디자인초보", subtitle: "UI/UX디자인", timestamp: "1초전", type: .request),
-        PushNotification(imageURL: nil, title: "또봐요", subtitle: "면접합격꿀팁", timestamp: "10분전", type: .exit),
-        PushNotification(imageURL: nil, title: "개발좋아", subtitle: "웹개발", timestamp: "12분전", type: .accept),
-        PushNotification(imageURL: nil, title: "열공생", subtitle: "열공생", timestamp: "13분전", type: .newChat),
-        PushNotification(imageURL: nil, title: "디자인초보", subtitle: "UI/UX디자인", timestamp: "1초전", type: .request),
-        PushNotification(imageURL: nil, title: "또봐요", subtitle: "면접합격꿀팁", timestamp: "10분전", type: .exit),
-        PushNotification(imageURL: nil, title: "개발좋아", subtitle: "웹개발", timestamp: "12분전", type: .accept),
-        PushNotification(imageURL: nil, title: "열공생", subtitle: "열공생", timestamp: "13분전", type: .newChat),
-        PushNotification(imageURL: nil, title: "디자인초보", subtitle: "UI/UX디자인", timestamp: "1초전", type: .request),
-        PushNotification(imageURL: nil, title: "또봐요", subtitle: "면접합격꿀팁", timestamp: "10분전", type: .exit),
-        PushNotification(imageURL: nil, title: "개발좋아", subtitle: "웹개발", timestamp: "12분전", type: .accept),
-        PushNotification(imageURL: nil, title: "열공생", subtitle: "열공생", timestamp: "13분전", type: .newChat),
+        PushNotification(imageURL: url1, title: "디자인초보", subtitle: "UI/UX디자인", timestamp: "1초전", type: .request),
+        PushNotification(imageURL: url2, title: "또봐요", subtitle: "면접합격꿀팁", timestamp: "10분전", type: .exit),
+        PushNotification(imageURL: url3, title: "개발좋아", subtitle: "웹개발", timestamp: "12분전", type: .accept),
+        PushNotification(imageURL: url4, title: "열공생", subtitle: "열공생", timestamp: "13분전", type: .newChat),
+        PushNotification(imageURL: url1, title: "디자인초보", subtitle: "UI/UX디자인", timestamp: "1초전", type: .request),
+        PushNotification(imageURL: url2, title: "또봐요", subtitle: "면접합격꿀팁", timestamp: "10분전", type: .exit),
+        PushNotification(imageURL: url3, title: "개발좋아", subtitle: "웹개발", timestamp: "12분전", type: .accept),
+        PushNotification(imageURL: url4, title: "열공생", subtitle: "열공생", timestamp: "13분전", type: .newChat),
+        PushNotification(imageURL: url1, title: "디자인초보", subtitle: "UI/UX디자인", timestamp: "1초전", type: .request),
+        PushNotification(imageURL: url2, title: "또봐요", subtitle: "면접합격꿀팁", timestamp: "10분전", type: .exit),
+        PushNotification(imageURL: url3, title: "개발좋아", subtitle: "웹개발", timestamp: "12분전", type: .accept),
+        PushNotification(imageURL: url4, title: "열공생", subtitle: "열공생", timestamp: "13분전", type: .newChat),
     ]
     
     private init() {}
 }
+
