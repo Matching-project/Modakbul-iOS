@@ -21,9 +21,9 @@ struct Location: Identifiable {
     
     init(
         id: UUID = UUID(),
-        name: String?,
+        name: String? = nil,
         address: String = String(),
-        coordinate: CLLocationCoordinate2D
+        coordinate: CLLocationCoordinate2D = CLLocationCoordinate2D()
     ) {
         self.id = id
         self.name = name ?? "Unknown Location"

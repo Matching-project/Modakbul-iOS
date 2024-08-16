@@ -8,35 +8,32 @@
 import Foundation
 
 struct Place: Identifiable {
-    struct OpeningHours {
-        let open: DateComponents
-        let close: DateComponents
-    }
-    
-    enum PowerSocketState {
-        case plenty
-        case moderate
-        case few
-    }
-    
-    enum NoiseLevel {
-        case quiet
-        case moderate
-        case noisy
-    }
-    
-    /// 단체석 여부는 6인석 이상을 기준으로 합니다.
-    enum GroupSeatingState {
-        case yes
-        case no
-    }
-    
-    let id: String
+    let id: Int64
     let location: Location
-    let openingHoursOfWeek: [DayOfWeek: OpeningHours]
+    let openingHours: [OpeningHour]
     let powerSocketState: PowerSocketState
     let noiseLevel: NoiseLevel
     let groupSeatingState: GroupSeatingState
-    let communities: [Community]
-    let images: [String]?
+    let communityRecruitingContents: [CommunityRecruitingContent]
+    let imageURLs: [URL?]
+    
+    init(
+        id: Int64,
+        location: Location,
+        openingHours: [OpeningHour] = [],
+        powerSocketState: PowerSocketState = .moderate,
+        noiseLevel: NoiseLevel = .moderate,
+        groupSeatingState: GroupSeatingState = .unknown,
+        communityRecruitingContents: [CommunityRecruitingContent] = [],
+        imageURLs: [URL?] = []
+    ) {
+        self.id = id
+        self.location = location
+        self.openingHours = openingHours
+        self.powerSocketState = powerSocketState
+        self.noiseLevel = noiseLevel
+        self.groupSeatingState = groupSeatingState
+        self.communityRecruitingContents = communityRecruitingContents
+        self.imageURLs = imageURLs
+    }
 }

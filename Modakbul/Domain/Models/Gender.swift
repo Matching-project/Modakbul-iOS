@@ -10,16 +10,9 @@ import Foundation
 enum Gender: String, Codable {
     case female = "FEMALE"
     case male = "MALE"
+    case unknown = "PRIVATE"
     
     var identifier: String {
         self.rawValue
-    }
-    
-    init(string: String) {
-        if string == "FEMALE" {
-            self = .female
-        } else {
-            self = .male
-        }
     }
 }
