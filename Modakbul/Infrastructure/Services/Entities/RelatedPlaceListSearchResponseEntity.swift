@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// 사용자가 이용했던 장소 목록 조회 응답
 struct RelatedPlaceListSearchResponseEntity: Decodable {
     let status: Bool
     let code: Int
@@ -21,6 +22,16 @@ struct RelatedPlaceListSearchResponseEntity: Decodable {
         enum CodingKeys: String, CodingKey {
             case id, name, address
             case imageURL = "image"
+        }
+    }
+    
+    func toDTO() -> [Place] {
+        result.map {
+            .init(
+                id: $0.id,
+                location: .init(name: $0.name, address: $0.address),
+                imageURLs: [$0.imageURL]
+            )
         }
     }
 }

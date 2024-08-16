@@ -1,5 +1,5 @@
 //
-//  RelatedParticipationRequestListResponseEntity.swift
+//  RelatedCommunityRecruitingContentListResponseEntity.swift
 //  Modakbul
 //
 //  Created by Swain Yun on 8/13/24.
@@ -7,24 +7,24 @@
 
 import Foundation
 
-/// 사용자가 작성했던 참여 요청 목록 응답
-struct RelatedParticipationRequestListResponseEntity: Decodable {
+/// 사용자가 작성했던 모집글 목록 조회 응답
+struct RelatedCommunityRecruitingContentListResponseEntity: Decodable {
     let status: Bool
     let code: Int
     let message: String
     let result: [Result]
     
     struct Result: Decodable {
-        let title, startTime, endTime: String
         let id: Int64
+        let title, startTime, endTime: String
+        let dayOfWeek: DayOfWeek
         let category: Category
         let recruitCount, currentCount: Int
         let meetingDate: String
-        let dayOfWeek: DayOfWeek
         let activeState: ActiveState
         
         enum CodingKeys: String, CodingKey {
-            case title, startTime, endTime, category, recruitCount, currentCount, meetingDate, dayOfWeek
+            case title, startTime, endTime, dayOfWeek, category, recruitCount, currentCount, meetingDate
             case id = "boardId"
             case activeState = "boardStatus"
         }

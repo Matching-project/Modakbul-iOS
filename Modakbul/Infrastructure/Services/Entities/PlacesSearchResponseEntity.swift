@@ -6,7 +6,9 @@
 //
 
 import Foundation
+import CoreLocation
 
+/// 장소 검색 응답
 struct PlacesSearchResponseEntity: Decodable {
     let status: Bool
     let code: Int
@@ -19,10 +21,10 @@ struct PlacesSearchResponseEntity: Decodable {
         let name: String
         let meetingCount: Int
         let location: LocationEntity
-        let openingHour: [OpeningHourEntity]
-        let powerSocketState: PowerSocketStateEntity
-        let noiseLevel: NoiseLevelEntity
-        let groupSeatingState: GroupSeatingStateEntity
+        let openingHour: [OpeningHour]
+        let powerSocketState: PowerSocketState
+        let noiseLevel: NoiseLevel
+        let groupSeatingState: GroupSeatingState
         
         enum CodingKeys: String, CodingKey {
             case location, id, openingHour, meetingCount, name
@@ -32,54 +34,28 @@ struct PlacesSearchResponseEntity: Decodable {
             case groupSeatingState = "groupSeat"
         }
     }
+    
+    func toDTO() -> [Place] {
+        result.map {
+            .init(
+                id: $0.id,
+                location: $0.location.toDTO(),
+                openingHours: $0.openingHour,
+                powerSocketState: $0.powerSocketState,
+                noiseLevel: $0.noiseLevel,
+                groupSeatingState: $0.groupSeatingState,
+                communityRecruitingContents: [],
+                imageURLs: [$0.imageURL]
+            )
+        }
+    }
 }
 
 struct LocationEntity: Decodable {
     let latitude, longitude: Double
     let address: String
-}
-
-struct OpeningHourEntity: Decodable {
-    let dayOfWeek: DayOfWeekEntity
-    let open: String
-    let close: String
-    let openingState: OpeningState
     
-    enum CodingKeys: String, CodingKey {
-        case open, close, dayOfWeek
-        case openingState = "status"
+    func toDTO() -> Location {
+        .init(coordinate: .init(latitude: latitude, longitude: longitude))
     }
-}
-
-enum DayOfWeekEntity: String, Decodable {
-    case sun = "SUNDAY"
-    case mon = "MONDAY"
-    case tue = "TUESDAY"
-    case wed = "WEDNESDAY"
-    case thr = "THURSDAY"
-    case fri = "FRIDAY"
-    case sat = "SATURDAY"
-}
-
-enum OpeningState: String, Decodable {
-    case opened = "OPEN"
-    case closed = "CLOSE"
-}
-
-enum PowerSocketStateEntity: String, Codable {
-    case plenty = "MANY"
-    case moderate = "SEVERAL"
-    case few = "FEW"
-}
-
-enum NoiseLevelEntity: String, Codable {
-    case quiet = "QUIET"
-    case moderate = "NORMAL"
-    case noisy = "CROWDED"
-}
-
-enum GroupSeatingStateEntity: String, Codable {
-    case yes = "AVAILABLE"
-    case no = "UNAVAILABLE"
-    case unknown = "UNKNOWN"
 }

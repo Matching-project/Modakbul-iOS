@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// 닉네임 중복 확인 응답
 struct NicknameOverlappedResponseEntity: Decodable {
     let status: Bool
     let code: Int

@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// 사용자 프로필 조회 응답
 struct UserProfileResponseEntity: Decodable {
     let status: Bool
     let code: Int
@@ -14,18 +15,28 @@ struct UserProfileResponseEntity: Decodable {
     let result: Result
     
     struct Result: Decodable {
-        let nickname, job: String
+        let id: Int64
+        let nickname: String
+        let job: Job
         let imageURL: URL?
         let isGenderVisible: Bool
-        let categories: Set<String>
+        let categories: Set<Category>
         
-        enum CodingKeys: String, CodingKey {
-            case nickname, categories, job, isGenderVisible
+        enum CodingKeys: String,
+                         CodingKey {
+            case id, nickname, categories, job, isGenderVisible
             case imageURL = "image"
         }
     }
     
     func toDTO() -> User {
-        User(result.nickname, result.job, result.isGenderVisible, result.categories, result.imageURL)
+        .init(
+            id: result.id,
+            nickname: result.nickname,
+            job: result.job,
+            categoriesOfInterest: result.categories,
+            isGenderVisible: result.isGenderVisible,
+            imageURL: result.imageURL
+        )
     }
 }

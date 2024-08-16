@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// 회원가입 요청
 struct UserRegistrationRequestEntity: Encodable {
     let name, nickname, birth: String
     let gender: Gender

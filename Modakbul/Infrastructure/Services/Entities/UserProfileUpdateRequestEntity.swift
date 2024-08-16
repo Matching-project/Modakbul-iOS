@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// 사용자 프로필 갱신 요청
 struct UserProfileUpdateRequestEntity: Encodable {
     let nickname: String
     let isGenderVisible: Bool

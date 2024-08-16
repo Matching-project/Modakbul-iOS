@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// 기본 응답 형식
 struct DefaultResponseEntity: Decodable {
     let status: Bool
     let code: Int

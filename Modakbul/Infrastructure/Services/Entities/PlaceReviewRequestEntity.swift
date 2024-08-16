@@ -7,9 +7,10 @@
 
 import Foundation
 
+/// 카페 제보 요청
 struct PlaceReviewRequestEntity: Encodable {
-    let powerSocketState: PowerSocketStateEntity
-    let groupSeatingState: GroupSeatingStateEntity
+    let powerSocketState: PowerSocketState
+    let groupSeatingState: GroupSeatingState
     
     enum CodingKeys: String, CodingKey {
         case powerSocketState = "outlet"
