@@ -73,6 +73,7 @@ struct CommunityRecruitingContentSearchDetailResponseEntity: Decodable {
             routine: .daily,
             category: result.communityRecruitingContentDetail.category,
             participants: [user],
+            participantsCount: result.communityRecruitingContentDetail.currentCount,
             participantsLimit: result.communityRecruitingContentDetail.recruitCount,
             meetingDate: result.communityRecruitingContentDetail.meetingDate,
             startTime: result.communityRecruitingContentDetail.startTime,

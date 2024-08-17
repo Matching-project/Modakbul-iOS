@@ -22,12 +22,12 @@ struct Location: Identifiable {
     init(
         id: UUID = UUID(),
         name: String? = nil,
-        address: String = String(),
+        address: String? = nil,
         coordinate: CLLocationCoordinate2D = CLLocationCoordinate2D()
     ) {
         self.id = id
         self.name = name ?? "Unknown Location"
-        self.address = address
+        self.address = address ?? "주소 없음"
         self.coordinate = coordinate
     }
     
