@@ -9,9 +9,8 @@ import Foundation
 
 protocol UserRegistrationUseCase {
     func validate(_ nickname: String) async throws -> Bool
-    func register(_ user: User, encoded imageData: Data) async throws
-    func onOpenURL(url: URL)
-    func login(with provider: AuthenticationProvider) async throws -> User
+    func register(_ user: User, encoded imageData: String) async throws
+    func login(_ token: Data, by provider: AuthenticationProvider) async -> Bool
     func logout(with user: User) async
 }
 
@@ -33,12 +32,8 @@ extension DefaultUserRegistrationUseCase: UserRegistrationUseCase {
         //
     }
     
-    func onOpenURL(url: URL) {
-        socialLoginRepository.onOpenURL(url: url)
-    }
-    
-    func login(with provider: AuthenticationProvider) async throws -> User {
-        try await socialLoginRepository.login(with: provider)
+    func login(_ token: Data, by provider: AuthenticationProvider) async -> Bool {
+        await socialLoginRepository.login(token)
     }
     
     func logout(with user: User) async {

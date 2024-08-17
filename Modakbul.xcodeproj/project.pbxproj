@@ -27,12 +27,11 @@
 		046D51202C50BB800047F25D /* ChatRoomInfoEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046D511F2C50BB800047F25D /* ChatRoomInfoEntity.swift */; };
 		046D51222C50BCAA0047F25D /* UserEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046D51212C50BCAA0047F25D /* UserEntity.swift */; };
 		046D51242C50BCEE0047F25D /* AuthenticationProviderEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046D51232C50BCEE0047F25D /* AuthenticationProviderEntity.swift */; };
-		046D51302C5221010047F25D /* MapArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046D512F2C5221010047F25D /* MapArea.swift */; };
-		046D51322C5223420047F25D /* PlacesListArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046D51312C5223420047F25D /* PlacesListArea.swift */; };
+		04747CC12C64A31F008982E6 /* JSONEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04747CC02C64A31F008982E6 /* JSONEncoder.swift */; };
 		047C47EE2C1A98DC00170758 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047C47ED2C1A98DC00170758 /* HomeViewModel.swift */; };
-		048496D32C5241D900BECC21 /* TextFieldModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048496D22C5241D900BECC21 /* TextFieldModifier.swift */; };
-		048496D52C528A9200BECC21 /* PlaceInformationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048496D42C528A9200BECC21 /* PlaceInformationView.swift */; };
-		048496D72C53801700BECC21 /* CapsuleTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048496D62C53801700BECC21 /* CapsuleTag.swift */; };
+		048496D92C549D3400BECC21 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048496D82C549D3400BECC21 /* LoginViewModel.swift */; };
+		048496EB2C54FBBF00BECC21 /* AuthenticationProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048496EA2C54FBBF00BECC21 /* AuthenticationProvider.swift */; };
+		048496FA2C55FF9B00BECC21 /* SignInKakaoButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048496F92C55FF9B00BECC21 /* SignInKakaoButton.swift */; };
 		049D83072C1DC97B0090578E /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 049D83062C1DC97B0090578E /* Location.swift */; };
 		04B1B6C82C3BE8C20070AD38 /* PlaceShowcaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B1B6C72C3BE8C20070AD38 /* PlaceShowcaseView.swift */; };
 		04B1B6CC2C3BE9920070AD38 /* PlaceShowcaseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B1B6CB2C3BE9920070AD38 /* PlaceShowcaseViewModel.swift */; };
@@ -48,7 +47,6 @@
 		04C652282C6B6D8C0048A196 /* ChatRoomListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C652272C6B6D8C0048A196 /* ChatRoomListView.swift */; };
 		04C6522A2C6C8E960048A196 /* Badge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C652292C6C8E960048A196 /* Badge.swift */; };
 		04CFF7452BFDCE9300EAE4DC /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04CFF7442BFDCE9300EAE4DC /* LoginView.swift */; };
-		04CFF7482BFDCF8300EAE4DC /* AppleLoginButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04CFF7472BFDCF8300EAE4DC /* AppleLoginButton.swift */; };
 		04CFF7512BFDE9E500EAE4DC /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04CFF7502BFDE9E500EAE4DC /* NetworkService.swift */; };
 		04CFF7532BFDEAF700EAE4DC /* NetworkSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04CFF7522BFDEAF700EAE4DC /* NetworkSessionManager.swift */; };
 		04CFF7562BFDEB0B00EAE4DC /* URLSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04CFF7552BFDEB0B00EAE4DC /* URLSession.swift */; };
@@ -68,12 +66,9 @@
 		04D1C7F12C085981008BB1F9 /* Place.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D1C7F02C085981008BB1F9 /* Place.swift */; };
 		04D1C7F32C085AF7008BB1F9 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D1C7F22C085AF7008BB1F9 /* User.swift */; };
 		04D1C7F72C0B38A7008BB1F9 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D1C7F62C0B38A7008BB1F9 /* Category.swift */; };
-		04D1C8062C0C644B008BB1F9 /* AuthenticationProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D1C8052C0C644B008BB1F9 /* AuthenticationProvider.swift */; };
 		04D1C80C2C0C69EF008BB1F9 /* Report.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D1C80B2C0C69EF008BB1F9 /* Report.swift */; };
 		04D1C8122C0C6EE3008BB1F9 /* BlockedUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D1C8112C0C6EE3008BB1F9 /* BlockedUser.swift */; };
-		04D1C8292C11AEE2008BB1F9 /* AuthorizationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D1C8282C11AEE2008BB1F9 /* AuthorizationService.swift */; };
 		04D1C82D2C11B0EE008BB1F9 /* SocialLoginRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D1C82C2C11B0EE008BB1F9 /* SocialLoginRepository.swift */; };
-		04D1C82F2C11C0FE008BB1F9 /* KakaoLoginManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D1C82E2C11C0FE008BB1F9 /* KakaoLoginManager.swift */; };
 		04D1C8332C11E803008BB1F9 /* TokenStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D1C8322C11E803008BB1F9 /* TokenStorage.swift */; };
 		04D1C84A2C147839008BB1F9 /* InfrastructureAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D1C8492C147839008BB1F9 /* InfrastructureAssembly.swift */; };
 		04D1C84C2C147B73008BB1F9 /* DataAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D1C84B2C147B73008BB1F9 /* DataAssembly.swift */; };
@@ -138,12 +133,11 @@
 		046D511F2C50BB800047F25D /* ChatRoomInfoEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomInfoEntity.swift; sourceTree = "<group>"; };
 		046D51212C50BCAA0047F25D /* UserEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserEntity.swift; sourceTree = "<group>"; };
 		046D51232C50BCEE0047F25D /* AuthenticationProviderEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationProviderEntity.swift; sourceTree = "<group>"; };
-		046D512F2C5221010047F25D /* MapArea.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapArea.swift; sourceTree = "<group>"; };
-		046D51312C5223420047F25D /* PlacesListArea.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlacesListArea.swift; sourceTree = "<group>"; };
+		04747CC02C64A31F008982E6 /* JSONEncoder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONEncoder.swift; sourceTree = "<group>"; };
 		047C47ED2C1A98DC00170758 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
-		048496D22C5241D900BECC21 /* TextFieldModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldModifier.swift; sourceTree = "<group>"; };
-		048496D42C528A9200BECC21 /* PlaceInformationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceInformationView.swift; sourceTree = "<group>"; };
-		048496D62C53801700BECC21 /* CapsuleTag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapsuleTag.swift; sourceTree = "<group>"; };
+		048496D82C549D3400BECC21 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
+		048496EA2C54FBBF00BECC21 /* AuthenticationProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthenticationProvider.swift; sourceTree = "<group>"; };
+		048496F92C55FF9B00BECC21 /* SignInKakaoButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInKakaoButton.swift; sourceTree = "<group>"; };
 		049D83062C1DC97B0090578E /* Location.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 		04B1B6C72C3BE8C20070AD38 /* PlaceShowcaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceShowcaseView.swift; sourceTree = "<group>"; };
 		04B1B6CB2C3BE9920070AD38 /* PlaceShowcaseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceShowcaseViewModel.swift; sourceTree = "<group>"; };
@@ -159,7 +153,6 @@
 		04C652272C6B6D8C0048A196 /* ChatRoomListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomListView.swift; sourceTree = "<group>"; };
 		04C652292C6C8E960048A196 /* Badge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Badge.swift; sourceTree = "<group>"; };
 		04CFF7442BFDCE9300EAE4DC /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
-		04CFF7472BFDCF8300EAE4DC /* AppleLoginButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleLoginButton.swift; sourceTree = "<group>"; };
 		04CFF7502BFDE9E500EAE4DC /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 		04CFF7522BFDEAF700EAE4DC /* NetworkSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkSessionManager.swift; sourceTree = "<group>"; };
 		04CFF7552BFDEB0B00EAE4DC /* URLSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSession.swift; sourceTree = "<group>"; };
@@ -179,12 +172,9 @@
 		04D1C7F02C085981008BB1F9 /* Place.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Place.swift; sourceTree = "<group>"; };
 		04D1C7F22C085AF7008BB1F9 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		04D1C7F62C0B38A7008BB1F9 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
-		04D1C8052C0C644B008BB1F9 /* AuthenticationProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationProvider.swift; sourceTree = "<group>"; };
 		04D1C80B2C0C69EF008BB1F9 /* Report.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Report.swift; sourceTree = "<group>"; };
 		04D1C8112C0C6EE3008BB1F9 /* BlockedUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockedUser.swift; sourceTree = "<group>"; };
-		04D1C8282C11AEE2008BB1F9 /* AuthorizationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationService.swift; sourceTree = "<group>"; };
 		04D1C82C2C11B0EE008BB1F9 /* SocialLoginRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialLoginRepository.swift; sourceTree = "<group>"; };
-		04D1C82E2C11C0FE008BB1F9 /* KakaoLoginManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoLoginManager.swift; sourceTree = "<group>"; };
 		04D1C8322C11E803008BB1F9 /* TokenStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenStorage.swift; sourceTree = "<group>"; };
 		04D1C8462C133797008BB1F9 /* AppSecret.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = AppSecret.xcconfig; sourceTree = "<group>"; };
 		04D1C8492C147839008BB1F9 /* InfrastructureAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfrastructureAssembly.swift; sourceTree = "<group>"; };
@@ -342,18 +332,9 @@
 		04B1B6CD2C3BEA790070AD38 /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				04C651F12C66F1070048A196 /* Extensions */,
-				04CFF7472BFDCF8300EAE4DC /* AppleLoginButton.swift */,
-				DFC561F82C69E95100A32DB3 /* SignInKakaoButton.swift */,
 				04F1B40E2C2C4AF200F9AD42 /* SearchBar.swift */,
 				046D51182C4FB3950047F25D /* StrokedButton.swift */,
-				048496D62C53801700BECC21 /* CapsuleTag.swift */,
-				04DF0B382C6630FF0001831A /* AsyncImageView.swift */,
-				04C651FC2C6742880048A196 /* CustomPageControl.swift */,
-				DFC561F02C69E83600A32DB3 /* FlatButton.swift */,
-				DFC561F22C69E89400A32DB3 /* RoundedTextField.swift */,
-				DFF2726F2C6BB3BD0086F161 /* BackButton.swift */,
-				04C652292C6C8E960048A196 /* Badge.swift */,
+				048496F92C55FF9B00BECC21 /* SignInKakaoButton.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -393,6 +374,7 @@
 		04CFF7432BFDCE7000EAE4DC /* Login */ = {
 			isa = PBXGroup;
 			children = (
+				048496D82C549D3400BECC21 /* LoginViewModel.swift */,
 				04CFF7442BFDCE9300EAE4DC /* LoginView.swift */,
 			);
 			path = Login;
@@ -403,7 +385,6 @@
 			children = (
 				DFC561F62C69E91600A32DB3 /* Endpoint.swift */,
 				04B1B6D02C3BFE800070AD38 /* LocalMap */,
-				04D1C8272C11AEA5008BB1F9 /* OAuth */,
 				04CFF74F2BFDE9CF00EAE4DC /* Network */,
 				DF92D99A2C33C99800C993CA /* Chat */,
 				04CFF74E2BFDE9C900EAE4DC /* Location */,
@@ -435,6 +416,8 @@
 			children = (
 				04CFF7552BFDEB0B00EAE4DC /* URLSession.swift */,
 				04CFF7572BFDEC6A00EAE4DC /* JSONDecoder.swift */,
+				04747CC02C64A31F008982E6 /* JSONEncoder.swift */,
+				04E2814F2C31ACC900C118DF /* JSONEncoder.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -463,11 +446,11 @@
 				04D1C7F22C085AF7008BB1F9 /* User.swift */,
 				DFC561F42C69E8EE00A32DB3 /* UserCredential.swift */,
 				04D1C8112C0C6EE3008BB1F9 /* BlockedUser.swift */,
+				048496EA2C54FBBF00BECC21 /* AuthenticationProvider.swift */,
 				04D1C7F62C0B38A7008BB1F9 /* Category.swift */,
 				046D51092C4CD31A0047F25D /* Job.swift */,
 				046D51072C4BF8090047F25D /* ChatRoomConfiguration.swift */,
 				04E281562C329EA000C118DF /* ChatMessage.swift */,
-				04D1C8052C0C644B008BB1F9 /* AuthenticationProvider.swift */,
 				04D1C80B2C0C69EF008BB1F9 /* Report.swift */,
 				046D50C92C40059C0047F25D /* SuggestedResult.swift */,
 				046D51032C4BDCCA0047F25D /* PushNotification.swift */,
@@ -610,15 +593,6 @@
 				046D50F42C48F71B0047F25D /* UserRegistrationUseCase.swift */,
 			);
 			path = User;
-			sourceTree = "<group>";
-		};
-		04D1C8272C11AEA5008BB1F9 /* OAuth */ = {
-			isa = PBXGroup;
-			children = (
-				04D1C8282C11AEE2008BB1F9 /* AuthorizationService.swift */,
-				04D1C82E2C11C0FE008BB1F9 /* KakaoLoginManager.swift */,
-			);
-			path = OAuth;
 			sourceTree = "<group>";
 		};
 		04D1C82A2C11B0B3008BB1F9 /* Extensions */ = {
@@ -918,7 +892,6 @@
 				04C652232C6B545C0048A196 /* RelatedParticipationRequestListResponseEntity.swift in Sources */,
 				DFE0AFDF2C104E7A00EC078B /* Bundle+Extension.swift in Sources */,
 				04E2816E2C37D1F200C118DF /* AlertType.swift in Sources */,
-				04CFF7482BFDCF8300EAE4DC /* AppleLoginButton.swift in Sources */,
 				04E281732C37EB0900C118DF /* ConfirmationAction.swift in Sources */,
 				DFC561F92C69E95100A32DB3 /* SignInKakaoButton.swift in Sources */,
 				04D1C82D2C11B0EE008BB1F9 /* SocialLoginRepository.swift in Sources */,
@@ -955,7 +928,9 @@
 				046D50CA2C40059C0047F25D /* SuggestedResult.swift in Sources */,
 				046D50FE2C4BDACA0047F25D /* CommunityUseCase.swift in Sources */,
 				046D510A2C4CD31A0047F25D /* Job.swift in Sources */,
+				048496EB2C54FBBF00BECC21 /* AuthenticationProvider.swift in Sources */,
 				04CFF7452BFDCE9300EAE4DC /* LoginView.swift in Sources */,
+				04747CC12C64A31F008982E6 /* JSONEncoder.swift in Sources */,
 				04D1C84C2C147B73008BB1F9 /* DataAssembly.swift in Sources */,
 				DF1CC7A22C6CD542009A8A97 /* NavigationModifier.swift in Sources */,
 				04D1C7E12C05B22F008BB1F9 /* DependencyRegister.swift in Sources */,
@@ -979,19 +954,13 @@
 				DF7F18862C620399009FAF6F /* Selectable.swift in Sources */,
 				046D51192C4FB3950047F25D /* StrokedButton.swift in Sources */,
 				04E281572C329EA000C118DF /* ChatMessage.swift in Sources */,
-				04D1C82F2C11C0FE008BB1F9 /* KakaoLoginManager.swift in Sources */,
-				04C651F52C66F3F70048A196 /* ButtonStyle.swift in Sources */,
 				044023402C1F50790029E6FA /* PlaceEntity.swift in Sources */,
 				04C651F72C6709F20048A196 /* PlaceInformationDetailView.swift in Sources */,
 				046D510E2C4CD9290047F25D /* DayOfWeek.swift in Sources */,
 				04D1C7DF2C05B041008BB1F9 /* DependencyResolver.swift in Sources */,
-				04C6522A2C6C8E960048A196 /* Badge.swift in Sources */,
-				04D1C8062C0C644B008BB1F9 /* AuthenticationProvider.swift in Sources */,
 				04D1C8332C11E803008BB1F9 /* TokenStorage.swift in Sources */,
 				049D83072C1DC97B0090578E /* Location.swift in Sources */,
 				DFE9F5BC2C3E6CE200616FEC /* TokensEntity.swift in Sources */,
-				DFAAA8A02C6B75460068B635 /* NotificationView.swift in Sources */,
-				DFE9F5B72C3D7BE500616FEC /* JSONEncoder.swift in Sources */,
 				046D50F52C48F71B0047F25D /* UserRegistrationUseCase.swift in Sources */,
 				048496D32C5241D900BECC21 /* TextFieldModifier.swift in Sources */,
 				DFAAA89E2C6B69450068B635 /* PlaceInformationDetailMakingViewModel.swift in Sources */,
@@ -1007,13 +976,14 @@
 				04CFF7672BFF17CF00EAE4DC /* Gender.swift in Sources */,
 				04CFF7642BFE1D5F00EAE4DC /* LocationService.swift in Sources */,
 				046D50FC2C4BDAC00047F25D /* ChatUseCase.swift in Sources */,
+				048496D92C549D3400BECC21 /* LoginViewModel.swift in Sources */,
 				04B1B6D22C3BFE8A0070AD38 /* LocalMapService.swift in Sources */,
 				046D51002C4BDAD00047F25D /* PlaceShowcaseAndReviewUseCase.swift in Sources */,
 				04E281782C382C2900C118DF /* ConfirmationDialogType.swift in Sources */,
 				04DF0B392C6630FF0001831A /* AsyncImageView.swift in Sources */,
 				046D51302C5221010047F25D /* MapArea.swift in Sources */,
 				046D51242C50BCEE0047F25D /* AuthenticationProviderEntity.swift in Sources */,
-				04C652282C6B6D8C0048A196 /* ChatRoomListView.swift in Sources */,
+				048496FA2C55FF9B00BECC21 /* SignInKakaoButton.swift in Sources */,
 				04E2817A2C3936B000C118DF /* ConfirmationDialogModifier.swift in Sources */,
 				DFC561F12C69E83600A32DB3 /* FlatButton.swift in Sources */,
 				046D51322C5223420047F25D /* PlacesListArea.swift in Sources */,
@@ -1028,10 +998,6 @@
 				0440233D2C1F3E9E0029E6FA /* PlacesRepository.swift in Sources */,
 				04C652192C6B4B270048A196 /* ChatRoomCreateRequestEntity.swift in Sources */,
 				04CFF7532BFDEAF700EAE4DC /* NetworkSessionManager.swift in Sources */,
-				04C651F92C670BB40048A196 /* PlaceInformationDetailViewModel.swift in Sources */,
-				04D1C8292C11AEE2008BB1F9 /* AuthorizationService.swift in Sources */,
-				04C651FD2C6742880048A196 /* CustomPageControl.swift in Sources */,
-				DFC561F52C69E8EF00A32DB3 /* UserCredential.swift in Sources */,
 				04D1C8502C14867D008BB1F9 /* PresentationAssembly.swift in Sources */,
 				04CFF7622BFDF51200EAE4DC /* CLLocationManager.swift in Sources */,
 				046D51062C4BE8870047F25D /* Community.swift in Sources */,

@@ -1,3 +1,10 @@
+//
+//  SignInKakaoButton.swift
+//  Modakbul
+//
+//  Created by Swain Yun on 7/28/24.
+//
+
 import SwiftUI
 import KakaoSDKCommon
 import KakaoSDKUser
@@ -5,7 +12,7 @@ import KakaoSDKAuth
 
 protocol KakaoAuthService {
     func handleOpenUrl(url: URL)
-    func login(_ completion: @escaping (Result<(KakaoUser, OAuthToken), Error>) -> Void)
+    func login(_ completion: @escaping (Result<OAuthToken, Error>) -> Void)
     func logout() async throws
 }
 
@@ -21,23 +28,13 @@ final class DefaultKakaoAuthService {
         KakaoSDK.initSDK(appKey: appKey)
     }
     
-    private func _login(_ token: OAuthToken?, _ error: Error?, _ completion: @escaping (Result<(KakaoUser, OAuthToken), Error>) -> Void) {
+    private func _login(_ token: OAuthToken?, _ error: Error?, _ completion: @escaping (Result<OAuthToken, Error>) -> Void) {
         if let error = error {
             completion(.failure(error))
-            return
         }
         
         if let token = token {
-            kakaoAPI.me { user, error in
-                if let error = error {
-                    completion(.failure(error))
-                    return
-                }
-                
-                if let user = user {
-                    completion(.success((user, token)))
-                }
-            }
+            completion(.success(token))
         }
     }
 }
@@ -50,7 +47,7 @@ extension DefaultKakaoAuthService: KakaoAuthService {
         }
     }
     
-    func login(_ completion: @escaping (Result<(KakaoUser, OAuthToken), Error>) -> Void) {
+    func login(_ completion: @escaping (Result<OAuthToken, Error>) -> Void) {
         let nonce = UUID().uuidString
         
         if UserApi.isKakaoTalkLoginAvailable() {
@@ -76,11 +73,11 @@ extension DefaultKakaoAuthService: KakaoAuthService {
 
 struct SignInKakaoButton: View {
     private let kakaoAuthService: KakaoAuthService
-    private let handler: (Result<(KakaoUser, OAuthToken), Error>) -> Void
+    private let handler: (Result<OAuthToken, Error>) -> Void
     
     init(
         kakaoAuthService: KakaoAuthService = DefaultKakaoAuthService(),
-        onCompletion: @escaping (Result<(KakaoUser, OAuthToken), Error>) -> Void
+        onCompletion: @escaping (Result<OAuthToken, Error>) -> Void
     ) {
         self.kakaoAuthService = kakaoAuthService
         self.handler = onCompletion

@@ -12,10 +12,8 @@ struct DataAssembly: Assembly {
         // SocialLoginRepository
         container.register(for: SocialLoginRepository.self) { resolver in
             let tokenStorage = resolver.resolve(TokenStorage.self)
-            let authorizationService = resolver.resolve(AuthorizationService.self)
             let networkService = resolver.resolve(NetworkService.self)
-            return DefaultSocialLoginRepository(tokenStorage: tokenStorage, 
-                                                authorizationService: authorizationService,
+            return DefaultSocialLoginRepository(tokenStorage: tokenStorage,
                                                 networkService: networkService)
         }
         

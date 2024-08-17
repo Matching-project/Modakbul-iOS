@@ -8,7 +8,7 @@
 import Foundation
 
 protocol NetworkService {
-    func request<Response: Decodable>(endpoint: Requestable, for type: Response.Type) async throws -> Response
+    func request<T: Decodable>(endpoint: Requestable, for type: T.Type) async throws -> HTTPResponse<T>
 }
 
 enum NetworkServiceError: Error {
@@ -18,6 +18,21 @@ enum NetworkServiceError: Error {
     case decodingError(type: String)
     case generic(type: String)
     case requestFailed
+}
+
+struct HTTPResponse<T: Decodable> {
+    let headers: [AnyHashable: Any]
+    let body: T
+    
+    var accessToken: String? {
+        guard let token = headers["Authorization"] as? String else { return nil }
+        return token
+    }
+    
+    var refreshToken: String? {
+        guard let token = headers["Authorization_refresh"] as? String else { return nil }
+        return token
+    }
 }
 
 final class DefaultNetworkService {
@@ -32,7 +47,7 @@ final class DefaultNetworkService {
         self.decoder = decoder
     }
     
-    private func handleResponse(_ response: URLResponse) throws {
+    private func handleResponse(_ response: URLResponse) throws -> HTTPURLResponse {
         guard let response = response as? HTTPURLResponse else {
             throw NetworkServiceError.generic(type: String(describing: response))
         }
@@ -40,6 +55,8 @@ final class DefaultNetworkService {
         guard (200..<300).contains(response.statusCode) else {
             throw NetworkServiceError.badResponse(statusCode: response.statusCode)
         }
+        
+        return response
     }
     
     private func decode<T: Decodable>(for type: T.Type, with data: Data) throws -> T {
@@ -66,16 +83,16 @@ final class DefaultNetworkService {
 // MARK: NetworkService Conformation
 extension DefaultNetworkService: NetworkService {
     // MARK: - DataServiceProtocol
-    func request<Response: Decodable>(endpoint: Requestable, for type: Response.Type) async throws -> Response {
+    func request<T: Decodable>(endpoint: Requestable, for type: T.Type) async throws -> HTTPResponse<T> {
         guard let urlRequest = endpoint.asURLRequest() else {
             throw NetworkServiceError.invalidURL
         }
         
         do {
             let (data, response) = try await sessionManager.data(for: urlRequest)
-            try handleResponse(response)
+            let headers = try handleResponse(response).allHeaderFields
             let decodedData = try decode(for: type, with: data)
-            return decodedData
+            return HTTPResponse(headers: headers, body: decodedData)
         } catch {
             throw resolveError(error)
         }

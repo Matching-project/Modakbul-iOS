@@ -15,12 +15,6 @@ struct InfrastructureAssembly: Assembly {
             DefaultNetworkService(sessionManager: resolver.resolve(NetworkSessionManager.self))
         }
         
-        // OAuth
-        container.register(for: KakaoLoginManager.self, DefaultKakaoLoginManager())
-        container.register(for: AuthorizationService.self) { resolver in
-            DefaultAuthorizationService(kakaoLoginManager: resolver.resolve(KakaoLoginManager.self))
-        }
-        
         // LocalMap
         container.register(for: LocalMapService.self, DefaultLocalMapService())
         
