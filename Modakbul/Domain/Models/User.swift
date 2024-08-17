@@ -11,19 +11,35 @@ import Foundation
  사용자 정보를 나타냅니다.
  */
 struct User {
-    // MARK: 소셜 로그인을 통해 얻어지는 정보
-    let email: String
-    let provider: AuthenticationProvider
-    
-    // MARK: 회원가입시 얻어지는 정보
+    let id: Int64
     let name: String
     let nickname: String
-    let birth: Date
     let gender: Gender
     let job: Job
     let categoriesOfInterest: Set<Category>
-    let image: Data?
+    let isGenderVisible: Bool?
+    let birth: Date
+    let imageURL: URL?
     
-    // MARK: 사용자 설정화면에서 설정하는 정보
-    let isGenderVisible: Bool
+    init(
+        id: Int64,
+        name: String = "이름 없음",
+        nickname: String = "닉네임 없음",
+        gender: Gender = .unknown,
+        job: Job = .other,
+        categoriesOfInterest: Set<Category> = [],
+        isGenderVisible: Bool = true,
+        birth: Date = .now,
+        imageURL: URL? = nil
+    ) {
+        self.id = id
+        self.name = name
+        self.nickname = nickname
+        self.gender = gender
+        self.job = job
+        self.categoriesOfInterest = categoriesOfInterest
+        self.isGenderVisible = isGenderVisible
+        self.birth = birth
+        self.imageURL = imageURL
+    }
 }

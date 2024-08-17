@@ -7,20 +7,16 @@
 
 import Foundation
 
-enum Category: Selectable {
-    case interview
-    case coding
-    case design
-    case selfImprovement
-    case reading
-    case language
-    case officiary
-    case extracurricularActivities
-    case other
-    
-    var identifier: String {
-        String(describing: self)
-    }
+enum Category: String, Codable, CustomStringConvertible {
+    case interview = "INTERVIEW"
+    case coding = "CODING"
+    case design = "DESIGN"
+    case selfImprovement = "SELF_DEVELOPMENT"
+    case reading = "READING"
+    case language = "LANGUAGE"
+    case officiary = "EXAM"
+    case extracurricularActivities = "EXTERNAL_ACTIVITY"
+    case other = "ETC"
     
     var description: String {
         switch self {
@@ -33,20 +29,6 @@ enum Category: Selectable {
         case .officiary: "고시, 공무원"
         case .extracurricularActivities: "대외활동"
         case .other: "기타"
-        }
-    }
-    
-    init(string: String) {
-        switch string {
-        case "INTERVIEW": self = .interview
-        case "CODING": self = .coding
-        case "DESIGN": self = .design
-        case "SELF_IMPROVEMENT": self = .selfImprovement
-        case "READING": self = .reading
-        case "LANGUAGE": self = .language
-        case "OFFICIARY": self = .officiary
-        case "EXTRACURRICULAR_ACTIVITIES": self = .extracurricularActivities
-        default: self = .other
         }
     }
 }
