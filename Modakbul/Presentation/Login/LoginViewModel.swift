@@ -39,9 +39,6 @@ final class LoginViewModel: ObservableObject {
     }
     
     func logout() {
-        Task {
-            let user = User(name: "", nickname: "", email: "", provider: .kakao, gender: .male, job: .jobSeeker, categoriesOfInterest: [], isGenderVisible: true, birth: .now, imageURL: nil)
-            await userRegistrationUseCase.logout(with: user)
-        }
+        
     }
 }

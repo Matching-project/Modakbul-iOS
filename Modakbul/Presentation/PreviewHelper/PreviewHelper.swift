@@ -25,150 +25,95 @@ final class PreviewHelper {
     
     let places: [Place] = [
         Place(
-            id: UUID().uuidString,
+            id: 1,
             location: Location(
                 name: "구로디지털단지",
                 address: "서울시 구로구 디지털로 26길 38",
                 coordinate: CLLocationCoordinate2D(latitude: 37.4848, longitude: 126.8963)
             ),
-            openingHoursOfWeek: [
-                .mon: Place.OpeningHours(open: "09:00", close: "18:00"),
-                .tue: Place.OpeningHours(open: "09:00", close: "18:00"),
-                .wed: Place.OpeningHours(open: "09:00", close: "18:00"),
-                .thu: Place.OpeningHours(open: "09:00", close: "18:00"),
-                .fri: Place.OpeningHours(open: "09:00", close: "22:00"),
-                .sat: Place.OpeningHours(open: "10:00", close: "22:00"),
-                .sun: Place.OpeningHours(open: "10:00", close: "20:00")
-            ],
             powerSocketState: .plenty,
             noiseLevel: .quiet,
             groupSeatingState: .yes,
-            images: ["image1.png", "image2.png"]
+            imageURLs: []
         ),
         Place(
-            id: UUID().uuidString,
+            id: 2,
             location: Location(
                 name: "구로시장",
                 address: "서울시 구로구 구로동 437-1",
                 coordinate: CLLocationCoordinate2D(latitude: 37.4953, longitude: 126.8882)
             ),
-            openingHoursOfWeek: [
-                .mon: Place.OpeningHours(open: "09:00", close: "18:00"),
-                .tue: Place.OpeningHours(open: "09:00", close: "18:00"),
-                .wed: Place.OpeningHours(open: "09:00", close: "18:00"),
-                .thu: Place.OpeningHours(open: "09:00", close: "18:00"),
-                .fri: Place.OpeningHours(open: "09:00", close: "22:00"),
-                .sat: Place.OpeningHours(open: "10:00", close: "22:00"),
-                .sun: Place.OpeningHours(open: "10:00", close: "20:00")
-            ],
             powerSocketState: .moderate,
             noiseLevel: .moderate,
             groupSeatingState: .no,
-            images: nil
+            imageURLs: []
         ),
         Place(
-            id: UUID().uuidString,
+            id: 3,
             location: Location(
                 name: "구로아트밸리",
                 address: "서울시 구로구 구로동 814",
                 coordinate: CLLocationCoordinate2D(latitude: 37.4958, longitude: 126.8874)
             ),
-            openingHoursOfWeek: [
-                .mon: Place.OpeningHours(open: "09:00", close: "18:00"),
-                .tue: Place.OpeningHours(open: "09:00", close: "18:00"),
-                .wed: Place.OpeningHours(open: "09:00", close: "18:00"),
-                .thu: Place.OpeningHours(open: "09:00", close: "18:00"),
-                .fri: Place.OpeningHours(open: "09:00", close: "22:00"),
-                .sat: Place.OpeningHours(open: "10:00", close: "22:00"),
-                .sun: Place.OpeningHours(open: "10:00", close: "20:00")
-            ],
             powerSocketState: .few,
             noiseLevel: .noisy,
             groupSeatingState: .yes,
-            images: nil
+            imageURLs: []
         ),
         Place(
-            id: UUID().uuidString,
+            id: Int64.random(in: 0..<100),
             location: Location(
                 name: "가산디지털단지",
                 address: "서울시 금천구 가산동 371-28",
                 coordinate: CLLocationCoordinate2D(latitude: 37.4812, longitude: 126.8827)
             ),
-            openingHoursOfWeek: [
-                .mon: Place.OpeningHours(open: "09:00", close: "18:00"),
-                .tue: Place.OpeningHours(open: "09:00", close: "18:00"),
-                .wed: Place.OpeningHours(open: "09:00", close: "18:00"),
-                .thu: Place.OpeningHours(open: "09:00", close: "18:00"),
-                .fri: Place.OpeningHours(open: "09:00", close: "22:00"),
-                .sat: Place.OpeningHours(open: "10:00", close: "22:00"),
-                .sun: Place.OpeningHours(open: "10:00", close: "20:00")
-            ],
             powerSocketState: .plenty,
             noiseLevel: .quiet,
             groupSeatingState: .no,
-            images: nil
+            imageURLs: []
         ),
         Place(
-            id: UUID().uuidString,
+            id: Int64.random(in: 0..<100),
             location: Location(
                 name: "디지털단지 지하상가",
                 address: "서울시 구로구 구로동 3-25",
                 coordinate: CLLocationCoordinate2D(latitude: 37.4845, longitude: 126.9013)
             ),
-            openingHoursOfWeek: [
-                .mon: Place.OpeningHours(open: "09:00", close: "18:00"),
-                .tue: Place.OpeningHours(open: "09:00", close: "18:00"),
-                .wed: Place.OpeningHours(open: "09:00", close: "18:00"),
-                .thu: Place.OpeningHours(open: "09:00", close: "18:00"),
-                .fri: Place.OpeningHours(open: "09:00", close: "22:00"),
-                .sat: Place.OpeningHours(open: "10:00", close: "22:00"),
-                .sun: Place.OpeningHours(open: "10:00", close: "20:00")
-            ],
             powerSocketState: .moderate,
             noiseLevel: .moderate,
             groupSeatingState: .yes,
-            images: nil
+            imageURLs: []
         ),
         Place(
-            id: UUID().uuidString,
+            id: Int64.random(in: 0..<100),
             location: Location(
                 name: "구로중앙공원",
                 address: "서울시 구로구 구로동 685-101",
                 coordinate: CLLocationCoordinate2D(latitude: 37.4956, longitude: 126.8879)
             ),
-            openingHoursOfWeek: [
-                .mon: Place.OpeningHours(open: "09:00", close: "18:00"),
-                .tue: Place.OpeningHours(open: "09:00", close: "18:00"),
-                .wed: Place.OpeningHours(open: "09:00", close: "18:00"),
-                .thu: Place.OpeningHours(open: "09:00", close: "18:00"),
-                .fri: Place.OpeningHours(open: "09:00", close: "22:00"),
-                .sat: Place.OpeningHours(open: "10:00", close: "22:00"),
-                .sun: Place.OpeningHours(open: "10:00", close: "20:00")
-            ],
             powerSocketState: .few,
             noiseLevel: .noisy,
             groupSeatingState: .no,
-            images: []
+            imageURLs: []
         ),
     ]
     
     let users: [User] = [
-        User(name: "팀쿡", nickname: "빌게이츠", email: "timcook@apple.com", provider: .apple, gender: .female, job: .officeWorker, categoriesOfInterest: .init(arrayLiteral: .coding, .design), isGenderVisible: true, birth: Date(), imageURL: URL(string: "apple.com")),
-        User(name: "이재용", nickname: "삼성", email: "jaeyounglee@samsung.co.kr", provider: .kakao, gender: .male, job: .other, categoriesOfInterest: .init(arrayLiteral: .coding, .design), isGenderVisible: false, birth: Date(), imageURL: nil),
-        User(name: "조성규", nickname: "yagom", email: "yagom@academy.co.kr", provider: .apple, gender: .male, job: .officeWorker, categoriesOfInterest: .init(arrayLiteral: .coding, .interview, .selfImprovement), isGenderVisible: false, birth: Date(), imageURL: nil)
+        User(id: 1, name: "팀쿡", nickname: "빌게이츠", gender: .female, job: .officeWorker, categoriesOfInterest: [.coding, .design], isGenderVisible: true, birth: .now, imageURL: URL(string: "apple.com")),
+        User(id: 2, name: "이재용", nickname: "삼성", gender: .male, job: .jobSeeker, categoriesOfInterest: [.coding, .design], isGenderVisible: false, birth: .now, imageURL: nil),
+        User(id: 3, name: "조성규", nickname: "yagom", gender: .male, job: .collegeStudent, categoriesOfInterest: [.coding, .interview, .selfImprovement], isGenderVisible: false, birth: .now, imageURL: nil)
     ]
     
     let communityRecruitingContents = [
         CommunityRecruitingContent(
-            id: UUID().uuidString,
+            id: Int64.random(in: 0..<100),
             title: "개발 모각코 하실 분 구합니다!",
             content: "글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다.",
-            writtenDate: .now,
+            writtenDate: "1998-07-23",
             writer: User(
+                id: 1,
                 name: "SwainYun",
                 nickname: "SwainYun",
-                email: "destap@naver.com",
-                provider: .apple,
                 gender: .male,
                 job: .jobSeeker,
                 categoriesOfInterest: [.coding, .design, .selfImprovement],
@@ -181,10 +126,9 @@ final class PreviewHelper {
                 category: .coding,
                 participants: [
                     User(
+                        id: 1,
                         name: "SwainYun",
                         nickname: "SwainYun",
-                        email: "destap@naver.com",
-                        provider: .apple,
                         gender: .male,
                         job: .jobSeeker,
                         categoriesOfInterest: [.coding, .design, .selfImprovement],
@@ -193,21 +137,22 @@ final class PreviewHelper {
                         imageURL: nil
                     )
                 ],
-                participantsLimit: 5,
-                promiseDate: .init(date: .now, startTime: .now, endTime: .now)
+                participantsLimit: 4,
+                meetingDate: "1998-07-23",
+                startTime: "09:00",
+                endTime: "18:00"
             )
         ),
         
         CommunityRecruitingContent(
-            id: UUID().uuidString,
+            id: Int64.random(in: 0..<100),
             title: "개발 모각코 하실 분 구합니다!",
-            content: "글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. ",
-            writtenDate: .now,
+            content: "글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다.",
+            writtenDate: "1998-07-23",
             writer: User(
+                id: 1,
                 name: "SwainYun",
                 nickname: "SwainYun",
-                email: "destap@naver.com",
-                provider: .apple,
                 gender: .male,
                 job: .jobSeeker,
                 categoriesOfInterest: [.coding, .design, .selfImprovement],
@@ -220,10 +165,9 @@ final class PreviewHelper {
                 category: .coding,
                 participants: [
                     User(
+                        id: 1,
                         name: "SwainYun",
                         nickname: "SwainYun",
-                        email: "destap@naver.com",
-                        provider: .apple,
                         gender: .male,
                         job: .jobSeeker,
                         categoriesOfInterest: [.coding, .design, .selfImprovement],
@@ -232,21 +176,22 @@ final class PreviewHelper {
                         imageURL: nil
                     )
                 ],
-                participantsLimit: 5,
-                promiseDate: .init(date: .now, startTime: .now, endTime: .now)
+                participantsLimit: 4,
+                meetingDate: "1998-07-23",
+                startTime: "09:00",
+                endTime: "18:00"
             )
         ),
         
         CommunityRecruitingContent(
-            id: UUID().uuidString,
+            id: Int64.random(in: 0..<100),
             title: "개발 모각코 하실 분 구합니다!",
-            content: "글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. ",
-            writtenDate: .now,
+            content: "글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다.",
+            writtenDate: "1998-07-23",
             writer: User(
+                id: 1,
                 name: "SwainYun",
                 nickname: "SwainYun",
-                email: "destap@naver.com",
-                provider: .apple,
                 gender: .male,
                 job: .jobSeeker,
                 categoriesOfInterest: [.coding, .design, .selfImprovement],
@@ -259,10 +204,9 @@ final class PreviewHelper {
                 category: .coding,
                 participants: [
                     User(
+                        id: 1,
                         name: "SwainYun",
                         nickname: "SwainYun",
-                        email: "destap@naver.com",
-                        provider: .apple,
                         gender: .male,
                         job: .jobSeeker,
                         categoriesOfInterest: [.coding, .design, .selfImprovement],
@@ -271,21 +215,22 @@ final class PreviewHelper {
                         imageURL: nil
                     )
                 ],
-                participantsLimit: 5,
-                promiseDate: .init(date: .now, startTime: .now, endTime: .now)
+                participantsLimit: 4,
+                meetingDate: "1998-07-23",
+                startTime: "09:00",
+                endTime: "18:00"
             )
         ),
         
         CommunityRecruitingContent(
-            id: UUID().uuidString,
+            id: Int64.random(in: 0..<100),
             title: "개발 모각코 하실 분 구합니다!",
-            content: "글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. ",
-            writtenDate: .now,
+            content: "글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다.",
+            writtenDate: "1998-07-23",
             writer: User(
+                id: 1,
                 name: "SwainYun",
                 nickname: "SwainYun",
-                email: "destap@naver.com",
-                provider: .apple,
                 gender: .male,
                 job: .jobSeeker,
                 categoriesOfInterest: [.coding, .design, .selfImprovement],
@@ -298,10 +243,9 @@ final class PreviewHelper {
                 category: .coding,
                 participants: [
                     User(
+                        id: 1,
                         name: "SwainYun",
                         nickname: "SwainYun",
-                        email: "destap@naver.com",
-                        provider: .apple,
                         gender: .male,
                         job: .jobSeeker,
                         categoriesOfInterest: [.coding, .design, .selfImprovement],
@@ -310,10 +254,51 @@ final class PreviewHelper {
                         imageURL: nil
                     )
                 ],
-                participantsLimit: 5,
-                promiseDate: .init(date: .now, startTime: .now, endTime: .now)
+                participantsLimit: 4,
+                meetingDate: "1998-07-23",
+                startTime: "09:00",
+                endTime: "18:00"
             )
-        )
+        ),
+        
+        CommunityRecruitingContent(
+            id: Int64.random(in: 0..<100),
+            title: "개발 모각코 하실 분 구합니다!",
+            content: "글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다. 글의 내용입니다.",
+            writtenDate: "1998-07-23",
+            writer: User(
+                id: 1,
+                name: "SwainYun",
+                nickname: "SwainYun",
+                gender: .male,
+                job: .jobSeeker,
+                categoriesOfInterest: [.coding, .design, .selfImprovement],
+                isGenderVisible: true,
+                birth: .now,
+                imageURL: nil
+            ),
+            community: Community(
+                routine: .daily,
+                category: .coding,
+                participants: [
+                    User(
+                        id: 1,
+                        name: "SwainYun",
+                        nickname: "SwainYun",
+                        gender: .male,
+                        job: .jobSeeker,
+                        categoriesOfInterest: [.coding, .design, .selfImprovement],
+                        isGenderVisible: true,
+                        birth: .now,
+                        imageURL: nil
+                    )
+                ],
+                participantsLimit: 4,
+                meetingDate: "1998-07-23",
+                startTime: "09:00",
+                endTime: "18:00"
+            )
+        ),
     ]
     
     static let url1 = URL(string: "https://res.heraldm.com/content/image/2023/12/24/20231224000165_0.jpg")!

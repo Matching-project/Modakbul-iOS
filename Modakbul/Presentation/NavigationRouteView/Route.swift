@@ -43,7 +43,7 @@ enum Route: Routable {
     case mapArea
     case placesListArea
     case placeInformationView(place: Place)
-    case placeInformationDetailView(communityRecruitingContentId: String)
+    case placeInformationDetailView(communityRecruitingContentId: Int64)
     case placeInformationDetailMakingView
     case participationRequestListView(communityRecruitingContent: CommunityRecruitingContent)
     case notificationView
