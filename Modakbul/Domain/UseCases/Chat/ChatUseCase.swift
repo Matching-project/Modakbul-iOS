@@ -11,7 +11,7 @@ protocol ChatUseCase {
     typealias ChatRoomId = String
     typealias CommunityId = String
     
-    func startChat(from: User, to: User, with community: CommunityReqruitingContent, _ continuation: AsyncThrowingStream<ChatMessage, Error>.Continuation) async throws -> ChatRoomConfiguration
+    func startChat(from: User, to: User, with community: CommunityRecruitingContent, _ continuation: AsyncThrowingStream<ChatMessage, Error>.Continuation) async throws -> ChatRoomConfiguration
     func stopChat(on chatRoomId: ChatRoomId, messages: [ChatMessage])
     func deleteChat(on chatRoomId: ChatRoomId)
     
@@ -28,11 +28,11 @@ final class DefaultChatUseCase {
 
 // MARK: ChatUseCase Conformation
 extension DefaultChatUseCase: ChatUseCase {
-    func startChat(from: User, to: User, with community: CommunityReqruitingContent, _ continuation: AsyncThrowingStream<ChatMessage, Error>.Continuation) async throws -> ChatRoomConfiguration {
+    func startChat(from: User, to: User, with community: CommunityRecruitingContent, _ continuation: AsyncThrowingStream<ChatMessage, Error>.Continuation) async throws -> ChatRoomConfiguration {
         let chatRoomId = try await chatRepository.createChatRoom(from: from, to: to, on: community.id)
         let chatHistory = await chatRepository.readChatHistory(on: chatRoomId)
         try chatRepository.openChatRoom(by: to, continuation)
-        return ChatRoomConfiguration(id: chatRoomId, communityReqruitingContent: community, participants: [from, to])
+        return ChatRoomConfiguration(id: chatRoomId, communityRecruitingContent: community, participants: [from, to])
     }
     
     func stopChat(on chatRoomId: ChatRoomId, messages: [ChatMessage]) {

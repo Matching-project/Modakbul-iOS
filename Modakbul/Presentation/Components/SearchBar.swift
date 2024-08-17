@@ -42,13 +42,14 @@ struct SearchBar: View {
         }
         .font(.headline)
         .padding(10)
-        .background(.white)
+        .background(.ultraThinMaterial)
         .clipShape(Capsule())
         .shadow(color: .secondary, radius: 4, y: 4)
     }
     
     private var textFieldArea: some View {
         TextField(placeholder, text: $searchingText)
+            .automaticFunctionDisabled()
             .padding(.horizontal, 4)
     }
     

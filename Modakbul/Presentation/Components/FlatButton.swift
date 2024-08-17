@@ -23,10 +23,12 @@ struct FlatButton: View {
             Text(label)
                 .tint(.white)
                 .bold()
-                .padding([.top, .bottom], RegistrationViewValue.Footer.xAxisPadding)
+            // TODO: - RegistrationViewValue
+                .padding([.top, .bottom], 20)
                 .frame(maxWidth: .infinity, alignment: .center)
                 .background {
-                    RoundedRectangle(cornerRadius: RegistrationViewValue.Footer.cornerRadius)
+                    // TODO: - RegistrationViewValue
+                    RoundedRectangle(cornerRadius: 8)
                 }
         }
     }

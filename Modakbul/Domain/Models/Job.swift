@@ -25,4 +25,8 @@ enum Job: String, Codable {
         case .other: "기타"
         }
     }
+    
+    var identifier: String {
+        String(describing: self)
+    }
 }

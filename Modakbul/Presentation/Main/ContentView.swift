@@ -20,22 +20,36 @@ enum PageType {
             Label("My", systemImage: "person")
         }
     }
+    
+    var navigationTitle: String {
+        return self == .chattings ? "채팅" : String()
+    }
 }
 
 struct ContentView<Router: AppRouter>: View {
     @EnvironmentObject private var router: Router
     
+    @State private var selectedPage: PageType = .home
+    
     var body: some View {
-        TabView {
+        TabView(selection: $selectedPage) {
             router.view(to: .homeView)
                 .tabItemStyle(.home)
-            
-            // MARK: 기존에 .loginView로 기능 테스트했었음
-            router.view(to: .chatView)
+
+            router.view(to: .chatRoomListView)
                 .tabItemStyle(.chattings)
             
             router.view(to: .myView)
                 .tabItemStyle(.settings)
+        }
+        .navigationTitle(selectedPage.navigationTitle)
+    }
+}
+
+struct ContentView_Preview: PreviewProvider {
+    static var previews: some View {
+        NavigationStack {
+            router.view(to: .contentView)
         }
     }
 }

@@ -13,10 +13,10 @@ protocol AppRouter: ObservableObject {
     
     var path: NavigationPath { get set }
     var sheet: Destination? { get set }
-    var detents: Set<PresentationDetent> { get }
+    var detents: Set<PresentationDetent> { get set }
     var fullScreenCover: Destination? { get set }
     var confirmationContent: ConfirmationContent? { get set }
-    var isModalPresented: Bool { get set }
+    var isModalPresented: Bool { get }
     var isAlertPresented: Bool { get set }
     var isConfirmationDialogPresented: Bool { get set }
     var isNavigationBarBackButtonHidden: Bool { get set }
@@ -40,9 +40,10 @@ final class DefaultAppRouter: AppRouter {
     
     @Published var path: NavigationPath
     @Published var sheet: Destination?
+    var detents: Set<PresentationDetent> = []
     @Published var fullScreenCover: Destination?
     @Published var confirmationContent: ConfirmationContent?
-    @Published var isModalPresented: Bool = false
+    var isModalPresented: Bool { sheet != nil || fullScreenCover != nil }
     @Published var isAlertPresented: Bool = false
     @Published var isConfirmationDialogPresented: Bool = false
     @Published var isNavigationBarBackButtonHidden: Bool = false
@@ -71,24 +72,25 @@ final class DefaultAppRouter: AppRouter {
     }
     
     private func _sheet(_ destination: Destination, _ detents: Set<PresentationDetent>) {
-        guard fullScreenCover == nil else { return }
+        guard isModalPresented == false else { return }
         sheet = destination
         self.detents = detents
     }
     
     private func _fullScreenCover(_ destination: Destination) {
-        guard sheet == nil else { return }
+        guard isModalPresented == false else { return }
         fullScreenCover = destination
     }
     
     @ViewBuilder func view(to destination: Destination) -> some View {
         destination.view(with: self)
+            .environmentObject(self)
     }
     
     func route(to destination: Destination) {
         switch destination.presentingType {
-        case .push(let isNavigationBarBackButtonHidden):
-            _push(destination, isNavigationBarBackButtonHidden)
+        case .push:
+            _push(destination)
         case .sheet(let detents):
             _sheet(destination, detents)
         case .fullScreenCover:
@@ -109,30 +111,24 @@ final class DefaultAppRouter: AppRouter {
     }
     
     func dismiss() {
-        if fullScreenCover != nil {
+        if isModalPresented {
             fullScreenCover = nil
-        } else if sheet != nil {
             sheet = nil
-        } else if path.isEmpty == false {
+        }
+        
+        if path.isEmpty == false {
             path.removeLast()
-        } else if isModalPresented {
-            isModalPresented = false
         }
     }
     
     func popToRoot() {
-        if sheet != nil {
+        if isModalPresented {
             sheet = nil
-        }
-        
-        if fullScreenCover != nil {
             fullScreenCover = nil
         }
         
-        if isModalPresented {
-            isModalPresented = false
+        if path.isEmpty == false {
+            path.removeLast(path.count)
         }
-        
-        path.removeLast(path.count)
     }
 }

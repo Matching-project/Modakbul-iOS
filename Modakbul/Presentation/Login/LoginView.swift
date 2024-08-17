@@ -60,6 +60,12 @@ struct LoginView<Router: AppRouter>: View {
             }
             
             Button {
+                router.route(to: .reportView)
+            } label: {
+                Text("신고뷰")
+            }
+            
+            Button {
                 router.route(to: .loginView)
             } label: {
                 Text("LoginView 풀스크린")
@@ -90,7 +96,7 @@ struct LoginView<Router: AppRouter>: View {
             Button {
                 router.confirmationDialog(for: .userReportOrBlockConfirmationDialog,
                                           actions: [
-                                            .defaultAction("신고하기", action: router.alert(for: .reportUserConfirmationAlert(user: "사용자 이름"), 
+                                            .defaultAction("신고하기", action: router.alert(for: .reportUserConfirmationAlert(user: "사용자 이름"),
                                                                                         actions: [
                                                                                             .cancelAction("취소", action: print("신고안함")),
                                                                                             .destructiveAction("확인", action: print("\"사용자 이름\"을(를) 신고하기"))
