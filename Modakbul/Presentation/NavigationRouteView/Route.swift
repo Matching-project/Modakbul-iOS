@@ -24,11 +24,6 @@ enum PresentingType {
     case push
     case sheet(detents: Set<PresentationDetent>)
     case fullScreenCover
-    
-    // MARK: Default PresentingType without parameter
-    static var push: PresentingType {
-        .push(isNavigationBarBackButtonHidden: false)
-    }
 }
 
 enum Route: Routable {
