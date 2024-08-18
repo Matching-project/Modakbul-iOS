@@ -51,10 +51,23 @@ final class PlaceInformationDetailMakingViewModel: ObservableObject {
     
     func submit() {
         // TODO: - id, writer, participants 이전 뷰에서 받도록 처리 필요
-        let community = Community(routine: .daily, category: category, participants: PreviewHelper.shared.users, participantsLimit: Int(peopleCount)!, promiseDate: .init(date: date, startTime: startTime, endTime: endTime))
+        let community = Community(routine: .daily,
+                                  category: category,
+                                  participants: PreviewHelper.shared.users,
+                                  participantsLimit: Int(peopleCount)!,
+                                  meetingDate: date.toString(by: .yyyyMMdd),
+                                  startTime: startTime.toString(by: .HHmm),
+                                  endTime: endTime.toString(by: .HHmm))
         
         // TODO: - writtenDate가 최초글작성날짜를 의미하는지, 아니면 수정된 날짜를 포함하여 작성된 날짜를 의미하는지?
-        let communityRecruitingContent = CommunityRecruitingContent(id: UUID().uuidString, title: title, content: content, writtenDate: Date(), writer: PreviewHelper.shared.users.first!, community: community)
+        let communityRecruitingContent = CommunityRecruitingContent(id: Int64(UUID().hashValue),
+                                                                    title: title,
+                                                                    content: content,
+                                                                    writtenDate: Date().toString(by: .yyyyMMdd),
+                                                                    writtenTime: Date().toString(by: .HHmm),
+                                                                    writer: PreviewHelper.shared.users.first!,
+                                                                    community: community)
+        
         
         // TODO: - 구현 필요
         Task {

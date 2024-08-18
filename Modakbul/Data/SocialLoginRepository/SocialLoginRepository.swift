@@ -8,7 +8,7 @@
 import Foundation
 
 protocol SocialLoginRepository {
-    func login(_ token: Data, by provider: AuthenticationProvider) async -> Bool
+    func login(_ provider: UserCredential) async -> Bool
     func logout() async
 }
 
@@ -35,17 +35,15 @@ extension DefaultSocialLoginRepository: SocialLoginRepository {
         do {
             
             let endpoint = Endpoint.login(token: credential.authorizationCode, provider: credential.provider.identifier)
-            let response = try await networkService.request(endpoint: endpoint, for: Bool.self)
+            let response = try await networkService.request(endpoint: endpoint, for: UserProfileResponseEntity.self)
             
             guard let accessToken = response.accessToken,
                   let refreshToken = response.refreshToken
-            else { return response.body }
+            else { return response.body.status }
             
             let tokens = TokensEntity(accessToken: accessToken, refreshToken: refreshToken)
-            try tokenStorage.store(tokens, by: credential.email)
-            // TODO: - [id: tokens] 으로 저장해야 되지 않을까?
-            // try tokenStorage.store(tokens, by: credential.id)
-            return response.body
+            try tokenStorage.store(tokens, by: response.body.result.id)
+            return response.body.status
         } catch {
             // TODO: 에러 핸들링 필요
             print(error)

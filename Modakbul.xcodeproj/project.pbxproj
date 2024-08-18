@@ -82,7 +82,6 @@
 		047B5BF92C7088E600D61CEF /* URLSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B4F2C7088E600D61CEF /* URLSession.swift */; };
 		047B5BFB2C7088E600D61CEF /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B522C7088E600D61CEF /* NetworkService.swift */; };
 		047B5BFE2C7088E600D61CEF /* TokenStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B572C7088E600D61CEF /* TokenStorage.swift */; };
-		047B5BFF2C7088E600D61CEF /* AppSecret.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 047B5B5A2C7088E600D61CEF /* AppSecret.xcconfig */; };
 		047B5C002C7088E600D61CEF /* ChatRoomListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B5C2C7088E600D61CEF /* ChatRoomListView.swift */; };
 		047B5C012C7088E600D61CEF /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B5D2C7088E600D61CEF /* ChatView.swift */; };
 		047B5C022C7088E600D61CEF /* ReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B5E2C7088E600D61CEF /* ReportView.swift */; };
@@ -144,12 +143,12 @@
 		047B5C3A2C7088E600D61CEF /* RegistrationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5BA92C7088E600D61CEF /* RegistrationViewModel.swift */; };
 		047B5C3B2C7088E600D61CEF /* RegistrationViewValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5BAA2C7088E600D61CEF /* RegistrationViewValue.swift */; };
 		047B5C3C2C7088E600D61CEF /* RequiredTermView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5BAB2C7088E600D61CEF /* RequiredTermView.swift */; };
-		047B5C3D2C7088E600D61CEF /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 047B5BAE2C7088E600D61CEF /* Info.plist */; };
 		047B5C3F2C70A98100D61CEF /* ParticipationRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5C3E2C70A98100D61CEF /* ParticipationRequest.swift */; };
 		047B5C412C719DC000D61CEF /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = DF0424392C6495D6008C2B6D /* Moya */; };
 		047B5C432C719FF300D61CEF /* Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5C422C719FF300D61CEF /* Endpoint.swift */; };
 		047B5C462C719FFC00D61CEF /* SocketManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5C442C719FFB00D61CEF /* SocketManager.swift */; };
 		047B5C472C719FFC00D61CEF /* SocketEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5C452C719FFC00D61CEF /* SocketEndpoint.swift */; };
+		DF5449A92C7203A9006FE7F4 /* AppSecret.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = DF5449A82C7203A9006FE7F4 /* AppSecret.xcconfig */; };
 		DFE0AFD72C103FA800EC078B /* KakaoSDKAuth in Frameworks */ = {isa = PBXBuildFile; productRef = DFE0AFD62C103FA800EC078B /* KakaoSDKAuth */; };
 		DFE0AFD92C103FA800EC078B /* KakaoSDKCommon in Frameworks */ = {isa = PBXBuildFile; productRef = DFE0AFD82C103FA800EC078B /* KakaoSDKCommon */; };
 		DFE0AFDB2C103FA800EC078B /* KakaoSDKUser in Frameworks */ = {isa = PBXBuildFile; productRef = DFE0AFDA2C103FA800EC078B /* KakaoSDKUser */; };
@@ -231,7 +230,6 @@
 		047B5B4F2C7088E600D61CEF /* URLSession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLSession.swift; sourceTree = "<group>"; };
 		047B5B522C7088E600D61CEF /* NetworkService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 		047B5B572C7088E600D61CEF /* TokenStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokenStorage.swift; sourceTree = "<group>"; };
-		047B5B5A2C7088E600D61CEF /* AppSecret.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = AppSecret.xcconfig; sourceTree = "<group>"; };
 		047B5B5C2C7088E600D61CEF /* ChatRoomListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatRoomListView.swift; sourceTree = "<group>"; };
 		047B5B5D2C7088E600D61CEF /* ChatView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
 		047B5B5E2C7088E600D61CEF /* ReportView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportView.swift; sourceTree = "<group>"; };
@@ -293,11 +291,12 @@
 		047B5BA92C7088E600D61CEF /* RegistrationViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegistrationViewModel.swift; sourceTree = "<group>"; };
 		047B5BAA2C7088E600D61CEF /* RegistrationViewValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegistrationViewValue.swift; sourceTree = "<group>"; };
 		047B5BAB2C7088E600D61CEF /* RequiredTermView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequiredTermView.swift; sourceTree = "<group>"; };
-		047B5BAE2C7088E600D61CEF /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		047B5C3E2C70A98100D61CEF /* ParticipationRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticipationRequest.swift; sourceTree = "<group>"; };
 		047B5C422C719FF300D61CEF /* Endpoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Endpoint.swift; sourceTree = "<group>"; };
 		047B5C442C719FFB00D61CEF /* SocketManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketManager.swift; sourceTree = "<group>"; };
 		047B5C452C719FFC00D61CEF /* SocketEndpoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketEndpoint.swift; sourceTree = "<group>"; };
+		DF5449A82C7203A9006FE7F4 /* AppSecret.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = AppSecret.xcconfig; sourceTree = "<group>"; };
+		DF5449AC2C7204F6006FE7F4 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -604,7 +603,7 @@
 		047B5B562C7088E600D61CEF /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				047B5B5A2C7088E600D61CEF /* AppSecret.xcconfig */,
+				DF5449A82C7203A9006FE7F4 /* AppSecret.xcconfig */,
 				047B5B462C7088E600D61CEF /* Entities */,
 				047B5B482C7088E600D61CEF /* LocalMap */,
 				047B5B4C2C7088E600D61CEF /* Location */,
@@ -858,11 +857,11 @@
 				047B5B992C7088E600D61CEF /* PreviewHelper */,
 				047B5B972C7088E600D61CEF /* NavigationRouteView */,
 				047B5B892C7088E600D61CEF /* Main */,
-				047B5B842C7088E600D61CEF /* Home */,
-				047B5BAC2C7088E600D61CEF /* Registration */,
 				047B5B872C7088E600D61CEF /* Login */,
-				047B5B5F2C7088E600D61CEF /* Chat */,
+				047B5BAC2C7088E600D61CEF /* Registration */,
 				047B5B8F2C7088E600D61CEF /* My */,
+				047B5B842C7088E600D61CEF /* Home */,
+				047B5B5F2C7088E600D61CEF /* Chat */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";
@@ -870,7 +869,7 @@
 		047B5BAF2C7088E600D61CEF /* Modakbul */ = {
 			isa = PBXGroup;
 			children = (
-				047B5BAE2C7088E600D61CEF /* Info.plist */,
+				DF5449AC2C7204F6006FE7F4 /* Info.plist */,
 				047B5AFB2C7088E600D61CEF /* Application */,
 				047B5BAD2C7088E600D61CEF /* Presentation */,
 				047B5B302C7088E600D61CEF /* Domain */,
@@ -929,11 +928,12 @@
 			};
 			buildConfigurationList = 9C8122192BF722E4007DC215 /* Build configuration list for PBXProject "Modakbul" */;
 			compatibilityVersion = "Xcode 14.0";
-			developmentRegion = en;
+			developmentRegion = ko;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 				Base,
+				ko,
 			);
 			mainGroup = 9C8122152BF722E4007DC215;
 			packageReferences = (
@@ -954,9 +954,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				047B5C3D2C7088E600D61CEF /* Info.plist in Resources */,
+				DF5449A92C7203A9006FE7F4 /* AppSecret.xcconfig in Resources */,
 				047B5BBB2C7088E600D61CEF /* Assets.xcassets in Resources */,
-				047B5BFF2C7088E600D61CEF /* AppSecret.xcconfig in Resources */,
 				047B5BBA2C7088E600D61CEF /* Preview Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1257,7 +1256,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.team.modakbul2;
+				PRODUCT_BUNDLE_IDENTIFIER = com.team.modakbul0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -1296,7 +1295,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.team.modakbul2;
+				PRODUCT_BUNDLE_IDENTIFIER = com.team.modakbul0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
