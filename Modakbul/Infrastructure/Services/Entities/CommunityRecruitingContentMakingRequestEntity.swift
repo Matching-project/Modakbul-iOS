@@ -7,15 +7,11 @@
 
 import Foundation
 
-/// 모집글 작성 요청
+/// 모집글 작성, 수정 요청
 struct CommunityRecruitingContentMakingRequestEntity: Encodable {
-    let placeId: Int64
-    let communityRecruitingContent: CommunityRecruitingContentEntity
-    
-    enum CodingKeys: String,
-                     CodingKey {
-        case placeId = "cafeId"
-    }
+    let category: Category
+    let recruitCount: Int
+    let meetingDate, startTime, endTime, title, content: String
 }
 
 struct CommunityRecruitingContentEntity: Codable {
