@@ -81,8 +81,6 @@
 		047B5BF82C7088E600D61CEF /* JSONEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B4E2C7088E600D61CEF /* JSONEncoder.swift */; };
 		047B5BF92C7088E600D61CEF /* URLSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B4F2C7088E600D61CEF /* URLSession.swift */; };
 		047B5BFB2C7088E600D61CEF /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B522C7088E600D61CEF /* NetworkService.swift */; };
-		047B5BFC2C7088E600D61CEF /* NetworkSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B532C7088E600D61CEF /* NetworkSessionManager.swift */; };
-		047B5BFD2C7088E600D61CEF /* Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B552C7088E600D61CEF /* Endpoint.swift */; };
 		047B5BFE2C7088E600D61CEF /* TokenStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B572C7088E600D61CEF /* TokenStorage.swift */; };
 		047B5BFF2C7088E600D61CEF /* AppSecret.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 047B5B5A2C7088E600D61CEF /* AppSecret.xcconfig */; };
 		047B5C002C7088E600D61CEF /* ChatRoomListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B5C2C7088E600D61CEF /* ChatRoomListView.swift */; };
@@ -148,6 +146,10 @@
 		047B5C3C2C7088E600D61CEF /* RequiredTermView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5BAB2C7088E600D61CEF /* RequiredTermView.swift */; };
 		047B5C3D2C7088E600D61CEF /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 047B5BAE2C7088E600D61CEF /* Info.plist */; };
 		047B5C3F2C70A98100D61CEF /* ParticipationRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5C3E2C70A98100D61CEF /* ParticipationRequest.swift */; };
+		047B5C412C719DC000D61CEF /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = DF0424392C6495D6008C2B6D /* Moya */; };
+		047B5C432C719FF300D61CEF /* Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5C422C719FF300D61CEF /* Endpoint.swift */; };
+		047B5C462C719FFC00D61CEF /* SocketManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5C442C719FFB00D61CEF /* SocketManager.swift */; };
+		047B5C472C719FFC00D61CEF /* SocketEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5C452C719FFC00D61CEF /* SocketEndpoint.swift */; };
 		DFE0AFD72C103FA800EC078B /* KakaoSDKAuth in Frameworks */ = {isa = PBXBuildFile; productRef = DFE0AFD62C103FA800EC078B /* KakaoSDKAuth */; };
 		DFE0AFD92C103FA800EC078B /* KakaoSDKCommon in Frameworks */ = {isa = PBXBuildFile; productRef = DFE0AFD82C103FA800EC078B /* KakaoSDKCommon */; };
 		DFE0AFDB2C103FA800EC078B /* KakaoSDKUser in Frameworks */ = {isa = PBXBuildFile; productRef = DFE0AFDA2C103FA800EC078B /* KakaoSDKUser */; };
@@ -228,8 +230,6 @@
 		047B5B4E2C7088E600D61CEF /* JSONEncoder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONEncoder.swift; sourceTree = "<group>"; };
 		047B5B4F2C7088E600D61CEF /* URLSession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLSession.swift; sourceTree = "<group>"; };
 		047B5B522C7088E600D61CEF /* NetworkService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
-		047B5B532C7088E600D61CEF /* NetworkSessionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkSessionManager.swift; sourceTree = "<group>"; };
-		047B5B552C7088E600D61CEF /* Endpoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Endpoint.swift; sourceTree = "<group>"; };
 		047B5B572C7088E600D61CEF /* TokenStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokenStorage.swift; sourceTree = "<group>"; };
 		047B5B5A2C7088E600D61CEF /* AppSecret.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = AppSecret.xcconfig; sourceTree = "<group>"; };
 		047B5B5C2C7088E600D61CEF /* ChatRoomListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatRoomListView.swift; sourceTree = "<group>"; };
@@ -295,6 +295,9 @@
 		047B5BAB2C7088E600D61CEF /* RequiredTermView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequiredTermView.swift; sourceTree = "<group>"; };
 		047B5BAE2C7088E600D61CEF /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		047B5C3E2C70A98100D61CEF /* ParticipationRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticipationRequest.swift; sourceTree = "<group>"; };
+		047B5C422C719FF300D61CEF /* Endpoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Endpoint.swift; sourceTree = "<group>"; };
+		047B5C442C719FFB00D61CEF /* SocketManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketManager.swift; sourceTree = "<group>"; };
+		047B5C452C719FFC00D61CEF /* SocketEndpoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketEndpoint.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -302,9 +305,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				047B5C412C719DC000D61CEF /* Moya in Frameworks */,
 				DFE0AFD92C103FA800EC078B /* KakaoSDKCommon in Frameworks */,
 				DFE0AFD72C103FA800EC078B /* KakaoSDKAuth in Frameworks */,
-				DF04243A2C6495D6008C2B6D /* Moya in Frameworks */,
 				DFE0AFDB2C103FA800EC078B /* KakaoSDKUser in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -589,9 +592,11 @@
 		047B5B542C7088E600D61CEF /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				047B5C422C719FF300D61CEF /* Endpoint.swift */,
+				047B5C452C719FFC00D61CEF /* SocketEndpoint.swift */,
 				047B5B502C7088E600D61CEF /* Extensions */,
 				047B5B522C7088E600D61CEF /* NetworkService.swift */,
-				047B5B532C7088E600D61CEF /* NetworkSessionManager.swift */,
+				047B5C442C719FFB00D61CEF /* SocketManager.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -600,7 +605,6 @@
 			isa = PBXGroup;
 			children = (
 				047B5B5A2C7088E600D61CEF /* AppSecret.xcconfig */,
-				047B5B552C7088E600D61CEF /* Endpoint.swift */,
 				047B5B462C7088E600D61CEF /* Entities */,
 				047B5B482C7088E600D61CEF /* LocalMap */,
 				047B5B4C2C7088E600D61CEF /* Location */,
@@ -1019,17 +1023,20 @@
 				047B5BE32C7088E600D61CEF /* ChatRoomCreateRequestEntity.swift in Sources */,
 				047B5C082C7088E600D61CEF /* TabItemModifier.swift in Sources */,
 				047B5BDA2C7088E600D61CEF /* ChatUseCase.swift in Sources */,
+				047B5C472C719FFC00D61CEF /* SocketEndpoint.swift in Sources */,
 				047B5BD32C7088E600D61CEF /* PushNotification.swift in Sources */,
 				047B5BCF2C7088E600D61CEF /* NoiseLevel.swift in Sources */,
 				047B5BD62C7088E600D61CEF /* RequiredTerm.swift in Sources */,
 				047B5C1D2C7088E600D61CEF /* NotificationView.swift in Sources */,
 				047B5BB62C7088E600D61CEF /* Assembler.swift in Sources */,
 				047B5BDE2C7088E600D61CEF /* PlaceShowcaseAndReviewUseCase.swift in Sources */,
+				047B5C462C719FFC00D61CEF /* SocketManager.swift in Sources */,
 				047B5C0F2C7088E600D61CEF /* CustomPageControl.swift in Sources */,
 				047B5BE52C7088E600D61CEF /* CommunityRecruitingContentMakingRequestEntity.swift in Sources */,
 				047B5C122C7088E600D61CEF /* RoundedTextField.swift in Sources */,
 				047B5C012C7088E600D61CEF /* ChatView.swift in Sources */,
 				047B5C382C7088E600D61CEF /* PhotosUploaderModifier.swift in Sources */,
+				047B5C432C719FF300D61CEF /* Endpoint.swift in Sources */,
 				047B5C102C7088E600D61CEF /* DefaultCheckBox.swift in Sources */,
 				047B5BB42C7088E600D61CEF /* InfrastructureAssembly.swift in Sources */,
 				047B5BBF2C7088E600D61CEF /* PlacesRepository.swift in Sources */,
@@ -1042,7 +1049,6 @@
 				047B5C1C2C7088E600D61CEF /* MapArea.swift in Sources */,
 				047B5BB52C7088E600D61CEF /* PresentationAssembly.swift in Sources */,
 				047B5BDF2C7088E600D61CEF /* UserBusinessUseCase.swift in Sources */,
-				047B5BFC2C7088E600D61CEF /* NetworkSessionManager.swift in Sources */,
 				047B5BEE2C7088E600D61CEF /* RelatedParticipationRequestListResponseEntity.swift in Sources */,
 				047B5BFE2C7088E600D61CEF /* TokenStorage.swift in Sources */,
 				047B5BBD2C7088E600D61CEF /* ChatRepository.swift in Sources */,
@@ -1056,7 +1062,6 @@
 				047B5C322C7088E600D61CEF /* DefaultMultipleSelectionButton.swift in Sources */,
 				047B5BD52C7088E600D61CEF /* Report.swift in Sources */,
 				047B5C242C7088E600D61CEF /* LoginViewModel.swift in Sources */,
-				047B5BFD2C7088E600D61CEF /* Endpoint.swift in Sources */,
 				047B5C332C7088E600D61CEF /* DefaultSingleSelectionButton.swift in Sources */,
 				047B5C312C7088E600D61CEF /* SingleSelectionButton.swift in Sources */,
 				047B5BD82C7088E600D61CEF /* User.swift in Sources */,

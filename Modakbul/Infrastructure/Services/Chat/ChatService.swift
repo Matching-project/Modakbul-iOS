@@ -83,7 +83,7 @@ extension DefaultChatService: ChatService {
         socket = socketManager.webSocketTask(with: urlRequest)
         chatStreamContinuation = continuation
         
-        _Concurrency.Task {
+        Task {
             while let socket = socket, socket.state == .running {
                 do {
                     let result = try await socket.receive()

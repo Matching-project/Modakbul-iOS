@@ -13,10 +13,10 @@ enum Endpoint {
     // TODO: - 로그인할 때 소셜로그인 후 받은 토큰을 던지는데 이걸 모닥불 로그인할때도 Data?로 넘기는지 String으로 넘기는지?
     case login(token: Data?, provider: String)                  // 로그인
     case checkNicknameForOverlap(nickname: String)              // 닉네임 중복 확인
-    case register(user: UserEntity, image: Data?)               // 회원가입
+    case register(user: UserRegistrationRequestEntity, image: Data?)               // 회원가입
     case logout(token: String)                                  // 로그아웃
     case reissueToken(refreshToken: String)                     // 토큰 재발행
-    case updateProfile(token: String, user: UserEntity)         // 프로필 수정
+    case updateProfile(token: String, user: UserProfileUpdateRequestEntity)         // 프로필 수정
     case readMyProfile(token: String)                           // 회원 정보 조회
     case readMyBoards(token: String)                            // 나의 모집글 목록 조회
     case readMyMatches(token: String)                           // 참여 모임 내역 조회
