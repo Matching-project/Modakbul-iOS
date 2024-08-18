@@ -18,7 +18,7 @@ struct UserCredential {
     let familyName: String?
     let givenName: String?
     let email: String?              // Apple로 재로그인시 email 정보를 받아올 수 없으므로
-    let authorizationCode: Data     // ASAuthorizationAppleIDCredential.authorizationCode is Data?
+    let authorizationCode: Data?    // ASAuthorizationAppleIDCredential.authorizationCode is Data?
     let provider: AuthenticationProvider
     
     init(
@@ -26,7 +26,7 @@ struct UserCredential {
         familyName: String? = nil,
         givenName: String? = nil,
         email: String? = nil,
-        authorizationCode: Data,
+        authorizationCode: Data? = nil,
         provider: AuthenticationProvider
     ) {
         // self.id = id

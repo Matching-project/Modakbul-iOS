@@ -6,9 +6,10 @@
 //
 
 import Foundation
+import Moya
 
 protocol NetworkService {
-    func request<T: Decodable>(endpoint: Requestable, for type: T.Type) async throws -> HTTPResponse<T>
+    func request<E: TargetType, T: Decodable>(endpoint: E, for type: T.Type) async throws -> HTTPResponse<T>
 }
 
 enum NetworkServiceError: Error {
@@ -21,80 +22,74 @@ enum NetworkServiceError: Error {
 }
 
 struct HTTPResponse<T: Decodable> {
-    let headers: [AnyHashable: Any]
+    let headers: [String: String]?
     let body: T
     
     var accessToken: String? {
-        guard let token = headers["Authorization"] as? String else { return nil }
-        return token
+        headers?["Authorization"]
     }
     
     var refreshToken: String? {
-        guard let token = headers["Authorization_refresh"] as? String else { return nil }
-        return token
+        headers?["Authorization_refresh"]
     }
 }
 
 final class DefaultNetworkService {
-    private let sessionManager: NetworkSessionManager
     private let decoder: JSONDecodable
     
-    init(
-        sessionManager: NetworkSessionManager,
-        decoder: JSONDecodable = JSONDecoder()
-    ) {
-        self.sessionManager = sessionManager
+    init(decoder: JSONDecodable = JSONDecoder()) {
         self.decoder = decoder
     }
     
-    private func handleResponse(_ response: URLResponse) throws -> HTTPURLResponse {
-        guard let response = response as? HTTPURLResponse else {
-            throw NetworkServiceError.generic(type: String(describing: response))
+    private func handleResponse(_ response: HTTPURLResponse?) throws -> [String: String] {
+        guard let response = response else {
+            throw NetworkServiceError.requestFailed
         }
         
         guard (200..<300).contains(response.statusCode) else {
             throw NetworkServiceError.badResponse(statusCode: response.statusCode)
         }
         
-        return response
+        return response.allHeaderFields as? [String: String] ?? [:]
     }
     
-    private func decode<T: Decodable>(for type: T.Type, with data: Data) throws -> T {
-        guard let decodedData = try? decoder.decode(type, from: data) else {
+    private func decode<T: Decodable>(for type: T.Type, with data: Data?) throws -> T {
+        guard let data = data,
+              let decodedData = try? decoder.decode(type, from: data)
+        else {
             throw NetworkServiceError.decodingError(type: String(describing: type))
         }
+        
         return decodedData
-    }
-    
-    private func resolveError(_ error: Error) -> NetworkServiceError {
-        if let error = error as? NetworkServiceError {
-            return error
-        } else {
-            let code = URLError.Code(rawValue: (error as NSError).code)
-            switch code {
-            case .notConnectedToInternet: return .notConnectedToInternet
-            case .badURL: return .invalidURL
-            default: return .requestFailed
-            }
-        }
     }
 }
 
 // MARK: NetworkService Conformation
 extension DefaultNetworkService: NetworkService {
-    // MARK: - DataServiceProtocol
-    func request<T: Decodable>(endpoint: Requestable, for type: T.Type) async throws -> HTTPResponse<T> {
-        guard let urlRequest = endpoint.asURLRequest() else {
-            throw NetworkServiceError.invalidURL
-        }
+    func request<E: TargetType, T: Decodable>(endpoint: E, for type: T.Type) async throws -> HTTPResponse<T> {
         
-        do {
-            let (data, response) = try await sessionManager.data(for: urlRequest)
-            let headers = try handleResponse(response).allHeaderFields
-            let decodedData = try decode(for: type, with: data)
-            return HTTPResponse(headers: headers, body: decodedData)
-        } catch {
-            throw resolveError(error)
+        return try await withCheckedThrowingContinuation { [weak self] continuation in
+            guard let self = self else { return }
+            
+            let provider = MoyaProvider<E>()
+            
+            provider.request(endpoint) { [weak self] result in
+                guard let self = self else { return }
+                
+                switch result {
+                case .success(let response):
+                    do {
+                        let headers = try handleResponse(response.response)
+                        let decodedData = try decode(for: T.self, with: response.data)
+                        let httpResponse = HTTPResponse(headers: headers, body: decodedData)
+                        continuation.resume(returning: httpResponse)
+                    } catch {
+                        continuation.resume(throwing: error)
+                    }
+                case .failure(let error):
+                    continuation.resume(throwing: error)
+                }
+            }
         }
     }
 }

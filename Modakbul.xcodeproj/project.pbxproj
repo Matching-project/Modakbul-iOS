@@ -304,6 +304,7 @@
 			files = (
 				DFE0AFD92C103FA800EC078B /* KakaoSDKCommon in Frameworks */,
 				DFE0AFD72C103FA800EC078B /* KakaoSDKAuth in Frameworks */,
+				DF04243A2C6495D6008C2B6D /* Moya in Frameworks */,
 				DFE0AFDB2C103FA800EC078B /* KakaoSDKUser in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -902,6 +903,7 @@
 				DFE0AFD62C103FA800EC078B /* KakaoSDKAuth */,
 				DFE0AFD82C103FA800EC078B /* KakaoSDKCommon */,
 				DFE0AFDA2C103FA800EC078B /* KakaoSDKUser */,
+				DF0424392C6495D6008C2B6D /* Moya */,
 			);
 			productName = modakbul;
 			productType = "com.apple.product-type.application";
@@ -932,6 +934,7 @@
 			mainGroup = 9C8122152BF722E4007DC215;
 			packageReferences = (
 				DFE0AFD52C103FA800EC078B /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */,
+				DF0424382C6495D5008C2B6D /* XCRemoteSwiftPackageReference "Moya" */,
 			);
 			productRefGroup = 9C8122152BF722E4007DC215;
 			projectDirPath = "";
@@ -1232,7 +1235,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Modakbul/Application/Resources/Preview Content\"";
-				DEVELOPMENT_TEAM = P85DW78LYM;
+				DEVELOPMENT_TEAM = TTKL6566T6;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Modakbul/Info.plist;
@@ -1271,7 +1274,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Modakbul/Application/Resources/Preview Content\"";
-				DEVELOPMENT_TEAM = P85DW78LYM;
+				DEVELOPMENT_TEAM = TTKL6566T6;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Modakbul/Info.plist;
@@ -1325,6 +1328,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		DF0424382C6495D5008C2B6D /* XCRemoteSwiftPackageReference "Moya" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Moya/Moya.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 15.0.3;
+			};
+		};
 		DFE0AFD52C103FA800EC078B /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/kakao/kakao-ios-sdk";
@@ -1336,6 +1347,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		DF0424392C6495D6008C2B6D /* Moya */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DF0424382C6495D5008C2B6D /* XCRemoteSwiftPackageReference "Moya" */;
+			productName = Moya;
+		};
 		DFE0AFD62C103FA800EC078B /* KakaoSDKAuth */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = DFE0AFD52C103FA800EC078B /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;

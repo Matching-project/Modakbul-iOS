@@ -22,6 +22,7 @@ protocol ChatRepository {
 }
 
 final class DefaultChatRepository {
+    // MARK: - 소켓 통신은 ChatService, 소켓 통신을 제외한 통신은 NetworkService을 이용
     private let chatService: ChatService
     private let networkService: NetworkService
 //    private let chattingStorage:
@@ -57,7 +58,8 @@ extension DefaultChatRepository: ChatRepository {
     }
     
     func openChatRoom(by user: User, _ continuation: AsyncThrowingStream<ChatMessage, any Error>.Continuation) throws {
-        //
+        //        SocketEndpoint.sendChatMessage()
+//                chatService.connect(endpoint: <#T##any Requestable#>, <#T##continuation: AsyncThrowingStream<ChatMessage, any Error>.Continuation##AsyncThrowingStream<ChatMessage, any Error>.Continuation#>)
     }
     
     func closeChatRoom() {

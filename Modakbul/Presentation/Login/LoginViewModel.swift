@@ -16,11 +16,21 @@ final class LoginViewModel: ObservableObject {
         self.userRegistrationUseCase = userRegistrationUseCase
     }
     
-    func loginWithKakaoTalk(_ token: OAuthToken) {
+    
+    // TODO: - 물어보기
+    // 카카오로그인은 서버로 토큰 줄 필요 없고,
+    // 애플로그인일 때만 서버로 토큰 보내야 하지 않나?
+    
+    func loginWithKakaoTalk(_ kakaoUser: KakaoUser) {
         Task {
             guard let token = try? JSONEncoder().encode(token) else {
                 return print("카카오 로그인 실패")
             }
+            guard let id = kakaoUser.id else {
+                return print("카카오 CI 존재하지 않음")
+            }
+            
+            let credential = UserCredential(id: String(id), email: email, provider: .kakao)
             // TODO: 결과값 처리
             _ = await userRegistrationUseCase.login(token, by: .kakao)
         }
@@ -29,12 +39,31 @@ final class LoginViewModel: ObservableObject {
     func loginWithApple(_ credential: ASAuthorizationCredential) {
         Task {
             guard let appleIDCredential = credential as? ASAuthorizationAppleIDCredential,
-                  let token = appleIDCredential.identityToken
-            else {
+                  let authorizationCode = appleIDCredential.authorizationCode else {
                 return print("애플 아이디로 로그인만 지원함")
             }
+            
             // TODO: 결과값 처리
-            _ = await userRegistrationUseCase.login(token, by: .apple)
+            if let familyName = appleIDCredential.fullName?.familyName,
+               let givenName = appleIDCredential.fullName?.givenName,
+               let email = appleIDCredential.email {
+                // MARK: - 최초 로그인시
+                let credential = UserCredential(id: appleIDCredential.user,
+                                                familyName: familyName,
+                                                givenName: givenName,
+                                                email: email,
+                                                authorizationCode: authorizationCode,
+                                                provider: .apple)
+                
+                _ = await userRegistrationUseCase.login(credential)
+            } else {
+                // MARK: - 재로그인시
+                let credential = UserCredential(id: appleIDCredential.user,
+                                                authorizationCode: authorizationCode,
+                                                provider: .apple)
+                
+                _ = await userRegistrationUseCase.login(credential)
+            }
         }
     }
     
