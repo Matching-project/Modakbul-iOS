@@ -150,6 +150,7 @@
 		047B5C462C719FFC00D61CEF /* SocketManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5C442C719FFB00D61CEF /* SocketManager.swift */; };
 		047B5C472C719FFC00D61CEF /* SocketEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5C452C719FFC00D61CEF /* SocketEndpoint.swift */; };
 		04BF39422C71F16000A5AEAC /* PlaceSortCriteria.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BF39412C71F16000A5AEAC /* PlaceSortCriteria.swift */; };
+		04BF39442C71F68200A5AEAC /* UserAuthenticationResponseEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BF39432C71F68200A5AEAC /* UserAuthenticationResponseEntity.swift */; };
 		DFE0AFD72C103FA800EC078B /* KakaoSDKAuth in Frameworks */ = {isa = PBXBuildFile; productRef = DFE0AFD62C103FA800EC078B /* KakaoSDKAuth */; };
 		DFE0AFD92C103FA800EC078B /* KakaoSDKCommon in Frameworks */ = {isa = PBXBuildFile; productRef = DFE0AFD82C103FA800EC078B /* KakaoSDKCommon */; };
 		DFE0AFDB2C103FA800EC078B /* KakaoSDKUser in Frameworks */ = {isa = PBXBuildFile; productRef = DFE0AFDA2C103FA800EC078B /* KakaoSDKUser */; };
@@ -299,6 +300,7 @@
 		047B5C442C719FFB00D61CEF /* SocketManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketManager.swift; sourceTree = "<group>"; };
 		047B5C452C719FFC00D61CEF /* SocketEndpoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketEndpoint.swift; sourceTree = "<group>"; };
 		04BF39412C71F16000A5AEAC /* PlaceSortCriteria.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceSortCriteria.swift; sourceTree = "<group>"; };
+		04BF39432C71F68200A5AEAC /* UserAuthenticationResponseEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAuthenticationResponseEntity.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -552,6 +554,7 @@
 				047B5B432C7088E600D61CEF /* UserProfileResponseEntity.swift */,
 				047B5B442C7088E600D61CEF /* UserProfileUpdateRequestEntity.swift */,
 				047B5B452C7088E600D61CEF /* UserRegistrationRequestEntity.swift */,
+				04BF39432C71F68200A5AEAC /* UserAuthenticationResponseEntity.swift */,
 			);
 			path = Entities;
 			sourceTree = "<group>";
@@ -1041,6 +1044,7 @@
 				047B5C102C7088E600D61CEF /* DefaultCheckBox.swift in Sources */,
 				047B5BB42C7088E600D61CEF /* InfrastructureAssembly.swift in Sources */,
 				047B5BBF2C7088E600D61CEF /* PlacesRepository.swift in Sources */,
+				04BF39442C71F68200A5AEAC /* UserAuthenticationResponseEntity.swift in Sources */,
 				047B5C112C7088E600D61CEF /* FlatButton.swift in Sources */,
 				047B5C3A2C7088E600D61CEF /* RegistrationViewModel.swift in Sources */,
 				047B5BEF2C7088E600D61CEF /* RelatedPlaceListSearchResponseEntity.swift in Sources */,
