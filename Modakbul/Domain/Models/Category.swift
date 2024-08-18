@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum Category: String, Codable, CustomStringConvertible {
+enum Category: String, Codable, Selectable {
     case interview = "INTERVIEW"
     case coding = "CODING"
     case design = "DESIGN"

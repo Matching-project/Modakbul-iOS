@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum Job: String, Codable, CustomStringConvertible {
+enum Job: String, Codable, Selectable {
     case collegeStudent = "COLLEGE"
     case jobSeeker = "JOB_SEEKER"
     case officeWorker = "OFFICE"
