@@ -32,6 +32,7 @@ enum Route: Routable {
     case routerView
     case contentView
     case loginView            // MARK: - Login
+    case registrationView     // MARK: - Registration
     case myView               // MARK: - My
     case placeShowcaseView
     case homeView             // MARK: - Home
@@ -51,6 +52,7 @@ enum Route: Routable {
         case .routerView: return .push
         case .contentView: return .push
         case .loginView: return .fullScreenCover                // MARK: - Login
+        case .registrationView: return .push                    // MARK: - Registration
         case .myView: return .sheet(detents: [.medium, .large]) // MARK: - My
         case .placeShowcaseView: return .push
         case .homeView: return .push                            // MARK: - Home
@@ -73,13 +75,15 @@ enum Route: Routable {
             RouterView<Router>(router: router, root: .contentView)
         case .contentView:
             ContentView<Router>()
-        case .loginView:    // MARK: - Login
+        case .loginView:        // MARK: - Login
             LoginView<Router>(loginViewModel: router.resolver.resolve(LoginViewModel.self))
-        case .myView:       // MARK: - My
+        case .registrationView: // MARK: - Registration
+            RegistrationView<Router>(registrationViewModel: router.resolver.resolve(RegistrationViewModel.self))
+        case .myView:           // MARK: - My
             MyView<Router>()
         case .placeShowcaseView:
             PlaceShowcaseView<Router>(placeShowcaseViewModel: router.resolver.resolve(PlaceShowcaseViewModel.self))
-        case .homeView:     // MARK: - Home
+        case .homeView:         // MARK: - Home
             HomeView<Router>(homeViewModel: router.resolver.resolve(HomeViewModel.self))
         case .mapArea:
             MapArea<Router>(router.resolver.resolve(HomeViewModel.self))
@@ -95,7 +99,7 @@ enum Route: Routable {
             ParticipationRequestListView<Router>(participationRequestListViewModel: router.resolver.resolve(ParticipationRequestListViewModel.self), communityRecruitingContent: communityRecruitingContent)
         case .notificationView:
             NotificationView<Router>(router.resolver.resolve(NotificationViewModel.self))
-        case .chatView:     // MARK: - Chat
+        case .chatView:         // MARK: - Chat
             ChatView<Router>(router.resolver.resolve(ChatViewModel.self))
         case .chatRoomListView:
             ChatRoomListView()

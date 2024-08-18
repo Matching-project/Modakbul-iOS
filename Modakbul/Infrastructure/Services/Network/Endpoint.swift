@@ -10,13 +10,12 @@ import Moya
 
 enum Endpoint {
     // MARK: - User Related
-    // TODO: - 로그인할 때 소셜로그인 후 받은 토큰을 던지는데 이걸 모닥불 로그인할때도 Data?로 넘기는지 String으로 넘기는지?
     case login(token: Data?, provider: String)                  // 로그인
     case checkNicknameForOverlap(nickname: String)              // 닉네임 중복 확인
-    case register(user: UserRegistrationRequestEntity, image: Data?)               // 회원가입
+    case register(user: UserRegistrationRequestEntity, image: Data?)                        // 회원가입
     case logout(token: String)                                  // 로그아웃
     case reissueToken(refreshToken: String)                     // 토큰 재발행
-    case updateProfile(token: String, user: UserProfileUpdateRequestEntity)         // 프로필 수정
+    case updateProfile(token: String, user: UserProfileUpdateRequestEntity, image: Data?)   // 프로필 수정
     case readMyProfile(token: String)                           // 회원 정보 조회
     case readMyBoards(token: String)                            // 나의 모집글 목록 조회
     case readMyMatches(token: String)                           // 참여 모임 내역 조회
@@ -126,7 +125,7 @@ extension Endpoint: TargetType {
     
     var task: Moya.Task {
         switch self {
-        case .login(let token, let provider):
+        case .login(_, let provider):
             return .requestParameters(parameters: ["provider": "\(provider)"], encoding: JSONEncoding.default)
         case .checkNicknameForOverlap(let nickname):
             return .requestCompositeData(bodyData: Data(), urlParameters: ["nickname": "\(nickname)"])
@@ -154,31 +153,23 @@ extension Endpoint: TargetType {
             return .requestPlain
         case .reissueToken:
             return .requestPlain
-        case .updateProfile(_, let user):
+        case .updateProfile(_, let user, let image):
             var formData = [MultipartFormData]()
 
-            // TODO: - user 정보 바뀐부분만 보내도록 수정 필요
             do {
-                let nickname = try encode(user.nickname)
-                let isGenderVisible = try encode(user.isGenderVisible)
-                let categoriesOfInterest = try encode(user.categoriesOfInterest)
-                let job = try encode(user.job)
+                let user = try encode(user)
                 
-                formData.append(MultipartFormData(provider: .data(nickname), name: "nickname"))
-                formData.append(MultipartFormData(provider: .data(isGenderVisible), name: "isGenderVisible"))
-                formData.append(MultipartFormData(provider: .data(categoriesOfInterest), name: "categoryName"))
-                formData.append(MultipartFormData(provider: .data(job), name: "job"))
+                formData.append(MultipartFormData(provider: .data(user), name: "user"))
             } catch {
                 print(error)
             }
-
-            // TODO: - user.image / userEntity.image 타입 고민...
-//            if let image = user.imageURL {
-//                formData.append(MultipartFormData(provider: .file(image),
-//                                                  name: "\(image)",
-//                                                  fileName: "image",
-//                                                  mimeType: "image/jpeg"))
-//            }
+            
+            if let image = image {
+                formData.append(MultipartFormData(provider: .data(image),
+                                                  name: "\(image)",
+                                                  fileName: "image",
+                                                  mimeType: "image/jpeg"))
+            }
 
             return .uploadMultipart(formData)
         case .readMyProfile:
@@ -190,35 +181,21 @@ extension Endpoint: TargetType {
         case .readMyRequestMatches:
             return .requestPlain
         case .readPlaces(name: let name, lat: let lat, lon: let lon):
-            return .requestCompositeData(bodyData: Data(), urlParameters: ["name": "\(name)", "latitude": "\(lat)", "longitude": "\(lon)"])
+            return .requestParameters(parameters: ["name": "\(name)", "latitude": "\(lat)", "longitude": "\(lon)"], encoding: URLEncoding.queryString)
         case .readPlacesByMatches(lat: let lat, lon: let lon):
-            return .requestCompositeData(bodyData: Data(), urlParameters: ["latitude": "\(lat)", "longitude": "\(lon)"])
+            return .requestParameters(parameters: ["latitude": "\(lat)", "longitude": "\(lon)"], encoding: URLEncoding.queryString)
         case .readPlacesByDistance(let lat, let lon):
-            return .requestCompositeData(bodyData: Data(), urlParameters: ["latitude": "\(lat)", "longitude": "\(lon)"])
+            return .requestParameters(parameters: ["latitude": "\(lat)", "longitude": "\(lon)"], encoding: URLEncoding.queryString)
         case .readBoards:
             return .requestPlain
         case .createBoard(_, _, let communityRecruitingContent):
-            return .requestParameters(parameters: ["cafe_name": "\(communityRecruitingContent.placeName)",
-                                                   "address": "\(communityRecruitingContent.address)",
-                                                   "category_name": "\(communityRecruitingContent.category)",
-                                                   "recruitCount": "\(communityRecruitingContent.recruitCount)",
-                                                   "meetingDate": "\(communityRecruitingContent.meetingDate)",
-                                                   "startTime": "\(communityRecruitingContent.start)",
-                                                   "endTime": "\(communityRecruitingContent.end)",
-                                                   "title": "\(communityRecruitingContent.title)",
-                                                   "content": "\(communityRecruitingContent.content)"],
-                                      encoding: JSONEncoding.default)
+            let communityRecruitingContent =  try? encode(communityRecruitingContent)
+            return .requestJSONEncodable(communityRecruitingContent)
         case .readBoardForUpdate:
             return .requestPlain
         case .updateBoard(_, let communityRecruitingContent):
-            return .requestParameters(parameters: ["categoryName": "\(communityRecruitingContent.category)",
-                                                   "recruitCount": "\(communityRecruitingContent.recruitCount)",
-                                                   "meetingDate": "\(communityRecruitingContent.meetingDate)",
-                                                   "startTime": "\(communityRecruitingContent.start)",
-                                                   "endTime": "\(communityRecruitingContent.end)",
-                                                   "title": "\(communityRecruitingContent.title)",
-                                                   "content": "\(communityRecruitingContent.content)"],
-                                      encoding: JSONEncoding.default)
+            let communityRecruitingContent =  try? encode(communityRecruitingContent)
+            return .requestJSONEncodable(communityRecruitingContent)
         case .deleteBoard:
             return .requestPlain
         case .readBoardDetail:
@@ -244,14 +221,14 @@ extension Endpoint: TargetType {
         switch self {
         case .login(let token,  _):
             ["Content-type": "application/json",
-             "Authorization": "\(token)"]
-        case .register(let user, let image):
+             "Authorization": "\(String(describing: token))"]
+        case .register:
             ["Content-type": "application/json"]
         case .logout(let token):
             ["Authorization": "\(token)"]
         case .reissueToken(let refreshToken):
             ["Authorization": "\(refreshToken)"]
-        case .updateProfile(let token, let user):
+        case .updateProfile(let token, _, _):
             ["Content-type": "application/json",
              "Authorization": "\(token)"]
         case .readMyProfile(let token):
@@ -262,7 +239,7 @@ extension Endpoint: TargetType {
             ["Authorization": "\(token)"]
         case .readMyRequestMatches(let token):
             ["Authorization": "\(token)"]
-        case .createBoard(let token, let placeId, let communityRecruitingContent):
+        case .createBoard(let token, _, _):
             ["Content-type": "application/json",
              "Authorization": "\(token)"]
         case .readBoardForUpdate(let token, _):

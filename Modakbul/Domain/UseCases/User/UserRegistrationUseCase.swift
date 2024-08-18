@@ -33,7 +33,7 @@ extension DefaultUserRegistrationUseCase: UserRegistrationUseCase {
     }
     
     func login(_ token: Data, by provider: AuthenticationProvider) async -> Bool {
-        await socialLoginRepository.login(token, by: provider)
+        await socialLoginRepository.login(UserCredential(authorizationCode: token, provider: provider))
     }
     
     func logout(with user: User) async {
