@@ -32,7 +32,7 @@ extension DefaultLocalMapUseCase: LocalMapUseCase {
     }
     
     func fetchPlaces(with keyword: String, on coordinate: Coordinate) async throws -> [Place] {
-        try await placesRepository.findPlaces(with: keyword)
+        try await placesRepository.findPlaces(with: keyword, on: coordinate)
     }
     
     func updateCoordinate() async throws -> Coordinate {
