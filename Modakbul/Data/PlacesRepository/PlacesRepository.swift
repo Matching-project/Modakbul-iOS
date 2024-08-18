@@ -11,7 +11,7 @@ import CoreLocation
 protocol PlacesRepository {
     typealias Coordinate = CLLocationCoordinate2D
     
-    func findPlaces(with keyword: String) async throws -> [Place]
+    func findPlaces(with keyword: String, on coordinate: Coordinate) async throws -> [Place]
     func findPlaces(on coordinate: Coordinate) async throws -> [Place]
     func findLocations(with keyword: String) async throws -> [Location]
     func fetchCurrentCoordinate() async throws -> Coordinate
@@ -56,7 +56,7 @@ extension DefaultPlacesRepository: PlacesRepository {
         }
     }
     
-    func findPlaces(with keyword: String) async throws -> [Place] {
+    func findPlaces(with keyword: String, on coordinate: Coordinate) async throws -> [Place] {
         // TODO: 키워드로 장소검색 Endpoint 필요
         let endpoint = Endpoint.readPlaceList(lat: <#T##Double#>, lon: <#T##Double#>)
         

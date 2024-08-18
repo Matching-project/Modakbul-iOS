@@ -12,7 +12,7 @@ protocol LocalMapUseCase {
     typealias Coordinate = CLLocationCoordinate2D
     
     func fetchPlaces(on coordinate: Coordinate) async throws -> [Place]
-    func fetchPlace(with keyword: String) async throws -> Place
+    func fetchPlaces(with keyword: String, on coordinate: Coordinate) async throws -> [Place]
     
     func updateCoordinate() async throws -> Coordinate
 }
@@ -31,8 +31,8 @@ extension DefaultLocalMapUseCase: LocalMapUseCase {
         try await placesRepository.findPlaces(on: coordinate)
     }
     
-    func fetchPlace(with keyword: String) async throws -> Place {
-        try await placesRepository.findPlace(with: keyword)
+    func fetchPlaces(with keyword: String, on coordinate: Coordinate) async throws -> [Place] {
+        try await placesRepository.findPlaces(with: keyword)
     }
     
     func updateCoordinate() async throws -> Coordinate {
