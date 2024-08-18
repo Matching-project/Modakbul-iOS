@@ -8,10 +8,10 @@
 import Foundation
 
 protocol ChatRepository {
-    typealias ChatRoomId = String
-    typealias CommunityId = String
+    typealias ChatRoomId = Int64
+    typealias CommunityRecruitingContentId = Int64
     
-    func createChatRoom(from: User, to: User, on communityId: CommunityId) async throws -> ChatRoomId
+    func createChatRoom(from: User, to: User, on communityRecruitingContentId: CommunityRecruitingContentId) async throws -> ChatRoomId
     func readChatHistory(on chatRoomId: ChatRoomId) async -> [ChatMessage]
     func updateChatHistory(on chatRoomId: ChatRoomId, with messages: [ChatMessage]) async
     func deleteChatHistory(on chatRoomId: ChatRoomId) async
@@ -37,10 +37,8 @@ final class DefaultChatRepository {
 
 // MARK: ChatRepository Conformation
 extension DefaultChatRepository: ChatRepository {
-    func createChatRoom(from: User, to: User, on communityId: CommunityId) async throws -> ChatRoomId {
-        let endpoint = Endpoint.chatRoom(from: .init(from), to: .init(to))
-        let chatRoomInfo = try await networkService.request(endpoint: endpoint, for: ChatRoomInfoEntity.self)
-        return ""
+    func createChatRoom(from: User, to: User, on communityRecruitingContentId: CommunityRecruitingContentId) async throws -> ChatRoomId {
+        1
     }
     
     func readChatHistory(on chatRoomId: ChatRoomId) async -> [ChatMessage] {
