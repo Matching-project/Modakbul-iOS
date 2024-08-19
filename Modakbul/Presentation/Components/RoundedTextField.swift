@@ -32,14 +32,14 @@ struct RoundedTextField: View {
     let titleKey: String
     let text: Binding<String>
     let axis: Axis
-    let lineLimit: Int
+    let lineLimit: (start: Int, end: Int)
     let disabled: Bool
     let color: Color
     
     init(_ titleKey: String = "",
          text: Binding<String>,
          axis: Axis = .horizontal,
-         lineLimit: Int = 1,
+         lineLimit: (start: Int, end: Int) = (1, 10),
          disabled: Bool = false,
          color: Color = .accent
     ) {
@@ -55,7 +55,7 @@ struct RoundedTextField: View {
         TextField(titleKey, text: text, axis: axis)
             .textFieldStyle(RoundedTextFieldStyle(color: color, disabled: disabled))
             .disabled(disabled)
-            .lineLimit(1...lineLimit)
+            .lineLimit(lineLimit.start...lineLimit.end)
             .autocorrectionDisabled()
             .replaceDisabled()
     }

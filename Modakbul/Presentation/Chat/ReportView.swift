@@ -37,7 +37,7 @@ struct ReportView<Router: AppRouter>: View {
                 RoundedTextField(
                     text: $vm.description,
                     axis: .vertical,
-                    lineLimit: 10,      // TODO: - 기종별 대응 필요
+                    lineLimit: (1, 10),      // TODO: - 기종별 대응 필요
                     disabled: vm.reportType == .other ? false : true,
                     color: vm.reportType == .other ? .accent : (colorScheme == .dark ? .white : .black)
                 )
