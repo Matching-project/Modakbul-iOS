@@ -43,6 +43,7 @@ struct ContentView<Router: AppRouter>: View {
                 .tabItemStyle(.settings)
         }
         .navigationTitle(selectedPage.navigationTitle)
+        .navigationBarTitleDisplayMode(.inline)
     }
 }
 
