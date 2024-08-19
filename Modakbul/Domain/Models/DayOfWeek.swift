@@ -27,4 +27,16 @@ enum DayOfWeek: String, Selectable, Codable {
         case .sat: "토요일"
         }
     }
+    
+    init(_ component: Int) {
+        switch component {
+        case 1: self = .sun
+        case 2: self = .mon
+        case 3: self = .tue
+        case 4: self = .wed
+        case 5: self = .thr
+        case 6: self = .fri
+        default: self = .sat
+        }
+    }
 }
