@@ -20,107 +20,109 @@ struct PlaceInformationDetailMakingView<Router: AppRouter>: View {
     }
     
     var body: some View {
-        ScrollView {
-            LazyVStack(spacing: 20) {
-                makeRow(title: "장소") {
-                    RoundedTextField("", text: $vm.location, disabled: true)
-                }
-                
-                makeRow(title: "카테고리") {
-                    MenuPicker.Default(selection: $vm.category)
-                        .roundedRectangleStyle()
-                }
-                
-                makeRow(title: "모집인원") {
-                    MenuPicker.Range(selection: $vm.peopleCount, range: 1...10)
-                        .roundedRectangleStyle()
-                }
-                
-                makeRow(title: "날짜") {
-                    ZStack(alignment: .leading) {
-                        Text(vm.date.toString(by: .yyyyMMdd))
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .padding(.horizontal, 4)
-                        
-                        DatePicker(
-                            "",
-                            selection: $vm.date,
-                            in: Date.now...,
-                            displayedComponents: [.date]
-                        )
-                        .labelsHidden()
-                        .transformEffect(.init(scaleX: 2, y: 1))
-                        .opacity(0.02)
+        VStack {
+            ScrollView {
+                LazyVStack(spacing: 20) {
+                    makeRow(title: "장소") {
+                        RoundedTextField("", text: $vm.location, disabled: true)
                     }
-                    .padding(-8)
-                    .roundedRectangleStyle()
-                }
-                
-                makeRow(title: "진행시간") {
-                    HStack {
+                    
+                    makeRow(title: "카테고리") {
+                        MenuPicker.Default(selection: $vm.category)
+                            .roundedRectangleStyle()
+                    }
+                    
+                    makeRow(title: "모집인원") {
+                        MenuPicker.Range(selection: $vm.peopleCount, range: 1...10)
+                            .roundedRectangleStyle()
+                    }
+                    
+                    makeRow(title: "날짜") {
                         ZStack(alignment: .leading) {
-                            Text(vm.startTime.toString(by: .HHmm))
-                                .padding(.leading, 4)
-                            
-                            DatePicker(
-                                "",
-                                selection: $vm.startTime,
-                                in: vm.after(vm.date),
-                                displayedComponents: [.hourAndMinute]
-                            )
-                            .transformEffect(.init(scaleX: 0.5, y: 1))
-                            .labelsHidden()
-                            .opacity(0.02)
-                        }
-                        
-                        Text("-")
-                            .padding(.horizontal, -50)
-                        
-                        ZStack(alignment: .leading) {
-                            Text(vm.endTime.toString(by: .HHmm))
+                            Text(vm.date.toString(by: .yyyyMMdd))
                                 .frame(maxWidth: .infinity, alignment: .leading)
-                                .onChange(of: vm.startTime) { newStartTime in
-                                    if vm.endTime < newStartTime {
-                                        vm.endTime = newStartTime
-                                    }
-                                }
-                                .padding(.horizontal, -47)
+                                .padding(.horizontal, 4)
                             
                             DatePicker(
                                 "",
-                                selection: $vm.endTime,
-                                in: vm.after(vm.startTime),
-                                displayedComponents: [.hourAndMinute]
+                                selection: $vm.date,
+                                in: Date.now...,
+                                displayedComponents: [.date]
                             )
-                            .padding(.horizontal, -27)
-                            .transformEffect(.init(scaleX: 1.8, y: 1))
                             .labelsHidden()
+                            .transformEffect(.init(scaleX: 2, y: 1))
                             .opacity(0.02)
                         }
+                        .padding(-8)
+                        .roundedRectangleStyle()
                     }
-                    .padding(-9)
-                    .roundedRectangleStyle()
+                    
+                    makeRow(title: "진행시간") {
+                        HStack {
+                            ZStack(alignment: .leading) {
+                                Text(vm.startTime.toString(by: .HHmm))
+                                    .padding(.leading, 4)
+                                
+                                DatePicker(
+                                    "",
+                                    selection: $vm.startTime,
+                                    in: vm.after(vm.date),
+                                    displayedComponents: [.hourAndMinute]
+                                )
+                                .transformEffect(.init(scaleX: 0.5, y: 1))
+                                .labelsHidden()
+                                .opacity(0.02)
+                            }
+                            
+                            Text("-")
+                                .padding(.horizontal, -50)
+                            
+                            ZStack(alignment: .leading) {
+                                Text(vm.endTime.toString(by: .HHmm))
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                    .onChange(of: vm.startTime) { newStartTime in
+                                        if vm.endTime < newStartTime {
+                                            vm.endTime = newStartTime
+                                        }
+                                    }
+                                    .padding(.horizontal, -47)
+                                
+                                DatePicker(
+                                    "",
+                                    selection: $vm.endTime,
+                                    in: vm.after(vm.startTime),
+                                    displayedComponents: [.hourAndMinute]
+                                )
+                                .padding(.horizontal, -27)
+                                .transformEffect(.init(scaleX: 1.8, y: 1))
+                                .labelsHidden()
+                                .opacity(0.02)
+                            }
+                        }
+                        .padding(-9)
+                        .roundedRectangleStyle()
+                    }
+                    
+                    RoundedTextField("제목", text: $vm.title)
+                        .padding(.top)
+                    
+                    RoundedTextField("내용", text: $vm.content, axis: .vertical, lineLimit: (10, 10))
                 }
-                
-                RoundedTextField("제목", text: $vm.title)
-                    .padding(.top)
-                
-                RoundedTextField("내용", text: $vm.content, axis: .vertical, lineLimit: (10, 10))
+                .padding([.leading, .trailing], 32)
+                .padding(.bottom, 10)
             }
-            .padding([.leading, .trailing], 32)
-            .padding(.bottom, 10)
+            
+            // TODO: - 최초 게시 여부에 따라 게시하기 / 수정하기로 분기 필요
+            // TODO: - padding 값 설정 필요
+            FlatButton("게시하기") {
+                vm.submit()
+                vm.initialize()
+                router.dismiss()
+            }
+            .padding(.horizontal, 30)
+            .padding(.vertical, 5)
+            
         }
-        
-        // TODO: - 최초 게시 여부에 따라 게시하기 / 수정하기로 분기 필요
-        // TODO: - padding 값 설정 필요
-        FlatButton("게시하기") {
-            vm.submit()
-            vm.initialize()
-            router.dismiss()
-        }
-        .padding(.horizontal, 30)
-        .padding(.vertical, 5)
-        
         // TODO: - 최초 게시 여부에 따라 모집글 작성 / 모집글 수정으로 분기 필요
         .navigationModifier(title: "모집글 작성") {
             vm.initialize()
