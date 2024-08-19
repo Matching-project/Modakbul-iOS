@@ -151,9 +151,10 @@
 		04B986A42C7312D600E20942 /* KakaoSDKCommon in Frameworks */ = {isa = PBXBuildFile; productRef = 04B986112C7312D600E20942 /* KakaoSDKCommon */; };
 		04B986A52C7312D600E20942 /* KakaoSDKAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 04B9860F2C7312D600E20942 /* KakaoSDKAuth */; };
 		04B986A62C7312D600E20942 /* KakaoSDKUser in Frameworks */ = {isa = PBXBuildFile; productRef = 04B986122C7312D600E20942 /* KakaoSDKUser */; };
-		04B986A82C7312D600E20942 /* AppSecret.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 04B390C42C7308630014D3D7 /* AppSecret.xcconfig */; };
 		04B986A92C7312D600E20942 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 047B5AF82C7088E600D61CEF /* Assets.xcassets */; };
 		04B986AA2C7312D600E20942 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 047B5AF62C7088E600D61CEF /* Preview Assets.xcassets */; };
+		DF1F7BA52C7315CF00709021 /* AppSecret.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = DF1F7BA42C7315CF00709021 /* AppSecret.xcconfig */; };
+		DF1F7BA92C73179300709021 /* MenuPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF1F7BA82C73179300709021 /* MenuPicker.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -298,10 +299,11 @@
 		047B5C442C719FFB00D61CEF /* SocketManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketManager.swift; sourceTree = "<group>"; };
 		047B5C452C719FFC00D61CEF /* SocketEndpoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketEndpoint.swift; sourceTree = "<group>"; };
 		04B390C22C7308170014D3D7 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		04B390C42C7308630014D3D7 /* AppSecret.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = AppSecret.xcconfig; sourceTree = "<group>"; };
-		04B986AE2C7312D600E20942 /* Modakbul.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = Modakbul.app; path = "/Users/swain/Desktop/Project/Modakbul-iOS/build/Debug-iphoneos/Modakbul.app"; sourceTree = "<absolute>"; };
 		04BF39412C71F16000A5AEAC /* PlaceSortCriteria.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceSortCriteria.swift; sourceTree = "<group>"; };
 		04BF39432C71F68200A5AEAC /* UserAuthenticationResponseEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAuthenticationResponseEntity.swift; sourceTree = "<group>"; };
+		DF1F7BA12C73156800709021 /* Modakbul.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = Modakbul.app; path = "/Users/limseonghyeon/Documents/iOS Projects/Modakbul-iOS/build/Debug-iphoneos/Modakbul.app"; sourceTree = "<absolute>"; };
+		DF1F7BA42C7315CF00709021 /* AppSecret.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = AppSecret.xcconfig; sourceTree = "<group>"; };
+		DF1F7BA82C73179300709021 /* MenuPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuPicker.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -610,6 +612,7 @@
 		047B5B562C7088E600D61CEF /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				DF1F7BA42C7315CF00709021 /* AppSecret.xcconfig */,
 				047B5B462C7088E600D61CEF /* Entities */,
 				047B5B482C7088E600D61CEF /* LocalMap */,
 				047B5B4C2C7088E600D61CEF /* Location */,
@@ -638,7 +641,6 @@
 		047B5B5B2C7088E600D61CEF /* Infrastructure */ = {
 			isa = PBXGroup;
 			children = (
-				04B390C42C7308630014D3D7 /* AppSecret.xcconfig */,
 				047B5B592C7088E600D61CEF /* Storages */,
 				047B5B562C7088E600D61CEF /* Services */,
 			);
@@ -685,6 +687,7 @@
 				047B5B712C7088E600D61CEF /* SearchBar.swift */,
 				047B5B722C7088E600D61CEF /* SignInKakaoButton.swift */,
 				047B5B732C7088E600D61CEF /* StrokedButton.swift */,
+				DF1F7BA82C73179300709021 /* MenuPicker.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -916,7 +919,7 @@
 				04B986132C7312D600E20942 /* Moya */,
 			);
 			productName = modakbul;
-			productReference = 04B986AE2C7312D600E20942 /* Modakbul.app */;
+			productReference = DF1F7BA12C73156800709021 /* Modakbul.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -957,8 +960,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				04B986A82C7312D600E20942 /* AppSecret.xcconfig in Resources */,
 				04B986A92C7312D600E20942 /* Assets.xcassets in Resources */,
+				DF1F7BA52C7315CF00709021 /* AppSecret.xcconfig in Resources */,
 				04B986AA2C7312D600E20942 /* Preview Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1094,6 +1097,7 @@
 				04B9868F2C7312D600E20942 /* UserProfileResponseEntity.swift in Sources */,
 				04B986902C7312D600E20942 /* LocalMapService.swift in Sources */,
 				04B986912C7312D600E20942 /* DependencyContainer.swift in Sources */,
+				DF1F7BA92C73179300709021 /* MenuPicker.swift in Sources */,
 				04B986922C7312D600E20942 /* DayOfWeek.swift in Sources */,
 				04B986932C7312D600E20942 /* JSONDecoder.swift in Sources */,
 				04B986942C7312D600E20942 /* LoginView.swift in Sources */,

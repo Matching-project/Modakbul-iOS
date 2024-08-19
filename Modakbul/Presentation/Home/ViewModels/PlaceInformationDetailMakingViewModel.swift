@@ -10,7 +10,7 @@ import Foundation
 final class PlaceInformationDetailMakingViewModel: ObservableObject {
     @Published var location: String
     @Published var category: Category
-    @Published var peopleCount: String
+    @Published var peopleCount: Int
     @Published var date: Date
     @Published var startTime: Date
     @Published var endTime: Date
@@ -22,10 +22,10 @@ final class PlaceInformationDetailMakingViewModel: ObservableObject {
     
     init(location: String = "스타벅스 성수역점",
          category: Category = .interview,
-         peopleCount: String = "",
+         peopleCount: Int = 1,
          date: Date = .now,
-         startTime: Date = .now,
-         endTime: Date = .now,
+         startTime: Date = .now.unitizeToTenMinutes(),
+         endTime: Date = .now.unitizeToTenMinutes(),
          title: String = "",
          content: String = "",
          communityUseCase: DefaultCommunityUseCase = DefaultCommunityUseCase()
@@ -41,12 +41,8 @@ final class PlaceInformationDetailMakingViewModel: ObservableObject {
         self.communityUseCase = communityUseCase
     }
     
-    func afterNow(_ date: Date) -> PartialRangeFrom<Date> {
-        Calendar.current.isDate(date, inSameDayAs: Date.now) ? Date.now... : Date.distantPast...
-    }
-    
-    func afterStartTime(_ startTime: Date) -> PartialRangeFrom<Date> {
-        Calendar.current.isDate(startTime, inSameDayAs: Date.now) ? startTime... : Date.distantPast...
+    func after(_ date: Date) -> PartialRangeFrom<Date> {
+        Calendar.current.isDate(date, inSameDayAs: Date.now) ? date.unitizeToTenMinutes()... : Date.distantPast...
     }
     
     func submit() {
@@ -54,7 +50,7 @@ final class PlaceInformationDetailMakingViewModel: ObservableObject {
         let community = Community(routine: .daily,
                                   category: category,
                                   participants: PreviewHelper.shared.users,
-                                  participantsLimit: Int(peopleCount)!,
+                                  participantsLimit: peopleCount,
                                   meetingDate: date.toString(by: .yyyyMMdd),
                                   startTime: startTime.toString(by: .HHmm),
                                   endTime: endTime.toString(by: .HHmm))
@@ -68,7 +64,6 @@ final class PlaceInformationDetailMakingViewModel: ObservableObject {
                                                                     writer: PreviewHelper.shared.users.first!,
                                                                     community: community)
         
-        
         // TODO: - 구현 필요
         Task {
 //            try? await communityUseCase.write(on: <#T##Location#>, content: communityRecruitingContent)
@@ -78,7 +73,7 @@ final class PlaceInformationDetailMakingViewModel: ObservableObject {
     func initialize() {
         location = ""
         category = .interview
-        peopleCount = ""
+        peopleCount = 1
         date = .now
         startTime = .now
         endTime = .now

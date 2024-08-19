@@ -103,3 +103,24 @@ extension Date {
         return formatter.string(from: self)
     }
 }
+
+extension Date {
+    func unitizeToTenMinutes() -> Self {
+        let calendar = Calendar.current
+        let components = calendar.dateComponents([.hour, .minute, .second], from: self)
+        
+        let minutes = components.minute ?? 0
+        let roundedMinutes = Int(ceil(Double(minutes) / 10.0)) * 10
+        
+        var newComponents = DateComponents()
+        newComponents.hour = components.hour
+        newComponents.minute = roundedMinutes
+        newComponents.second = 0
+        
+        return calendar.date(bySettingHour: newComponents.hour ?? 0,
+                             minute: newComponents.minute ?? 0,
+                             second: newComponents.second ?? 0,
+                             of: self,
+                             matchingPolicy: .nextTime) ?? self
+    }
+}
