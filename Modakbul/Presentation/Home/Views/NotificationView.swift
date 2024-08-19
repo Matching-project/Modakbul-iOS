@@ -100,9 +100,9 @@ struct NotificationRow: View {
             .padding(.vertical, 15)
         }
         .padding(.horizontal)
-        .background(colorScheme == .dark ? Color.black : Color.white)
+        .background(colorScheme == .dark ? .gray.opacity(0.2) : .white)
         .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
-        .shadow(color: Color.gray.opacity(0.4), radius: 10)
+        .shadow(radius: 4)
     }
     
     private var titleView: some View {
