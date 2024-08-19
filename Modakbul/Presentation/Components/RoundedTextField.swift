@@ -55,7 +55,7 @@ struct RoundedTextField: View {
         TextField(titleKey, text: text, axis: axis)
             .textFieldStyle(RoundedTextFieldStyle(color: color, disabled: disabled))
             .disabled(disabled)
-            .lineLimit(lineLimit...lineLimit)
+            .lineLimit(1...lineLimit)
             .autocorrectionDisabled()
             .replaceDisabled()
     }
