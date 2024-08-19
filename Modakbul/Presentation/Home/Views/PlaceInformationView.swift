@@ -21,16 +21,7 @@ struct PlaceInformationView<Router: AppRouter>: View {
         self.place = place
         let calendar = Calendar.current
         let weekDay = calendar.component(.weekday, from: .now)
-        var dayOfWeek: DayOfWeek = .sun
-        switch weekDay {
-        case 1: dayOfWeek = .sun
-        case 2: dayOfWeek = .mon
-        case 3: dayOfWeek = .tue
-        case 4: dayOfWeek = .wed
-        case 5: dayOfWeek = .thr
-        case 6: dayOfWeek = .fri
-        default: dayOfWeek = .sat
-        }
+        let dayOfWeek = DayOfWeek(weekDay)
         self.selectedOpeningHourByDay = place.openingHours.first(where: {$0.dayOfWeek == dayOfWeek})
     }
     
