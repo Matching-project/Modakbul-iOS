@@ -52,26 +52,26 @@ final class DefaultChatService {
         }
     }
     
-    private func decode<T: Decodable>(for type: T.Type, with data: Data) throws -> T {
-        guard let decodedData = try? decoder.decode(type, from: data) else {
-            throw ChatServiceError.generic(type: String(describing: T.self))
-        }
-        return decodedData
-    }
+//    private func decode<T: Decodable>(for type: T.Type, with data: Data) throws -> T {
+//        guard let decodedData = try? decoder.decode(type, from: data) else {
+//            throw ChatServiceError.generic(type: String(describing: T.self))
+//        }
+//        return decodedData
+//    }
     
     private func performReceivedResult(_ result: URLSessionWebSocketTask.Message,
                                        _ continuation: AsyncThrowingStream<ChatMessage, Error>.Continuation) {
-        do {
-            switch result {
-            case .data(let data):
-                let message = try decode(for: MessageEntity.self, with: data)
-                continuation.yield(message.toDTO())
-            default:
-                continuation.finish(throwing: ChatServiceError.invalidMessageFormat)
-            }
-        } catch {
-            continuation.finish(throwing: error)
-        }
+//        do {
+//            switch result {
+//            case .data(let data):
+//                let message = try decode(for: MessageEntity.self, with: data)
+//                continuation.yield(message.toDTO())
+//            default:
+//                continuation.finish(throwing: ChatServiceError.invalidMessageFormat)
+//            }
+//        } catch {
+//            continuation.finish(throwing: error)
+//        }
     }
 }
 
@@ -108,8 +108,8 @@ extension DefaultChatService: ChatService {
     }
     
     func send(message: ChatMessage) async throws {
-        let entity: MessageEntity = .init(message)
-        let data = try encoder.encode(entity)
-        try await socket?.send(.data(data))
+//        let entity: MessageEntity = .init(message)
+//        let data = try encoder.encode(entity)
+//        try await socket?.send(.data(data))
     }
 }

@@ -47,19 +47,19 @@ enum SocketEndpoint {
 }
 
 // TODO: - 구현 필요
-extension SocketEndpoint: Requestable {
-    // TODO: - WIP: Requestable 구현
-    var httpHeaders: Alamofire.HTTPHeaders?
-    
-    var httpBodies: [Data]?
-    
-    var httpMethod: Alamofire.HTTPMethod
-    
-    var scheme: String
-    
-    var host: String
-    
-    var path: String
-    
-    var queryItems: [URLQueryItem]?
-}
+//extension SocketEndpoint: Requestable {
+//    // TODO: - WIP: Requestable 구현
+//    var httpHeaders: Alamofire.HTTPHeaders?
+//    
+//    var httpBodies: [Data]?
+//    
+//    var httpMethod: Alamofire.HTTPMethod
+//    
+//    var scheme: String
+//    
+//    var host: String
+//    
+//    var path: String
+//    
+//    var queryItems: [URLQueryItem]?
+//}

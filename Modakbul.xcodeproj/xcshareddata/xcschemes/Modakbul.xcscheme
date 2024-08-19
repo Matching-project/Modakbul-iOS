@@ -40,6 +40,10 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
+      <PathRunnable
+         runnableDebuggingMode = "0"
+         FilePath = "/Users/swain/Library/Developer/Xcode/DerivedData/Modakbul-czxqxkfhfoiupifrvmodzvgxjwxf/Build/Products/Debug-iphoneos/Modakbul.app">
+      </PathRunnable>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"

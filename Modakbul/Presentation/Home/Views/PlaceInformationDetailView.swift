@@ -16,8 +16,6 @@ struct PlaceInformationDetailView<Router: AppRouter>: View {
     @State private var index: Int = 0
     private let arr = [0, 1, 2, 3, 4]
     
-    @State private var isExpanded: Bool = false
-    
     init(
 //        placeInformationDetailViewModel: PlaceInformationDetailViewModel,
         communityRecruitingContentId: Int64
