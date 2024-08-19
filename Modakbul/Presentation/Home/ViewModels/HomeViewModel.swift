@@ -16,6 +16,7 @@ final class HomeViewModel: ObservableObject {
     @Published var searchingText: String = String()
     @Published var places: [Place] = PreviewHelper.shared.places
     @Published var selectedPlace: Place?
+    @Published var sortCriteria: PlaceSortCriteria = .distance
     
     private var locationNeeded: Bool = true
     
@@ -44,7 +45,7 @@ final class HomeViewModel: ObservableObject {
         Task {
             do {
                 guard let keyword = keyword else {
-                    places = try await localMapUseCase.fetchPlaces(on: coordinate)
+                    places = try await localMapUseCase.fetchPlaces(on: coordinate, by: sortCriteria)
                     return
                 }
                 
