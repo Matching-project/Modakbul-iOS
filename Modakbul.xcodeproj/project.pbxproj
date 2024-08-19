@@ -7,152 +7,153 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		047B5BB02C7088E600D61CEF /* AppRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5AE92C7088E600D61CEF /* AppRouter.swift */; };
-		047B5BB12C7088E600D61CEF /* Assembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5AEB2C7088E600D61CEF /* Assembly.swift */; };
-		047B5BB22C7088E600D61CEF /* DataAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5AEC2C7088E600D61CEF /* DataAssembly.swift */; };
-		047B5BB32C7088E600D61CEF /* DomainAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5AED2C7088E600D61CEF /* DomainAssembly.swift */; };
-		047B5BB42C7088E600D61CEF /* InfrastructureAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5AEE2C7088E600D61CEF /* InfrastructureAssembly.swift */; };
-		047B5BB52C7088E600D61CEF /* PresentationAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5AEF2C7088E600D61CEF /* PresentationAssembly.swift */; };
-		047B5BB62C7088E600D61CEF /* Assembler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5AF12C7088E600D61CEF /* Assembler.swift */; };
-		047B5BB72C7088E600D61CEF /* DependencyContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5AF22C7088E600D61CEF /* DependencyContainer.swift */; };
-		047B5BB82C7088E600D61CEF /* DependencyRegister.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5AF32C7088E600D61CEF /* DependencyRegister.swift */; };
-		047B5BB92C7088E600D61CEF /* DependencyResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5AF42C7088E600D61CEF /* DependencyResolver.swift */; };
-		047B5BBA2C7088E600D61CEF /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 047B5AF62C7088E600D61CEF /* Preview Assets.xcassets */; };
-		047B5BBB2C7088E600D61CEF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 047B5AF82C7088E600D61CEF /* Assets.xcassets */; };
-		047B5BBC2C7088E600D61CEF /* ModakbulApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5AFA2C7088E600D61CEF /* ModakbulApp.swift */; };
-		047B5BBD2C7088E600D61CEF /* ChatRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5AFC2C7088E600D61CEF /* ChatRepository.swift */; };
-		047B5BBE2C7088E600D61CEF /* Bundle+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5AFE2C7088E600D61CEF /* Bundle+Extension.swift */; };
-		047B5BBF2C7088E600D61CEF /* PlacesRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B022C7088E600D61CEF /* PlacesRepository.swift */; };
-		047B5BC02C7088E600D61CEF /* SocialLoginRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B042C7088E600D61CEF /* SocialLoginRepository.swift */; };
-		047B5BC12C7088E600D61CEF /* UserManagementRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B062C7088E600D61CEF /* UserManagementRepository.swift */; };
-		047B5BC22C7088E600D61CEF /* Selectable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B082C7088E600D61CEF /* Selectable.swift */; };
-		047B5BC32C7088E600D61CEF /* AuthenticationProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B0A2C7088E600D61CEF /* AuthenticationProvider.swift */; };
-		047B5BC42C7088E600D61CEF /* BlockedUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B0B2C7088E600D61CEF /* BlockedUser.swift */; };
-		047B5BC52C7088E600D61CEF /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B0C2C7088E600D61CEF /* Category.swift */; };
-		047B5BC62C7088E600D61CEF /* ChatMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B0D2C7088E600D61CEF /* ChatMessage.swift */; };
-		047B5BC72C7088E600D61CEF /* ChatRoomConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B0E2C7088E600D61CEF /* ChatRoomConfiguration.swift */; };
-		047B5BC82C7088E600D61CEF /* Community.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B0F2C7088E600D61CEF /* Community.swift */; };
-		047B5BC92C7088E600D61CEF /* DateFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B102C7088E600D61CEF /* DateFormat.swift */; };
-		047B5BCA2C7088E600D61CEF /* DayOfWeek.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B112C7088E600D61CEF /* DayOfWeek.swift */; };
-		047B5BCB2C7088E600D61CEF /* Gender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B122C7088E600D61CEF /* Gender.swift */; };
-		047B5BCC2C7088E600D61CEF /* GroupSeatingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B132C7088E600D61CEF /* GroupSeatingState.swift */; };
-		047B5BCD2C7088E600D61CEF /* Job.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B142C7088E600D61CEF /* Job.swift */; };
-		047B5BCE2C7088E600D61CEF /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B152C7088E600D61CEF /* Location.swift */; };
-		047B5BCF2C7088E600D61CEF /* NoiseLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B162C7088E600D61CEF /* NoiseLevel.swift */; };
-		047B5BD02C7088E600D61CEF /* OpeningHour.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B172C7088E600D61CEF /* OpeningHour.swift */; };
-		047B5BD12C7088E600D61CEF /* Place.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B182C7088E600D61CEF /* Place.swift */; };
-		047B5BD22C7088E600D61CEF /* PowerSocketState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B192C7088E600D61CEF /* PowerSocketState.swift */; };
-		047B5BD32C7088E600D61CEF /* PushNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B1A2C7088E600D61CEF /* PushNotification.swift */; };
-		047B5BD42C7088E600D61CEF /* RegisterField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B1B2C7088E600D61CEF /* RegisterField.swift */; };
-		047B5BD52C7088E600D61CEF /* Report.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B1C2C7088E600D61CEF /* Report.swift */; };
-		047B5BD62C7088E600D61CEF /* RequiredTerm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B1D2C7088E600D61CEF /* RequiredTerm.swift */; };
-		047B5BD72C7088E600D61CEF /* SuggestedResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B1E2C7088E600D61CEF /* SuggestedResult.swift */; };
-		047B5BD82C7088E600D61CEF /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B1F2C7088E600D61CEF /* User.swift */; };
-		047B5BD92C7088E600D61CEF /* UserCredential.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B202C7088E600D61CEF /* UserCredential.swift */; };
-		047B5BDA2C7088E600D61CEF /* ChatUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B222C7088E600D61CEF /* ChatUseCase.swift */; };
-		047B5BDB2C7088E600D61CEF /* CommunityUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B242C7088E600D61CEF /* CommunityUseCase.swift */; };
-		047B5BDC2C7088E600D61CEF /* LocalMapUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B262C7088E600D61CEF /* LocalMapUseCase.swift */; };
-		047B5BDD2C7088E600D61CEF /* NotificationUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B282C7088E600D61CEF /* NotificationUseCase.swift */; };
-		047B5BDE2C7088E600D61CEF /* PlaceShowcaseAndReviewUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B2A2C7088E600D61CEF /* PlaceShowcaseAndReviewUseCase.swift */; };
-		047B5BDF2C7088E600D61CEF /* UserBusinessUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B2C2C7088E600D61CEF /* UserBusinessUseCase.swift */; };
-		047B5BE02C7088E600D61CEF /* UserRegistrationUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B2D2C7088E600D61CEF /* UserRegistrationUseCase.swift */; };
-		047B5BE22C7088E600D61CEF /* ChatService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B332C7088E600D61CEF /* ChatService.swift */; };
-		047B5BE32C7088E600D61CEF /* ChatRoomCreateRequestEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B352C7088E600D61CEF /* ChatRoomCreateRequestEntity.swift */; };
-		047B5BE42C7088E600D61CEF /* CommunityRecruitingContentListResponseEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B362C7088E600D61CEF /* CommunityRecruitingContentListResponseEntity.swift */; };
-		047B5BE52C7088E600D61CEF /* CommunityRecruitingContentMakingRequestEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B372C7088E600D61CEF /* CommunityRecruitingContentMakingRequestEntity.swift */; };
-		047B5BE62C7088E600D61CEF /* CommunityRecruitingContentSearchResponseEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B382C7088E600D61CEF /* CommunityRecruitingContentSearchResponseEntity.swift */; };
-		047B5BE72C7088E600D61CEF /* DefaultResponseEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B392C7088E600D61CEF /* DefaultResponseEntity.swift */; };
-		047B5BE82C7088E600D61CEF /* NicknameOverlappedResponseEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B3A2C7088E600D61CEF /* NicknameOverlappedResponseEntity.swift */; };
-		047B5BE92C7088E600D61CEF /* OpponentUserProfileResponseEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B3B2C7088E600D61CEF /* OpponentUserProfileResponseEntity.swift */; };
-		047B5BEA2C7088E600D61CEF /* ParticipationRequestListResponseEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B3C2C7088E600D61CEF /* ParticipationRequestListResponseEntity.swift */; };
-		047B5BEB2C7088E600D61CEF /* PlaceReviewRequestEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B3D2C7088E600D61CEF /* PlaceReviewRequestEntity.swift */; };
-		047B5BEC2C7088E600D61CEF /* PlacesSearchResponseEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B3E2C7088E600D61CEF /* PlacesSearchResponseEntity.swift */; };
-		047B5BED2C7088E600D61CEF /* RelatedCommunityRecruitingContentListResponseEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B3F2C7088E600D61CEF /* RelatedCommunityRecruitingContentListResponseEntity.swift */; };
-		047B5BEE2C7088E600D61CEF /* RelatedParticipationRequestListResponseEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B402C7088E600D61CEF /* RelatedParticipationRequestListResponseEntity.swift */; };
-		047B5BEF2C7088E600D61CEF /* RelatedPlaceListSearchResponseEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B412C7088E600D61CEF /* RelatedPlaceListSearchResponseEntity.swift */; };
-		047B5BF02C7088E600D61CEF /* TokensEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B422C7088E600D61CEF /* TokensEntity.swift */; };
-		047B5BF12C7088E600D61CEF /* UserProfileResponseEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B432C7088E600D61CEF /* UserProfileResponseEntity.swift */; };
-		047B5BF22C7088E600D61CEF /* UserProfileUpdateRequestEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B442C7088E600D61CEF /* UserProfileUpdateRequestEntity.swift */; };
-		047B5BF32C7088E600D61CEF /* UserRegistrationRequestEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B452C7088E600D61CEF /* UserRegistrationRequestEntity.swift */; };
-		047B5BF42C7088E600D61CEF /* LocalMapService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B472C7088E600D61CEF /* LocalMapService.swift */; };
-		047B5BF52C7088E600D61CEF /* CLLocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B492C7088E600D61CEF /* CLLocationManager.swift */; };
-		047B5BF62C7088E600D61CEF /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B4B2C7088E600D61CEF /* LocationService.swift */; };
-		047B5BF72C7088E600D61CEF /* JSONDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B4D2C7088E600D61CEF /* JSONDecoder.swift */; };
-		047B5BF82C7088E600D61CEF /* JSONEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B4E2C7088E600D61CEF /* JSONEncoder.swift */; };
-		047B5BF92C7088E600D61CEF /* URLSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B4F2C7088E600D61CEF /* URLSession.swift */; };
-		047B5BFB2C7088E600D61CEF /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B522C7088E600D61CEF /* NetworkService.swift */; };
-		047B5BFE2C7088E600D61CEF /* TokenStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B572C7088E600D61CEF /* TokenStorage.swift */; };
-		047B5C002C7088E600D61CEF /* ChatRoomListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B5C2C7088E600D61CEF /* ChatRoomListView.swift */; };
-		047B5C012C7088E600D61CEF /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B5D2C7088E600D61CEF /* ChatView.swift */; };
-		047B5C022C7088E600D61CEF /* ReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B5E2C7088E600D61CEF /* ReportView.swift */; };
-		047B5C032C7088E600D61CEF /* AlertModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B602C7088E600D61CEF /* AlertModifier.swift */; };
-		047B5C042C7088E600D61CEF /* ButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B612C7088E600D61CEF /* ButtonStyle.swift */; };
-		047B5C052C7088E600D61CEF /* ConfirmationContentPresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B622C7088E600D61CEF /* ConfirmationContentPresentable.swift */; };
-		047B5C062C7088E600D61CEF /* ConfirmationDialogModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B632C7088E600D61CEF /* ConfirmationDialogModifier.swift */; };
-		047B5C072C7088E600D61CEF /* NavigationModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B642C7088E600D61CEF /* NavigationModifier.swift */; };
-		047B5C082C7088E600D61CEF /* TabItemModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B652C7088E600D61CEF /* TabItemModifier.swift */; };
-		047B5C092C7088E600D61CEF /* TextFieldModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B662C7088E600D61CEF /* TextFieldModifier.swift */; };
-		047B5C0A2C7088E600D61CEF /* View+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B672C7088E600D61CEF /* View+Extension.swift */; };
-		047B5C0B2C7088E600D61CEF /* AsyncImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B692C7088E600D61CEF /* AsyncImageView.swift */; };
-		047B5C0C2C7088E600D61CEF /* BackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B6A2C7088E600D61CEF /* BackButton.swift */; };
-		047B5C0D2C7088E600D61CEF /* Badge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B6B2C7088E600D61CEF /* Badge.swift */; };
-		047B5C0E2C7088E600D61CEF /* CapsuleTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B6C2C7088E600D61CEF /* CapsuleTag.swift */; };
-		047B5C0F2C7088E600D61CEF /* CustomPageControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B6D2C7088E600D61CEF /* CustomPageControl.swift */; };
-		047B5C102C7088E600D61CEF /* DefaultCheckBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B6E2C7088E600D61CEF /* DefaultCheckBox.swift */; };
-		047B5C112C7088E600D61CEF /* FlatButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B6F2C7088E600D61CEF /* FlatButton.swift */; };
-		047B5C122C7088E600D61CEF /* RoundedTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B702C7088E600D61CEF /* RoundedTextField.swift */; };
-		047B5C132C7088E600D61CEF /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B712C7088E600D61CEF /* SearchBar.swift */; };
-		047B5C142C7088E600D61CEF /* SignInKakaoButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B722C7088E600D61CEF /* SignInKakaoButton.swift */; };
-		047B5C152C7088E600D61CEF /* StrokedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B732C7088E600D61CEF /* StrokedButton.swift */; };
-		047B5C162C7088E600D61CEF /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B752C7088E600D61CEF /* HomeViewModel.swift */; };
-		047B5C172C7088E600D61CEF /* NotificationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B762C7088E600D61CEF /* NotificationViewModel.swift */; };
-		047B5C182C7088E600D61CEF /* ParticipationRequestListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B772C7088E600D61CEF /* ParticipationRequestListViewModel.swift */; };
-		047B5C192C7088E600D61CEF /* PlaceInformationDetailMakingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B782C7088E600D61CEF /* PlaceInformationDetailMakingViewModel.swift */; };
-		047B5C1A2C7088E600D61CEF /* PlaceInformationDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B792C7088E600D61CEF /* PlaceInformationDetailViewModel.swift */; };
-		047B5C1B2C7088E600D61CEF /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B7B2C7088E600D61CEF /* HomeView.swift */; };
-		047B5C1C2C7088E600D61CEF /* MapArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B7C2C7088E600D61CEF /* MapArea.swift */; };
-		047B5C1D2C7088E600D61CEF /* NotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B7D2C7088E600D61CEF /* NotificationView.swift */; };
-		047B5C1E2C7088E600D61CEF /* ParticipationRequestListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B7E2C7088E600D61CEF /* ParticipationRequestListView.swift */; };
-		047B5C1F2C7088E600D61CEF /* PlaceInformationDetailMakingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B7F2C7088E600D61CEF /* PlaceInformationDetailMakingView.swift */; };
-		047B5C202C7088E600D61CEF /* PlaceInformationDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B802C7088E600D61CEF /* PlaceInformationDetailView.swift */; };
-		047B5C212C7088E600D61CEF /* PlaceInformationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B812C7088E600D61CEF /* PlaceInformationView.swift */; };
-		047B5C222C7088E600D61CEF /* PlacesListArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B822C7088E600D61CEF /* PlacesListArea.swift */; };
-		047B5C232C7088E600D61CEF /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B852C7088E600D61CEF /* LoginView.swift */; };
-		047B5C242C7088E600D61CEF /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B862C7088E600D61CEF /* LoginViewModel.swift */; };
-		047B5C252C7088E600D61CEF /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B882C7088E600D61CEF /* ContentView.swift */; };
-		047B5C262C7088E600D61CEF /* PlaceShowcaseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B8A2C7088E600D61CEF /* PlaceShowcaseViewModel.swift */; };
-		047B5C272C7088E600D61CEF /* MyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B8C2C7088E600D61CEF /* MyView.swift */; };
-		047B5C282C7088E600D61CEF /* PlaceShowcaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B8D2C7088E600D61CEF /* PlaceShowcaseView.swift */; };
-		047B5C292C7088E600D61CEF /* AlertType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B902C7088E600D61CEF /* AlertType.swift */; };
-		047B5C2A2C7088E600D61CEF /* ConfirmationAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B912C7088E600D61CEF /* ConfirmationAction.swift */; };
-		047B5C2B2C7088E600D61CEF /* ConfirmationContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B922C7088E600D61CEF /* ConfirmationContent.swift */; };
-		047B5C2C2C7088E600D61CEF /* ConfirmationDialogType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B932C7088E600D61CEF /* ConfirmationDialogType.swift */; };
-		047B5C2D2C7088E600D61CEF /* Route.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B952C7088E600D61CEF /* Route.swift */; };
-		047B5C2E2C7088E600D61CEF /* RouterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B962C7088E600D61CEF /* RouterView.swift */; };
-		047B5C2F2C7088E600D61CEF /* PreviewHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B982C7088E600D61CEF /* PreviewHelper.swift */; };
-		047B5C302C7088E600D61CEF /* MultipleSelectionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B9A2C7088E600D61CEF /* MultipleSelectionButton.swift */; };
-		047B5C312C7088E600D61CEF /* SingleSelectionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B9B2C7088E600D61CEF /* SingleSelectionButton.swift */; };
-		047B5C322C7088E600D61CEF /* DefaultMultipleSelectionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B9D2C7088E600D61CEF /* DefaultMultipleSelectionButton.swift */; };
-		047B5C332C7088E600D61CEF /* DefaultSingleSelectionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B9E2C7088E600D61CEF /* DefaultSingleSelectionButton.swift */; };
-		047B5C342C7088E600D61CEF /* GenderSelectionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B9F2C7088E600D61CEF /* GenderSelectionButton.swift */; };
-		047B5C352C7088E600D61CEF /* BirthPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5BA22C7088E600D61CEF /* BirthPicker.swift */; };
-		047B5C362C7088E600D61CEF /* NicknameTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5BA32C7088E600D61CEF /* NicknameTextField.swift */; };
-		047B5C372C7088E600D61CEF /* PhotosUploaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5BA42C7088E600D61CEF /* PhotosUploaderView.swift */; };
-		047B5C382C7088E600D61CEF /* PhotosUploaderModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5BA62C7088E600D61CEF /* PhotosUploaderModifier.swift */; };
-		047B5C392C7088E600D61CEF /* RegistrationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5BA82C7088E600D61CEF /* RegistrationView.swift */; };
-		047B5C3A2C7088E600D61CEF /* RegistrationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5BA92C7088E600D61CEF /* RegistrationViewModel.swift */; };
-		047B5C3B2C7088E600D61CEF /* RegistrationViewValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5BAA2C7088E600D61CEF /* RegistrationViewValue.swift */; };
-		047B5C3C2C7088E600D61CEF /* RequiredTermView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5BAB2C7088E600D61CEF /* RequiredTermView.swift */; };
-		047B5C3F2C70A98100D61CEF /* ParticipationRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5C3E2C70A98100D61CEF /* ParticipationRequest.swift */; };
-		047B5C412C719DC000D61CEF /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = DF0424392C6495D6008C2B6D /* Moya */; };
-		047B5C432C719FF300D61CEF /* Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5C422C719FF300D61CEF /* Endpoint.swift */; };
-		047B5C462C719FFC00D61CEF /* SocketManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5C442C719FFB00D61CEF /* SocketManager.swift */; };
-		047B5C472C719FFC00D61CEF /* SocketEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5C452C719FFC00D61CEF /* SocketEndpoint.swift */; };
-		04BF39422C71F16000A5AEAC /* PlaceSortCriteria.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BF39412C71F16000A5AEAC /* PlaceSortCriteria.swift */; };
-		04BF39442C71F68200A5AEAC /* UserAuthenticationResponseEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BF39432C71F68200A5AEAC /* UserAuthenticationResponseEntity.swift */; };
-		DFE0AFD72C103FA800EC078B /* KakaoSDKAuth in Frameworks */ = {isa = PBXBuildFile; productRef = DFE0AFD62C103FA800EC078B /* KakaoSDKAuth */; };
-		DFE0AFD92C103FA800EC078B /* KakaoSDKCommon in Frameworks */ = {isa = PBXBuildFile; productRef = DFE0AFD82C103FA800EC078B /* KakaoSDKCommon */; };
-		DFE0AFDB2C103FA800EC078B /* KakaoSDKUser in Frameworks */ = {isa = PBXBuildFile; productRef = DFE0AFDA2C103FA800EC078B /* KakaoSDKUser */; };
+		04B986162C7312D600E20942 /* NotificationUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B282C7088E600D61CEF /* NotificationUseCase.swift */; };
+		04B986172C7312D600E20942 /* TokensEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B422C7088E600D61CEF /* TokensEntity.swift */; };
+		04B986182C7312D600E20942 /* OpponentUserProfileResponseEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B3B2C7088E600D61CEF /* OpponentUserProfileResponseEntity.swift */; };
+		04B986192C7312D600E20942 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B752C7088E600D61CEF /* HomeViewModel.swift */; };
+		04B9861A2C7312D600E20942 /* MultipleSelectionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B9A2C7088E600D61CEF /* MultipleSelectionButton.swift */; };
+		04B9861B2C7312D600E20942 /* ParticipationRequestListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B7E2C7088E600D61CEF /* ParticipationRequestListView.swift */; };
+		04B9861C2C7312D600E20942 /* ChatMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B0D2C7088E600D61CEF /* ChatMessage.swift */; };
+		04B9861D2C7312D600E20942 /* AlertType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B902C7088E600D61CEF /* AlertType.swift */; };
+		04B9861E2C7312D600E20942 /* AlertModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B602C7088E600D61CEF /* AlertModifier.swift */; };
+		04B9861F2C7312D600E20942 /* SignInKakaoButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B722C7088E600D61CEF /* SignInKakaoButton.swift */; };
+		04B986202C7312D600E20942 /* Selectable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B082C7088E600D61CEF /* Selectable.swift */; };
+		04B986212C7312D600E20942 /* SuggestedResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B1E2C7088E600D61CEF /* SuggestedResult.swift */; };
+		04B986222C7312D600E20942 /* CommunityRecruitingContentListResponseEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B362C7088E600D61CEF /* CommunityRecruitingContentListResponseEntity.swift */; };
+		04B986232C7312D600E20942 /* ConfirmationContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B922C7088E600D61CEF /* ConfirmationContent.swift */; };
+		04B986242C7312D600E20942 /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B712C7088E600D61CEF /* SearchBar.swift */; };
+		04B986252C7312D600E20942 /* MyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B8C2C7088E600D61CEF /* MyView.swift */; };
+		04B986262C7312D600E20942 /* PlacesListArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B822C7088E600D61CEF /* PlacesListArea.swift */; };
+		04B986272C7312D600E20942 /* DateFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B102C7088E600D61CEF /* DateFormat.swift */; };
+		04B986282C7312D600E20942 /* DependencyResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5AF42C7088E600D61CEF /* DependencyResolver.swift */; };
+		04B986292C7312D600E20942 /* CLLocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B492C7088E600D61CEF /* CLLocationManager.swift */; };
+		04B9862A2C7312D600E20942 /* ConfirmationAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B912C7088E600D61CEF /* ConfirmationAction.swift */; };
+		04B9862B2C7312D600E20942 /* PlaceShowcaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B8D2C7088E600D61CEF /* PlaceShowcaseView.swift */; };
+		04B9862C2C7312D600E20942 /* CommunityUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B242C7088E600D61CEF /* CommunityUseCase.swift */; };
+		04B9862D2C7312D600E20942 /* ChatRoomConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B0E2C7088E600D61CEF /* ChatRoomConfiguration.swift */; };
+		04B9862E2C7312D600E20942 /* BackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B6A2C7088E600D61CEF /* BackButton.swift */; };
+		04B9862F2C7312D600E20942 /* LocalMapUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B262C7088E600D61CEF /* LocalMapUseCase.swift */; };
+		04B986302C7312D600E20942 /* CapsuleTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B6C2C7088E600D61CEF /* CapsuleTag.swift */; };
+		04B986312C7312D600E20942 /* Route.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B952C7088E600D61CEF /* Route.swift */; };
+		04B986322C7312D600E20942 /* BlockedUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B0B2C7088E600D61CEF /* BlockedUser.swift */; };
+		04B986332C7312D600E20942 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B152C7088E600D61CEF /* Location.swift */; };
+		04B986342C7312D600E20942 /* DependencyRegister.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5AF32C7088E600D61CEF /* DependencyRegister.swift */; };
+		04B986352C7312D600E20942 /* RouterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B962C7088E600D61CEF /* RouterView.swift */; };
+		04B986362C7312D600E20942 /* View+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B672C7088E600D61CEF /* View+Extension.swift */; };
+		04B986372C7312D600E20942 /* RegistrationViewValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5BAA2C7088E600D61CEF /* RegistrationViewValue.swift */; };
+		04B986382C7312D600E20942 /* DataAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5AEC2C7088E600D61CEF /* DataAssembly.swift */; };
+		04B986392C7312D600E20942 /* ReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B5E2C7088E600D61CEF /* ReportView.swift */; };
+		04B9863A2C7312D600E20942 /* Gender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B122C7088E600D61CEF /* Gender.swift */; };
+		04B9863B2C7312D600E20942 /* NicknameTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5BA32C7088E600D61CEF /* NicknameTextField.swift */; };
+		04B9863C2C7312D600E20942 /* Bundle+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5AFE2C7088E600D61CEF /* Bundle+Extension.swift */; };
+		04B9863D2C7312D600E20942 /* RegistrationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5BA82C7088E600D61CEF /* RegistrationView.swift */; };
+		04B9863E2C7312D600E20942 /* ConfirmationDialogModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B632C7088E600D61CEF /* ConfirmationDialogModifier.swift */; };
+		04B9863F2C7312D600E20942 /* ParticipationRequestListResponseEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B3C2C7088E600D61CEF /* ParticipationRequestListResponseEntity.swift */; };
+		04B986402C7312D600E20942 /* Place.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B182C7088E600D61CEF /* Place.swift */; };
+		04B986412C7312D600E20942 /* PreviewHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B982C7088E600D61CEF /* PreviewHelper.swift */; };
+		04B986422C7312D600E20942 /* PlaceReviewRequestEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B3D2C7088E600D61CEF /* PlaceReviewRequestEntity.swift */; };
+		04B986432C7312D600E20942 /* GenderSelectionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B9F2C7088E600D61CEF /* GenderSelectionButton.swift */; };
+		04B986442C7312D600E20942 /* AppRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5AE92C7088E600D61CEF /* AppRouter.swift */; };
+		04B986452C7312D600E20942 /* DefaultResponseEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B392C7088E600D61CEF /* DefaultResponseEntity.swift */; };
+		04B986462C7312D600E20942 /* UserManagementRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B062C7088E600D61CEF /* UserManagementRepository.swift */; };
+		04B986472C7312D600E20942 /* NotificationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B762C7088E600D61CEF /* NotificationViewModel.swift */; };
+		04B986482C7312D600E20942 /* ParticipationRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5C3E2C70A98100D61CEF /* ParticipationRequest.swift */; };
+		04B986492C7312D600E20942 /* PlacesSearchResponseEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B3E2C7088E600D61CEF /* PlacesSearchResponseEntity.swift */; };
+		04B9864A2C7312D600E20942 /* ChatRoomCreateRequestEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B352C7088E600D61CEF /* ChatRoomCreateRequestEntity.swift */; };
+		04B9864B2C7312D600E20942 /* TabItemModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B652C7088E600D61CEF /* TabItemModifier.swift */; };
+		04B9864C2C7312D600E20942 /* ChatUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B222C7088E600D61CEF /* ChatUseCase.swift */; };
+		04B9864D2C7312D600E20942 /* SocketEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5C452C719FFC00D61CEF /* SocketEndpoint.swift */; };
+		04B9864E2C7312D600E20942 /* PushNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B1A2C7088E600D61CEF /* PushNotification.swift */; };
+		04B9864F2C7312D600E20942 /* NoiseLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B162C7088E600D61CEF /* NoiseLevel.swift */; };
+		04B986502C7312D600E20942 /* RequiredTerm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B1D2C7088E600D61CEF /* RequiredTerm.swift */; };
+		04B986512C7312D600E20942 /* NotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B7D2C7088E600D61CEF /* NotificationView.swift */; };
+		04B986522C7312D600E20942 /* Assembler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5AF12C7088E600D61CEF /* Assembler.swift */; };
+		04B986532C7312D600E20942 /* PlaceShowcaseAndReviewUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B2A2C7088E600D61CEF /* PlaceShowcaseAndReviewUseCase.swift */; };
+		04B986542C7312D600E20942 /* SocketManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5C442C719FFB00D61CEF /* SocketManager.swift */; };
+		04B986552C7312D600E20942 /* CustomPageControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B6D2C7088E600D61CEF /* CustomPageControl.swift */; };
+		04B986562C7312D600E20942 /* CommunityRecruitingContentMakingRequestEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B372C7088E600D61CEF /* CommunityRecruitingContentMakingRequestEntity.swift */; };
+		04B986572C7312D600E20942 /* RoundedTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B702C7088E600D61CEF /* RoundedTextField.swift */; };
+		04B986582C7312D600E20942 /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B5D2C7088E600D61CEF /* ChatView.swift */; };
+		04B986592C7312D600E20942 /* PhotosUploaderModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5BA62C7088E600D61CEF /* PhotosUploaderModifier.swift */; };
+		04B9865A2C7312D600E20942 /* Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5C422C719FF300D61CEF /* Endpoint.swift */; };
+		04B9865B2C7312D600E20942 /* DefaultCheckBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B6E2C7088E600D61CEF /* DefaultCheckBox.swift */; };
+		04B9865C2C7312D600E20942 /* InfrastructureAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5AEE2C7088E600D61CEF /* InfrastructureAssembly.swift */; };
+		04B9865D2C7312D600E20942 /* PlacesRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B022C7088E600D61CEF /* PlacesRepository.swift */; };
+		04B9865E2C7312D600E20942 /* UserAuthenticationResponseEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BF39432C71F68200A5AEAC /* UserAuthenticationResponseEntity.swift */; };
+		04B9865F2C7312D600E20942 /* FlatButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B6F2C7088E600D61CEF /* FlatButton.swift */; };
+		04B986602C7312D600E20942 /* RegistrationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5BA92C7088E600D61CEF /* RegistrationViewModel.swift */; };
+		04B986612C7312D600E20942 /* RelatedPlaceListSearchResponseEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B412C7088E600D61CEF /* RelatedPlaceListSearchResponseEntity.swift */; };
+		04B986622C7312D600E20942 /* NavigationModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B642C7088E600D61CEF /* NavigationModifier.swift */; };
+		04B986632C7312D600E20942 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B0C2C7088E600D61CEF /* Category.swift */; };
+		04B986642C7312D600E20942 /* UserRegistrationUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B2D2C7088E600D61CEF /* UserRegistrationUseCase.swift */; };
+		04B986652C7312D600E20942 /* MapArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B7C2C7088E600D61CEF /* MapArea.swift */; };
+		04B986662C7312D600E20942 /* PresentationAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5AEF2C7088E600D61CEF /* PresentationAssembly.swift */; };
+		04B986672C7312D600E20942 /* UserBusinessUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B2C2C7088E600D61CEF /* UserBusinessUseCase.swift */; };
+		04B986682C7312D600E20942 /* RelatedParticipationRequestListResponseEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B402C7088E600D61CEF /* RelatedParticipationRequestListResponseEntity.swift */; };
+		04B986692C7312D600E20942 /* TokenStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B572C7088E600D61CEF /* TokenStorage.swift */; };
+		04B9866A2C7312D600E20942 /* ChatRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5AFC2C7088E600D61CEF /* ChatRepository.swift */; };
+		04B9866B2C7312D600E20942 /* RequiredTermView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5BAB2C7088E600D61CEF /* RequiredTermView.swift */; };
+		04B9866C2C7312D600E20942 /* UserProfileUpdateRequestEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B442C7088E600D61CEF /* UserProfileUpdateRequestEntity.swift */; };
+		04B9866D2C7312D600E20942 /* PlaceInformationDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B802C7088E600D61CEF /* PlaceInformationDetailView.swift */; };
+		04B9866E2C7312D600E20942 /* Assembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5AEB2C7088E600D61CEF /* Assembly.swift */; };
+		04B9866F2C7312D600E20942 /* UserCredential.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B202C7088E600D61CEF /* UserCredential.swift */; };
+		04B986702C7312D600E20942 /* BirthPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5BA22C7088E600D61CEF /* BirthPicker.swift */; };
+		04B986712C7312D600E20942 /* StrokedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B732C7088E600D61CEF /* StrokedButton.swift */; };
+		04B986722C7312D600E20942 /* DefaultMultipleSelectionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B9D2C7088E600D61CEF /* DefaultMultipleSelectionButton.swift */; };
+		04B986732C7312D600E20942 /* Report.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B1C2C7088E600D61CEF /* Report.swift */; };
+		04B986742C7312D600E20942 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B862C7088E600D61CEF /* LoginViewModel.swift */; };
+		04B986752C7312D600E20942 /* DefaultSingleSelectionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B9E2C7088E600D61CEF /* DefaultSingleSelectionButton.swift */; };
+		04B986762C7312D600E20942 /* SingleSelectionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B9B2C7088E600D61CEF /* SingleSelectionButton.swift */; };
+		04B986772C7312D600E20942 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B1F2C7088E600D61CEF /* User.swift */; };
+		04B986782C7312D600E20942 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B522C7088E600D61CEF /* NetworkService.swift */; };
+		04B986792C7312D600E20942 /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B4B2C7088E600D61CEF /* LocationService.swift */; };
+		04B9867A2C7312D600E20942 /* Badge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B6B2C7088E600D61CEF /* Badge.swift */; };
+		04B9867B2C7312D600E20942 /* URLSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B4F2C7088E600D61CEF /* URLSession.swift */; };
+		04B9867C2C7312D600E20942 /* ConfirmationDialogType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B932C7088E600D61CEF /* ConfirmationDialogType.swift */; };
+		04B9867D2C7312D600E20942 /* CommunityRecruitingContentSearchResponseEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B382C7088E600D61CEF /* CommunityRecruitingContentSearchResponseEntity.swift */; };
+		04B9867E2C7312D600E20942 /* TextFieldModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B662C7088E600D61CEF /* TextFieldModifier.swift */; };
+		04B9867F2C7312D600E20942 /* Job.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B142C7088E600D61CEF /* Job.swift */; };
+		04B986802C7312D600E20942 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B7B2C7088E600D61CEF /* HomeView.swift */; };
+		04B986812C7312D600E20942 /* PlaceInformationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B812C7088E600D61CEF /* PlaceInformationView.swift */; };
+		04B986822C7312D600E20942 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B882C7088E600D61CEF /* ContentView.swift */; };
+		04B986832C7312D600E20942 /* UserRegistrationRequestEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B452C7088E600D61CEF /* UserRegistrationRequestEntity.swift */; };
+		04B986842C7312D600E20942 /* ModakbulApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5AFA2C7088E600D61CEF /* ModakbulApp.swift */; };
+		04B986852C7312D600E20942 /* RegisterField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B1B2C7088E600D61CEF /* RegisterField.swift */; };
+		04B986862C7312D600E20942 /* JSONEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B4E2C7088E600D61CEF /* JSONEncoder.swift */; };
+		04B986872C7312D600E20942 /* PowerSocketState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B192C7088E600D61CEF /* PowerSocketState.swift */; };
+		04B986882C7312D600E20942 /* PhotosUploaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5BA42C7088E600D61CEF /* PhotosUploaderView.swift */; };
+		04B986892C7312D600E20942 /* ChatRoomListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B5C2C7088E600D61CEF /* ChatRoomListView.swift */; };
+		04B9868A2C7312D600E20942 /* PlaceSortCriteria.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BF39412C71F16000A5AEAC /* PlaceSortCriteria.swift */; };
+		04B9868B2C7312D600E20942 /* ConfirmationContentPresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B622C7088E600D61CEF /* ConfirmationContentPresentable.swift */; };
+		04B9868C2C7312D600E20942 /* PlaceInformationDetailMakingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B782C7088E600D61CEF /* PlaceInformationDetailMakingViewModel.swift */; };
+		04B9868D2C7312D600E20942 /* SocialLoginRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B042C7088E600D61CEF /* SocialLoginRepository.swift */; };
+		04B9868E2C7312D600E20942 /* GroupSeatingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B132C7088E600D61CEF /* GroupSeatingState.swift */; };
+		04B9868F2C7312D600E20942 /* UserProfileResponseEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B432C7088E600D61CEF /* UserProfileResponseEntity.swift */; };
+		04B986902C7312D600E20942 /* LocalMapService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B472C7088E600D61CEF /* LocalMapService.swift */; };
+		04B986912C7312D600E20942 /* DependencyContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5AF22C7088E600D61CEF /* DependencyContainer.swift */; };
+		04B986922C7312D600E20942 /* DayOfWeek.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B112C7088E600D61CEF /* DayOfWeek.swift */; };
+		04B986932C7312D600E20942 /* JSONDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B4D2C7088E600D61CEF /* JSONDecoder.swift */; };
+		04B986942C7312D600E20942 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B852C7088E600D61CEF /* LoginView.swift */; };
+		04B986952C7312D600E20942 /* NicknameOverlappedResponseEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B3A2C7088E600D61CEF /* NicknameOverlappedResponseEntity.swift */; };
+		04B986962C7312D600E20942 /* ChatService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B332C7088E600D61CEF /* ChatService.swift */; };
+		04B986972C7312D600E20942 /* Community.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B0F2C7088E600D61CEF /* Community.swift */; };
+		04B986982C7312D600E20942 /* AuthenticationProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B0A2C7088E600D61CEF /* AuthenticationProvider.swift */; };
+		04B986992C7312D600E20942 /* ParticipationRequestListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B772C7088E600D61CEF /* ParticipationRequestListViewModel.swift */; };
+		04B9869A2C7312D600E20942 /* PlaceInformationDetailMakingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B7F2C7088E600D61CEF /* PlaceInformationDetailMakingView.swift */; };
+		04B9869B2C7312D600E20942 /* PlaceInformationDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B792C7088E600D61CEF /* PlaceInformationDetailViewModel.swift */; };
+		04B9869C2C7312D600E20942 /* RelatedCommunityRecruitingContentListResponseEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B3F2C7088E600D61CEF /* RelatedCommunityRecruitingContentListResponseEntity.swift */; };
+		04B9869D2C7312D600E20942 /* ButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B612C7088E600D61CEF /* ButtonStyle.swift */; };
+		04B9869E2C7312D600E20942 /* OpeningHour.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B172C7088E600D61CEF /* OpeningHour.swift */; };
+		04B9869F2C7312D600E20942 /* PlaceShowcaseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B8A2C7088E600D61CEF /* PlaceShowcaseViewModel.swift */; };
+		04B986A02C7312D600E20942 /* DomainAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5AED2C7088E600D61CEF /* DomainAssembly.swift */; };
+		04B986A12C7312D600E20942 /* AsyncImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047B5B692C7088E600D61CEF /* AsyncImageView.swift */; };
+		04B986A32C7312D600E20942 /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = 04B986132C7312D600E20942 /* Moya */; };
+		04B986A42C7312D600E20942 /* KakaoSDKCommon in Frameworks */ = {isa = PBXBuildFile; productRef = 04B986112C7312D600E20942 /* KakaoSDKCommon */; };
+		04B986A52C7312D600E20942 /* KakaoSDKAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 04B9860F2C7312D600E20942 /* KakaoSDKAuth */; };
+		04B986A62C7312D600E20942 /* KakaoSDKUser in Frameworks */ = {isa = PBXBuildFile; productRef = 04B986122C7312D600E20942 /* KakaoSDKUser */; };
+		04B986A82C7312D600E20942 /* AppSecret.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 04B390C42C7308630014D3D7 /* AppSecret.xcconfig */; };
+		04B986A92C7312D600E20942 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 047B5AF82C7088E600D61CEF /* Assets.xcassets */; };
+		04B986AA2C7312D600E20942 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 047B5AF62C7088E600D61CEF /* Preview Assets.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -296,19 +297,22 @@
 		047B5C422C719FF300D61CEF /* Endpoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Endpoint.swift; sourceTree = "<group>"; };
 		047B5C442C719FFB00D61CEF /* SocketManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketManager.swift; sourceTree = "<group>"; };
 		047B5C452C719FFC00D61CEF /* SocketEndpoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketEndpoint.swift; sourceTree = "<group>"; };
+		04B390C22C7308170014D3D7 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		04B390C42C7308630014D3D7 /* AppSecret.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = AppSecret.xcconfig; sourceTree = "<group>"; };
+		04B986AE2C7312D600E20942 /* Modakbul.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = Modakbul.app; path = "/Users/swain/Desktop/Project/Modakbul-iOS/build/Debug-iphoneos/Modakbul.app"; sourceTree = "<absolute>"; };
 		04BF39412C71F16000A5AEAC /* PlaceSortCriteria.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceSortCriteria.swift; sourceTree = "<group>"; };
 		04BF39432C71F68200A5AEAC /* UserAuthenticationResponseEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAuthenticationResponseEntity.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		9C81221B2BF722E4007DC215 /* Frameworks */ = {
+		04B986A22C7312D600E20942 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				047B5C412C719DC000D61CEF /* Moya in Frameworks */,
-				DFE0AFD92C103FA800EC078B /* KakaoSDKCommon in Frameworks */,
-				DFE0AFD72C103FA800EC078B /* KakaoSDKAuth in Frameworks */,
-				DFE0AFDB2C103FA800EC078B /* KakaoSDKUser in Frameworks */,
+				04B986A32C7312D600E20942 /* Moya in Frameworks */,
+				04B986A42C7312D600E20942 /* KakaoSDKCommon in Frameworks */,
+				04B986A52C7312D600E20942 /* KakaoSDKAuth in Frameworks */,
+				04B986A62C7312D600E20942 /* KakaoSDKUser in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -606,7 +610,6 @@
 		047B5B562C7088E600D61CEF /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				DF5449A82C7203A9006FE7F4 /* AppSecret.xcconfig */,
 				047B5B462C7088E600D61CEF /* Entities */,
 				047B5B482C7088E600D61CEF /* LocalMap */,
 				047B5B4C2C7088E600D61CEF /* Location */,
@@ -635,6 +638,7 @@
 		047B5B5B2C7088E600D61CEF /* Infrastructure */ = {
 			isa = PBXGroup;
 			children = (
+				04B390C42C7308630014D3D7 /* AppSecret.xcconfig */,
 				047B5B592C7088E600D61CEF /* Storages */,
 				047B5B562C7088E600D61CEF /* Services */,
 			);
@@ -872,7 +876,7 @@
 		047B5BAF2C7088E600D61CEF /* Modakbul */ = {
 			isa = PBXGroup;
 			children = (
-				DF5449AC2C7204F6006FE7F4 /* Info.plist */,
+				04B390C22C7308170014D3D7 /* Info.plist */,
 				047B5AFB2C7088E600D61CEF /* Application */,
 				047B5BAD2C7088E600D61CEF /* Presentation */,
 				047B5B302C7088E600D61CEF /* Domain */,
@@ -892,13 +896,13 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		9C81221D2BF722E4007DC215 /* Modakbul */ = {
+		04B9860E2C7312D600E20942 /* Modakbul */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 9C81222C2BF722E6007DC215 /* Build configuration list for PBXNativeTarget "Modakbul" */;
+			buildConfigurationList = 04B986AB2C7312D600E20942 /* Build configuration list for PBXNativeTarget "Modakbul" */;
 			buildPhases = (
-				9C81221A2BF722E4007DC215 /* Sources */,
-				9C81221B2BF722E4007DC215 /* Frameworks */,
-				9C81221C2BF722E4007DC215 /* Resources */,
+				04B986152C7312D600E20942 /* Sources */,
+				04B986A22C7312D600E20942 /* Frameworks */,
+				04B986A72C7312D600E20942 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -906,12 +910,13 @@
 			);
 			name = Modakbul;
 			packageProductDependencies = (
-				DFE0AFD62C103FA800EC078B /* KakaoSDKAuth */,
-				DFE0AFD82C103FA800EC078B /* KakaoSDKCommon */,
-				DFE0AFDA2C103FA800EC078B /* KakaoSDKUser */,
-				DF0424392C6495D6008C2B6D /* Moya */,
+				04B9860F2C7312D600E20942 /* KakaoSDKAuth */,
+				04B986112C7312D600E20942 /* KakaoSDKCommon */,
+				04B986122C7312D600E20942 /* KakaoSDKUser */,
+				04B986132C7312D600E20942 /* Moya */,
 			);
 			productName = modakbul;
+			productReference = 04B986AE2C7312D600E20942 /* Modakbul.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -923,11 +928,6 @@
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1520;
 				LastUpgradeCheck = 1520;
-				TargetAttributes = {
-					9C81221D2BF722E4007DC215 = {
-						CreatedOnToolsVersion = 15.2;
-					};
-				};
 			};
 			buildConfigurationList = 9C8122192BF722E4007DC215 /* Build configuration list for PBXProject "Modakbul" */;
 			compatibilityVersion = "Xcode 14.0";
@@ -947,174 +947,253 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				9C81221D2BF722E4007DC215 /* Modakbul */,
+				04B9860E2C7312D600E20942 /* Modakbul */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		9C81221C2BF722E4007DC215 /* Resources */ = {
+		04B986A72C7312D600E20942 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				047B5BBB2C7088E600D61CEF /* Assets.xcassets in Resources */,
-				047B5BBA2C7088E600D61CEF /* Preview Assets.xcassets in Resources */,
+				04B986A82C7312D600E20942 /* AppSecret.xcconfig in Resources */,
+				04B986A92C7312D600E20942 /* Assets.xcassets in Resources */,
+				04B986AA2C7312D600E20942 /* Preview Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		9C81221A2BF722E4007DC215 /* Sources */ = {
+		04B986152C7312D600E20942 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				047B5BDD2C7088E600D61CEF /* NotificationUseCase.swift in Sources */,
-				047B5BF02C7088E600D61CEF /* TokensEntity.swift in Sources */,
-				047B5BE92C7088E600D61CEF /* OpponentUserProfileResponseEntity.swift in Sources */,
-				047B5C162C7088E600D61CEF /* HomeViewModel.swift in Sources */,
-				047B5C302C7088E600D61CEF /* MultipleSelectionButton.swift in Sources */,
-				047B5C1E2C7088E600D61CEF /* ParticipationRequestListView.swift in Sources */,
-				047B5BC62C7088E600D61CEF /* ChatMessage.swift in Sources */,
-				047B5C292C7088E600D61CEF /* AlertType.swift in Sources */,
-				047B5C032C7088E600D61CEF /* AlertModifier.swift in Sources */,
-				047B5C142C7088E600D61CEF /* SignInKakaoButton.swift in Sources */,
-				047B5BC22C7088E600D61CEF /* Selectable.swift in Sources */,
-				047B5BD72C7088E600D61CEF /* SuggestedResult.swift in Sources */,
-				047B5BE42C7088E600D61CEF /* CommunityRecruitingContentListResponseEntity.swift in Sources */,
-				047B5C2B2C7088E600D61CEF /* ConfirmationContent.swift in Sources */,
-				047B5C132C7088E600D61CEF /* SearchBar.swift in Sources */,
-				047B5C272C7088E600D61CEF /* MyView.swift in Sources */,
-				047B5C222C7088E600D61CEF /* PlacesListArea.swift in Sources */,
-				047B5BC92C7088E600D61CEF /* DateFormat.swift in Sources */,
-				047B5BB92C7088E600D61CEF /* DependencyResolver.swift in Sources */,
-				047B5BF52C7088E600D61CEF /* CLLocationManager.swift in Sources */,
-				047B5C2A2C7088E600D61CEF /* ConfirmationAction.swift in Sources */,
-				047B5C282C7088E600D61CEF /* PlaceShowcaseView.swift in Sources */,
-				047B5BDB2C7088E600D61CEF /* CommunityUseCase.swift in Sources */,
-				047B5BC72C7088E600D61CEF /* ChatRoomConfiguration.swift in Sources */,
-				047B5C0C2C7088E600D61CEF /* BackButton.swift in Sources */,
-				047B5BDC2C7088E600D61CEF /* LocalMapUseCase.swift in Sources */,
-				047B5C0E2C7088E600D61CEF /* CapsuleTag.swift in Sources */,
-				047B5C2D2C7088E600D61CEF /* Route.swift in Sources */,
-				047B5BC42C7088E600D61CEF /* BlockedUser.swift in Sources */,
-				047B5BCE2C7088E600D61CEF /* Location.swift in Sources */,
-				047B5BB82C7088E600D61CEF /* DependencyRegister.swift in Sources */,
-				047B5C2E2C7088E600D61CEF /* RouterView.swift in Sources */,
-				047B5C0A2C7088E600D61CEF /* View+Extension.swift in Sources */,
-				047B5C3B2C7088E600D61CEF /* RegistrationViewValue.swift in Sources */,
-				047B5BB22C7088E600D61CEF /* DataAssembly.swift in Sources */,
-				047B5C022C7088E600D61CEF /* ReportView.swift in Sources */,
-				047B5BCB2C7088E600D61CEF /* Gender.swift in Sources */,
-				047B5C362C7088E600D61CEF /* NicknameTextField.swift in Sources */,
-				047B5BBE2C7088E600D61CEF /* Bundle+Extension.swift in Sources */,
-				047B5C392C7088E600D61CEF /* RegistrationView.swift in Sources */,
-				047B5C062C7088E600D61CEF /* ConfirmationDialogModifier.swift in Sources */,
-				047B5BEA2C7088E600D61CEF /* ParticipationRequestListResponseEntity.swift in Sources */,
-				047B5BD12C7088E600D61CEF /* Place.swift in Sources */,
-				047B5C2F2C7088E600D61CEF /* PreviewHelper.swift in Sources */,
-				047B5BEB2C7088E600D61CEF /* PlaceReviewRequestEntity.swift in Sources */,
-				047B5C342C7088E600D61CEF /* GenderSelectionButton.swift in Sources */,
-				047B5BB02C7088E600D61CEF /* AppRouter.swift in Sources */,
-				047B5BE72C7088E600D61CEF /* DefaultResponseEntity.swift in Sources */,
-				047B5BC12C7088E600D61CEF /* UserManagementRepository.swift in Sources */,
-				047B5C172C7088E600D61CEF /* NotificationViewModel.swift in Sources */,
-				047B5C3F2C70A98100D61CEF /* ParticipationRequest.swift in Sources */,
-				047B5BEC2C7088E600D61CEF /* PlacesSearchResponseEntity.swift in Sources */,
-				047B5BE32C7088E600D61CEF /* ChatRoomCreateRequestEntity.swift in Sources */,
-				047B5C082C7088E600D61CEF /* TabItemModifier.swift in Sources */,
-				047B5BDA2C7088E600D61CEF /* ChatUseCase.swift in Sources */,
-				047B5C472C719FFC00D61CEF /* SocketEndpoint.swift in Sources */,
-				047B5BD32C7088E600D61CEF /* PushNotification.swift in Sources */,
-				047B5BCF2C7088E600D61CEF /* NoiseLevel.swift in Sources */,
-				047B5BD62C7088E600D61CEF /* RequiredTerm.swift in Sources */,
-				047B5C1D2C7088E600D61CEF /* NotificationView.swift in Sources */,
-				047B5BB62C7088E600D61CEF /* Assembler.swift in Sources */,
-				047B5BDE2C7088E600D61CEF /* PlaceShowcaseAndReviewUseCase.swift in Sources */,
-				047B5C462C719FFC00D61CEF /* SocketManager.swift in Sources */,
-				047B5C0F2C7088E600D61CEF /* CustomPageControl.swift in Sources */,
-				047B5BE52C7088E600D61CEF /* CommunityRecruitingContentMakingRequestEntity.swift in Sources */,
-				047B5C122C7088E600D61CEF /* RoundedTextField.swift in Sources */,
-				047B5C012C7088E600D61CEF /* ChatView.swift in Sources */,
-				047B5C382C7088E600D61CEF /* PhotosUploaderModifier.swift in Sources */,
-				047B5C432C719FF300D61CEF /* Endpoint.swift in Sources */,
-				047B5C102C7088E600D61CEF /* DefaultCheckBox.swift in Sources */,
-				047B5BB42C7088E600D61CEF /* InfrastructureAssembly.swift in Sources */,
-				047B5BBF2C7088E600D61CEF /* PlacesRepository.swift in Sources */,
-				04BF39442C71F68200A5AEAC /* UserAuthenticationResponseEntity.swift in Sources */,
-				047B5C112C7088E600D61CEF /* FlatButton.swift in Sources */,
-				047B5C3A2C7088E600D61CEF /* RegistrationViewModel.swift in Sources */,
-				047B5BEF2C7088E600D61CEF /* RelatedPlaceListSearchResponseEntity.swift in Sources */,
-				047B5C072C7088E600D61CEF /* NavigationModifier.swift in Sources */,
-				047B5BC52C7088E600D61CEF /* Category.swift in Sources */,
-				047B5BE02C7088E600D61CEF /* UserRegistrationUseCase.swift in Sources */,
-				047B5C1C2C7088E600D61CEF /* MapArea.swift in Sources */,
-				047B5BB52C7088E600D61CEF /* PresentationAssembly.swift in Sources */,
-				047B5BDF2C7088E600D61CEF /* UserBusinessUseCase.swift in Sources */,
-				047B5BEE2C7088E600D61CEF /* RelatedParticipationRequestListResponseEntity.swift in Sources */,
-				047B5BFE2C7088E600D61CEF /* TokenStorage.swift in Sources */,
-				047B5BBD2C7088E600D61CEF /* ChatRepository.swift in Sources */,
-				047B5C3C2C7088E600D61CEF /* RequiredTermView.swift in Sources */,
-				047B5BF22C7088E600D61CEF /* UserProfileUpdateRequestEntity.swift in Sources */,
-				047B5C202C7088E600D61CEF /* PlaceInformationDetailView.swift in Sources */,
-				047B5BB12C7088E600D61CEF /* Assembly.swift in Sources */,
-				047B5BD92C7088E600D61CEF /* UserCredential.swift in Sources */,
-				047B5C352C7088E600D61CEF /* BirthPicker.swift in Sources */,
-				047B5C152C7088E600D61CEF /* StrokedButton.swift in Sources */,
-				047B5C322C7088E600D61CEF /* DefaultMultipleSelectionButton.swift in Sources */,
-				047B5BD52C7088E600D61CEF /* Report.swift in Sources */,
-				047B5C242C7088E600D61CEF /* LoginViewModel.swift in Sources */,
-				047B5C332C7088E600D61CEF /* DefaultSingleSelectionButton.swift in Sources */,
-				047B5C312C7088E600D61CEF /* SingleSelectionButton.swift in Sources */,
-				047B5BD82C7088E600D61CEF /* User.swift in Sources */,
-				047B5BFB2C7088E600D61CEF /* NetworkService.swift in Sources */,
-				047B5BF62C7088E600D61CEF /* LocationService.swift in Sources */,
-				047B5C0D2C7088E600D61CEF /* Badge.swift in Sources */,
-				047B5BF92C7088E600D61CEF /* URLSession.swift in Sources */,
-				047B5C2C2C7088E600D61CEF /* ConfirmationDialogType.swift in Sources */,
-				047B5BE62C7088E600D61CEF /* CommunityRecruitingContentSearchResponseEntity.swift in Sources */,
-				047B5C092C7088E600D61CEF /* TextFieldModifier.swift in Sources */,
-				047B5BCD2C7088E600D61CEF /* Job.swift in Sources */,
-				047B5C1B2C7088E600D61CEF /* HomeView.swift in Sources */,
-				047B5C212C7088E600D61CEF /* PlaceInformationView.swift in Sources */,
-				047B5C252C7088E600D61CEF /* ContentView.swift in Sources */,
-				047B5BF32C7088E600D61CEF /* UserRegistrationRequestEntity.swift in Sources */,
-				047B5BBC2C7088E600D61CEF /* ModakbulApp.swift in Sources */,
-				047B5BD42C7088E600D61CEF /* RegisterField.swift in Sources */,
-				047B5BF82C7088E600D61CEF /* JSONEncoder.swift in Sources */,
-				047B5BD22C7088E600D61CEF /* PowerSocketState.swift in Sources */,
-				047B5C372C7088E600D61CEF /* PhotosUploaderView.swift in Sources */,
-				047B5C002C7088E600D61CEF /* ChatRoomListView.swift in Sources */,
-				04BF39422C71F16000A5AEAC /* PlaceSortCriteria.swift in Sources */,
-				047B5C052C7088E600D61CEF /* ConfirmationContentPresentable.swift in Sources */,
-				047B5C192C7088E600D61CEF /* PlaceInformationDetailMakingViewModel.swift in Sources */,
-				047B5BC02C7088E600D61CEF /* SocialLoginRepository.swift in Sources */,
-				047B5BCC2C7088E600D61CEF /* GroupSeatingState.swift in Sources */,
-				047B5BF12C7088E600D61CEF /* UserProfileResponseEntity.swift in Sources */,
-				047B5BF42C7088E600D61CEF /* LocalMapService.swift in Sources */,
-				047B5BB72C7088E600D61CEF /* DependencyContainer.swift in Sources */,
-				047B5BCA2C7088E600D61CEF /* DayOfWeek.swift in Sources */,
-				047B5BF72C7088E600D61CEF /* JSONDecoder.swift in Sources */,
-				047B5C232C7088E600D61CEF /* LoginView.swift in Sources */,
-				047B5BE82C7088E600D61CEF /* NicknameOverlappedResponseEntity.swift in Sources */,
-				047B5BE22C7088E600D61CEF /* ChatService.swift in Sources */,
-				047B5BC82C7088E600D61CEF /* Community.swift in Sources */,
-				047B5BC32C7088E600D61CEF /* AuthenticationProvider.swift in Sources */,
-				047B5C182C7088E600D61CEF /* ParticipationRequestListViewModel.swift in Sources */,
-				047B5C1F2C7088E600D61CEF /* PlaceInformationDetailMakingView.swift in Sources */,
-				047B5C1A2C7088E600D61CEF /* PlaceInformationDetailViewModel.swift in Sources */,
-				047B5BED2C7088E600D61CEF /* RelatedCommunityRecruitingContentListResponseEntity.swift in Sources */,
-				047B5C042C7088E600D61CEF /* ButtonStyle.swift in Sources */,
-				047B5BD02C7088E600D61CEF /* OpeningHour.swift in Sources */,
-				047B5C262C7088E600D61CEF /* PlaceShowcaseViewModel.swift in Sources */,
-				047B5BB32C7088E600D61CEF /* DomainAssembly.swift in Sources */,
-				047B5C0B2C7088E600D61CEF /* AsyncImageView.swift in Sources */,
+				04B986162C7312D600E20942 /* NotificationUseCase.swift in Sources */,
+				04B986172C7312D600E20942 /* TokensEntity.swift in Sources */,
+				04B986182C7312D600E20942 /* OpponentUserProfileResponseEntity.swift in Sources */,
+				04B986192C7312D600E20942 /* HomeViewModel.swift in Sources */,
+				04B9861A2C7312D600E20942 /* MultipleSelectionButton.swift in Sources */,
+				04B9861B2C7312D600E20942 /* ParticipationRequestListView.swift in Sources */,
+				04B9861C2C7312D600E20942 /* ChatMessage.swift in Sources */,
+				04B9861D2C7312D600E20942 /* AlertType.swift in Sources */,
+				04B9861E2C7312D600E20942 /* AlertModifier.swift in Sources */,
+				04B9861F2C7312D600E20942 /* SignInKakaoButton.swift in Sources */,
+				04B986202C7312D600E20942 /* Selectable.swift in Sources */,
+				04B986212C7312D600E20942 /* SuggestedResult.swift in Sources */,
+				04B986222C7312D600E20942 /* CommunityRecruitingContentListResponseEntity.swift in Sources */,
+				04B986232C7312D600E20942 /* ConfirmationContent.swift in Sources */,
+				04B986242C7312D600E20942 /* SearchBar.swift in Sources */,
+				04B986252C7312D600E20942 /* MyView.swift in Sources */,
+				04B986262C7312D600E20942 /* PlacesListArea.swift in Sources */,
+				04B986272C7312D600E20942 /* DateFormat.swift in Sources */,
+				04B986282C7312D600E20942 /* DependencyResolver.swift in Sources */,
+				04B986292C7312D600E20942 /* CLLocationManager.swift in Sources */,
+				04B9862A2C7312D600E20942 /* ConfirmationAction.swift in Sources */,
+				04B9862B2C7312D600E20942 /* PlaceShowcaseView.swift in Sources */,
+				04B9862C2C7312D600E20942 /* CommunityUseCase.swift in Sources */,
+				04B9862D2C7312D600E20942 /* ChatRoomConfiguration.swift in Sources */,
+				04B9862E2C7312D600E20942 /* BackButton.swift in Sources */,
+				04B9862F2C7312D600E20942 /* LocalMapUseCase.swift in Sources */,
+				04B986302C7312D600E20942 /* CapsuleTag.swift in Sources */,
+				04B986312C7312D600E20942 /* Route.swift in Sources */,
+				04B986322C7312D600E20942 /* BlockedUser.swift in Sources */,
+				04B986332C7312D600E20942 /* Location.swift in Sources */,
+				04B986342C7312D600E20942 /* DependencyRegister.swift in Sources */,
+				04B986352C7312D600E20942 /* RouterView.swift in Sources */,
+				04B986362C7312D600E20942 /* View+Extension.swift in Sources */,
+				04B986372C7312D600E20942 /* RegistrationViewValue.swift in Sources */,
+				04B986382C7312D600E20942 /* DataAssembly.swift in Sources */,
+				04B986392C7312D600E20942 /* ReportView.swift in Sources */,
+				04B9863A2C7312D600E20942 /* Gender.swift in Sources */,
+				04B9863B2C7312D600E20942 /* NicknameTextField.swift in Sources */,
+				04B9863C2C7312D600E20942 /* Bundle+Extension.swift in Sources */,
+				04B9863D2C7312D600E20942 /* RegistrationView.swift in Sources */,
+				04B9863E2C7312D600E20942 /* ConfirmationDialogModifier.swift in Sources */,
+				04B9863F2C7312D600E20942 /* ParticipationRequestListResponseEntity.swift in Sources */,
+				04B986402C7312D600E20942 /* Place.swift in Sources */,
+				04B986412C7312D600E20942 /* PreviewHelper.swift in Sources */,
+				04B986422C7312D600E20942 /* PlaceReviewRequestEntity.swift in Sources */,
+				04B986432C7312D600E20942 /* GenderSelectionButton.swift in Sources */,
+				04B986442C7312D600E20942 /* AppRouter.swift in Sources */,
+				04B986452C7312D600E20942 /* DefaultResponseEntity.swift in Sources */,
+				04B986462C7312D600E20942 /* UserManagementRepository.swift in Sources */,
+				04B986472C7312D600E20942 /* NotificationViewModel.swift in Sources */,
+				04B986482C7312D600E20942 /* ParticipationRequest.swift in Sources */,
+				04B986492C7312D600E20942 /* PlacesSearchResponseEntity.swift in Sources */,
+				04B9864A2C7312D600E20942 /* ChatRoomCreateRequestEntity.swift in Sources */,
+				04B9864B2C7312D600E20942 /* TabItemModifier.swift in Sources */,
+				04B9864C2C7312D600E20942 /* ChatUseCase.swift in Sources */,
+				04B9864D2C7312D600E20942 /* SocketEndpoint.swift in Sources */,
+				04B9864E2C7312D600E20942 /* PushNotification.swift in Sources */,
+				04B9864F2C7312D600E20942 /* NoiseLevel.swift in Sources */,
+				04B986502C7312D600E20942 /* RequiredTerm.swift in Sources */,
+				04B986512C7312D600E20942 /* NotificationView.swift in Sources */,
+				04B986522C7312D600E20942 /* Assembler.swift in Sources */,
+				04B986532C7312D600E20942 /* PlaceShowcaseAndReviewUseCase.swift in Sources */,
+				04B986542C7312D600E20942 /* SocketManager.swift in Sources */,
+				04B986552C7312D600E20942 /* CustomPageControl.swift in Sources */,
+				04B986562C7312D600E20942 /* CommunityRecruitingContentMakingRequestEntity.swift in Sources */,
+				04B986572C7312D600E20942 /* RoundedTextField.swift in Sources */,
+				04B986582C7312D600E20942 /* ChatView.swift in Sources */,
+				04B986592C7312D600E20942 /* PhotosUploaderModifier.swift in Sources */,
+				04B9865A2C7312D600E20942 /* Endpoint.swift in Sources */,
+				04B9865B2C7312D600E20942 /* DefaultCheckBox.swift in Sources */,
+				04B9865C2C7312D600E20942 /* InfrastructureAssembly.swift in Sources */,
+				04B9865D2C7312D600E20942 /* PlacesRepository.swift in Sources */,
+				04B9865E2C7312D600E20942 /* UserAuthenticationResponseEntity.swift in Sources */,
+				04B9865F2C7312D600E20942 /* FlatButton.swift in Sources */,
+				04B986602C7312D600E20942 /* RegistrationViewModel.swift in Sources */,
+				04B986612C7312D600E20942 /* RelatedPlaceListSearchResponseEntity.swift in Sources */,
+				04B986622C7312D600E20942 /* NavigationModifier.swift in Sources */,
+				04B986632C7312D600E20942 /* Category.swift in Sources */,
+				04B986642C7312D600E20942 /* UserRegistrationUseCase.swift in Sources */,
+				04B986652C7312D600E20942 /* MapArea.swift in Sources */,
+				04B986662C7312D600E20942 /* PresentationAssembly.swift in Sources */,
+				04B986672C7312D600E20942 /* UserBusinessUseCase.swift in Sources */,
+				04B986682C7312D600E20942 /* RelatedParticipationRequestListResponseEntity.swift in Sources */,
+				04B986692C7312D600E20942 /* TokenStorage.swift in Sources */,
+				04B9866A2C7312D600E20942 /* ChatRepository.swift in Sources */,
+				04B9866B2C7312D600E20942 /* RequiredTermView.swift in Sources */,
+				04B9866C2C7312D600E20942 /* UserProfileUpdateRequestEntity.swift in Sources */,
+				04B9866D2C7312D600E20942 /* PlaceInformationDetailView.swift in Sources */,
+				04B9866E2C7312D600E20942 /* Assembly.swift in Sources */,
+				04B9866F2C7312D600E20942 /* UserCredential.swift in Sources */,
+				04B986702C7312D600E20942 /* BirthPicker.swift in Sources */,
+				04B986712C7312D600E20942 /* StrokedButton.swift in Sources */,
+				04B986722C7312D600E20942 /* DefaultMultipleSelectionButton.swift in Sources */,
+				04B986732C7312D600E20942 /* Report.swift in Sources */,
+				04B986742C7312D600E20942 /* LoginViewModel.swift in Sources */,
+				04B986752C7312D600E20942 /* DefaultSingleSelectionButton.swift in Sources */,
+				04B986762C7312D600E20942 /* SingleSelectionButton.swift in Sources */,
+				04B986772C7312D600E20942 /* User.swift in Sources */,
+				04B986782C7312D600E20942 /* NetworkService.swift in Sources */,
+				04B986792C7312D600E20942 /* LocationService.swift in Sources */,
+				04B9867A2C7312D600E20942 /* Badge.swift in Sources */,
+				04B9867B2C7312D600E20942 /* URLSession.swift in Sources */,
+				04B9867C2C7312D600E20942 /* ConfirmationDialogType.swift in Sources */,
+				04B9867D2C7312D600E20942 /* CommunityRecruitingContentSearchResponseEntity.swift in Sources */,
+				04B9867E2C7312D600E20942 /* TextFieldModifier.swift in Sources */,
+				04B9867F2C7312D600E20942 /* Job.swift in Sources */,
+				04B986802C7312D600E20942 /* HomeView.swift in Sources */,
+				04B986812C7312D600E20942 /* PlaceInformationView.swift in Sources */,
+				04B986822C7312D600E20942 /* ContentView.swift in Sources */,
+				04B986832C7312D600E20942 /* UserRegistrationRequestEntity.swift in Sources */,
+				04B986842C7312D600E20942 /* ModakbulApp.swift in Sources */,
+				04B986852C7312D600E20942 /* RegisterField.swift in Sources */,
+				04B986862C7312D600E20942 /* JSONEncoder.swift in Sources */,
+				04B986872C7312D600E20942 /* PowerSocketState.swift in Sources */,
+				04B986882C7312D600E20942 /* PhotosUploaderView.swift in Sources */,
+				04B986892C7312D600E20942 /* ChatRoomListView.swift in Sources */,
+				04B9868A2C7312D600E20942 /* PlaceSortCriteria.swift in Sources */,
+				04B9868B2C7312D600E20942 /* ConfirmationContentPresentable.swift in Sources */,
+				04B9868C2C7312D600E20942 /* PlaceInformationDetailMakingViewModel.swift in Sources */,
+				04B9868D2C7312D600E20942 /* SocialLoginRepository.swift in Sources */,
+				04B9868E2C7312D600E20942 /* GroupSeatingState.swift in Sources */,
+				04B9868F2C7312D600E20942 /* UserProfileResponseEntity.swift in Sources */,
+				04B986902C7312D600E20942 /* LocalMapService.swift in Sources */,
+				04B986912C7312D600E20942 /* DependencyContainer.swift in Sources */,
+				04B986922C7312D600E20942 /* DayOfWeek.swift in Sources */,
+				04B986932C7312D600E20942 /* JSONDecoder.swift in Sources */,
+				04B986942C7312D600E20942 /* LoginView.swift in Sources */,
+				04B986952C7312D600E20942 /* NicknameOverlappedResponseEntity.swift in Sources */,
+				04B986962C7312D600E20942 /* ChatService.swift in Sources */,
+				04B986972C7312D600E20942 /* Community.swift in Sources */,
+				04B986982C7312D600E20942 /* AuthenticationProvider.swift in Sources */,
+				04B986992C7312D600E20942 /* ParticipationRequestListViewModel.swift in Sources */,
+				04B9869A2C7312D600E20942 /* PlaceInformationDetailMakingView.swift in Sources */,
+				04B9869B2C7312D600E20942 /* PlaceInformationDetailViewModel.swift in Sources */,
+				04B9869C2C7312D600E20942 /* RelatedCommunityRecruitingContentListResponseEntity.swift in Sources */,
+				04B9869D2C7312D600E20942 /* ButtonStyle.swift in Sources */,
+				04B9869E2C7312D600E20942 /* OpeningHour.swift in Sources */,
+				04B9869F2C7312D600E20942 /* PlaceShowcaseViewModel.swift in Sources */,
+				04B986A02C7312D600E20942 /* DomainAssembly.swift in Sources */,
+				04B986A12C7312D600E20942 /* AsyncImageView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
+		04B986AC2C7312D600E20942 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Modakbul/Application/Resources/Preview Content\"";
+				DEVELOPMENT_TEAM = P85DW78LYM;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Modakbul/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "모닥불";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "지도를 표시하기 위해 사용자의 위치 정보가 필요합니다.";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortrait";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.team.modakbul2;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		04B986AD2C7312D600E20942 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Modakbul/Application/Resources/Preview Content\"";
+				DEVELOPMENT_TEAM = P85DW78LYM;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Modakbul/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "모닥불";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "지도를 표시하기 위해 사용자의 위치 정보가 필요합니다.";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortrait";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.team.modakbul2;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		9C81222A2BF722E6007DC215 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1234,87 +1313,18 @@
 			};
 			name = Release;
 		};
-		9C81222D2BF722E6007DC215 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"Modakbul/Application/Resources/Preview Content\"";
-				DEVELOPMENT_TEAM = TTKL6566T6;
-				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Modakbul/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "모닥불";
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "지도를 표시하기 위해 사용자의 위치 정보가 필요합니다.";
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
-				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortrait";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.team.modakbul0;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SUPPORTS_MACCATALYST = NO;
-				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
-		9C81222E2BF722E6007DC215 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"Modakbul/Application/Resources/Preview Content\"";
-				DEVELOPMENT_TEAM = TTKL6566T6;
-				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Modakbul/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "모닥불";
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "지도를 표시하기 위해 사용자의 위치 정보가 필요합니다.";
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
-				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortrait";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.team.modakbul0;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SUPPORTS_MACCATALYST = NO;
-				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		04B986AB2C7312D600E20942 /* Build configuration list for PBXNativeTarget "Modakbul" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				04B986AC2C7312D600E20942 /* Debug */,
+				04B986AD2C7312D600E20942 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		9C8122192BF722E4007DC215 /* Build configuration list for PBXProject "Modakbul" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -1324,18 +1334,25 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		9C81222C2BF722E6007DC215 /* Build configuration list for PBXNativeTarget "Modakbul" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				9C81222D2BF722E6007DC215 /* Debug */,
-				9C81222E2BF722E6007DC215 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		04B986102C7312D600E20942 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kakao/kakao-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.22.2;
+			};
+		};
+		04B986142C7312D600E20942 /* XCRemoteSwiftPackageReference "Moya" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Moya/Moya.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 15.0.3;
+			};
+		};
 		DF0424382C6495D5008C2B6D /* XCRemoteSwiftPackageReference "Moya" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Moya/Moya.git";
@@ -1355,25 +1372,25 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		DF0424392C6495D6008C2B6D /* Moya */ = {
+		04B9860F2C7312D600E20942 /* KakaoSDKAuth */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = DF0424382C6495D5008C2B6D /* XCRemoteSwiftPackageReference "Moya" */;
-			productName = Moya;
-		};
-		DFE0AFD62C103FA800EC078B /* KakaoSDKAuth */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = DFE0AFD52C103FA800EC078B /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
+			package = 04B986102C7312D600E20942 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
 			productName = KakaoSDKAuth;
 		};
-		DFE0AFD82C103FA800EC078B /* KakaoSDKCommon */ = {
+		04B986112C7312D600E20942 /* KakaoSDKCommon */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = DFE0AFD52C103FA800EC078B /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
+			package = 04B986102C7312D600E20942 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
 			productName = KakaoSDKCommon;
 		};
-		DFE0AFDA2C103FA800EC078B /* KakaoSDKUser */ = {
+		04B986122C7312D600E20942 /* KakaoSDKUser */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = DFE0AFD52C103FA800EC078B /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
+			package = 04B986102C7312D600E20942 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
 			productName = KakaoSDKUser;
+		};
+		04B986132C7312D600E20942 /* Moya */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 04B986142C7312D600E20942 /* XCRemoteSwiftPackageReference "Moya" */;
+			productName = Moya;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

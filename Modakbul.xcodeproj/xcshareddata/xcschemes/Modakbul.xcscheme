@@ -15,8 +15,8 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "9C81221D2BF722E4007DC215"
-               BuildableName = "Modakbul"
+               BlueprintIdentifier = "04B9860E2C7312D600E20942"
+               BuildableName = "Modakbul.app"
                BlueprintName = "Modakbul"
                ReferencedContainer = "container:Modakbul.xcodeproj">
             </BuildableReference>
@@ -40,10 +40,16 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <PathRunnable
-         runnableDebuggingMode = "0"
-         FilePath = "/Users/swain/Library/Developer/Xcode/DerivedData/Modakbul-czxqxkfhfoiupifrvmodzvgxjwxf/Build/Products/Debug-iphoneos/Modakbul.app">
-      </PathRunnable>
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "04B9860E2C7312D600E20942"
+            BuildableName = "Modakbul.app"
+            BlueprintName = "Modakbul"
+            ReferencedContainer = "container:Modakbul.xcodeproj">
+         </BuildableReference>
+      </BuildableProductRunnable>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
@@ -51,15 +57,16 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <MacroExpansion>
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "9C81221D2BF722E4007DC215"
-            BuildableName = "Modakbul"
+            BlueprintIdentifier = "04B9860E2C7312D600E20942"
+            BuildableName = "Modakbul.app"
             BlueprintName = "Modakbul"
             ReferencedContainer = "container:Modakbul.xcodeproj">
          </BuildableReference>
-      </MacroExpansion>
+      </BuildableProductRunnable>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
