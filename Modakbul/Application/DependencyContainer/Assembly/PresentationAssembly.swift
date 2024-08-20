@@ -14,6 +14,11 @@ struct PresentationAssembly: Assembly {
             LoginViewModel(userRegistrationUseCase: resolver.resolve(UserRegistrationUseCase.self))
         }
         
+        // MARK: - Registration
+        container.register(for: RegistrationViewModel.self) { resolver in
+            RegistrationViewModel(userRegistrationUseCase: resolver.resolve(UserRegistrationUseCase.self))
+        }
+        
         // MARK: - My
         container.register(for: PlaceShowcaseViewModel.self) { resolver in
             PlaceShowcaseViewModel(placeShowcaseAndReviewUseCase: resolver.resolve(PlaceShowcaseAndReviewUseCase.self))
