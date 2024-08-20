@@ -40,8 +40,7 @@ struct OnboradingView: View {
             ForEach(index, id: \.self) { num in
                 VStack {
                     Text(titles[num])
-                    // TODO: - 실기기 텍스트 확인 요망
-                        .font(.headline)
+                        .font(.title)
                         .bold()
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(.top, 50)
