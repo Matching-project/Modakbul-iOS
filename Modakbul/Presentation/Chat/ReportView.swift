@@ -71,7 +71,7 @@ struct ReportView<Router: AppRouter>: View {
             Text("관리자가 검토하기까지 2~3일 정도 소요됩니다. 마이페이지 - 나의 신고내역에서 상태를 확인할 수 있어요.")
         }
         .disabled(vm.reportType == nil ? true : false)
-        .padding(.horizontal, 30)
+        .padding(.horizontal, Constants.horizontal)
         .padding(.vertical, 5)
     }
 }

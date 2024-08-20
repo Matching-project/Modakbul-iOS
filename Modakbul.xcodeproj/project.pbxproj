@@ -155,6 +155,7 @@
 		04B986AA2C7312D600E20942 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 047B5AF62C7088E600D61CEF /* Preview Assets.xcassets */; };
 		DF1F7BA52C7315CF00709021 /* AppSecret.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = DF1F7BA42C7315CF00709021 /* AppSecret.xcconfig */; };
 		DF1F7BA92C73179300709021 /* MenuPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF1F7BA82C73179300709021 /* MenuPicker.swift */; };
+		DF3983D12C7370F400457B45 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF3983D02C7370F400457B45 /* Constants.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -304,6 +305,7 @@
 		DF1F7BA12C73156800709021 /* Modakbul.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = Modakbul.app; path = "/Users/limseonghyeon/Documents/iOS Projects/Modakbul-iOS/build/Debug-iphoneos/Modakbul.app"; sourceTree = "<absolute>"; };
 		DF1F7BA42C7315CF00709021 /* AppSecret.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = AppSecret.xcconfig; sourceTree = "<group>"; };
 		DF1F7BA82C73179300709021 /* MenuPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuPicker.swift; sourceTree = "<group>"; };
+		DF3983D02C7370F400457B45 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -688,6 +690,7 @@
 				047B5B722C7088E600D61CEF /* SignInKakaoButton.swift */,
 				047B5B732C7088E600D61CEF /* StrokedButton.swift */,
 				DF1F7BA82C73179300709021 /* MenuPicker.swift */,
+				DF3983D02C7370F400457B45 /* Constants.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -1083,6 +1086,7 @@
 				04B986812C7312D600E20942 /* PlaceInformationView.swift in Sources */,
 				04B986822C7312D600E20942 /* ContentView.swift in Sources */,
 				04B986832C7312D600E20942 /* UserRegistrationRequestEntity.swift in Sources */,
+				DF3983D12C7370F400457B45 /* Constants.swift in Sources */,
 				04B986842C7312D600E20942 /* ModakbulApp.swift in Sources */,
 				04B986852C7312D600E20942 /* RegisterField.swift in Sources */,
 				04B986862C7312D600E20942 /* JSONEncoder.swift in Sources */,
@@ -1129,7 +1133,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Modakbul/Application/Resources/Preview Content\"";
-				DEVELOPMENT_TEAM = P85DW78LYM;
+				DEVELOPMENT_TEAM = TTKL6566T6;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Modakbul/Info.plist;
@@ -1168,7 +1172,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Modakbul/Application/Resources/Preview Content\"";
-				DEVELOPMENT_TEAM = P85DW78LYM;
+				DEVELOPMENT_TEAM = TTKL6566T6;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Modakbul/Info.plist;

@@ -15,9 +15,8 @@ struct RegistrationView<Router: AppRouter>: View {
         self.registrationViewModel = registrationViewModel
     }
     var body: some View {
-    
         view()
-            .padding([.leading, .trailing], RegistrationViewValue.xAxisPadding)
+            .padding(.horizontal, Constants.horizontal)
             .onDisappear {
                 registrationViewModel.submit()
                 registrationViewModel.initialize()
@@ -128,5 +127,11 @@ extension RegistrationView {
         }
         .padding(.top, RegistrationViewValue.Header.topPadding)
         .frame(maxWidth: .infinity, alignment: .leading)
+    }
+}
+
+struct RegistrationView_Preview: PreviewProvider {
+    static var previews: some View {
+        router.view(to: .registrationView)
     }
 }

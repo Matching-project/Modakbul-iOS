@@ -108,7 +108,7 @@ struct PlaceInformationDetailMakingView<Router: AppRouter>: View {
                     
                     RoundedTextField("내용", text: $vm.content, axis: .vertical, lineLimit: (10, 10))
                 }
-                .padding([.leading, .trailing], 32)
+                .padding(.horizontal, Constants.horizontal + 2)
                 .padding(.bottom, 10)
             }
             
@@ -119,7 +119,7 @@ struct PlaceInformationDetailMakingView<Router: AppRouter>: View {
                 vm.initialize()
                 router.dismiss()
             }
-            .padding(.horizontal, 30)
+            .padding(.horizontal, Constants.horizontal)
             .padding(.vertical, 5)
             
         }
