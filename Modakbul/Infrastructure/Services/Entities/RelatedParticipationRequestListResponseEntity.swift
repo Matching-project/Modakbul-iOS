@@ -8,6 +8,7 @@
 import Foundation
 
 /// 사용자가 작성했던 참여 요청 목록 응답
+/// - Important: 정확히는 참여 요청을 작성했던 모임에 대한 정보를 받습니다.
 struct RelatedParticipationRequestListResponseEntity: Decodable {
     let status: Bool
     let code: Int

@@ -21,7 +21,6 @@ struct RouterView<Router: AppRouter>: View {
             router.view(to: root)
                 .navigationDestination(for: Router.Destination.self) { destination in
                     router.view(to: destination)
-                        .navigationBarBackButtonHidden(router.isNavigationBarBackButtonHidden)
                 }
                 .sheet(item: $router.sheet) { destination in
                     router.view(to: destination)

@@ -21,7 +21,6 @@ struct ChatRoomListView: View {
             Cell(item)
         }
         .listStyle(.plain)
-        .navigationTitle("채팅")
     }
 }
 

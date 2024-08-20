@@ -22,21 +22,9 @@ struct ParticipationRequestListView<Router: AppRouter>: View {
     }
     
     var body: some View {
-        List(communityRecruitingContent.community.participants, id: \.email) { user in
+        List(participationRequestListViewModel.participationRequests) { participatedRequest in
             HStack {
-                AsyncImageView(url: user.imageURL)
-                    .frame(maxWidth: 64, maxHeight: 64)
-                    .clipShape(.circle)
-                
-                VStack(alignment: .leading, spacing: 10) {
-                    Text(user.nickname)
-                        .font(.headline)
-                    
-                    Text("\(user.categoriesOfInterest.first!.identifier) | \(user.job.identifier)")
-                        .font(.subheadline)
-                        .foregroundStyle(.accent)
-                }
-                .lineLimit(1)
+                Cell(participatedRequest.participatedUser, communityRecruitingContent.community.category)
                 
                 Spacer()
                 
@@ -48,18 +36,16 @@ struct ParticipationRequestListView<Router: AppRouter>: View {
                             .font(.footnote.bold())
                     }
                     .buttonStyle(CapsuledInsetButton())
-                    
-                    Button {
-                        // TODO: 참여 요청 수락
-                    } label: {
-                        Text("수락")
-                            .font(.footnote.bold())
-                    }
-                    .buttonStyle(CapsuledInsetButton())
                 }
                 .layoutPriority(1)
             }
-            .swipeActions {
+            .swipeActions(edge: .trailing) {
+                Button {
+                    // TODO: 참여 요청 수락
+                } label: {
+                    Text("수락")
+                }
+                
                 Button(role: .destructive) {
                     // TODO: 참여 요청 목록에서 삭제 및 거절
                 } label: {
@@ -70,5 +56,41 @@ struct ParticipationRequestListView<Router: AppRouter>: View {
         .listStyle(.plain)
         .navigationTitle("참여 요청 목록")
         .navigationBarTitleDisplayMode(.inline)
+    }
+}
+
+extension ParticipationRequestListView {
+    struct Cell: View {
+        private let participatedUser: User
+        private let majorCategory: Category
+        
+        init(
+            _ participatedUser: User,
+            _ majorCategory: Category
+        ) {
+            self.participatedUser = participatedUser
+            self.majorCategory = majorCategory
+        }
+        
+        var body: some View {
+            AsyncImageView(url: participatedUser.imageURL)
+                .frame(maxWidth: 64, maxHeight: 64)
+                .clipShape(.circle)
+            
+            VStack(alignment: .leading, spacing: 10) {
+                Text(participatedUser.nickname)
+                    .font(.headline)
+                
+                Text("\(selectMajorCategory().description) | \(participatedUser.job.description)")
+                    .font(.subheadline)
+                    .foregroundStyle(.accent)
+            }
+            .lineLimit(1)
+        }
+        
+        private func selectMajorCategory() -> Category {
+            let candidates = participatedUser.categoriesOfInterest
+            return candidates.contains(majorCategory) ? majorCategory : candidates.randomElement() ?? .other
+        }
     }
 }

@@ -10,10 +10,8 @@ import Foundation
 struct InfrastructureAssembly: Assembly {
     func assemble(container: DependencyContainer) {
         // Network
-        container.register(for: NetworkSessionManager.self, DefaultNetworkSessionManager())
-        container.register(for: NetworkService.self) { resolver in
-            DefaultNetworkService(sessionManager: resolver.resolve(NetworkSessionManager.self))
-        }
+        container.register(for: SocketManager.self, DefaultSocketManager())
+        container.register(for: NetworkService.self, DefaultNetworkService())
         
         // LocalMap
         container.register(for: LocalMapService.self, DefaultLocalMapService())
@@ -23,7 +21,7 @@ struct InfrastructureAssembly: Assembly {
         
         // Chat
         container.register(for: ChatService.self) { resolver in
-            DefaultChatService(sessionManager: resolver.resolve(NetworkSessionManager.self))
+            DefaultChatService(socketManager: resolver.resolve(SocketManager.self))
         }
         
         // Storages

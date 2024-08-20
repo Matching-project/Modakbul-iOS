@@ -28,7 +28,7 @@ enum ChatServiceError: Error {
 }
 
 final class DefaultChatService {
-    private let sessionManager: NetworkSessionManager
+    private let socketManager: SocketManager
     private let encoder: JSONEncodable
     private let decoder: JSONDecodable
     
@@ -36,11 +36,11 @@ final class DefaultChatService {
     private var chatStreamContinuation: AsyncThrowingStream<ChatMessage, Error>.Continuation?
     
     init(
-        sessionManager: NetworkSessionManager,
+        socketManager: SocketManager,
         encoder: JSONEncodable = JSONEncoder(),
         decoder: JSONDecodable = JSONDecoder()
     ) {
-        self.sessionManager = sessionManager
+        self.socketManager = socketManager
         self.encoder = encoder
         self.decoder = decoder
     }
@@ -52,33 +52,35 @@ final class DefaultChatService {
         }
     }
     
-    private func decode<T: Decodable>(for type: T.Type, with data: Data) throws -> T {
-        guard let decodedData = try? decoder.decode(type, from: data) else {
-            throw ChatServiceError.generic(type: String(describing: T.self))
-        }
-        return decodedData
-    }
+//    private func decode<T: Decodable>(for type: T.Type, with data: Data) throws -> T {
+//        guard let decodedData = try? decoder.decode(type, from: data) else {
+//            throw ChatServiceError.generic(type: String(describing: T.self))
+//        }
+//        return decodedData
+//    }
     
-    private func performReceivedResult(_ result: URLSessionWebSocketTask.Message, _ continuation: AsyncThrowingStream<ChatMessage, Error>.Continuation) {
-        do {
-            switch result {
-            case .data(let data):
-                let message = try decode(for: MessageEntity.self, with: data)
-                continuation.yield(message.toDTO())
-            default:
-                continuation.finish(throwing: ChatServiceError.invalidMessageFormat)
-            }
-        } catch {
-            continuation.finish(throwing: error)
-        }
+    private func performReceivedResult(_ result: URLSessionWebSocketTask.Message,
+                                       _ continuation: AsyncThrowingStream<ChatMessage, Error>.Continuation) {
+//        do {
+//            switch result {
+//            case .data(let data):
+//                let message = try decode(for: MessageEntity.self, with: data)
+//                continuation.yield(message.toDTO())
+//            default:
+//                continuation.finish(throwing: ChatServiceError.invalidMessageFormat)
+//            }
+//        } catch {
+//            continuation.finish(throwing: error)
+//        }
     }
 }
 
 // MARK: ChatService Conformation
 extension DefaultChatService: ChatService {
     func connect(endpoint: any Requestable, _ continuation: AsyncThrowingStream<ChatMessage, Error>.Continuation) throws {
-        guard let urlRequest = endpoint.asURLRequest() else { throw ChatServiceError.invalidURL }
-        socket = sessionManager.webSocketTask(with: urlRequest)
+        guard let url = endpoint.asURLComponents().url else { throw ChatServiceError.invalidURL }
+        let urlRequest = URLRequest(url: url)
+        socket = socketManager.webSocketTask(with: urlRequest)
         chatStreamContinuation = continuation
         
         Task {
@@ -106,8 +108,8 @@ extension DefaultChatService: ChatService {
     }
     
     func send(message: ChatMessage) async throws {
-        let entity: MessageEntity = .init(message)
-        let data = try encoder.encode(entity)
-        try await socket?.send(.data(data))
+//        let entity: MessageEntity = .init(message)
+//        let data = try encoder.encode(entity)
+//        try await socket?.send(.data(data))
     }
 }

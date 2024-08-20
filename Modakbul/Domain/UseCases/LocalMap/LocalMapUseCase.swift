@@ -11,8 +11,8 @@ import CoreLocation
 protocol LocalMapUseCase {
     typealias Coordinate = CLLocationCoordinate2D
     
-    func fetchPlaces(on coordinate: Coordinate) async throws -> [Place]
-    func fetchPlace(with keyword: String) async throws -> Place
+    func fetchPlaces(on coordinate: Coordinate, by sortCriteria: PlaceSortCriteria) async throws -> [Place]
+    func fetchPlaces(with keyword: String, on coordinate: Coordinate) async throws -> [Place]
     
     func updateCoordinate() async throws -> Coordinate
 }
@@ -27,12 +27,15 @@ final class DefaultLocalMapUseCase {
 
 // MARK: LocalMapUseCase Conformation
 extension DefaultLocalMapUseCase: LocalMapUseCase {
-    func fetchPlaces(on coordinate: Coordinate) async throws -> [Place] {
-        try await placesRepository.findPlaces(on: coordinate)
+    func fetchPlaces(on coordinate: Coordinate, by sortCriteria: PlaceSortCriteria) async throws -> [Place] {
+        switch sortCriteria {
+        case .distance: return try await placesRepository.findPlacesOrderedByDistance(on: coordinate)
+        case .matchesCount: return try await placesRepository.findPlacesOrderedByMatchesCount(on: coordinate)
+        }
     }
     
-    func fetchPlace(with keyword: String) async throws -> Place {
-        try await placesRepository.findPlace(with: keyword)
+    func fetchPlaces(with keyword: String, on coordinate: Coordinate) async throws -> [Place] {
+        try await placesRepository.findPlaces(with: keyword, on: coordinate)
     }
     
     func updateCoordinate() async throws -> Coordinate {

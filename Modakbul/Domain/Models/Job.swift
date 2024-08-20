@@ -7,15 +7,11 @@
 
 import Foundation
 
-enum Job: String, Codable {
+enum Job: String, Codable, Selectable {
     case collegeStudent = "COLLEGE"
     case jobSeeker = "JOB_SEEKER"
     case officeWorker = "OFFICE"
     case other = "ETC"
-    
-    var identifier: String {
-        self.rawValue
-    }
     
     var description: String {
         switch self {
@@ -24,9 +20,5 @@ enum Job: String, Codable {
         case .officeWorker: "직장인"
         case .other: "기타"
         }
-    }
-    
-    var identifier: String {
-        String(describing: self)
     }
 }

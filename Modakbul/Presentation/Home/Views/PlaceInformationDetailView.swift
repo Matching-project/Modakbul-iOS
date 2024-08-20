@@ -11,16 +11,14 @@ struct PlaceInformationDetailView<Router: AppRouter>: View {
     @EnvironmentObject private var router: Router
 //    @ObservedObject private var placeInformationDetailViewModel: PlaceInformationDetailViewModel
     
-    private let communityRecruitingContentId: String
+    private let communityRecruitingContentId: Int64
     
     @State private var index: Int = 0
-    private let arr = [0, 1, 2, 3, 4]
-    
-    @State private var isExpanded: Bool = false
+    private let arr = Array(0...4)
     
     init(
 //        placeInformationDetailViewModel: PlaceInformationDetailViewModel,
-        communityRecruitingContentId: String
+        communityRecruitingContentId: Int64
     ) {
 //        self.placeInformationDetailViewModel = placeInformationDetailViewModel
         self.communityRecruitingContentId = communityRecruitingContentId

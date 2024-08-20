@@ -10,7 +10,7 @@ import SwiftUI
 struct PlaceInformationView<Router: AppRouter>: View {
     @EnvironmentObject private var router: Router
     
-    @State private var selectedDayOfWeek: DayOfWeek
+    @State private var selectedOpeningHourByDay: OpeningHour?
     @State private var communityRecruitingContents: [CommunityRecruitingContent] = []
     
     private let place: Place
@@ -21,15 +21,8 @@ struct PlaceInformationView<Router: AppRouter>: View {
         self.place = place
         let calendar = Calendar.current
         let weekDay = calendar.component(.weekday, from: .now)
-        switch weekDay {
-        case 1: self.selectedDayOfWeek = .sun
-        case 2: self.selectedDayOfWeek = .mon
-        case 3: self.selectedDayOfWeek = .tue
-        case 4: self.selectedDayOfWeek = .wed
-        case 5: self.selectedDayOfWeek = .thu
-        case 6: self.selectedDayOfWeek = .fri
-        default: self.selectedDayOfWeek = .sat
-        }
+        let dayOfWeek = DayOfWeek(weekDay)
+        self.selectedOpeningHourByDay = place.openingHours.first(where: {$0.dayOfWeek == dayOfWeek})
     }
     
     var body: some View {
@@ -75,13 +68,13 @@ struct PlaceInformationView<Router: AppRouter>: View {
                     .font(.subheadline)
                 
                 Menu {
-                    Picker(selection: $selectedDayOfWeek) {
-                        ForEach(DayOfWeek.allCases) { dayOfWeek in
-                            Text(displayOpeningHours(dayOfWeek))
+                    Picker(selection: $selectedOpeningHourByDay) {
+                        ForEach(place.openingHours, id: \.dayOfWeek) { openingHour in
+                            displayOpeningHours(openingHour)
                         }
                     } label: {}
                 } label: {
-                    Text(displayOpeningHours(selectedDayOfWeek))
+                    displayOpeningHours(selectedOpeningHourByDay)
                     Image(systemName: "chevron.down")
                 }
                 .font(.subheadline)
@@ -130,12 +123,13 @@ struct PlaceInformationView<Router: AppRouter>: View {
         .padding(.top)
     }
     
-    private func displayOpeningHours(_ dayOfWeek: DayOfWeek) -> String {
-        let day = dayOfWeek.description
-        guard let openingHours = place.openingHoursOfWeek[dayOfWeek] else {
-            return day + " " + "정보 없음"
-        }
-        return day + " " + openingHours.open + " - " + openingHours.close
+    private func displayOpeningHours(_ openingHour: OpeningHour?) -> Text {
+        guard let openingHour = openingHour else { return Text("정보 없음") }
+        let dayOfWeek = openingHour.dayOfWeek.description
+        let open = openingHour.open
+        let close = openingHour.close
+        
+        return Text("\(dayOfWeek) \(open) - \(close)")
     }
 }
 
@@ -164,10 +158,10 @@ extension PlaceInformationView {
                     
                     HStack {
                         Image(systemName: "clock")
-                        Text("\(community.promiseDate.startTime.toString(by: .HHmm))~\(community.promiseDate.startTime.toString(by: .HHmm))")
+                        Text("\(community.startTime)~\(community.endTime)")
                     }
                     
-                    Text(community.category.identifier)
+                    Text(community.category.description)
                 }
                 .font(.subheadline)
             }

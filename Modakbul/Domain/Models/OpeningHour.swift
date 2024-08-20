@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct OpeningHour: Decodable {
+struct OpeningHour: Hashable, Decodable {
     let dayOfWeek: DayOfWeek
     let open: String
     let close: String
@@ -22,4 +22,11 @@ struct OpeningHour: Decodable {
 enum OpeningState: String, Codable {
     case opened = "OPEN"
     case closed = "CLOSE"
+    
+    var isOpened: Bool {
+        switch self {
+        case .opened: true
+        case .closed: false
+        }
+    }
 }

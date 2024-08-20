@@ -6,10 +6,9 @@
 //
 
 import SwiftUI
-import Combine
 
 struct PlaceInformationDetailMakingView<Router: AppRouter>: View {
-    @Environment(\.colorScheme) var colorScheme
+    @Environment(\.colorScheme) private var colorScheme
     @EnvironmentObject private var router: Router
     @ObservedObject private var vm: PlaceInformationDetailMakingViewModel
     
@@ -17,9 +16,11 @@ struct PlaceInformationDetailMakingView<Router: AppRouter>: View {
     
     init(_ placeInformationDetailMakingViewModel: PlaceInformationDetailMakingViewModel) {
         self.vm = placeInformationDetailMakingViewModel
+        UIDatePicker.appearance().minuteInterval = 10
     }
     
     var body: some View {
+        VStack {
             ScrollView {
                 LazyVStack(spacing: 20) {
                     makeRow(title: "장소") {
@@ -27,32 +28,13 @@ struct PlaceInformationDetailMakingView<Router: AppRouter>: View {
                     }
                     
                     makeRow(title: "카테고리") {
-                        Menu {
-                            Picker(selection: $vm.category) {
-                                ForEach(Category.allCases) { category in
-                                    Text(category.description)
-                                }
-                            } label: {}
-                        } label: {
-                            Text(vm.category.description)
-                                .tint(colorScheme == .dark ? .white : .black)
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                            Image(systemName: "chevron.down")
-                        }
-                        .font(.subheadline)
-                        .roundedRectangleStyle()
+                        MenuPicker.Default(selection: $vm.category)
+                            .roundedRectangleStyle()
                     }
                     
-                    // TODO: - 몇명까지 모집할 수 있도록 제한해야함. 반례로, 10000명 모집한다고 입력할 수 있기 때문에.
                     makeRow(title: "모집인원") {
-                        RoundedTextField("", text: $vm.peopleCount)
-                            .keyboardType(.numberPad)
-                            .onReceive(Just(vm.peopleCount)) { newValue in
-                                let filtered = newValue.filter { "0123456789".contains($0) }
-                                if filtered != newValue {
-                                    vm.peopleCount = filtered
-                                }
-                            }
+                        MenuPicker.Range(selection: $vm.peopleCount, range: 1...10)
+                            .roundedRectangleStyle()
                     }
                     
                     makeRow(title: "날짜") {
@@ -68,16 +50,13 @@ struct PlaceInformationDetailMakingView<Router: AppRouter>: View {
                                 displayedComponents: [.date]
                             )
                             .labelsHidden()
+                            .transformEffect(.init(scaleX: 2, y: 1))
                             .opacity(0.02)
                         }
                         .padding(-8)
                         .roundedRectangleStyle()
-                        
                     }
                     
-                    // TODO: - DatePicker 8:59일때 돌리면 9:00이 되면 UX가 좋아지긴 함.. 참고로 당근은 대응 안했음
-                    // TODO: - 글 작성하다 보면 현재시각 보다는 한 10분정도 뒤로 시작시간을 기본값으로 둔다던가 / 5분 or 30분 이런식으로 분단위를 설정하는방식의 의견이 필요할 듯.
-                    // TODO: - 23:00 ~ 다음날 01:00인 경우는 어떻게 해야하는지...? 날짜도 범위로 지정할 수 있어야 하나?
                     makeRow(title: "진행시간") {
                         HStack {
                             ZStack(alignment: .leading) {
@@ -87,15 +66,16 @@ struct PlaceInformationDetailMakingView<Router: AppRouter>: View {
                                 DatePicker(
                                     "",
                                     selection: $vm.startTime,
-                                    in: vm.afterNow(vm.date),
+                                    in: vm.after(vm.date),
                                     displayedComponents: [.hourAndMinute]
                                 )
-                                .padding(.horizontal, -20)
+                                .transformEffect(.init(scaleX: 0.5, y: 1))
                                 .labelsHidden()
                                 .opacity(0.02)
                             }
                             
                             Text("-")
+                                .padding(.horizontal, -50)
                             
                             ZStack(alignment: .leading) {
                                 Text(vm.endTime.toString(by: .HHmm))
@@ -105,14 +85,16 @@ struct PlaceInformationDetailMakingView<Router: AppRouter>: View {
                                             vm.endTime = newStartTime
                                         }
                                     }
+                                    .padding(.horizontal, -47)
                                 
                                 DatePicker(
                                     "",
                                     selection: $vm.endTime,
-                                    in: vm.afterStartTime(vm.startTime),
+                                    in: vm.after(vm.startTime),
                                     displayedComponents: [.hourAndMinute]
                                 )
-                                .padding(.horizontal, -20)
+                                .padding(.horizontal, -27)
+                                .transformEffect(.init(scaleX: 1.8, y: 1))
                                 .labelsHidden()
                                 .opacity(0.02)
                             }
@@ -124,9 +106,9 @@ struct PlaceInformationDetailMakingView<Router: AppRouter>: View {
                     RoundedTextField("제목", text: $vm.title)
                         .padding(.top)
                     
-                    RoundedTextField("내용", text: $vm.content, axis: .vertical, lineLimit: 10)
+                    RoundedTextField("내용", text: $vm.content, axis: .vertical, lineLimit: (10, 10))
                 }
-                .padding([.leading, .trailing], 32)
+                .padding(.horizontal, Constants.horizontal + 2)
                 .padding(.bottom, 10)
             }
             
@@ -137,9 +119,10 @@ struct PlaceInformationDetailMakingView<Router: AppRouter>: View {
                 vm.initialize()
                 router.dismiss()
             }
-            .padding(.horizontal, 30)
+            .padding(.horizontal, Constants.horizontal)
             .padding(.vertical, 5)
-        
+            
+        }
         // TODO: - 최초 게시 여부에 따라 모집글 작성 / 모집글 수정으로 분기 필요
         .navigationModifier(title: "모집글 작성") {
             vm.initialize()
@@ -148,14 +131,14 @@ struct PlaceInformationDetailMakingView<Router: AppRouter>: View {
     }
     
     private func makeRow(title: String, @ViewBuilder content: () -> some View) -> some View {
-         HStack {
-             Text(title)
-                 .bold()
-                 .frame(width: labelWidth, alignment: .leading)
-             
-             content()
-         }
-     }
+        HStack {
+            Text(title)
+                .bold()
+                .frame(width: labelWidth, alignment: .leading)
+            
+            content()
+        }
+    }
 }
 
 struct PlaceInformationDetailMakingView_Preview: PreviewProvider {

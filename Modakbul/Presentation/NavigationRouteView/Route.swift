@@ -24,11 +24,6 @@ enum PresentingType {
     case push
     case sheet(detents: Set<PresentationDetent>)
     case fullScreenCover
-    
-    // MARK: Default PresentingType without parameter
-    static var push: PresentingType {
-        .push(isNavigationBarBackButtonHidden: false)
-    }
 }
 
 enum Route: Routable {
@@ -37,13 +32,15 @@ enum Route: Routable {
     case routerView
     case contentView
     case loginView            // MARK: - Login
+    case requiredTermView     // MARK: - Registration
+    case registrationView
     case myView               // MARK: - My
     case placeShowcaseView
     case homeView             // MARK: - Home
     case mapArea
     case placesListArea
     case placeInformationView(place: Place)
-    case placeInformationDetailView(communityRecruitingContentId: String)
+    case placeInformationDetailView(communityRecruitingContentId: Int64)
     case placeInformationDetailMakingView
     case participationRequestListView(communityRecruitingContent: CommunityRecruitingContent)
     case notificationView
@@ -55,10 +52,12 @@ enum Route: Routable {
         switch self {
         case .routerView: return .push
         case .contentView: return .push
-        case .loginView: return .fullScreenCover                // MARK: - Login
-        case .myView: return .sheet(detents: [.medium, .large]) // MARK: - My
+        case .loginView: return .fullScreenCover                    // MARK: - Login
+        case .requiredTermView: return .sheet(detents: [.medium])   // MARK: - Registration
+        case .registrationView: return .push
+        case .myView: return .sheet(detents: [.medium, .large])     // MARK: - My
         case .placeShowcaseView: return .push
-        case .homeView: return .push                            // MARK: - Home
+        case .homeView: return .push                                // MARK: - Home
         case .mapArea: return .push
         case .placesListArea: return .push
         case .placeInformationView: return .sheet(detents: [.medium, .large])
@@ -66,7 +65,7 @@ enum Route: Routable {
         case .placeInformationDetailMakingView: return .push
         case .participationRequestListView: return .push
         case .notificationView: return .push
-        case .chatView: return .push                            // MARK: - Chat
+        case .chatView: return .push                                // MARK: - Chat
         case .chatRoomListView: return .push
         case .reportView: return .push
         }
@@ -78,13 +77,17 @@ enum Route: Routable {
             RouterView<Router>(router: router, root: .contentView)
         case .contentView:
             ContentView<Router>()
-        case .loginView:    // MARK: - Login
+        case .loginView:        // MARK: - Login
             LoginView<Router>(loginViewModel: router.resolver.resolve(LoginViewModel.self))
-        case .myView:       // MARK: - My
+        case .requiredTermView: // MARK: - Registration
+            RequiredTermView<Router>()
+        case .registrationView:
+            RegistrationView<Router>(registrationViewModel: router.resolver.resolve(RegistrationViewModel.self))
+        case .myView:           // MARK: - My
             MyView<Router>()
         case .placeShowcaseView:
             PlaceShowcaseView<Router>(placeShowcaseViewModel: router.resolver.resolve(PlaceShowcaseViewModel.self))
-        case .homeView:     // MARK: - Home
+        case .homeView:         // MARK: - Home
             HomeView<Router>(homeViewModel: router.resolver.resolve(HomeViewModel.self))
         case .mapArea:
             MapArea<Router>(router.resolver.resolve(HomeViewModel.self))
@@ -100,7 +103,7 @@ enum Route: Routable {
             ParticipationRequestListView<Router>(participationRequestListViewModel: router.resolver.resolve(ParticipationRequestListViewModel.self), communityRecruitingContent: communityRecruitingContent)
         case .notificationView:
             NotificationView<Router>(router.resolver.resolve(NotificationViewModel.self))
-        case .chatView:     // MARK: - Chat
+        case .chatView:         // MARK: - Chat
             ChatView<Router>(router.resolver.resolve(ChatViewModel.self))
         case .chatRoomListView:
             ChatRoomListView()

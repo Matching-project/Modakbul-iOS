@@ -1,5 +1,5 @@
 //
-//  NetworkSessionManager.swift
+//  SocketManager.swift
 //  Modakbul
 //
 //  Created by Swain Yun on 5/22/24.
@@ -7,12 +7,11 @@
 
 import Foundation
 
-protocol NetworkSessionManager {
-    func data(for urlRequest: URLRequest) async throws -> (Data, URLResponse)
+protocol SocketManager {
     func webSocketTask(with urlRequest: URLRequest) -> URLSessionWebSocketTask
 }
 
-final class DefaultNetworkSessionManager {
+final class DefaultSocketManager {
     private let session: URLSessionProtocol
     
     init(session: URLSessionProtocol = URLSession.shared) {
@@ -20,12 +19,8 @@ final class DefaultNetworkSessionManager {
     }
 }
 
-// MARK: NetworkSessionManager Conformation
-extension DefaultNetworkSessionManager: NetworkSessionManager {
-    func data(for urlRequest: URLRequest) async throws -> (Data, URLResponse) {
-        return try await session.data(for: urlRequest)
-    }
-    
+// MARK: SocketManager Conformation
+extension DefaultSocketManager: SocketManager {
     func webSocketTask(with urlRequest: URLRequest) -> URLSessionWebSocketTask {
         return session.webSocketTask(with: urlRequest)
     }
