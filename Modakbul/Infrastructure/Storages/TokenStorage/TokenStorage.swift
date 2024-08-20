@@ -19,7 +19,7 @@ private enum TokenStorageError: Error {
 
 protocol TokenStorage {
     typealias Query = [String: Any]
-    typealias UserID = String
+    typealias UserID = Int64
     
     func store(_ tokens: TokensProtocol, by userId: UserID) throws
     func fetch(by userId: UserID) throws -> TokensProtocol

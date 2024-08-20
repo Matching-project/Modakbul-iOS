@@ -11,8 +11,9 @@ import CoreLocation
 protocol PlacesRepository {
     typealias Coordinate = CLLocationCoordinate2D
     
-    func findPlace(with keyword: String) async throws -> Place
-    func findPlaces(on coordinate: Coordinate) async throws -> [Place]
+    func findPlaces(with keyword: String, on coordinate: Coordinate) async throws -> [Place]
+    func findPlacesOrderedByDistance(on coordinate: Coordinate) async throws -> [Place]
+    func findPlacesOrderedByMatchesCount(on coordinate: Coordinate) async throws -> [Place]
     func findLocations(with keyword: String) async throws -> [Location]
     func fetchCurrentCoordinate() async throws -> Coordinate
     func startSuggestion(with continuation: AsyncStream<[SuggestedResult]>.Continuation)
@@ -45,22 +46,34 @@ final class DefaultPlacesRepository {
 
 // MARK: PlacesRepository Conformation
 extension DefaultPlacesRepository: PlacesRepository {
-    func findPlaces(on coordinate: Coordinate) async throws -> [Place] {
-        let endpoint = Endpoint.findPlaces(coordinate: coordinate)
+    func findPlacesOrderedByDistance(on coordinate: Coordinate) async throws -> [Place] {
+        let endpoint = Endpoint.readPlacesByDistance(lat: coordinate.latitude, lon: coordinate.longitude)
         
         do {
-            let response = try await networkService.request(endpoint: endpoint, for: [PlaceEntity].self)
-            return response.body.map { $0.toDTO() }
+            let response = try await networkService.request(endpoint: endpoint, for: PlacesSearchResponseEntity.self)
+            return response.body.toDTO()
         } catch {
             throw PlacesRepositoryError.fetchFailed
         }
     }
     
-    func findPlace(with keyword: String) async throws -> Place {
-        let endpoint = Endpoint.findPlace(keyword: keyword)
+    func findPlacesOrderedByMatchesCount(on coordinate: Coordinate) async throws -> [Place] {
+        let endpoint = Endpoint.readPlacesByDistance(lat: coordinate.latitude, lon: coordinate.longitude)
         
         do {
-            let response = try await networkService.request(endpoint: endpoint, for: PlaceEntity.self)
+            let response = try await networkService.request(endpoint: endpoint, for: PlacesSearchResponseEntity.self)
+            return response.body.toDTO()
+        } catch {
+            throw PlacesRepositoryError.fetchFailed
+        }
+    }
+    
+    func findPlaces(with keyword: String, on coordinate: Coordinate) async throws -> [Place] {
+        // TODO: 키워드로 장소검색 Endpoint 필요
+        let endpoint = Endpoint.readPlaces(name: keyword, lat: coordinate.latitude, lon: coordinate.longitude)
+        
+        do {
+            let response = try await networkService.request(endpoint: endpoint, for: PlacesSearchResponseEntity.self)
             return response.body.toDTO()
         } catch {
             throw PlacesRepositoryError.fetchFailed

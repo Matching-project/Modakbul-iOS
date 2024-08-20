@@ -8,7 +8,7 @@
 import Foundation
 
 protocol SocialLoginRepository {
-    func login(_ token: Data, by provider: AuthenticationProvider) async -> Bool
+    func login(_ credential: UserCredential) async -> Bool
     func logout() async
 }
 
@@ -31,8 +31,23 @@ final class DefaultSocialLoginRepository {
 
 // MARK: SocialLoginRepository Conformation
 extension DefaultSocialLoginRepository: SocialLoginRepository {
-    func login(_ token: Data, by provider: AuthenticationProvider) async -> Bool {
-        true
+    func login(_ credential: UserCredential) async -> Bool {
+        do {
+            let endpoint = Endpoint.login(token: credential.authorizationCode, provider: credential.provider.identifier)
+            let response = try await networkService.request(endpoint: endpoint, for: UserAuthenticationResponseEntity.self)
+            
+            guard let accessToken = response.accessToken,
+                  let refreshToken = response.refreshToken
+            else { return false }
+            
+            let tokens = TokensEntity(accessToken: accessToken, refreshToken: refreshToken)
+            try tokenStorage.store(tokens, by: response.body.result.userId)
+            return true
+        } catch {
+            // TODO: 에러 핸들링 필요
+            print(error)
+            return false
+        }
     }
     
     func logout() async {

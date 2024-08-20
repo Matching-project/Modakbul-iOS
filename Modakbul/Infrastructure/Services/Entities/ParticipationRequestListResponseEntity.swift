@@ -19,28 +19,31 @@ struct ParticipationRequestListResponseEntity: Decodable {
         let user: User
         
         struct User: Decodable {
+            let id: Int64
             let nickname: String
             let imageURL: URL?
             let job: Job
             let categories: Set<Category>
             
             enum CodingKeys: String, CodingKey {
-                case nickname, job, categories
+                case id, nickname, job, categories
                 case imageURL = "image"
             }
         }
     }
     
-    func toDTO() -> [User] {
+    func toDTO() -> [ParticipationRequest] {
         // TODO: 이거 id가 참여요청목록의 id인데;
         result.map {
-            .init(
-                id: $0.id,
+            let user = User(
+                id: $0.user.id,
                 nickname: $0.user.nickname,
                 job: $0.user.job,
                 categoriesOfInterest: $0.user.categories,
                 imageURL: $0.user.imageURL
             )
+            
+            return .init(id: $0.id, participatedUser: user)
         }
     }
 }

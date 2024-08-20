@@ -8,7 +8,7 @@
 import Foundation
 
 struct ChatRoomConfiguration: Identifiable {
-    let id: String
+    let id: Int64
     let communityRecruitingContent: CommunityRecruitingContent
     let participants: [User]
 }

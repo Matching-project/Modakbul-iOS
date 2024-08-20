@@ -14,49 +14,50 @@ struct RequiredTermView<Router: AppRouter>: View {
     @State private var privacyChecked: Bool = false
     
     var body: some View {
-        LazyVStack(alignment: .leading,
-                   spacing: RegistrationViewValue.Header.vStackSpacing) {
-            Text("약관에 동의해주세요")
-                .padding([.leading, .trailing], RegistrationViewValue.xAxisPadding)
-                .padding(.top, RegistrationViewValue.Header.topPadding)
-                .padding(.bottom, RegistrationViewValue.Header.bottomPadding)
-                .font(.title2)
-                .fontWeight(.semibold)
-            
-            Toggle("모두 동의", isOn: Binding<Bool>(
-                get: { self.allChecked },
-                set: { newValue in
-                    self.serviceChecked = newValue
-                    self.locationChecked = newValue
-                    self.privacyChecked = newValue
-                }
-            ))
-            .toggleStyle(DefaultCheckBox())
-            .padding(RegistrationViewValue.yAxisPadding)
-            
-            ForEach(RequiredTerm.allCases, id: \.self) { requiredTerm in
-                // TODO: 약관 내용을 표시할 Link() 추가 필요
-                HStack {
-                    Toggle(requiredTerm.description, isOn: binding(requiredTerm))
-                        .toggleStyle(DefaultCheckBox())
-                        .padding(.leading, RegistrationViewValue.yAxisPadding)
-                    
-                    Spacer()
-                    
-                    Link(destination: URL(string: link(requiredTerm))!) {
-                        Image(systemName: "chevron.right")
+        VStack {
+            LazyVStack(alignment: .leading,
+                       spacing: RegistrationViewValue.Header.vStackSpacing) {
+                // TODO: - 다기종 sheet 높이 점검 필요
+                Text("약관에 동의해주세요")
+                    .padding(.top, RegistrationViewValue.Header.topPadding)
+                    .padding(.bottom, RegistrationViewValue.Header.bottomPadding)
+                    .font(.title2)
+                    .fontWeight(.semibold)
+                
+                Toggle("모두 동의", isOn: Binding<Bool>(
+                    get: { self.allChecked },
+                    set: { newValue in
+                        self.serviceChecked = newValue
+                        self.locationChecked = newValue
+                        self.privacyChecked = newValue
                     }
-                    .frame(width: 10)
-                    .padding(.trailing, 30)
+                ))
+                .toggleStyle(DefaultCheckBox())
+                .padding(.vertical, RegistrationViewValue.yAxisPadding)
+                
+                ForEach(RequiredTerm.allCases, id: \.self) { requiredTerm in
+                    // TODO: 약관 내용을 표시할 Link() 추가 필요
+                    HStack {
+                        Toggle(requiredTerm.description, isOn: binding(requiredTerm))
+                            .toggleStyle(DefaultCheckBox())
+                        
+                        Spacer()
+                        
+                        Link(destination: URL(string: link(requiredTerm))!) {
+                            Image(systemName: "chevron.right")
+                        }
+                        .padding(.trailing, 10)
+                    }
                 }
             }
+           .padding(.horizontal, 30)
             
             FlatButton("확인") {
                 router.route(to: .registrationView)
                 router.dismiss()
             }
             .disabled(!allChecked)
-            .padding([.leading, .trailing], RegistrationViewValue.xAxisPadding)
+            .padding(.horizontal, Constants.horizontal)
             .padding(.top, RegistrationViewValue.Footer.topPadding)
             .padding(.bottom, RegistrationViewValue.Footer.bottomPadding)
         }
@@ -83,5 +84,11 @@ extension RequiredTermView {
         case .location: return "https:/google.co.kr"
         case .privacy: return "https://daum.net"
         }
+    }
+}
+
+struct RequiredTermView_Preview: PreviewProvider {
+    static var previews: some View {
+        router.view(to: .requiredTermView)
     }
 }

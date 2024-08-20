@@ -6,10 +6,15 @@ struct ModakbulApp: App {
                                                                   DataAssembly(),
                                                                   DomainAssembly(),
                                                                   PresentationAssembly())
+    @AppStorage("isFirstLaunch") var isFirstLaunch: Bool = true
     
     var body: some Scene {
         WindowGroup {
-            router.view(to: .routerView)
+            if isFirstLaunch == true {
+                OnboradingView($isFirstLaunch)
+            } else {
+                router.view(to: .routerView)
+            }
         }
     }
 }

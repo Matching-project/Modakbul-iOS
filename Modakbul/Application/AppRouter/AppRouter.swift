@@ -13,13 +13,12 @@ protocol AppRouter: ObservableObject {
     
     var path: NavigationPath { get set }
     var sheet: Destination? { get set }
-    var detents: Set<PresentationDetent> { get set }
+    var detents: Set<PresentationDetent> { get }
     var fullScreenCover: Destination? { get set }
     var confirmationContent: ConfirmationContent? { get set }
     var isModalPresented: Bool { get }
     var isAlertPresented: Bool { get set }
     var isConfirmationDialogPresented: Bool { get set }
-    var isNavigationBarBackButtonHidden: Bool { get set }
     var assembler: Assembler { get }
     var resolver: DependencyResolver { get }
     
@@ -40,13 +39,11 @@ final class DefaultAppRouter: AppRouter {
     
     @Published var path: NavigationPath
     @Published var sheet: Destination?
-    var detents: Set<PresentationDetent> = []
     @Published var fullScreenCover: Destination?
     @Published var confirmationContent: ConfirmationContent?
     var isModalPresented: Bool { sheet != nil || fullScreenCover != nil }
     @Published var isAlertPresented: Bool = false
     @Published var isConfirmationDialogPresented: Bool = false
-    @Published var isNavigationBarBackButtonHidden: Bool = false
     
     private(set) var detents: Set<PresentationDetent> = [.large, .medium]
     let assembler: Assembler
@@ -66,9 +63,8 @@ final class DefaultAppRouter: AppRouter {
         self.init(assembler: assembler)
     }
     
-    private func _push(_ destination: Destination, _ isNavigationBarBackButtonHidden: Bool) {
+    private func _push(_ destination: Destination) {
         path.append(destination)
-        self.isNavigationBarBackButtonHidden = isNavigationBarBackButtonHidden
     }
     
     private func _sheet(_ destination: Destination, _ detents: Set<PresentationDetent>) {

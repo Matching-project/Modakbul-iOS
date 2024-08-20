@@ -31,6 +31,7 @@ struct MapArea<Router: AppRouter>: View {
     private var localMapArea: some View {
         Map(coordinateRegion: $region, showsUserLocation: true, annotationItems: homeViewModel.places) { place in
             MapAnnotation(coordinate: place.location.coordinate) {
+                // TODO: 맵 마커 이미지 필요함
                 Image(systemName: "heart.fill")
                     .foregroundStyle(.accent)
                     .onTapGesture {

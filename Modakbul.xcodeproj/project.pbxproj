@@ -955,11 +955,12 @@
 			};
 			buildConfigurationList = 045E282A2C737B2F00D3E4DE /* Build configuration list for PBXProject "Modakbul" */;
 			compatibilityVersion = "Xcode 14.0";
-			developmentRegion = en;
+			developmentRegion = ko;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 				Base,
+				ko,
 			);
 			mainGroup = 045E28262C737B2F00D3E4DE;
 			packageReferences = (
@@ -1392,6 +1393,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 04E6A5C82C73804000038DB5 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
 			productName = KakaoSDKUser;
+		};
+		04B986132C7312D600E20942 /* Moya */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 04B986142C7312D600E20942 /* XCRemoteSwiftPackageReference "Moya" */;
+			productName = Moya;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

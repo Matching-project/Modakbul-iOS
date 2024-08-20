@@ -85,16 +85,14 @@ final class RegistrationViewModel: ObservableObject {
     
     func submit() {
         // TODO: Provider 수정할 것
-        let user = User(email: email,
-                        provider: .apple,
+        let user = User(id: Int64(UUID().hashValue),
                         name: name,
                         nickname: nickname,
-                        birth: dateComponentsToDate(birth),
-                        gender: gender!,
-                        job: job!,
+                        gender: gender ?? .unknown,
+                        job: job ?? .other,
                         categoriesOfInterest: categoriesOfInterest,
-                        image: image,
-                        isGenderVisible: false)
+                        isGenderVisible: false,
+                        birth: dateComponentsToDate(birth))
         
         Task {
             try await userRegistrationUseCase.register(user, encoded: image ?? Data())

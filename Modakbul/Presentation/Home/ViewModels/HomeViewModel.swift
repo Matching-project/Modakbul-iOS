@@ -14,8 +14,9 @@ final class HomeViewModel: ObservableObject {
     @Published var isMapShowing: Bool = true
     @Published var currentCoordinate: CLLocationCoordinate2D = CLLocationCoordinate2D()
     @Published var searchingText: String = String()
-    var places: [Place] = PreviewHelper.shared.places
-    var selectedPlace: Place?
+    @Published var places: [Place] = PreviewHelper.shared.places
+    @Published var selectedPlace: Place?
+    @Published var sortCriteria: PlaceSortCriteria = .distance
     
     private var locationNeeded: Bool = true
     
@@ -40,36 +41,23 @@ final class HomeViewModel: ObservableObject {
         }
     }
     
-    @MainActor func findPlaces(on coordinate: CLLocationCoordinate2D) {
+    @MainActor func findPlaces(by keyword: String? = nil, on coordinate: CLLocationCoordinate2D) {
         Task {
             do {
-                places = try await localMapUseCase.fetchPlaces(on: coordinate)
-            } catch {
-                print(error)
-            }
-        }
-    }
-    
-    @MainActor func findPlace(by keyword: String?) {
-        Task {
-            do {
-                if let keyword = keyword {
-                    self.selectedPlace = try await localMapUseCase.fetchPlace(with: keyword)
-                } else {
-                    self.places = try await localMapUseCase.fetchPlaces(on: currentCoordinate)
+                guard let keyword = keyword else {
+                    places = try await localMapUseCase.fetchPlaces(on: coordinate, by: sortCriteria)
+                    return
                 }
+                
+                places = try await localMapUseCase.fetchPlaces(with: keyword, on: coordinate)
             } catch {
                 print(error)
             }
         }
     }
     
-    @MainActor func moveCameraOnLocation(to place: Place?) {
-        Task {
-            guard let place = place else {
-                return updateLocationOnce()
-            }
-            findPlace(by: place.location.name)
-        }
+    @MainActor func moveCameraOnLocation(to place: Place) {
+        findPlaces(by: place.location.name, on: place.location.coordinate)
+        currentCoordinate = place.location.coordinate
     }
 }
