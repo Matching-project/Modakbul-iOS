@@ -14,7 +14,7 @@ struct SingleSelectionButton<T: Selectable, Content: View>: View {
     
     var body: some View {
         LazyVGrid(columns: columns, spacing: 20) {
-            ForEach(Array(T.allCases), id: \.self) { item in
+            ForEach(Array(T.allCases).filter { $0.id != "PRIVATE".hashValue }, id: \.self) { item in
                 Button {
                     selectedItem = item
                 } label: {
