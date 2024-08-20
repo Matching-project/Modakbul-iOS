@@ -155,6 +155,7 @@
 		04B986AA2C7312D600E20942 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 047B5AF62C7088E600D61CEF /* Preview Assets.xcassets */; };
 		DF1F7BA52C7315CF00709021 /* AppSecret.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = DF1F7BA42C7315CF00709021 /* AppSecret.xcconfig */; };
 		DF1F7BA92C73179300709021 /* MenuPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF1F7BA82C73179300709021 /* MenuPicker.swift */; };
+		DF3983CF2C73539400457B45 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF3983CE2C73539400457B45 /* OnboardingView.swift */; };
 		DF3983D12C7370F400457B45 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF3983D02C7370F400457B45 /* Constants.swift */; };
 /* End PBXBuildFile section */
 
@@ -302,9 +303,10 @@
 		04B390C22C7308170014D3D7 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		04BF39412C71F16000A5AEAC /* PlaceSortCriteria.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceSortCriteria.swift; sourceTree = "<group>"; };
 		04BF39432C71F68200A5AEAC /* UserAuthenticationResponseEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAuthenticationResponseEntity.swift; sourceTree = "<group>"; };
-		DF1F7BA12C73156800709021 /* Modakbul.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = Modakbul.app; path = "/Users/limseonghyeon/Documents/iOS Projects/Modakbul-iOS/build/Debug-iphoneos/Modakbul.app"; sourceTree = "<absolute>"; };
 		DF1F7BA42C7315CF00709021 /* AppSecret.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = AppSecret.xcconfig; sourceTree = "<group>"; };
 		DF1F7BA82C73179300709021 /* MenuPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuPicker.swift; sourceTree = "<group>"; };
+		DF3983CC2C7322B900457B45 /* Modakbul.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Modakbul.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		DF3983CE2C73539400457B45 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		DF3983D02C7370F400457B45 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -866,6 +868,7 @@
 		047B5BAD2C7088E600D61CEF /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				DF3983CD2C73537700457B45 /* Onboarding */,
 				047B5B742C7088E600D61CEF /* Components */,
 				047B5B992C7088E600D61CEF /* PreviewHelper */,
 				047B5B972C7088E600D61CEF /* NavigationRouteView */,
@@ -896,7 +899,16 @@
 			isa = PBXGroup;
 			children = (
 				047B5BAF2C7088E600D61CEF /* Modakbul */,
+				DF3983CC2C7322B900457B45 /* Modakbul.app */,
 			);
+			sourceTree = "<group>";
+		};
+		DF3983CD2C73537700457B45 /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				DF3983CE2C73539400457B45 /* OnboardingView.swift */,
+			);
+			path = Onboarding;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -922,7 +934,7 @@
 				04B986132C7312D600E20942 /* Moya */,
 			);
 			productName = modakbul;
-			productReference = DF1F7BA12C73156800709021 /* Modakbul.app */;
+			productReference = DF3983CC2C7322B900457B45 /* Modakbul.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -987,6 +999,7 @@
 				04B9861E2C7312D600E20942 /* AlertModifier.swift in Sources */,
 				04B9861F2C7312D600E20942 /* SignInKakaoButton.swift in Sources */,
 				04B986202C7312D600E20942 /* Selectable.swift in Sources */,
+				DF3983CF2C73539400457B45 /* OnboardingView.swift in Sources */,
 				04B986212C7312D600E20942 /* SuggestedResult.swift in Sources */,
 				04B986222C7312D600E20942 /* CommunityRecruitingContentListResponseEntity.swift in Sources */,
 				04B986232C7312D600E20942 /* ConfirmationContent.swift in Sources */,
