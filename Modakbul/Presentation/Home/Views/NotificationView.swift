@@ -11,7 +11,7 @@ import SwiftUI
 struct NotificationView<Router: AppRouter>: View {
     @ObservedObject private var vm: NotificationViewModel
     @EnvironmentObject private var router: Router
-    @Environment(\.editMode) var editMode
+    @Environment(\.editMode) private var editMode
     
     init(_ notificationViewModel: NotificationViewModel) {
         self.vm = notificationViewModel
@@ -19,7 +19,7 @@ struct NotificationView<Router: AppRouter>: View {
     
     var body: some View {
         List(vm.notifications, selection: $vm.multiSelection) { notification in
-            NotificationRow(notification)
+            Cell(notification)
                 .swipeActions(edge: .trailing) {
                     deleteSwipeAction(for: notification)
                 }
@@ -78,53 +78,55 @@ struct NotificationView<Router: AppRouter>: View {
     }
 }
 
-struct NotificationRow: View {
-    private let notification: PushNotification
-    @Environment(\.colorScheme) private var colorScheme
-    
-    init(_ notification: PushNotification) {
-        self.notification = notification
-    }
-    
-    var body: some View {
-        HStack {
-            // TODO: - Image Caching 필요
-            AsyncImageView(url: notification.imageURL)
-                .frame(width: 45, height: 45)
-                .clipShape(.circle)
-            
-            VStack(alignment: .leading, spacing: 5) {
-                titleView
-                subtitleView
+extension NotificationView {
+    struct Cell: View {
+        private let notification: PushNotification
+        @Environment(\.colorScheme) private var colorScheme
+        
+        init(_ notification: PushNotification) {
+            self.notification = notification
+        }
+        
+        var body: some View {
+            HStack {
+                // TODO: - Image Caching 필요
+                AsyncImageView(url: notification.imageURL)
+                    .frame(width: 45, height: 45)
+                    .clipShape(.circle)
+                
+                VStack(alignment: .leading, spacing: 5) {
+                    titleView
+                    subtitleView
+                }
+                .padding(.vertical, 15)
             }
-            .padding(.vertical, 15)
+            .padding(.horizontal)
+            .background(colorScheme == .dark ? .gray.opacity(0.2) : .white)
+            .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
+            .shadow(radius: 4)
         }
-        .padding(.horizontal)
-        .background(colorScheme == .dark ? .gray.opacity(0.2) : .white)
-        .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
-        .shadow(radius: 4)
-    }
-    
-    private var titleView: some View {
-        HStack {
-            Text(notification.title)
+        
+        private var titleView: some View {
+            HStack {
+                Text(notification.title)
+                    .foregroundColor(.accent)
+                    .bold()
+                Text(notification.titlePostfix)
+                    .bold()
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .overlay(alignment: .topTrailing) {
+                Text(notification.timestamp)
+                    .font(.caption)
+                    .bold()
+            }
+        }
+        
+        private var subtitleView: some View {
+            Text(notification.subtitle)
                 .foregroundColor(.accent)
-                .bold()
-            Text(notification.titlePostfix)
-                .bold()
-        }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .overlay(alignment: .topTrailing) {
-            Text(notification.timestamp)
                 .font(.caption)
-                .bold()
         }
-    }
-    
-    private var subtitleView: some View {
-        Text(notification.subtitle)
-            .foregroundColor(.accent)
-            .font(.caption)
     }
 }
 

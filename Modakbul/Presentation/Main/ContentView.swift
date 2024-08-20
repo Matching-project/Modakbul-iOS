@@ -28,7 +28,6 @@ enum PageType {
 
 struct ContentView<Router: AppRouter>: View {
     @EnvironmentObject private var router: Router
-    
     @State private var selectedPage: PageType = .home
     
     var body: some View {

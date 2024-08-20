@@ -14,7 +14,7 @@ struct PlaceInformationDetailView<Router: AppRouter>: View {
     private let communityRecruitingContentId: Int64
     
     @State private var index: Int = 0
-    private let arr = [0, 1, 2, 3, 4]
+    private let arr = Array(0...4)
     
     init(
 //        placeInformationDetailViewModel: PlaceInformationDetailViewModel,
