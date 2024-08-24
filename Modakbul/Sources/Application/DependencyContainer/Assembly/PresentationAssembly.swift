@@ -20,6 +20,9 @@ struct PresentationAssembly: Assembly {
         }
         
         // MARK: - My
+        // TODO: - 회원가입시 MyViewModel에 유저정보 주입 필요
+        container.register(for: MyViewModel.self, MyViewModel())
+        
         container.register(for: PlaceShowcaseViewModel.self) { resolver in
             PlaceShowcaseViewModel(placeShowcaseAndReviewUseCase: resolver.resolve(PlaceShowcaseAndReviewUseCase.self))
         }
