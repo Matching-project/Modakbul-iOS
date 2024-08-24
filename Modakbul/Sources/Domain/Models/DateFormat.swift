@@ -122,4 +122,23 @@ extension Date {
                              of: self,
                              matchingPolicy: .nextTime) ?? self
     }
+    
+    func toAge() -> String {
+        let calendar = Calendar.current
+        let ageComponents = calendar.dateComponents([.year], from: self, to: Date())
+            
+        if let age = ageComponents.year {
+            return "\(age)"
+        } else {
+            return "나이를 계산할 수 없습니다."
+        }
+    }
+}
+
+extension DateComponents {
+    func toDate() -> Date {
+        var calendar = Calendar.current
+        calendar.timeZone = TimeZone(secondsFromGMT: 0)!
+        return calendar.date(from: self)!
+    }
 }
