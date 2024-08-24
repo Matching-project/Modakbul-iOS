@@ -84,7 +84,7 @@ enum Route: Routable {
         case .registrationView:
             RegistrationView<Router>(registrationViewModel: router.resolver.resolve(RegistrationViewModel.self))
         case .myView:           // MARK: - My
-            MyView<Router>()
+            MyView<Router>(myViewModel: router.resolver.resolve(MyViewModel.self))
         case .placeShowcaseView:
             PlaceShowcaseView<Router>(placeShowcaseViewModel: router.resolver.resolve(PlaceShowcaseViewModel.self))
         case .homeView:         // MARK: - Home

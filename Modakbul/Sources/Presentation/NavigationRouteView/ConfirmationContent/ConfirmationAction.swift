@@ -8,9 +8,9 @@
 import Foundation
 
 enum ConfirmationAction: Identifiable {
-    case defaultAction(_ title: String, action: @autoclosure (() -> Void))
-    case cancelAction(_ title: String, action: @autoclosure (() -> Void))
-    case destructiveAction(_ title: String, action: @autoclosure (() -> Void))
+    case defaultAction(_ title: String, action: (() -> Void))
+    case cancelAction(_ title: String, action: (() -> Void))
+    case destructiveAction(_ title: String, action: (() -> Void))
     
     var id: String {
         switch self {

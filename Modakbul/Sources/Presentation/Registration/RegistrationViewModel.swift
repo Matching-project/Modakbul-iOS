@@ -46,13 +46,6 @@ final class RegistrationViewModel: ObservableObject {
         self.userRegistrationUseCase = userRegistrationUseCase
     }
     
-    // MARK: - Private Methods
-    private func dateComponentsToDate(_ dateComponents: DateComponents) -> Date {
-        var calendar = Calendar.current
-        calendar.timeZone = TimeZone(secondsFromGMT: 0)!
-        return calendar.date(from: dateComponents)!
-    }
-    
     // MARK: - Public Methods
     func proceedToNextField() {
         fieldIndex += 1
@@ -92,10 +85,12 @@ final class RegistrationViewModel: ObservableObject {
                         job: job ?? .other,
                         categoriesOfInterest: categoriesOfInterest,
                         isGenderVisible: false,
-                        birth: dateComponentsToDate(birth))
+                        birth: birth.toDate())
         
         Task {
             try await userRegistrationUseCase.register(user, encoded: image ?? Data())
+            // TODO: - 회원가입 완료되면 회원정보 조회 API를 통해 user.imageURL 채워넣기.
+            // TODO: - 그래야 마이페이지로 이동할 때 API 요청 필요 없음
         }
     }
     

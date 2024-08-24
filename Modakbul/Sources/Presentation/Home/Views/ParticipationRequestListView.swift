@@ -29,13 +29,11 @@ struct ParticipationRequestListView<Router: AppRouter>: View {
                 Spacer()
                 
                 HStack {
-                    Button {
+                    CapsuledInsetButton {
                         // TODO: 채팅 화면으로 이동
                     } label: {
                         Text("채팅")
-                            .font(.footnote.bold())
                     }
-                    .buttonStyle(CapsuledInsetButton())
                 }
                 .layoutPriority(1)
             }
