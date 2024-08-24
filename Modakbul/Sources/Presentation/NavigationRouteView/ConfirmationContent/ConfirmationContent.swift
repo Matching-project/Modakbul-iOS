@@ -14,38 +14,14 @@ protocol ConfirmationContent {
 }
 
 // MARK: Alerts
-struct WarningBeforeSaveAlert: ConfirmationContent {
-    var title: String?
-    var message: String?
-    var actions: [ConfirmationAction?]
-}
-
-struct ParticipationRequestSuccessAlert: ConfirmationContent {
-    var title: String?
-    var message: String?
-    var actions: [ConfirmationAction?]
-}
-
-struct AllChatsDeleteAlert: ConfirmationContent {
-    var title: String?
-    var message: String?
-    var actions: [ConfirmationAction?]
-}
-
-struct ReportUserConfirmAlert: ConfirmationContent {
-    var title: String?
-    var message: String?
-    var actions: [ConfirmationAction?]
-}
-
-struct BlockUserConfirmAlert: ConfirmationContent {
+struct Alert: ConfirmationContent {
     var title: String?
     var message: String?
     var actions: [ConfirmationAction?]
 }
 
 // MARK: ConfirmationDialogs
-struct UserReportOrBlockConfirmationDialog: ConfirmationContent {
+struct Dialog: ConfirmationContent {
     var title: String?
     var message: String?
     var actions: [ConfirmationAction?]
