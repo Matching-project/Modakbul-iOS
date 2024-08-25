@@ -13,7 +13,7 @@ struct MyView<Router: AppRouter>: View {
     @State private var isLoggedIn: Bool
     
     // TODO: - 로그인 상태 AppStorage로 관리 필요
-    init(myViewModel: MyViewModel, isLoggedIn: Bool = true) {
+    init(myViewModel: MyViewModel, isLoggedIn: Bool = false) {
         self.vm = myViewModel
         self.isLoggedIn = isLoggedIn
     }
@@ -21,14 +21,14 @@ struct MyView<Router: AppRouter>: View {
     var body: some View {
         VStack(alignment: .leading) {
             if isLoggedIn {
-                HeaderWhenLoggedIn(user: $vm.user)
+                HeaderWhenLoggedIn($vm.user)
                     .padding(.bottom, -10)
                     .border(.red)
             } else {
                 HeaderWhenLoggedOut()
             }
             
-            Cell()
+            Cell($isLoggedIn, for: $vm.user)
                 .border(.red)
         }
         .padding(.horizontal, Constants.horizontal)
@@ -38,7 +38,11 @@ struct MyView<Router: AppRouter>: View {
 extension MyView {
     struct HeaderWhenLoggedIn: View {
         @EnvironmentObject private var router: Router
-        @Binding var user: User
+        @Binding private var user: User
+        
+        init(_ user: Binding<User>) {
+            self._user = user
+        }
         
         var body: some View {
             HStack {
@@ -67,8 +71,9 @@ extension MyView {
                                     router.dismiss()
                                 },
                                 .defaultAction("로그아웃") {
-                                    router.dismiss()
-                                }])
+                                    // TODO: -
+                                }
+                            ])
                         } label: {
                             Text("로그아웃")
                         }
@@ -107,80 +112,60 @@ extension MyView {
     
     struct Cell: View {
         @EnvironmentObject private var router: Router
+        @Binding private var isLoggedIn: Bool
+        @Binding private var user: User
+        
+        init(_ isLoggedIn: Binding<Bool>, for user: Binding<User>) {
+            self._isLoggedIn = isLoggedIn
+            self._user = user
+        }
         
         var body: some View {
             List {
                 Section("이용정보") {
-                    Button {
-                        
-                    } label: {
-                        Text("나의 모집글")
-                    }
-                    
-                    Button {
-                        
-                    } label : {
-                        Text("참여 모집 내역")
-                    }
-                    
-                    Button {
-                        
-                    } label : {
-                        Text("나의 참여 요청")
-                    }
-                    
-                    Button {
-                        router.route(to: .placeShowcaseView)
-                    } label : {
-                        Text("카페 제보/리뷰")
-                    }
+//                    button("나의 모집글", destination: )
+//                    button("참여 모집 내역", destination: )
+//                    button("나의 참여 요청", destination: )
+                    button("카페 제보/리뷰", destination: .placeShowcaseView)
                 }
-                .headerProminence(.increased)
-                .listRowSeparator(.hidden, edges: .top)
-                .padding(.top, -10)
                 
                 Section("차단/신고") {
-                    Button {
-                        
-                    } label: {
-                        Text("차단 목록")
-                    }
-                    
-                    Button {
-                        
-                    } label: {
-                        Text("신고 내역")
-                    }
+                    // button("차단 목록", destination: )
+                    // button("신고 내역", destination: )
                 }
-                .headerProminence(.increased)
-                .listRowSeparator(.hidden, edges: .top)
-                .padding(.top, -10)
                 
                 Section {
-                    Button {
-                        
-                    } label: {
-                        Text("알림 설정")
-                    }
-                    
-                    Button {
-                        
-                    } label: {
-                        Text("약관 및 정책")
-                    }
-                    
-                    Button {
-                        
-                    } label: {
-                        Text("탈퇴하기")
-                    }
-                    
-                    Text("문의처: modakbul@email.com")
+                    // button("알림 설정", destination: )
+                    // button("약관 및 정책", destination: )
+                    // button("탈퇴하기", destination: )
+                    Text("문의처: modakbul@gmail.com")
                 }
-                .listRowSeparator(.hidden)
             }
             .scrollDisabled(true)
             .listStyle(.inset)
+        }
+        
+        private func button(_ title: String, destination: Route) -> some View {
+            Button {
+                handleButtonTap(for: destination)
+            } label: {
+                Text(title)
+            }
+        }
+        
+        private func handleButtonTap(for destination: Route) {
+            if isLoggedIn {
+                router.route(to: destination)
+            } else {
+                router.alert(for: .login, actions: [
+                    .cancelAction("취소") {
+                        router.dismiss()
+                    },
+                    .defaultAction("로그인") {
+                        router.route(to: .loginView)
+                    }
+                ])
+            }
         }
     }
 }
