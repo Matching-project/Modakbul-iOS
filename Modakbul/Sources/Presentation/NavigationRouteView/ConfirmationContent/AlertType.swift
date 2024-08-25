@@ -19,11 +19,13 @@ enum AlertType {
     /// 신고 완료 알림입니다.
     case reportUserConfirmation
     /// 사용자 차단 알림입니다.
-    case blockUserConfirmation(user: String)
+    case blockUserConfirmation(nickname: String)
+    /// 로그인 의사를 물어보는 알림입니다.
+    case login
     /// 로그아웃 알림입니다.
     case logout
     /// 회원탈퇴 알림입니다.
-    case exitUser(user: String)
+    case exitUser(nickname: String)
     
     func alert(_ actions: [ConfirmationAction]) -> ConfirmationContent {
         switch self {
@@ -37,12 +39,14 @@ enum AlertType {
             Alert(message: "허위 신고 적발 시 계정 사용이 중지됩니다.", actions: actions)
         case .reportUserConfirmation:
             Alert(message: "관리자가 검토하기까지 2~3일 정도 소요됩니다. 마이페이지 - 나의 신고내역에서 상태를 확인할 수 있어요.", actions: actions)
-        case .blockUserConfirmation(let user):
-            Alert(title: "\(user)을(를) 차단하려고 합니다.", message: "정말 차단하시겠어요?", actions: actions)
+        case .blockUserConfirmation(let nickname):
+            Alert(title: "\(nickname)을(를) 차단하려고 합니다.", message: "정말 차단하시겠어요?", actions: actions)
+        case .login:
+            Alert(message: "로그인이 필요한 서비스입니다.\n로그인하시겠어요?", actions: actions)
         case .logout:
             Alert(message: "정말 로그아웃하시겠어요?", actions: actions)
-        case .exitUser(let user):
-            Alert(title: "잠깐만요!", message: "더 유익한 모임이 \(user)님을 기다리고 있어요. 정말 떠나시겠어요?", actions: actions)
+        case .exitUser(let nickname):
+            Alert(title: "잠깐만요!", message: "더 유익한 모임이 \(nickname)님을 기다리고 있어요. 정말 떠나시겠어요?", actions: actions)
         }
     }
 }
