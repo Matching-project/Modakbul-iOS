@@ -23,13 +23,11 @@ struct MyView<Router: AppRouter>: View {
             if isLoggedIn {
                 HeaderWhenLoggedIn($vm.user)
                     .padding(.bottom, -10)
-                    .border(.red)
             } else {
                 HeaderWhenLoggedOut()
             }
             
             Cell($isLoggedIn, for: $vm.user)
-                .border(.red)
         }
         .padding(.horizontal, Constants.horizontal)
     }
