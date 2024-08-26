@@ -7,22 +7,49 @@
 
 import SwiftUI
 
-struct PlaceInformationView<Router: AppRouter>: View {
-    @EnvironmentObject private var router: Router
+final class PlaceInformationViewModel: ObservableObject {
+    @Published var selectedOpeningHourByDay: OpeningHour? {
+        didSet { displaySelectedOpeningHourText() }
+    }
+    @Published var openingHourText: String = String()
+    @Published var communityRecruitingContents: [CommunityRecruitingContent] = []
     
-    @State private var selectedOpeningHourByDay: OpeningHour?
-    @State private var communityRecruitingContents: [CommunityRecruitingContent] = []
-    
-    private let place: Place
-    
-    init(
-        place: Place
-    ) {
-        self.place = place
+    private func displaySelectedOpeningHourText() {
+        if let openingHour = selectedOpeningHourByDay {
+            openingHourText = displayOpeningHours(openingHour)
+        }
+    }
+}
+
+// MARK: Interfaces
+extension PlaceInformationViewModel {
+    func configureView(by place: Place) {
         let calendar = Calendar.current
         let weekDay = calendar.component(.weekday, from: .now)
         let dayOfWeek = DayOfWeek(weekDay)
         self.selectedOpeningHourByDay = place.openingHours.first(where: {$0.dayOfWeek == dayOfWeek})
+    }
+    
+    func displayOpeningHours(_ openingHour: OpeningHour) -> String {
+        let dayOfWeek = openingHour.dayOfWeek.description
+        let open = openingHour.open
+        let close = openingHour.close
+        return "\(dayOfWeek) \(open) - \(close)"
+    }
+}
+
+struct PlaceInformationView<Router: AppRouter>: View {
+    @EnvironmentObject private var router: Router
+    @ObservedObject private var viewModel: PlaceInformationViewModel
+    
+    private let place: Place
+    
+    init(
+        _ viewModel: PlaceInformationViewModel,
+        place: Place
+    ) {
+        self.viewModel = viewModel
+        self.place = place
     }
     
     var body: some View {
@@ -41,7 +68,7 @@ struct PlaceInformationView<Router: AppRouter>: View {
                 communityRecruitingContentEditButton
             }
             
-            if communityRecruitingContents.isEmpty {
+            if viewModel.communityRecruitingContents.isEmpty {
                 // TODO: 모임 개수 표시 영역
             } else {
                 communityRecruitingContentListArea
@@ -50,6 +77,9 @@ struct PlaceInformationView<Router: AppRouter>: View {
             Spacer()
         }
         .padding()
+        .onAppear {
+            viewModel.configureView(by: place)
+        }
     }
     
     private var informationArea: some View {
@@ -66,13 +96,15 @@ struct PlaceInformationView<Router: AppRouter>: View {
                 Text("운영시간: ")
                 
                 Menu {
-                    Picker(selection: $selectedOpeningHourByDay) {
-                        ForEach(place.openingHours, id: \.dayOfWeek) { openingHour in
-                            displayOpeningHours(openingHour)
+                    ForEach(place.openingHours, id: \.dayOfWeek) { openingHour in
+                        Button {
+                            viewModel.selectedOpeningHourByDay = openingHour
+                        } label: {
+                            Text(viewModel.displayOpeningHours(openingHour))
                         }
-                    } label: {}
+                    }
                 } label: {
-                    displayOpeningHours(selectedOpeningHourByDay)
+                    Text(viewModel.openingHourText)
                     Image(systemName: "chevron.down")
                 }
             }
@@ -101,7 +133,7 @@ struct PlaceInformationView<Router: AppRouter>: View {
     private var communityRecruitingContentListArea: some View {
         ScrollView {
             LazyVStack {
-                ForEach(communityRecruitingContents, id: \.id) { communityRecruitingContent in
+                ForEach(viewModel.communityRecruitingContents, id: \.id) { communityRecruitingContent in
                     Cell(communityRecruitingContent)
                         .onTapGesture {
                             router.dismiss()
@@ -112,24 +144,13 @@ struct PlaceInformationView<Router: AppRouter>: View {
         }
         .padding(.top)
     }
-    
-    private func displayOpeningHours(_ openingHour: OpeningHour?) -> Text {
-        guard let openingHour = openingHour else { return Text("정보 없음") }
-        let dayOfWeek = openingHour.dayOfWeek.description
-        let open = openingHour.open
-        let close = openingHour.close
-        
-        return Text("\(dayOfWeek) \(open) - \(close)")
-    }
 }
 
 extension PlaceInformationView {
     struct Cell: View {
         private let communityRecruitingContent: CommunityRecruitingContent
         
-        private var community: Community {
-            self.communityRecruitingContent.community
-        }
+        private var community: Community { communityRecruitingContent.community }
         
         init(_ communityRecruitingContent: CommunityRecruitingContent) {
             self.communityRecruitingContent = communityRecruitingContent
