@@ -39,6 +39,7 @@ struct ParticipationRequestListView<Router: AppRouter>: View {
                 }
                 .layoutPriority(1)
             }
+            .listRowSeparator(.hidden)
             .swipeActions(edge: .trailing) {
                 Button {
                     // TODO: 참여 요청 수락
