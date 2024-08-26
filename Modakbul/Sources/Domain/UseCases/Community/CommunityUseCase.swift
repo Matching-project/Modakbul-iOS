@@ -10,8 +10,8 @@ import Foundation
 protocol CommunityUseCase {
     func fetchCommunities(_ location: Location) async -> [CommunityRecruitingContent]
     // TODO: 네이밍 수정 될 여지가 있음
-    func fetchCommunities(by userId: String, asWriter: Bool, included: Bool) async -> [CommunityRecruitingContent]
-    func fetchCommunity(on chatRoomId: String, with communityId: String) async -> CommunityRecruitingContent
+    func fetchCommunities(by userId: Int64, asWriter: Bool, included: Bool) async -> [CommunityRecruitingContent]
+    func fetchCommunity(on chatRoomId: Int64, with communityId: Int64) async -> CommunityRecruitingContent
     
     // 요청자 유즈케이스
     func participate(_ communityId: String, _ userId: String) async
@@ -19,7 +19,7 @@ protocol CommunityUseCase {
     func cancel(_ communityId: String, _ userId: String) async
     
     // 게시자 유즈케이스
-    func fetchParticipantsList(_ communityId: String) async -> [User]
+    func fetchParticipantsList(_ communityId: Int64) async -> [ParticipationRequest]
     func startReqruiting() async
     func stopReqruiting() async
     func accept() async
