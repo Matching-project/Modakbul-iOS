@@ -7,20 +7,6 @@
 
 import SwiftUI
 
-final class PlaceInformationViewModel: ObservableObject {
-    @Published var selectedOpeningHourByDay: OpeningHour? {
-        didSet { displaySelectedOpeningHourText() }
-    }
-    @Published var openingHourText: String = String()
-    @Published var communityRecruitingContents: [CommunityRecruitingContent] = []
-    
-    private func displaySelectedOpeningHourText() {
-        if let openingHour = selectedOpeningHourByDay {
-            openingHourText = displayOpeningHours(openingHour)
-        }
-    }
-}
-
 // MARK: Interfaces
 extension PlaceInformationViewModel {
     func configureView(by place: Place) {
