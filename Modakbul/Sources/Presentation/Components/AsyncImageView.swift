@@ -30,7 +30,7 @@ struct AsyncImageView: View {
             case .success(let image):
                 image
                     .resizable()
-            case .failure(let error):
+            case .failure:
                 Image(.modakbulMainDark)
                     .resizable()
             @unknown default:

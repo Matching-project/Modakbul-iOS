@@ -20,9 +20,9 @@ struct PresentationAssembly: Assembly {
         }
         
         // MARK: - My
-        container.register(for: PlaceShowcaseViewModel.self) { resolver in
-            PlaceShowcaseViewModel(placeShowcaseAndReviewUseCase: resolver.resolve(PlaceShowcaseAndReviewUseCase.self))
-        }
+//        container.register(for: PlaceShowcaseViewModel.self) { resolver in
+//            PlaceShowcaseViewModel(placeShowcaseAndReviewUseCase: resolver.resolve(PlaceShowcaseAndReviewUseCase.self))
+//        }
         
         // MARK: - Home
         container.register(for: HomeViewModel.self) { resolver in

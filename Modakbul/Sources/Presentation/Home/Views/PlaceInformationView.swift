@@ -31,12 +31,11 @@ struct PlaceInformationView<Router: AppRouter>: View {
                 AsyncImageView(imageData: Data())
                     .background(.gray)
                 
-                Spacer()
-                
                 informationArea
                 
                 Spacer()
             }
+            
             .frame(maxWidth: .infinity)
             .overlay(alignment: .topTrailing) {
                 communityRecruitingContentEditButton
@@ -54,18 +53,17 @@ struct PlaceInformationView<Router: AppRouter>: View {
     }
     
     private var informationArea: some View {
-        VStack(alignment: .leading, spacing: 10) {
+        VStack(alignment: .leading) {
             VStack(alignment: .leading, spacing: 4) {
                 Text(place.location.name)
-                    .font(.title2.bold())
+                    .font(.title3.bold())
                 
                 Text(place.location.address)
-                    .font(.subheadline)
+                    .font(.caption)
             }
             
             HStack {
                 Text("운영시간: ")
-                    .font(.subheadline)
                 
                 Menu {
                     Picker(selection: $selectedOpeningHourByDay) {
@@ -77,35 +75,27 @@ struct PlaceInformationView<Router: AppRouter>: View {
                     displayOpeningHours(selectedOpeningHourByDay)
                     Image(systemName: "chevron.down")
                 }
-                .font(.subheadline)
             }
+            .padding(.vertical, 10)
             
             HStack {
-                CapsuleTag(place.powerSocketState.description)
-                CapsuleTag(place.groupSeatingState.description)
+                CapsuleTag(place.powerSocketState.description, .caption)
+                CapsuleTag(place.groupSeatingState.description, .caption)
             }
-            .font(.caption)
         }
+        .font(.caption)
     }
     
     private var communityRecruitingContentEditButton: some View {
         Button {
             router.route(to: .placeInformationDetailMakingView)
         } label: {
-            // TODO: 이미지 제공 받아야함
-            Image(systemName: "pencil.circle.fill")
+            Image(.photoUploadSelection)
                 .resizable()
                 .scaledToFit()
-                .frame(width: 30, height: 30)
         }
-        .padding(.trailing)
-        .shadow(color: .secondary, radius: 4, y: 4)
-        .alignmentGuide(.top) { dimension in
-            dimension.height / 2 - 30
-        }
-        .alignmentGuide(.trailing) { dimension in
-            dimension.width / 2 + 14
-        }
+        .frame(width: 30, height: 30)
+        .shadow(color: .gray.opacity(0.3), radius: 4, y: 4)
     }
     
     private var communityRecruitingContentListArea: some View {
