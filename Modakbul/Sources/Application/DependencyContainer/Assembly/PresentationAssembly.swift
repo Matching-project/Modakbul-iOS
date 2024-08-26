@@ -29,6 +29,10 @@ struct PresentationAssembly: Assembly {
             HomeViewModel(localMapUseCase: resolver.resolve(LocalMapUseCase.self))
         }
         
+        container.register(for: PlaceInformationViewModel.self) { resolver in
+            PlaceInformationViewModel()
+        }
+        
         //        container.register(for: PlaceInformationDetailViewModel.self) { resolver in
         //            PlaceInformationDetailViewModel()
         //        }
