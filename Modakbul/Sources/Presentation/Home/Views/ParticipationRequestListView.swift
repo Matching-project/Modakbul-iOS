@@ -28,30 +28,29 @@ struct ParticipationRequestListView<Router: AppRouter>: View {
                 
                 Spacer()
                 
-                HStack {
-                    Button {
-                        // TODO: 채팅 화면으로 이동
-                    } label: {
-                        Text("채팅")
-                            .font(.footnote.bold())
-                    }
-                    .buttonStyle(CapsuledInsetButton())
+                Button {
+                    // TODO: 채팅 화면으로 이동
+                } label: {
+                    Text("채팅")
+                        .font(.footnote.bold())
                 }
+                .buttonStyle(CapsuledInsetButton())
                 .layoutPriority(1)
             }
             .listRowSeparator(.hidden)
             .swipeActions(edge: .trailing) {
-                Button {
-                    // TODO: 참여 요청 수락
-                } label: {
-                    Text("수락")
-                }
-                
                 Button(role: .destructive) {
                     // TODO: 참여 요청 목록에서 삭제 및 거절
                 } label: {
                     Text("거절")
                 }
+                
+                Button {
+                    // TODO: 참여 요청 수락
+                } label: {
+                    Text("수락")
+                }
+                .tint(.blue)
             }
         }
         .listStyle(.plain)
