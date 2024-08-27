@@ -84,11 +84,13 @@ struct PlaceInformationDetailView<Router: AppRouter>: View {
                 .font(.title2.bold())
             
             HStack {
-                Image(systemName: "heart.fill")
+                AsyncImageView(url: nil)
                 
                 VStack(alignment: .leading) {
                     Text("작성자")
                     Text("디자인마스터")
+                    Text("게시일: 2024. 3. 3")
+                        .font(.caption)
                 }
                 .font(.headline)
             }
