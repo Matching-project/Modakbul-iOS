@@ -57,29 +57,37 @@ extension MyView {
                         .font(.subheadline)
                     
                     HStack {
-                        CapsuledInsetButton {
-                            //                            router.route(to: .)
+                        Button {
+                            
                         } label: {
                             Text("프로필 수정")
+                                .font(.footnote.bold())
                         }
+                        .buttonStyle(.capsuledInset)
                         
-                        CapsuledInsetButton {
-                            router.alert(for: .logout, actions: [
-                                .cancelAction("취소") {
-                                    router.dismiss()
-                                },
-                                .defaultAction("로그아웃") {
-                                    // TODO: -
-                                }
-                            ])
+                        Button {
+                            showLogoutAlert()
                         } label: {
                             Text("로그아웃")
+                                .font(.footnote.bold())
                         }
+                        .buttonStyle(.capsuledInset)
                     }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.leading, 20)
             }
+        }
+        
+        private func showLogoutAlert() -> Void {
+            router.alert(for: .logout, actions: [
+                .cancelAction("취소") {
+                    router.dismiss()
+                },
+                .defaultAction("로그아웃") {
+                    // TODO: -
+                }
+            ])
         }
     }
     

@@ -28,13 +28,13 @@ struct ParticipationRequestListView<Router: AppRouter>: View {
                 
                 Spacer()
                 
-                HStack {
-                    CapsuledInsetButton {
-                        // TODO: 채팅 화면으로 이동
-                    } label: {
-                        Text("채팅")
-                    }
+                Button {
+                    // MARK: 채팅
+                } label: {
+                    Text("채팅")
+                        .font(.footnote.bold())
                 }
+                .buttonStyle(.capsuledInset)
                 .layoutPriority(1)
             }
             .swipeActions(edge: .trailing) {
@@ -90,5 +90,11 @@ extension ParticipationRequestListView {
             let candidates = participatedUser.categoriesOfInterest
             return candidates.contains(majorCategory) ? majorCategory : candidates.randomElement() ?? .other
         }
+    }
+}
+
+struct ParticipationRequestListView_Preview: PreviewProvider {
+    static var previews: some View {
+        router.view(to: .participationRequestListView(communityRecruitingContent: previewHelper.communityRecruitingContents.first!))
     }
 }
