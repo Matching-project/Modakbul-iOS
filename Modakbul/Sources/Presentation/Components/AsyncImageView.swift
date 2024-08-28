@@ -9,17 +9,43 @@ import SwiftUI
 
 struct AsyncImageView: View {
     private let url: URL?
+    private let contentMode: ContentMode
+    private let minWidth: CGFloat
+    private let minHeight: CGFloat
     
-    init(url: URL?) {
+    init(url: URL?,
+         contentMode: ContentMode = .fit,
+         minWidth: CGFloat = 64,
+         minHeight: CGFloat = 64
+    ) {
         self.url = url
+        self.contentMode = contentMode
+        self.minWidth = minWidth
+        self.minHeight = minHeight
     }
     
-    init(imageData: Data) {
-        self.init(url: URL(dataRepresentation: imageData, relativeTo: nil))
+    init(imageData: Data,
+         contentMode: ContentMode = .fit,
+         minWidth: CGFloat = 64,
+         minHeight: CGFloat = 64
+    ) {
+        self.init(url: URL(dataRepresentation: imageData, relativeTo: nil),
+                  contentMode: contentMode,
+                  minWidth: minWidth,
+                  minHeight: minHeight
+        )
     }
     
-    init(urlString: String) {
-        self.init(url: URL(string: urlString))
+    init(urlString: String,
+         contentMode: ContentMode = .fit,
+         minWidth: CGFloat = 64,
+         minHeight: CGFloat = 64
+    ) {
+        self.init(url: URL(string: urlString),
+                  contentMode: contentMode,
+                  minWidth: minWidth,
+                  minHeight: minHeight
+        )
     }
     
     var body: some View {
@@ -38,7 +64,7 @@ struct AsyncImageView: View {
                     .resizable()
             }
         }
-        .aspectRatio(contentMode: .fit)
-        .frame(minWidth: 64, minHeight: 64)
+        .aspectRatio(contentMode: contentMode)
+        .frame(minWidth: minWidth, minHeight: minHeight)
     }
 }
