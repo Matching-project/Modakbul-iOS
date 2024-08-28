@@ -53,27 +53,16 @@ final class RegistrationViewModel: ObservableObject {
         currentField = allFields[fieldIndex]
     }
 
+    func isPassedNicknameRule() -> Bool {
+        userRegistrationUseCase.validateInLocal(nickname)
+    }
+    
     @MainActor
     func checkNicknameForOverlap() {
         // TODO: NetworkService를 통해 닉네임 쿼리 필요
         Task {
-            isOverlappedNickname = try await userRegistrationUseCase.validate(nickname)
-        }
-    }
-    
-    func isPassedNicknameRule() -> Bool {
-        let nicknamePattern = "^[가-힣a-zA-Z0-9]+$"
-        let nicknamePredicate = NSPredicate(format: "SELF MATCHES %@", nicknamePattern)
-        
-        guard nicknamePredicate.evaluate(with: nickname) else {
-            return false
-        }
-        
-        guard 2 <= nickname.count && nickname.count <= 15 else {
-            return false
-        }
-        
-        return true
+            isOverlappedNickname = try await userRegistrationUseCase.validateWithServer(nickname)
+          }
     }
     
     func submit() {
