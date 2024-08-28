@@ -15,25 +15,7 @@ struct CommunityRecruitingContentListResponseEntity: Decodable {
     let result: Result
     
     struct Result: Decodable {
-        let place: Place
         let communityRecruitingContents: [CommunityRecruitingContent]
-        
-        struct Place: Decodable {
-            let name, address: String
-            let imageURL: URL?
-            let openingHour: [OpeningHour]
-            let powerSocketState: PowerSocketState
-            let noiseLevel: NoiseLevel
-            let groupSeatingState: GroupSeatingState
-            
-            enum CodingKeys: String, CodingKey {
-                case name, address, openingHour
-                case imageURL = "image"
-                case powerSocketState = "outlet"
-                case noiseLevel = "congestion"
-                case groupSeatingState = "groupSeat"
-            }
-        }
         
         struct CommunityRecruitingContent: Decodable {
             let id, writerId: Int64
