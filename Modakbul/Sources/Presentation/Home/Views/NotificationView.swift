@@ -89,8 +89,7 @@ extension NotificationView {
         
         var body: some View {
             HStack {
-                // TODO: - Image Caching 필요
-                AsyncImageView(url: notification.imageURL)
+                AsyncImageView(url: notification.imageURL, contentMode: .fill)
                     .frame(width: 45, height: 45)
                     .clipShape(.circle)
                 
