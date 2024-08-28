@@ -23,33 +23,23 @@ struct ParticipationRequestListView<Router: AppRouter>: View {
     
     var body: some View {
         List(participationRequestListViewModel.participationRequests) { participatedRequest in
-            HStack {
-                Cell(participatedRequest.participatedUser, communityRecruitingContent.community.category)
-                
-                Spacer()
-                
-                Button {
-                    // MARK: 채팅
-                } label: {
-                    Text("채팅")
-                        .font(.footnote.bold())
+            Cell(
+                participatedRequest.participatedUser,
+                communityRecruitingContent.community.category
+            )
+                .swipeActions(edge: .trailing) {
+                    Button {
+                        // TODO: 참여 요청 수락
+                    } label: {
+                        Text("수락")
+                    }
+                    
+                    Button(role: .destructive) {
+                        // TODO: 참여 요청 목록에서 삭제 및 거절
+                    } label: {
+                        Text("거절")
+                    }
                 }
-                .buttonStyle(.capsuledInset)
-                .layoutPriority(1)
-            }
-            .swipeActions(edge: .trailing) {
-                Button {
-                    // TODO: 참여 요청 수락
-                } label: {
-                    Text("수락")
-                }
-                
-                Button(role: .destructive) {
-                    // TODO: 참여 요청 목록에서 삭제 및 거절
-                } label: {
-                    Text("거절")
-                }
-            }
         }
         .listStyle(.plain)
         .navigationTitle("참여 요청 목록")
@@ -71,19 +61,32 @@ extension ParticipationRequestListView {
         }
         
         var body: some View {
-            AsyncImageView(url: participatedUser.imageURL)
-                .frame(maxWidth: 64, maxHeight: 64)
-                .clipShape(.circle)
-            
-            VStack(alignment: .leading, spacing: 10) {
-                Text(participatedUser.nickname)
-                    .font(.headline)
+            HStack {
+                AsyncImageView(url: participatedUser.imageURL)
+                    .frame(maxWidth: 64, maxHeight: 64)
+                    .clipShape(.circle)
                 
-                Text("\(selectMajorCategory().description) | \(participatedUser.job.description)")
-                    .font(.subheadline)
-                    .foregroundStyle(.accent)
+                VStack(alignment: .leading, spacing: 10) {
+                    Text(participatedUser.nickname)
+                        .font(.headline)
+                    
+                    Text("\(selectMajorCategory().description) | \(participatedUser.job.description)")
+                        .font(.subheadline)
+                        .foregroundStyle(.accent)
+                }
+                .lineLimit(1)
+                
+                Spacer()
+                
+                Button {
+                    // MARK: 채팅
+                } label: {
+                    Text("채팅")
+                        .font(.footnote.bold())
+                }
+                .buttonStyle(.capsuledInset)
+                .layoutPriority(1)
             }
-            .lineLimit(1)
         }
         
         private func selectMajorCategory() -> Category {
