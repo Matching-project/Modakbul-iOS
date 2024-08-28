@@ -27,6 +27,11 @@ struct PresentationAssembly: Assembly {
             PlaceShowcaseViewModel(placeShowcaseAndReviewUseCase: resolver.resolve(PlaceShowcaseAndReviewUseCase.self))
         }
         
+        // TODO: - UseCase 필요
+        container.register(for: ProfileEditViewModel.self) { resolver in
+            ProfileEditViewModel(userRegistrationUseCase: resolver.resolve(UserRegistrationUseCase.self))
+        }
+        
         // MARK: - Home
         container.register(for: HomeViewModel.self) { resolver in
             HomeViewModel(localMapUseCase: resolver.resolve(LocalMapUseCase.self))

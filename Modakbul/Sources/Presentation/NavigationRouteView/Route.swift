@@ -35,6 +35,7 @@ enum Route: Routable {
     case requiredTermView     // MARK: - Registration
     case registrationView
     case myView               // MARK: - My
+    case profileEditView
     case placeShowcaseView
     case homeView             // MARK: - Home
     case mapArea
@@ -57,6 +58,7 @@ enum Route: Routable {
         case .registrationView: return .push
         case .myView: return .sheet(detents: [.medium, .large])     // MARK: - My
         case .placeShowcaseView: return .push
+        case .profileEditView: return .push
         case .homeView: return .push                                // MARK: - Home
         case .mapArea: return .push
         case .placesListArea: return .push
@@ -87,6 +89,8 @@ enum Route: Routable {
             MyView<Router>(myViewModel: router.resolver.resolve(MyViewModel.self))
         case .placeShowcaseView:
             PlaceShowcaseView<Router>(placeShowcaseViewModel: router.resolver.resolve(PlaceShowcaseViewModel.self))
+        case .profileEditView:
+            ProfileEditView<Router>(profileEditViewModel: router.resolver.resolve(ProfileEditViewModel.self))
         case .homeView:         // MARK: - Home
             HomeView<Router>(homeViewModel: router.resolver.resolve(HomeViewModel.self))
         case .mapArea:
