@@ -13,6 +13,10 @@ struct DomainAssembly: Assembly {
             DefaultLocalMapUseCase(placesRepository: resolver.resolve(PlacesRepository.self))
         }
         
+//        container.register(for: PlaceShowcaseAndReviewUseCase.self) { resolver in
+//            DefaultPlace
+//        }
+        
 //        container.register(for: UserBusinessUseCase.self) { resolver in
 //            <#code#>
 //        }
