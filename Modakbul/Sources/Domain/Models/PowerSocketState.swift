@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum PowerSocketState: String, CustomStringConvertible, Codable {
+enum PowerSocketState: String, Selectable, Codable {
     case plenty = "MANY"
     case moderate = "SEVERAL"
     case few = "FEW"
@@ -17,6 +17,14 @@ enum PowerSocketState: String, CustomStringConvertible, Codable {
         case .plenty: "콘센트 많음"
         case .moderate: "콘센트 보통"
         case .few: "콘센트 적음"
+        }
+    }
+    
+    var shortDescription: String {
+        switch self {
+        case .plenty: "많음"
+        case .moderate: "보통"
+        case .few: "적음"
         }
     }
 }
