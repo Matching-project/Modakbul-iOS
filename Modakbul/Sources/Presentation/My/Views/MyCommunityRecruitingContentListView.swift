@@ -7,13 +7,8 @@
 
 import SwiftUI
 
-final class MyCommunityRecruitingContentListViewModel: ObservableObject {
-    @Published var communityRecruitingContents: [CommunityRecruitingContent] = PreviewHelper.shared.communityRecruitingContents
-    @Published var selectedTab: ActiveState = .continue
-    let selection: [ActiveState] = [.continue, .completed]
-}
-
-struct MyCommunityRecruitingContentListView: View {
+struct MyCommunityRecruitingContentListView<Router: AppRouter>: View {
+    @EnvironmentObject private var router: Router
     @ObservedObject private var viewModel: MyCommunityRecruitingContentListViewModel
     
     init(_ viewModel: MyCommunityRecruitingContentListViewModel) {
@@ -52,9 +47,9 @@ struct MyCommunityRecruitingContentListView: View {
         }
         .listRowSeparator(.hidden)
         .padding(.vertical, 4)
+        .contentShape(.rect)
+        .onTapGesture {
+            router.route(to: .placeInformationDetailView(communityRecruitingContentId: content.id))
+        }
     }
-}
-
-#Preview {
-    MyCommunityRecruitingContentListView(MyCommunityRecruitingContentListViewModel())
 }
