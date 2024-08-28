@@ -20,16 +20,16 @@ struct GenderSelectionButton<T: Selectable>: View {
                 .frame(maxHeight: 150)
             Text(item.description)
                 .foregroundStyle(item == selectedItem ? .white : .accent)
-                .padding(RegistrationViewValue.GenderSelectionButton.padding)
+                .padding(10)
         }
         .background {
-            RoundedRectangle(cornerRadius: RegistrationViewValue.DefaultSelectionButton.cornerRadius)
+            RoundedRectangle(cornerRadius: 20)
                 .stroke(.accent)
-                .background(RoundedRectangle(cornerRadius: RegistrationViewValue.DefaultSelectionButton.cornerRadius)
+                .background(RoundedRectangle(cornerRadius: 20)
                     .shadow(color: .gray,
-                            radius: RegistrationViewValue.DefaultSelectionButton.shadowRadius,
-                            x: RegistrationViewValue.DefaultSelectionButton.shadowXAxisPosition,
-                            y: RegistrationViewValue.DefaultSelectionButton.shadowYAxisPosition)
+                            radius: 4,
+                            x: 0.0,
+                            y: 10.0)
                 )
         }
         .foregroundStyle(item == selectedItem ? .accent : (colorScheme == .dark ? .black : .white))

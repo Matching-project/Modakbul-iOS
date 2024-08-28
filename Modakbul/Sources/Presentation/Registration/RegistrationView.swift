@@ -122,7 +122,7 @@ extension RegistrationView {
     private var header: some View {
         VStack(
             alignment: .leading,
-            spacing: RegistrationViewValue.Header.vStackSpacing
+            spacing: 10
         ) {
             Text(vm.currentField.title)
                 .font(.title)
@@ -131,7 +131,7 @@ extension RegistrationView {
                 .font(.headline)
                 .foregroundStyle(.gray)
         }
-        .padding(.top, RegistrationViewValue.Header.topPadding)
+        .padding(.top, 50)
         .frame(maxWidth: .infinity, alignment: .leading)
     }
 }

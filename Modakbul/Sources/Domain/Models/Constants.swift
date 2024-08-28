@@ -9,4 +9,5 @@ import Foundation
 
 struct Constants {
     static let horizontal: CGFloat = 30
+    static let cornerRadius: CGFloat = 8
 }
