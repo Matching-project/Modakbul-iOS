@@ -18,6 +18,10 @@ extension View {
             )
     }
     
+    func defaultSelectionButtonModifier() -> some View {
+        modifier(DefaultSelectionButtonModifier())
+    }
+    
     func navigationModifier(title: String, backButtonAction: @escaping () -> Void) -> some View {
         modifier(NavigationModifier(title: title, backButtonAction: backButtonAction))
     }
