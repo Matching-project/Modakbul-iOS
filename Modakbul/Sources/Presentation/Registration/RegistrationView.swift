@@ -9,17 +9,17 @@ import SwiftUI
 
 struct RegistrationView<Router: AppRouter>: View {
     @EnvironmentObject private var router: Router
-    @ObservedObject private var registrationViewModel: RegistrationViewModel
+    @ObservedObject private var vm: RegistrationViewModel
     
     init(registrationViewModel: RegistrationViewModel) {
-        self.registrationViewModel = registrationViewModel
+        self.vm = registrationViewModel
     }
     var body: some View {
         view()
             .padding(.horizontal, Constants.horizontal)
             .onDisappear {
-                registrationViewModel.submit()
-                registrationViewModel.initialize()
+                vm.submit()
+                vm.initialize()
             }
     }
 }
@@ -27,45 +27,51 @@ struct RegistrationView<Router: AppRouter>: View {
 extension RegistrationView {
     @ViewBuilder
     private func view() -> some View {
-        switch registrationViewModel.currentField {
+        switch vm.currentField {
         case .name:
             contentStackView(isZStack: true) {
-                RoundedTextField("30자 내로 입력해주세요", text: $registrationViewModel.name)
+                RoundedTextField("30자 내로 입력해주세요", text: $vm.name)
             }
         case .nickname:
             contentStackView(isZStack: true) {
-                NicknameTextField(nickname: $registrationViewModel.nickname,
-                                  isOverlapped: $registrationViewModel.isOverlappedNickname,
-                                  disabledCondition: registrationViewModel.isPassedNicknameRule()
-                ) {
-                    registrationViewModel.checkNicknameForOverlap()
+                GeometryReader { geometry in
+                    NicknameTextField(nickname: $vm.nickname,
+                                      isOverlapped: $vm.isOverlappedNickname,
+                                      disabledCondition: vm.isPassedNicknameRule()
+                    ) {
+                        vm.checkNicknameForOverlap()
+                    }
+                    .position(x: geometry.size.width / 2, y: geometry.size.height / 2)
+                    
+                    NicknameAlert(isOverlapped: $vm.isOverlappedNickname)
+                        .position(x: geometry.size.width / 2 - 70, y: geometry.size.height / 2 + 60)
                 }
             }
         case .birth:
             contentStackView(isZStack: true) {
-                BirthPicker(birth: $registrationViewModel.birth)
+                BirthPicker(birth: $vm.birth)
             }
         case .gender:
             contentStackView(isZStack: false) {
-                SingleSelectionButton<Gender, GenderSelectionButton>(selectedItem: $registrationViewModel.gender) { (item, selectedItem) in
+                SingleSelectionButton<Gender, GenderSelectionButton>(selectedItem: $vm.gender) { (item, selectedItem) in
                     GenderSelectionButton(item: item, selectedItem: selectedItem)
                 }
             }
         case .job:
             contentStackView(isZStack: false) {
-                SingleSelectionButton<Job, DefaultSingleSelectionButton>(selectedItem: $registrationViewModel.job) { (item, selectedItem) in
+                SingleSelectionButton<Job, DefaultSingleSelectionButton>(selectedItem: $vm.job) { (item, selectedItem) in
                     DefaultSingleSelectionButton(item: item, selectedItem: selectedItem)
                 }
             }
         case .category:
             contentStackView(isZStack: false) {
-                MultipleSelectionButton<Category, DefaultMultipleSelectionButton>(selectedItems: $registrationViewModel.categoriesOfInterest) { (item, selectedItem) in
+                MultipleSelectionButton<Category, DefaultMultipleSelectionButton>(selectedItems: $vm.categoriesOfInterest) { (item, selectedItem) in
                     DefaultMultipleSelectionButton(item: item, selectedItems: selectedItem)
                 }
             }
         case .image:
             contentStackView(isZStack: false) {
-                PhotosUploaderView(image: $registrationViewModel.image)
+                PhotosUploaderView(image: $vm.image)
             }
         }
     }
@@ -79,14 +85,14 @@ extension RegistrationView {
                     
                     Spacer()
                     
-                    FlatButton(registrationViewModel.currentField.buttonLabel(image: registrationViewModel.image)) {
-                        if registrationViewModel.currentField != .image {
-                            registrationViewModel.proceedToNextField()
+                    FlatButton(vm.currentField.buttonLabel(image: vm.image)) {
+                        if vm.currentField != .image {
+                            vm.proceedToNextField()
                         } else {
                             router.popToRoot()
                         }
                     }
-                    .disabled(!registrationViewModel.isNextButtonEnabled)
+                    .disabled(!vm.isNextButtonEnabled)
                 }
                 content()
             }
@@ -101,14 +107,14 @@ extension RegistrationView {
                 Spacer()
                 Spacer()
                 
-                FlatButton(registrationViewModel.currentField.buttonLabel(image: registrationViewModel.image)) {
-                    if registrationViewModel.currentField != .image {
-                        registrationViewModel.proceedToNextField()
+                FlatButton(vm.currentField.buttonLabel(image: vm.image)) {
+                    if vm.currentField != .image {
+                        vm.proceedToNextField()
                     } else {
                         router.popToRoot()
                     }
                 }
-                .disabled(!registrationViewModel.isNextButtonEnabled)
+                .disabled(!vm.isNextButtonEnabled)
             }
         }
     }
@@ -118,10 +124,10 @@ extension RegistrationView {
             alignment: .leading,
             spacing: RegistrationViewValue.Header.vStackSpacing
         ) {
-            Text(registrationViewModel.currentField.title)
+            Text(vm.currentField.title)
                 .font(.title)
                 .bold()
-            Text(registrationViewModel.currentField.subtitle)
+            Text(vm.currentField.subtitle)
                 .font(.headline)
                 .foregroundStyle(.gray)
         }
