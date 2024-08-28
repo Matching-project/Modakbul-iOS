@@ -17,39 +17,26 @@ struct MyCommunityRecruitingContentListView<Router: AppRouter>: View {
     
     var body: some View {
         VStack {
-            SelectionTab(selectedTab: $viewModel.selectedTab, viewModel.selection)
-            
-            List(viewModel.communityRecruitingContents, id: \.id) { content in
-                if content.activeState == viewModel.selectedTab {
-                    listCell(content)
+            SelectionTab(
+                selectedTab: $viewModel.selectedTab,
+                viewModel.selection,
+                viewModel.communityRecruitingContents) { content in
+                    content.activeState == viewModel.selectedTab
+                } onSelectCell: { content in
+                    router.route(to: .placeInformationDetailView(communityRecruitingContentId: content.id))
                 }
-            }
-            .listStyle(.plain)
         }
         .padding()
+        .navigationTitle("나의 모집글")
+        .navigationBarTitleDisplayMode(.inline)
     }
-    
-    @ViewBuilder private func listCell(_ content: CommunityRecruitingContent) -> some View {
-        VStack(alignment: .leading, spacing: 10) {
-            Text(content.title)
-                .font(.headline)
-            
-            HStack(spacing: 10) {
-                Text(content.community.category.description)
-                
-                Text("\(content.community.participantsCount)/\(content.community.participantsLimit)명")
-                
-                Text(content.community.meetingDate)
-                
-                Text("\(content.community.startTime)~\(content.community.endTime)")
-            }
-            .font(.caption)
-        }
-        .listRowSeparator(.hidden)
-        .padding(.vertical, 4)
-        .contentShape(.rect)
-        .onTapGesture {
-            router.route(to: .placeInformationDetailView(communityRecruitingContentId: content.id))
+}
+
+struct MyCommunityRecruitingContentListView_Preview: PreviewProvider {
+    static var previews: some View {
+        NavigationStack {
+            MyCommunityRecruitingContentListView<DefaultAppRouter>(MyCommunityRecruitingContentListViewModel())
+                .environmentObject(router)
         }
     }
 }

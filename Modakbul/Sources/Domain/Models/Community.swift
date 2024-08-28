@@ -76,16 +76,8 @@ enum Routine: String, Codable {
 }
 
 /// 모임의 활성 상태를 나타냅니다.
-enum ActiveState: String, Decodable, Selectable {
+enum ActiveState: String, Decodable {
     case `continue` = "CONTINUE"
     case completed = "COMPLETED"
     case deleted = "DELETED"
-    
-    var description: String {
-        switch self {
-        case .continue: "모집중"
-        case .completed: "모집완료"
-        case .deleted: "삭제됨"
-        }
-    }
 }
