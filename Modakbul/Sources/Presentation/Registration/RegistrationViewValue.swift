@@ -25,8 +25,6 @@ struct RegistrationViewValue {
     
     // MARK: Content
     struct RoundedTextField {
-        static let topPadding: CGFloat = 150
-        static let leadingPadding: CGFloat = defaultPadding
         static let cornerRadius: CGFloat = defaultCornerRadius
     }
     
@@ -50,9 +48,6 @@ struct RegistrationViewValue {
         static let shadowYAxisPosition: CGFloat = 10.0
     }
     
-    struct PhotoUploader {
-        static let padding: CGFloat = 70
-    }
     
     // MARK: Next Button
     struct Footer {
