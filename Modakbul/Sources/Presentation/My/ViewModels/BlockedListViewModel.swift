@@ -8,7 +8,7 @@
 import Foundation
 
 final class BlockedListViewModel: ObservableObject {
-    @Published var blockedUser: [User] = PreviewHelper.shared.users
+    @Published var blockedUsers: [User] = PreviewHelper.shared.users
 }
 
 // MARK: Interfaces

@@ -15,7 +15,7 @@ struct BlockedListView: View {
     }
     
     var body: some View {
-        content(viewModel.blockedUser.isEmpty)
+        content(viewModel.blockedUsers.isEmpty)
             .navigationTitle("차단 목록")
             .navigationBarTitleDisplayMode(.inline)
     }
@@ -26,7 +26,7 @@ struct BlockedListView: View {
                 .font(.headline)
         } else {
             List {
-                ForEach(viewModel.blockedUser, id: \.id) { user in
+                ForEach(viewModel.blockedUsers, id: \.id) { user in
                     listCell(user)
                         .listRowSeparator(.hidden)
                 }
