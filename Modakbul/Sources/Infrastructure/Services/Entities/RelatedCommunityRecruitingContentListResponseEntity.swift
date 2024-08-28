@@ -7,7 +7,7 @@
 
 import Foundation
 
-/// 사용자가 작성했던 모집글 목록 조회 응답
+/// 사용자와 관련된 모집글 목록 조회 응답
 struct RelatedCommunityRecruitingContentListResponseEntity: Decodable {
     let status: Bool
     let code: Int
