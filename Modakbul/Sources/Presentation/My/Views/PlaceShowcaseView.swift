@@ -30,7 +30,7 @@ struct PlaceShowcaseView<Router: AppRouter>: View {
     
     @ViewBuilder private func content(_ condition: Bool) -> some View {
         if condition {
-            Text("Placeholder")
+            Text("아직 방문한 카페가 없어요.")
                 .font(.headline)
         } else {
             List {
