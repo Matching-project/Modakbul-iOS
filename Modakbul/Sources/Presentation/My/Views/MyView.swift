@@ -134,11 +134,13 @@ extension MyView {
 //                    button("나의 참여 요청", destination: )
                     button("카페 제보/리뷰", destination: .placeShowcaseView)
                 }
+                .listRowSeparator(.hidden, edges: .top)
                 
                 Section("차단/신고") {
                     // button("차단 목록", destination: )
                     // button("신고 내역", destination: )
                 }
+                .listRowSeparator(.hidden, edges: .top)
                 
                 Section {
                     button("알림 설정", destination: .notificationSettingsView)
@@ -146,6 +148,7 @@ extension MyView {
                     // button("탈퇴하기", destination: )
                     Text("문의처: modakbul@gmail.com")
                 }
+                .listRowSeparator(.hidden)
             }
             .scrollDisabled(true)
             .listStyle(.inset)
