@@ -6,14 +6,36 @@
 //
 
 import Foundation
+import Combine
 
 final class PlaceShowcaseViewModel: ObservableObject {
-    @Published var places: [Place] = PreviewHelper.shared.places
+    @Published var places: [Place] = []
+    
+    let fetchPlaces = PassthroughSubject<[Place], Never>()
+    
+    private var cancellables = Set<AnyCancellable>()
+    
+    private let placeShowcaseAndReviewUseCase: PlaceShowcaseAndReviewUseCase
+    
+    init(placeShowcaseAndReviewUseCase: PlaceShowcaseAndReviewUseCase) {
+        self.placeShowcaseAndReviewUseCase = placeShowcaseAndReviewUseCase
+        subscribe()
+    }
+    
+    private func subscribe() {
+        fetchPlaces
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] places in
+                self?.places = places
+            }
+            .store(in: &cancellables)
+    }
 }
 
 // MARK: Interfaces
 extension PlaceShowcaseViewModel {
     func fetchPlaces() async {
-        
+        let places = await placeShowcaseAndReviewUseCase.fetchParticipatedPlaces()
+        fetchPlaces.send(places)
     }
 }
