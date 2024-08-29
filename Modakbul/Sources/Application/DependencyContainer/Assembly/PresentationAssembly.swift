@@ -24,7 +24,7 @@ struct PresentationAssembly: Assembly {
         container.register(for: MyViewModel.self, MyViewModel())
         
         container.register(for: PlaceShowcaseViewModel.self) { resolver in
-            PlaceShowcaseViewModel()
+            PlaceShowcaseViewModel(placeShowcaseAndReviewUseCase: resolver.resolve(PlaceShowcaseAndReviewUseCase.self))
         }
         
         // TODO: - UseCase 필요
