@@ -12,9 +12,11 @@ struct ReportView<Router: AppRouter>: View {
     @Environment(\.colorScheme) private var colorScheme
     @EnvironmentObject private var router: Router
     @ObservedObject private var vm: ReportViewModel
+    @Binding private var isReported: Bool
     
-    init(_ vm: ReportViewModel) {
+    init(_ vm: ReportViewModel, isReported: Binding<Bool>) {
         self.vm = vm
+        self._isReported = isReported
     }
     
     var body: some View {
@@ -59,6 +61,7 @@ struct ReportView<Router: AppRouter>: View {
             FlatButton("신고완료") {
                 router.alert(for: .reportUserConfirmation, actions: [
                     .defaultAction("확인") {
+                        isReported = true
                         vm.submit()
                         vm.initialize()
                         router.dismiss()
@@ -73,9 +76,11 @@ struct ReportView<Router: AppRouter>: View {
 }
 
 struct ReportView_Preview: PreviewProvider {
+    @State private static var isReported: Bool = false
+
     static var previews: some View {
         NavigationStack {
-            router.view(to: .reportView)
+            router.view(to: .reportView(result: $isReported))
         }
     }
 }

@@ -56,6 +56,9 @@ struct PresentationAssembly: Assembly {
         container.register(for: ReportViewModel.self, ReportViewModel())
         
         container.register(for: ChatViewModel.self, ChatViewModel())
+        
+        // MARK: - Common
+        container.register(for: ProfileDetailViewModel.self, ProfileDetailViewModel())
     }
     
     func loaded(resolver: DependencyResolver) {

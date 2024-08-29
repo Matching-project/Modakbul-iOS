@@ -48,7 +48,8 @@ enum Route: Routable {
     case notificationView
     case chatView           // MARK: - Chat
     case chatRoomListView
-    case reportView
+    case reportView(result: Binding<Bool>)
+    case profileDetailView  // MARK: - Common
     
     var presentingType: PresentingType {
         switch self {
@@ -72,6 +73,7 @@ enum Route: Routable {
         case .chatView: return .push                                // MARK: - Chat
         case .chatRoomListView: return .push
         case .reportView: return .push
+        case .profileDetailView: return .push                       // MARK: - Common
         }
     }
     
@@ -115,8 +117,10 @@ enum Route: Routable {
             ChatView<Router>(router.resolver.resolve(ChatViewModel.self))
         case .chatRoomListView:
             ChatRoomListView()
-        case .reportView:
-            ReportView<Router>(router.resolver.resolve(ReportViewModel.self))
+        case .reportView(let isReported):
+            ReportView<Router>(router.resolver.resolve(ReportViewModel.self), isReported: isReported)
+        case .profileDetailView:
+            ProfileDetailView<Router>(profileDetailViewModel: router.resolver.resolve(ProfileDetailViewModel.self))
         }
     }
 }
