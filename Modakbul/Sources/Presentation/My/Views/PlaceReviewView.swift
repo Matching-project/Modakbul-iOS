@@ -7,78 +7,6 @@
 
 import SwiftUI
 
-final class PlaceReviewViewModel: ObservableObject {
-    @Published var powerSocketState: PowerSocketState = .moderate
-    @Published var groupSeatingState: GroupSeatingState = .yes
-    @Published var place: Place? = nil
-    @Published var searchingText: String = String() {
-        willSet {
-            if newValue.isEmpty {
-                searchedLocations = []
-                suggestedResults = []
-            } else {
-                provideSuggestions(newValue)
-            }
-        }
-    }
-    @Published var selectedLocation: Location?
-    @Published var searchedLocations: [Location] = []
-    @Published var suggestedResults: [SuggestedResult] = []
-    
-    let groupSeatingStateSelection: [GroupSeatingState] = [.yes, .no]
-    let powerSocketStateSelection: [PowerSocketState] = PowerSocketState.allCases
-
-    private var updateSuggestedResultsTask: Task<Void, Never>?
-
-//    private let placeShowcaseAndReviewUseCase: PlaceShowcaseAndReviewUseCase
-
-//    init(placeShowcaseAndReviewUseCase: PlaceShowcaseAndReviewUseCase) {
-//        self.placeShowcaseAndReviewUseCase = placeShowcaseAndReviewUseCase
-//    }
-
-    private func provideSuggestions(_ keyword: String) {
-//        placeShowcaseAndReviewUseCase.provideSuggestions(by: keyword)
-    }
-}
-
-// MARK: Interfaces
-extension PlaceReviewViewModel {
-    @MainActor func searchLocation() {
-        guard searchingText.isEmpty == false else { return }
-        suggestedResults = []
-
-        Task {
-//            do {
-//                searchedLocations = try await placeShowcaseAndReviewUseCase.fetchLocations(with: searchingText)
-//            } catch {
-//                searchedLocations = []
-//            }
-        }
-    }
-
-    func startSuggestion() {
-//        let suggestedResultsStream = AsyncStream<[SuggestedResult]>.makeStream()
-//        placeShowcaseAndReviewUseCase.startSuggestion(with: suggestedResultsStream.continuation)
-//        updateSuggestedResultsTask = updateSuggestedResultsTask ?? Task { @MainActor in
-//            for await suggestedResults in suggestedResultsStream.stream {
-//                self.suggestedResults = suggestedResults
-//            }
-//        }
-    }
-
-    func stopSuggestion() {
-//        placeShowcaseAndReviewUseCase.stopSuggestion()
-//        searchingText.removeAll()
-//        searchedLocations = []
-//        suggestedResults = []
-//        updateSuggestedResultsTask?.cancel()
-//        updateSuggestedResultsTask = nil
-        powerSocketState = .moderate
-        groupSeatingState = .yes
-        place = nil
-    }
-}
-
 struct PlaceReviewView: View {
     @ObservedObject private var viewModel: PlaceReviewViewModel
     
@@ -151,6 +79,11 @@ struct PlaceReviewView: View {
                                 Text(result.subtitle)
                                     .font(.caption)
                             }
+                            .contentShape(.rect)
+                            .onTapGesture {
+                                // TODO: 추천된 장소 선택하면 해당 지명or주소로 검색할 수 있게 수정해야 함
+                                viewModel.searchLocation()
+                            }
                         }
                     }
                 }
@@ -176,12 +109,23 @@ struct PlaceReviewView: View {
                 
                 HStack {
                     ForEach(viewModel.powerSocketStateSelection) { state in
-                        StrokedButton(.capsule, .all, 14) {
-                            Text(state.shortDescription)
-                        } action: {
-                            viewModel.powerSocketState = state
+                        if state == viewModel.powerSocketState {
+                            StrokedFilledButton(.capsule, .all, 14) {
+                                Text(state.shortDescription)
+                            } action: {
+                                //
+                            }
+                            .padding(.horizontal, 4)
+                        } else {
+                            StrokedButton(.capsule, .all, 14) {
+                                Text(state.shortDescription)
+                            } action: {
+                                withAnimation(.easeInOut) {
+                                    viewModel.powerSocketState = state
+                                }
+                            }
+                            .padding(.horizontal, 4)
                         }
-                        .padding(.horizontal, 4)
                     }
                 }
             }
@@ -193,31 +137,28 @@ struct PlaceReviewView: View {
                 
                 HStack {
                     ForEach(viewModel.groupSeatingStateSelection) { state in
-                        StrokedButton(.capsule, .all, 14) {
-                            Text(state.shortDescription)
-                        } action: {
-                            viewModel.groupSeatingState = state
+                        if state == viewModel.groupSeatingState {
+                            StrokedFilledButton(.capsule, .all, 14) {
+                                Text(state.shortDescription)
+                            } action: {
+                                //
+                            }
+                            .padding(.horizontal, 4)
+                        } else {
+                            StrokedButton(.capsule, .all, 14) {
+                                Text(state.shortDescription)
+                            } action: {
+                                withAnimation(.easeInOut) {
+                                    viewModel.groupSeatingState = state
+                                }
+                            }
+                            .padding(.horizontal, 4)
                         }
-                        .padding(.horizontal, 4)
                     }
                 }
             }
             .padding(.vertical)
         }
         .padding()
-    }
-}
-
-struct PlaceReviewView_Preview: PreviewProvider {
-    static var previews: some View {
-        Group {
-            NavigationStack {
-                PlaceReviewView(PlaceReviewViewModel(), place: nil)
-            }
-            
-            NavigationStack {
-                PlaceReviewView(PlaceReviewViewModel(), place: previewHelper.places.first!)
-            }
-        }
     }
 }
