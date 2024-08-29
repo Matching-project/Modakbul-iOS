@@ -45,7 +45,7 @@ final class PlaceReviewViewModel: ObservableObject {
 extension PlaceReviewViewModel {
     @MainActor func searchLocation() {
         guard searchingText.isEmpty == false else { return }
-        suggestedResults = []
+        suggestedResults.removeAll()
 
         Task {
 //            do {
@@ -151,6 +151,11 @@ struct PlaceReviewView: View {
                                 Text(result.subtitle)
                                     .font(.caption)
                             }
+                            .contentShape(.rect)
+                            .onTapGesture {
+                                // TODO: 추천된 장소 선택하면 해당 지명or주소로 검색할 수 있게 수정해야 함
+                                viewModel.searchLocation()
+                            }
                         }
                     }
                 }
@@ -176,12 +181,23 @@ struct PlaceReviewView: View {
                 
                 HStack {
                     ForEach(viewModel.powerSocketStateSelection) { state in
-                        StrokedButton(.capsule, .all, 14) {
-                            Text(state.shortDescription)
-                        } action: {
-                            viewModel.powerSocketState = state
+                        if state == viewModel.powerSocketState {
+                            StrokedFilledButton(.capsule, .all, 14) {
+                                Text(state.shortDescription)
+                            } action: {
+                                //
+                            }
+                            .padding(.horizontal, 4)
+                        } else {
+                            StrokedButton(.capsule, .all, 14) {
+                                Text(state.shortDescription)
+                            } action: {
+                                withAnimation(.easeInOut) {
+                                    viewModel.powerSocketState = state
+                                }
+                            }
+                            .padding(.horizontal, 4)
                         }
-                        .padding(.horizontal, 4)
                     }
                 }
             }
@@ -193,12 +209,23 @@ struct PlaceReviewView: View {
                 
                 HStack {
                     ForEach(viewModel.groupSeatingStateSelection) { state in
-                        StrokedButton(.capsule, .all, 14) {
-                            Text(state.shortDescription)
-                        } action: {
-                            viewModel.groupSeatingState = state
+                        if state == viewModel.groupSeatingState {
+                            StrokedFilledButton(.capsule, .all, 14) {
+                                Text(state.shortDescription)
+                            } action: {
+                                //
+                            }
+                            .padding(.horizontal, 4)
+                        } else {
+                            StrokedButton(.capsule, .all, 14) {
+                                Text(state.shortDescription)
+                            } action: {
+                                withAnimation(.easeInOut) {
+                                    viewModel.groupSeatingState = state
+                                }
+                            }
+                            .padding(.horizontal, 4)
                         }
-                        .padding(.horizontal, 4)
                     }
                 }
             }
