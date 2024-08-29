@@ -32,6 +32,9 @@ struct PresentationAssembly: Assembly {
             ProfileEditViewModel(userRegistrationUseCase: resolver.resolve(UserRegistrationUseCase.self))
         }
         
+        // TODO: - UseCase 필요
+        container.register(for: NotificationSettingsViewModel.self, NotificationSettingsViewModel())
+        
         // MARK: - Home
         container.register(for: HomeViewModel.self) { resolver in
             HomeViewModel(localMapUseCase: resolver.resolve(LocalMapUseCase.self))

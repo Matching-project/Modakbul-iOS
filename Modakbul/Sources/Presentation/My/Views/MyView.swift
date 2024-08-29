@@ -58,7 +58,7 @@ extension MyView {
                     
                     HStack {
                         Button {
-                            
+                            router.route(to: .profileEditView)
                         } label: {
                             Text("프로필 수정")
                                 .font(.footnote.bold())
@@ -141,7 +141,7 @@ extension MyView {
                 }
                 
                 Section {
-                    // button("알림 설정", destination: )
+                    button("알림 설정", destination: .notificationSettingsView)
                     // button("약관 및 정책", destination: )
                     // button("탈퇴하기", destination: )
                     Text("문의처: modakbul@gmail.com")
