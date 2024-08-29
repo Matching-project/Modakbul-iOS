@@ -186,7 +186,6 @@ final class MyViewModel: ObservableObject {
     }
 }
 
-
 struct MyView_Preview: PreviewProvider {
     static var previews: some View {
         router.view(to: .myView)

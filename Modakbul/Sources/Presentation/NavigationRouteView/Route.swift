@@ -31,14 +31,14 @@ enum Route: Routable {
     
     case routerView
     case contentView
-    case loginView            // MARK: - Login
-    case requiredTermView     // MARK: - Registration
+    case loginView          // MARK: - Login
+    case requiredTermView   // MARK: - Registration
     case registrationView
-    case myView               // MARK: - My
+    case myView             // MARK: - My
     case profileEditView
     case placeShowcaseView
     case notificationSettingsView
-    case homeView             // MARK: - Home
+    case homeView           // MARK: - Home
     case mapArea
     case placesListArea
     case placeInformationView(place: Place)
@@ -46,7 +46,7 @@ enum Route: Routable {
     case placeInformationDetailMakingView
     case participationRequestListView(communityRecruitingContent: CommunityRecruitingContent)
     case notificationView
-    case chatView   // MARK: - Chat
+    case chatView           // MARK: - Chat
     case chatRoomListView
     case reportView
     
