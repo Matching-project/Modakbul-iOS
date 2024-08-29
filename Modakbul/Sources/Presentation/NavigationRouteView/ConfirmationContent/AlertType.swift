@@ -19,7 +19,7 @@ enum AlertType {
     /// 신고 완료 알림입니다.
     case reportUserConfirmation
     /// 사용자 차단 알림입니다.
-    case blockUserConfirmation(nickname: String)
+    case blockUserConfirmation
     /// 로그인 의사를 물어보는 알림입니다.
     case login
     /// 로그아웃 알림입니다.
@@ -36,11 +36,11 @@ enum AlertType {
         case .allChatsDelete:
             Alert(title: "모든 채팅 삭제", message: "모든 채팅방에서 나갈까요?", actions: actions)
         case .reportUser:
-            Alert(message: "허위 신고 적발 시 계정 사용이 중지됩니다.", actions: actions)
+            Alert(title: "정말 신고하시겠어요?", message: "허위 신고 적발 시 계정 사용이 중지됩니다.", actions: actions)
         case .reportUserConfirmation:
-            Alert(message: "관리자가 검토하기까지 2~3일 정도 소요됩니다. 마이페이지 - 나의 신고내역에서 상태를 확인할 수 있어요.", actions: actions)
-        case .blockUserConfirmation(let nickname):
-            Alert(title: "\(nickname)을(를) 차단하려고 합니다.", message: "정말 차단하시겠어요?", actions: actions)
+            Alert(title: "신고 완료", message: "관리자가 검토하기까지 2~3일 정도 소요됩니다. 마이페이지 - 나의 신고내역에서 상태를 확인할 수 있어요.", actions: actions)
+        case .blockUserConfirmation:
+            Alert(title: "정말 차단하시겠어요?", message: "차단하면 서로의 게시글이 보이지 않고, 채팅을 주고받을 수 없어요.\n또한, 상대방은 차단 여부를 알 수 없어요.", actions: actions)
         case .login:
             Alert(message: "로그인이 필요한 서비스입니다.\n로그인하시겠어요?", actions: actions)
         case .logout:
