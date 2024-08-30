@@ -11,7 +11,7 @@ struct HomeView<Router: AppRouter>: View {
     @EnvironmentObject private var router: Router
     @ObservedObject private var viewModel: HomeViewModel
     
-    init(viewModel: HomeViewModel) {
+    init(_ viewModel: HomeViewModel) {
         self.viewModel = viewModel
     }
     

@@ -98,7 +98,7 @@ enum Route: Routable {
         case .notificationSettingsView:
             NotificationSettingsView<Router>(notificationSettingsViewModel: router.resolver.resolve(NotificationSettingsViewModel.self))
         case .homeView:         // MARK: - Home
-            HomeView<Router>(homeViewModel: router.resolver.resolve(HomeViewModel.self))
+            HomeView<Router>(router.resolver.resolve(HomeViewModel.self))
         case .mapArea:
             MapArea<Router>(router.resolver.resolve(HomeViewModel.self))
         case .placesListArea:
