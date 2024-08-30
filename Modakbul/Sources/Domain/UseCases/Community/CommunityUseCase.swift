@@ -8,7 +8,7 @@
 import Foundation
 
 protocol CommunityUseCase {
-    func fetchCommunities(_ location: Location) async -> [CommunityRecruitingContent]
+    func fetchCommunities(with placeId: Int64) async -> [CommunityRecruitingContent]
     // TODO: 네이밍 수정 될 여지가 있음
     func fetchCommunities(by userId: Int64, asWriter: Bool, included: Bool) async -> [CommunityRecruitingContent]
     func fetchCommunity(on chatRoomId: Int64, with communityId: Int64) async -> CommunityRecruitingContent

@@ -40,6 +40,7 @@ struct Community {
 
 struct CommunityRecruitingContent {
     let id: Int64
+    let placeImageURLs: [URL?]
     let title: String
     let content: String
     let writtenDate: String?
@@ -50,6 +51,7 @@ struct CommunityRecruitingContent {
     
     init(
         id: Int64,
+        placeImageURLs: [URL?] = [],
         title: String,
         content: String,
         writtenDate: String? = nil,
@@ -59,6 +61,7 @@ struct CommunityRecruitingContent {
         activeState: ActiveState = .continue
     ) {
         self.id = id
+        self.placeImageURLs = placeImageURLs
         self.title = title
         self.content = content
         self.writtenDate = writtenDate
