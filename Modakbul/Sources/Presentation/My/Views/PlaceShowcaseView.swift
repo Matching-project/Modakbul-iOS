@@ -17,7 +17,11 @@ struct PlaceShowcaseView<Router: AppRouter>: View {
     
     var body: some View {
         VStack {
+            Spacer()
+            
             content(viewModel.places.isEmpty)
+            
+            Spacer()
             
             FlatButton("다른 카페 제보하기") {
                 // TODO: 카페 제보화면으로 이동
