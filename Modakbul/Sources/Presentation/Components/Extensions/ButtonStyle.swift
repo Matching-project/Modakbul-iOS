@@ -2,12 +2,18 @@
 //  ButtonStyle.swift
 //  Modakbul
 //
-//  Created by Swain Yun on 8/10/24.
+//  Created by Swain Yun on 8/27/24.
 //
 
 import SwiftUI
 
-struct CapsuledInsetButton: ButtonStyle {
+extension ButtonStyle where Self == CapsuledInsetButtonStyle {
+    static var capsuledInset: CapsuledInsetButtonStyle {
+        CapsuledInsetButtonStyle()
+    }
+}
+
+struct CapsuledInsetButtonStyle: ButtonStyle {
     let foregroundColor: Color = .white
     let backgroundColor: Color = .accentColor
     

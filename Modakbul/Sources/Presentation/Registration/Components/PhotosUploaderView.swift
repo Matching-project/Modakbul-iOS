@@ -9,34 +9,55 @@ import SwiftUI
 import PhotosUI
 
 struct PhotosUploaderView: View {
-    @State private var selectedPhoto: PhotosPickerItem? = nil
+    @State private var selectedPhoto: PhotosPickerItem?
     @Binding var image: Data?
     @Environment(\.colorScheme) var colorScheme
+    
+    // MARK: - 이미지를 수정하기 전 기존 이미지를 불러옵니다.
+    private let url: URL?
+    
+    init(image: Binding<Data?>, url: URL? = nil) {
+        self._image = image
+        self.url = url
+    }
     
     var body: some View {
         PhotosPicker(
             selection: $selectedPhoto,
             matching: .images,
             photoLibrary: .shared()) {
-                Image(colorScheme == .dark ? .modakbulMainLight: .modakbulMainDark)
-                    .resizable()
-                    .frame(maxWidth: 200, maxHeight: 200)
-                    .overlay {
-                        if let userImage = image,
-                           let uiImage = UIImage(data: userImage) {
-                            Image(uiImage: uiImage)
-                                .resizable()
-                                .clipShape(Circle())
-                                .scaledToFill()
-                        }
+                
+                // 1-1. 기존이미지에서 이미지 선택: url o, image o
+                // 1-2. 기존이미지: url o , image x
+                // 2-1. 기본이미지에서 이미지 선택: url x, image o
+                // 2-2. 기본이미지: url x, image x
+                
+                if let url = url {
+                    if let image = image, let uiImage = UIImage(data: image) {
+                        ImageView(uiImage)
+                            .getPhoto(selectedPhoto: $selectedPhoto, image: $image)
+                    } else {
+                        AsyncImageView(url: url, contentMode: .fill)
+                            .frame(width: 200, height: 200)
+                            .clipShape(.circle)
+                            .getPhoto(selectedPhoto: $selectedPhoto, image: $image)
                     }
-                    .overlay(alignment: .bottomTrailing) {
-                        Image(.photoUploadSelection)
-                            .resizable()
-                            .frame(maxWidth: 50, maxHeight: 50)
+                } else {
+                    if let image = image, let uiImage = UIImage(data: image) {
+                        ImageView(uiImage)
+                            .getPhoto(selectedPhoto: $selectedPhoto, image: $image)
+                    } else {
+                        ImageView(colorScheme == .dark ? .modakbulMainLight: .modakbulMainDark)
+                            .getPhoto(selectedPhoto: $selectedPhoto, image: $image)
                     }
-                    .getPhoto(selectedPhoto: $selectedPhoto, image: $image)
+                }
+                
+                // TODO: - 오른쪽 하단 편집 아이콘 회원가입시에도 제거할지?
+                //  .overlay(alignment: .bottomTrailing) {
+                //      Image(.photoUploadSelection)
+                //          .resizable()
+                //          .frame(maxWidth: 50, maxHeight: 50)
+                //  }
             }
-            .padding(RegistrationViewValue.PhotoUploader.padding)
     }
 }

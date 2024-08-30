@@ -108,9 +108,9 @@ final class PreviewHelper {
     ]
     
     let users: [User] = [
-        User(id: 1, name: "팀쿡", nickname: "빌게이츠", gender: .female, job: .officeWorker, categoriesOfInterest: [.coding, .design], isGenderVisible: true, birth: .now, imageURL: URL(string: "apple.com")),
-        User(id: 2, name: "이재용", nickname: "삼성", gender: .male, job: .jobSeeker, categoriesOfInterest: [.coding, .design], isGenderVisible: false, birth: .now, imageURL: nil),
-        User(id: 3, name: "조성규", nickname: "yagom", gender: .male, job: .collegeStudent, categoriesOfInterest: [.coding, .interview, .selfImprovement], isGenderVisible: false, birth: .now, imageURL: nil)
+        User(id: 1, name: "팀쿡", nickname: "빌게이츠", gender: .female, job: .officeWorker, categoriesOfInterest: [.coding, .design], isGenderVisible: true, birth: DateComponents(year: 2000, month: 1, day: 1).toDate(), imageURL: URL(string: "https://res.heraldm.com/content/image/2023/12/24/20231224000165_0.jpg")!),
+        User(id: 2, name: "이재용", nickname: "삼성", gender: .male, job: .jobSeeker, categoriesOfInterest: [.coding, .design], isGenderVisible: false, birth: DateComponents(year: 1990, month: 1, day: 1).toDate(), imageURL: URL(string: "https://image.ajunews.com/content/image/2022/07/06/20220706160753669738.jpg")!),
+        User(id: 3, name: "조성규", nickname: "yagom", gender: .male, job: .collegeStudent, categoriesOfInterest: [.coding, .interview, .selfImprovement], isGenderVisible: false, birth: DateComponents(year: 1980, month: 1, day: 1).toDate(), imageURL: URL(string: "https://developer.apple.com/documentation/swiftui/asyncimagephase"))
     ]
     
     let communityRecruitingContents = [

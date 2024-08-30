@@ -75,7 +75,7 @@ struct PlaceInformationDetailMakingView<Router: AppRouter>: View {
                             }
                             
                             Text("-")
-                                .padding(.horizontal, -50)
+                                .padding(.horizontal, -46)
                             
                             ZStack(alignment: .leading) {
                                 Text(vm.endTime.toString(by: .HHmm))

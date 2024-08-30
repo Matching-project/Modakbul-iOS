@@ -20,9 +20,20 @@ struct PresentationAssembly: Assembly {
         }
         
         // MARK: - My
-//        container.register(for: PlaceShowcaseViewModel.self) { resolver in
-//            PlaceShowcaseViewModel(placeShowcaseAndReviewUseCase: resolver.resolve(PlaceShowcaseAndReviewUseCase.self))
-//        }
+        // TODO: - 회원가입시 MyViewModel에 유저정보 주입 필요
+        container.register(for: MyViewModel.self, MyViewModel())
+        
+        container.register(for: PlaceShowcaseViewModel.self) { resolver in
+            PlaceShowcaseViewModel(placeShowcaseAndReviewUseCase: resolver.resolve(PlaceShowcaseAndReviewUseCase.self))
+        }
+        
+        // TODO: - UseCase 필요
+        container.register(for: ProfileEditViewModel.self) { resolver in
+            ProfileEditViewModel(userRegistrationUseCase: resolver.resolve(UserRegistrationUseCase.self))
+        }
+        
+        // TODO: - UseCase 필요
+        container.register(for: NotificationSettingsViewModel.self, NotificationSettingsViewModel())
         
         // MARK: - Home
         container.register(for: HomeViewModel.self) { resolver in
@@ -49,6 +60,9 @@ struct PresentationAssembly: Assembly {
         container.register(for: ReportViewModel.self, ReportViewModel())
         
         container.register(for: ChatViewModel.self, ChatViewModel())
+        
+        // MARK: - Common
+        container.register(for: ProfileDetailViewModel.self, ProfileDetailViewModel())
     }
     
     func loaded(resolver: DependencyResolver) {

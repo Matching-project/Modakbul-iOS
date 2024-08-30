@@ -17,7 +17,7 @@ struct User {
     let gender: Gender
     let job: Job
     let categoriesOfInterest: Set<Category>
-    let isGenderVisible: Bool?
+    let isGenderVisible: Bool
     let birth: Date
     let imageURL: URL?
     

@@ -2,85 +2,88 @@
 //  PlaceShowcaseView.swift
 //  Modakbul
 //
-//  Created by Swain Yun on 7/8/24.
+//  Created by Swain Yun on 8/28/24.
 //
 
 import SwiftUI
 
 struct PlaceShowcaseView<Router: AppRouter>: View {
     @EnvironmentObject private var router: Router
-    @ObservedObject private var placeShowcaseViewModel: PlaceShowcaseViewModel
+    @ObservedObject private var viewModel: PlaceShowcaseViewModel
     
-    init(placeShowcaseViewModel: PlaceShowcaseViewModel) {
-        self.placeShowcaseViewModel = placeShowcaseViewModel
+    init(_ viewModel: PlaceShowcaseViewModel) {
+        self.viewModel = viewModel
     }
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            Text("카페명")
-                .font(.title)
+        VStack {
+            Spacer()
             
-            HStack(spacing: 10) {
-                SearchBar("카페를 검색해주세요.", text: $placeShowcaseViewModel.searchingText)
-                
-                Button {
-                    placeShowcaseViewModel.searchLocation()
-                } label: {
-                    Text("검색")
-                }
-                .buttonStyle(BorderedButtonStyle())
-            }
-            
-            List(placeShowcaseViewModel.suggestedResults, id: \.id) { result in
-                VStack(alignment: .leading, spacing: 4) {
-                    Text(result.title)
-                        .font(.headline)
-                    
-                    Text(result.subtitle)
-                        .font(.caption)
-                }
-                .onTapGesture {
-                    placeShowcaseViewModel.searchingText = result.title
-                    placeShowcaseViewModel.searchLocation()
-                }
-            }
-            .listStyle(.plain)
-            .frame(maxWidth: .infinity, maxHeight: placeShowcaseViewModel.suggestedResults.isEmpty ? 0 : 300)
-            
-            List(placeShowcaseViewModel.searchedLocations, id: \.id) { location in
-                VStack(alignment: .leading, spacing: 4) {
-                    Text(location.name)
-                        .font(.headline)
-                    
-                    Text(location.address)
-                        .font(.caption)
-                }
-                .onTapGesture {
-                    placeShowcaseViewModel.selectedLocation = location
-                }
-            }
-            .listStyle(.plain)
-            .frame(maxWidth: .infinity, maxHeight: placeShowcaseViewModel.searchedLocations.isEmpty ? 0 : 300)
+            content(viewModel.places.isEmpty)
             
             Spacer()
             
-            VStack(alignment: .leading, spacing: 4) {
-                Text("선택한 장소")
-                Text(placeShowcaseViewModel.selectedLocation?.name ?? String())
-                    .font(.headline)
-                
-                Text(placeShowcaseViewModel.selectedLocation?.address ?? String())
-                    .font(.caption)
+            FlatButton("다른 카페 제보하기") {
+                // TODO: 카페 제보화면으로 이동
             }
-            
-            Spacer()
         }
         .padding()
-        .onAppear {
-            placeShowcaseViewModel.startSuggestion()
+        .navigationTitle("카페 제보/리뷰")
+        .navigationBarTitleDisplayMode(.inline)
+    }
+    
+    @ViewBuilder private func content(_ condition: Bool) -> some View {
+        if condition {
+            Text("아직 방문한 카페가 없어요.")
+                .font(.headline)
+        } else {
+            List {
+                ForEach(viewModel.places, id: \.id) { place in
+                    listCell(place)
+                }
+                .listRowSeparator(.hidden)
+            }
+            .listStyle(.plain)
         }
-        .onDisappear {
-            placeShowcaseViewModel.stopSuggestion()
+    }
+    
+    @ViewBuilder private func listCell(_ place: Place) -> some View {
+        HStack {
+            if let url = place.imageURLs.first {
+                AsyncImageView(url: url)
+            } else {
+                Image(.modakbulMainLight)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(maxWidth: 64, maxHeight: 64)
+            }
+            
+            VStack(alignment: .leading, spacing: 10) {
+                Text(place.location.name)
+                    .font(.headline)
+                
+                Text(place.location.address)
+                    .font(.caption)
+                    .lineLimit(2)
+            }
+            
+            Spacer()
+            
+            Button {
+                // TODO: 리뷰 화면으로 이동
+            } label: {
+                Text("리뷰")
+                    .font(.footnote.bold())
+            }
+            .buttonStyle(.capsuledInset)
+        }
+    }
+}
+
+struct PlaceShowcaseView_Preview: PreviewProvider {
+    static var previews: some View {
+        NavigationStack {
+            router.view(to: .placeShowcaseView)
         }
     }
 }

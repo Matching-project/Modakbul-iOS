@@ -31,12 +31,14 @@ enum Route: Routable {
     
     case routerView
     case contentView
-    case loginView            // MARK: - Login
-    case requiredTermView     // MARK: - Registration
+    case loginView          // MARK: - Login
+    case requiredTermView   // MARK: - Registration
     case registrationView
-    case myView               // MARK: - My
+    case myView             // MARK: - My
+    case profileEditView
     case placeShowcaseView
-    case homeView             // MARK: - Home
+    case notificationSettingsView
+    case homeView           // MARK: - Home
     case mapArea
     case placesListArea
     case placeInformationView(place: Place)
@@ -44,9 +46,10 @@ enum Route: Routable {
     case placeInformationDetailMakingView
     case participationRequestListView(communityRecruitingContent: CommunityRecruitingContent)
     case notificationView
-    case chatView   // MARK: - Chat
+    case chatView           // MARK: - Chat
     case chatRoomListView
-    case reportView
+    case reportView(result: Binding<Bool>)
+    case profileDetailView  // MARK: - Common
     
     var presentingType: PresentingType {
         switch self {
@@ -57,6 +60,8 @@ enum Route: Routable {
         case .registrationView: return .push
         case .myView: return .sheet(detents: [.medium, .large])     // MARK: - My
         case .placeShowcaseView: return .push
+        case .profileEditView: return .push
+        case .notificationSettingsView: return .push
         case .homeView: return .push                                // MARK: - Home
         case .mapArea: return .push
         case .placesListArea: return .push
@@ -68,6 +73,7 @@ enum Route: Routable {
         case .chatView: return .push                                // MARK: - Chat
         case .chatRoomListView: return .push
         case .reportView: return .push
+        case .profileDetailView: return .push                       // MARK: - Common
         }
     }
     
@@ -84,9 +90,13 @@ enum Route: Routable {
         case .registrationView:
             RegistrationView<Router>(registrationViewModel: router.resolver.resolve(RegistrationViewModel.self))
         case .myView:           // MARK: - My
-            MyView<Router>()
+            MyView<Router>(myViewModel: router.resolver.resolve(MyViewModel.self))
         case .placeShowcaseView:
-            PlaceShowcaseView<Router>(placeShowcaseViewModel: router.resolver.resolve(PlaceShowcaseViewModel.self))
+            PlaceShowcaseView<Router>(router.resolver.resolve(PlaceShowcaseViewModel.self))
+        case .profileEditView:
+            ProfileEditView<Router>(profileEditViewModel: router.resolver.resolve(ProfileEditViewModel.self))
+        case .notificationSettingsView:
+            NotificationSettingsView<Router>(notificationSettingsViewModel: router.resolver.resolve(NotificationSettingsViewModel.self))
         case .homeView:         // MARK: - Home
             HomeView<Router>(homeViewModel: router.resolver.resolve(HomeViewModel.self))
         case .mapArea:
@@ -107,8 +117,10 @@ enum Route: Routable {
             ChatView<Router>(router.resolver.resolve(ChatViewModel.self))
         case .chatRoomListView:
             ChatRoomListView()
-        case .reportView:
-            ReportView<Router>(router.resolver.resolve(ReportViewModel.self))
+        case .reportView(let isReported):
+            ReportView<Router>(router.resolver.resolve(ReportViewModel.self), isReported: isReported)
+        case .profileDetailView:
+            ProfileDetailView<Router>(profileDetailViewModel: router.resolver.resolve(ProfileDetailViewModel.self))
         }
     }
 }

@@ -16,11 +16,11 @@ struct RequiredTermView<Router: AppRouter>: View {
     var body: some View {
         VStack {
             LazyVStack(alignment: .leading,
-                       spacing: RegistrationViewValue.Header.vStackSpacing) {
+                       spacing: 10) {
                 // TODO: - 다기종 sheet 높이 점검 필요
                 Text("약관에 동의해주세요")
-                    .padding(.top, RegistrationViewValue.Header.topPadding)
-                    .padding(.bottom, RegistrationViewValue.Header.bottomPadding)
+                    .padding(.top, 50)
+                    .padding(.bottom, 30)
                     .font(.title2)
                     .fontWeight(.semibold)
                 
@@ -33,7 +33,7 @@ struct RequiredTermView<Router: AppRouter>: View {
                     }
                 ))
                 .toggleStyle(DefaultCheckBox())
-                .padding(.vertical, RegistrationViewValue.yAxisPadding)
+                .padding(.vertical, 20)
                 
                 ForEach(RequiredTerm.allCases, id: \.self) { requiredTerm in
                     // TODO: 약관 내용을 표시할 Link() 추가 필요
@@ -58,8 +58,8 @@ struct RequiredTermView<Router: AppRouter>: View {
             }
             .disabled(!allChecked)
             .padding(.horizontal, Constants.horizontal)
-            .padding(.top, RegistrationViewValue.Footer.topPadding)
-            .padding(.bottom, RegistrationViewValue.Footer.bottomPadding)
+            .padding(.top, 50)
+            .padding(.bottom, 30)
         }
     }
 }

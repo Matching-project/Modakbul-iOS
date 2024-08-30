@@ -27,42 +27,38 @@ struct NicknameTextField: View {
     }
     
     var body: some View {
-        ZStack(alignment: .leading) {
-            HStack {
-                RoundedTextField("한글, 영문, 숫자 2~15자", text: $nickname)
-                    .onChange(of: nickname) { _ in
-                        isOverlapped = nil
-                    }
-                
-                Button {
-                    action()
-                } label: {
-                    Text("중복확인")
-                        .padding(RegistrationViewValue.NicknameCheckButton.padding)
-                        .tint(.white)
-                        .background(alignment: .center) {
-                            RoundedRectangle(cornerRadius: RegistrationViewValue.NicknameCheckButton.cornerRadius)
-                        }
+        HStack {
+            RoundedTextField("한글, 영문, 숫자 2~15자", text: $nickname)
+                .onChange(of: nickname) { _ in
+                    isOverlapped = nil
                 }
-                .disabled(!disabledCondition)
-            }
             
-            if let isOverlapped = isOverlapped {
-                if isOverlapped {
-                    Text("""
-                    중복된 닉네임입니다.
-                    최대 15자까지 입력 가능합니다.
-                    """)
-                    .foregroundColor(.red)
-                    .padding(.top, RegistrationViewValue.RoundedTextField.topPadding)
-                    .padding(.leading, RegistrationViewValue.RoundedTextField.leadingPadding)
-                }
-                else {
-                    Text("사용 가능한 닉네임입니다.\n")
-                        .foregroundColor(.green)
-                        .padding(.top, RegistrationViewValue.RoundedTextField.topPadding)
-                        .padding(.leading, RegistrationViewValue.RoundedTextField.leadingPadding)
-                }
+            RoundedButton {
+                action()
+            } label: {
+                Text("중복확인")
+                    .frame(minWidth: 60)
+            }
+            .disabled(!disabledCondition)
+        }
+    }
+}
+
+struct NicknameAlert: View {
+    @Binding var isOverlapped: Bool?
+    
+    var body: some View {
+        if let isOverlapped = isOverlapped {
+            if isOverlapped {
+                Text("중복된 닉네임입니다.\n최대 15자까지 입력 가능합니다.")
+                    .foregroundStyle(.red)
+                    .padding(.leading, 20)
+                    .padding(.bottom, 10)
+            } else {
+                Text("사용 가능한 닉네임입니다.")
+                    .foregroundStyle(.green)
+                    .padding(.leading, 20)
+                    .padding(.bottom, 10)
             }
         }
     }

@@ -7,17 +7,62 @@
 
 import SwiftUI
 
-struct NavigationModifier: ViewModifier {
-    let title: String
+struct NavigationModifier<MenuContent: View>: ViewModifier {
+    let title: String?
     let backButtonAction: () -> Void
+    let menuButtonAction: () -> MenuContent
     
     func body(content: Content) -> some View {
         content
-            .navigationTitle(title)
+            .navigationTitle(title ?? "")
             .navigationBarBackButtonHidden()
             .navigationBarTitleDisplayMode(.inline)
-            .navigationBarItems(leading: BackButton(action: backButtonAction))
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    BackButton(action: backButtonAction)
+                }
+                
+                if type(of: menuButtonAction()) != type(of: EmptyView()) {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        MenuButton {
+                            menuButtonAction()
+                        }
+                    }
+                }
+            }
             .navigationPopGestureRecognizerEnabled()
+    }
+}
+
+extension NavigationModifier {
+    struct BackButton: View {
+        private let action: () -> Void
+        
+        init(action: @escaping () -> Void) {
+            self.action = action
+        }
+        
+        var body: some View {
+            Button(action: action) {
+                Image(systemName: "chevron.left")
+            }
+        }
+    }
+    
+    struct MenuButton<Content: View>: View {
+        private let content: () -> Content
+        
+        init(content: @escaping () -> Content) {
+            self.content = content
+        }
+        
+        var body: some View {
+            Menu {
+                content()
+            } label: {
+                Image(systemName: "ellipsis")
+            }
+        }
     }
 }
 

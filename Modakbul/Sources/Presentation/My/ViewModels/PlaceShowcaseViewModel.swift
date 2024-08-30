@@ -6,63 +6,36 @@
 //
 
 import Foundation
+import Combine
 
 final class PlaceShowcaseViewModel: ObservableObject {
+    @Published var places: [Place] = []
+    
+    let fetchPlaces = PassthroughSubject<[Place], Never>()
+    
+    private var cancellables = Set<AnyCancellable>()
+    
     private let placeShowcaseAndReviewUseCase: PlaceShowcaseAndReviewUseCase
     
     init(placeShowcaseAndReviewUseCase: PlaceShowcaseAndReviewUseCase) {
         self.placeShowcaseAndReviewUseCase = placeShowcaseAndReviewUseCase
+        subscribe()
     }
     
-    @Published var searchingText: String = String() {
-        willSet {
-            if newValue.isEmpty {
-                searchedLocations = []
-                suggestedResults = []
-            } else {
-                provideSuggestions(newValue)
+    private func subscribe() {
+        fetchPlaces
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] places in
+                self?.places = places
             }
-        }
+            .store(in: &cancellables)
     }
-    @Published var selectedLocation: Location?
-    @Published var searchedLocations: [Location] = []
-    @Published var suggestedResults: [SuggestedResult] = []
-    
-    private var updateSuggestedResultsTask: Task<Void, Never>?
-    
-    @MainActor func searchLocation() {
-        guard searchingText.isEmpty == false else { return }
-        suggestedResults = []
-        
-        Task {
-            do {
-                searchedLocations = try await placeShowcaseAndReviewUseCase.fetchLocations(with: searchingText)
-            } catch {
-                searchedLocations = []
-            }
-        }
-    }
-    
-    func startSuggestion() {
-        let suggestedResultsStream = AsyncStream<[SuggestedResult]>.makeStream()
-        placeShowcaseAndReviewUseCase.startSuggestion(with: suggestedResultsStream.continuation)
-        updateSuggestedResultsTask = updateSuggestedResultsTask ?? Task { @MainActor in
-            for await suggestedResults in suggestedResultsStream.stream {
-                self.suggestedResults = suggestedResults
-            }
-        }
-    }
-    
-    func stopSuggestion() {
-        placeShowcaseAndReviewUseCase.stopSuggestion()
-        searchingText.removeAll()
-        searchedLocations = []
-        suggestedResults = []
-        updateSuggestedResultsTask?.cancel()
-        updateSuggestedResultsTask = nil
-    }
-    
-    private func provideSuggestions(_ keyword: String) {
-        placeShowcaseAndReviewUseCase.provideSuggestions(by: keyword)
+}
+
+// MARK: Interfaces
+extension PlaceShowcaseViewModel {
+    func fetchPlaces() async {
+        let places = await placeShowcaseAndReviewUseCase.fetchParticipatedPlaces()
+        fetchPlaces.send(places)
     }
 }
