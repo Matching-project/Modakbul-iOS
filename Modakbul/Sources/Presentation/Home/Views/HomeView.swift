@@ -9,14 +9,14 @@ import SwiftUI
 
 struct HomeView<Router: AppRouter>: View {
     @EnvironmentObject private var router: Router
-    @ObservedObject private var homeViewModel: HomeViewModel
+    @ObservedObject private var viewModel: HomeViewModel
     
-    init(homeViewModel: HomeViewModel) {
-        self.homeViewModel = homeViewModel
+    init(viewModel: HomeViewModel) {
+        self.viewModel = viewModel
     }
     
     var body: some View {
-        if homeViewModel.isMapShowing {
+        if viewModel.isMapShowing {
             router.view(to: .mapArea)
         } else {
             router.view(to: .placesListArea)
