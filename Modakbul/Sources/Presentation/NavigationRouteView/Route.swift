@@ -106,7 +106,7 @@ enum Route: Routable {
         case .placeInformationView(let place):
             PlaceInformationView<Router>(router.resolver.resolve(PlaceInformationViewModel.self), place: place)
         case .placeInformationDetailView(let communityRecruitingContentId):
-            PlaceInformationDetailView<Router>(communityRecruitingContentId: communityRecruitingContentId)
+            PlaceInformationDetailView<Router>(router.resolver.resolve(PlaceInformationDetailViewModel.self), communityRecruitingContentId: communityRecruitingContentId)
         case .placeInformationDetailMakingView:
             PlaceInformationDetailMakingView<Router>(router.resolver.resolve(PlaceInformationDetailMakingViewModel.self))
         case .participationRequestListView(let communityRecruitingContent):

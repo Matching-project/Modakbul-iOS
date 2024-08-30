@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Combine
 
 final class PlaceInformationViewModel: ObservableObject {
     @Published var selectedOpeningHourByDay: OpeningHour? {
@@ -13,6 +14,25 @@ final class PlaceInformationViewModel: ObservableObject {
     }
     @Published var openingHourText: String = String()
     @Published var communityRecruitingContents: [CommunityRecruitingContent] = []
+    
+    private let communityRecruitingContentSubject = PassthroughSubject<[CommunityRecruitingContent], Never>()
+    private var cancellables = Set<AnyCancellable>()
+    
+    private let communityUseCase: CommunityUseCase
+    
+    init(communityUseCase: CommunityUseCase) {
+        self.communityUseCase = communityUseCase
+        subscribe()
+    }
+    
+    private func subscribe() {
+        communityRecruitingContentSubject
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] contents in
+                self?.communityRecruitingContents = contents
+            }
+            .store(in: &cancellables)
+    }
     
     private func displaySelectedOpeningHourText() {
         if let openingHour = selectedOpeningHourByDay {
@@ -35,5 +55,10 @@ extension PlaceInformationViewModel {
         let open = openingHour.open
         let close = openingHour.close
         return "\(dayOfWeek) \(open) - \(close)"
+    }
+    
+    func fetchCommunityRecruitingContents(with placeId: Int64) async {
+        let contents = await communityUseCase.fetchCommunities(with: placeId)
+        communityRecruitingContentSubject.send(contents)
     }
 }

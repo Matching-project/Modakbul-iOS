@@ -54,8 +54,9 @@ struct PlaceInformationView<Router: AppRouter>: View {
             Spacer()
         }
         .padding()
-        .onAppear {
+        .task {
             viewModel.configureView(by: place)
+            await viewModel.fetchCommunityRecruitingContents(with: place.id)
         }
     }
     
@@ -112,6 +113,7 @@ struct PlaceInformationView<Router: AppRouter>: View {
             LazyVStack {
                 ForEach(viewModel.communityRecruitingContents, id: \.id) { communityRecruitingContent in
                     Cell(communityRecruitingContent)
+                        .contentShape(.rect)
                         .onTapGesture {
                             router.dismiss()
                             router.route(to: .placeInformationDetailView(communityRecruitingContentId: communityRecruitingContent.id))

@@ -9,18 +9,16 @@ import SwiftUI
 
 struct PlaceInformationDetailView<Router: AppRouter>: View {
     @EnvironmentObject private var router: Router
-//    @ObservedObject private var placeInformationDetailViewModel: PlaceInformationDetailViewModel
+    @ObservedObject private var viewModel: PlaceInformationDetailViewModel
+    @State private var index: Int = 0
     
     private let communityRecruitingContentId: Int64
     
-    @State private var index: Int = 0
-    private let arr = Array(0...4)
-    
     init(
-//        placeInformationDetailViewModel: PlaceInformationDetailViewModel,
+        _ viewModel: PlaceInformationDetailViewModel,
         communityRecruitingContentId: Int64
     ) {
-//        self.placeInformationDetailViewModel = placeInformationDetailViewModel
+        self.viewModel = viewModel
         self.communityRecruitingContentId = communityRecruitingContentId
     }
     
@@ -59,22 +57,29 @@ struct PlaceInformationDetailView<Router: AppRouter>: View {
             }
             .padding()
         }
+        .task {
+            await viewModel.configureView(communityRecruitingContentId)
+        }
     }
     
     @ViewBuilder private func imageCarouselArea(_ size: CGSize) -> some View {
-        TabView(selection: $index) {
-            ForEach(arr, id: \.self) { num in
-                Text("사진 \(num)")
-                    .tag(num)
-            }
-        }
-        .tabViewStyle(.page(indexDisplayMode: .never))
-        .frame(width: size.width, height: size.height / 3)
-        .overlay(alignment: .bottom) {
-            CustomPageControl(currentPageIndex: $index, pageCountLimit: arr.count)
-                .alignmentGuide(.bottom) { dimension in
-                    dimension.height + 30
+        if let imageURLs = viewModel.communityRecruitingContent?.placeImageURLs {
+            TabView(selection: $index) {
+                ForEach(0..<imageURLs.count, id: \.self) { index in
+                    // TODO: 카페 이미지
                 }
+            }
+            .tabViewStyle(.page(indexDisplayMode: .never))
+            .frame(width: size.width, height: size.height / 3)
+            .overlay(alignment: .bottom) {
+                CustomPageControl(currentPageIndex: $index, pageCountLimit: imageURLs.count)
+                    .alignmentGuide(.bottom) { dimension in
+                        dimension.height + 30
+                    }
+            }
+        } else {
+            ContentUnavailableView("미리보기 사진이 없어요.", image: "questionmark", description: Text("이 장소의 사진을 제보해주세요!"))
+                .frame(width: size.width, height: size.height / 3)
         }
     }
     
