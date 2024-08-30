@@ -41,7 +41,7 @@ struct StrokedButton<Content: View, ClipShape: Shape>: View {
                         .stroke(.accent, lineWidth: 4)
                 )
                 .clipShape(clipShape)
-                .shadow(color: .secondary, radius: 4, y: 4)
+                .shadow(color: .secondary.opacity(0.5), radius: 4, y: 4)
         }
     }
 }
@@ -81,7 +81,7 @@ struct StrokedFilledButton<Content: View, ClipShape: Shape>: View {
                         .stroke(.white, lineWidth: 4)
                 )
                 .clipShape(clipShape)
-                .shadow(color: .secondary, radius: 4, y: 4)
+                .shadow(color: .secondary.opacity(0.5), radius: 4, y: 4)
         }
     }
 }
