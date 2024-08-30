@@ -8,7 +8,7 @@ let project = Project(
             destinations: [.iPhone, .iPad],
             product: .app,
             bundleId: "com.Modakbul",
-            deploymentTargets: .iOS("16.0"),
+            deploymentTargets: .iOS("17.0"),
             infoPlist: "Modakbul/Info.plist",
             sources: ["Modakbul/Sources/**"],
             resources: ["Modakbul/Resources/**"],
