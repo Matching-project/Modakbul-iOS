@@ -9,6 +9,7 @@ import SwiftUI
 
 struct PlaceInformationView<Router: AppRouter>: View {
     @EnvironmentObject private var router: Router
+    @Environment(\.colorScheme) private var colorScheme
     @ObservedObject private var viewModel: PlaceInformationViewModel
     
     private let place: Place
@@ -24,10 +25,17 @@ struct PlaceInformationView<Router: AppRouter>: View {
     var body: some View {
         VStack {
             HStack {
-                AsyncImageView(imageData: Data())
-                    .background(.gray)
+                if let url = place.imageURLs.first {
+                    AsyncImageView(url: url)
+                } else {
+                    Image(colorScheme == .light ? .modakbulMainLight : .modakbulMainDark)
+                        .resizable()
+                        .aspectRatio(1, contentMode: .fit)
+                        .containerRelativeFrame(.vertical, alignment: .center)
+                }
                 
                 informationArea
+                    .layoutPriority(1)
                 
                 Spacer()
             }
