@@ -9,10 +9,10 @@ import SwiftUI
 
 struct PlacesListArea<Router: AppRouter>: View {
     @EnvironmentObject private var router: Router
-    @ObservedObject private var homeViewModel: HomeViewModel
+    @ObservedObject private var viewModel: HomeViewModel
     
-    init(_ homeViewModel: HomeViewModel) {
-        self.homeViewModel = homeViewModel
+    init(_ viewModel: HomeViewModel) {
+        self.viewModel = viewModel
     }
     
     var body: some View {
@@ -26,7 +26,7 @@ struct PlacesListArea<Router: AppRouter>: View {
     private var listArea: some View {
         VStack {
             HStack {
-                SearchBar("카페 이름으로 검색", text: $homeViewModel.searchingText)
+                SearchBar("카페 이름으로 검색", text: $viewModel.searchingText)
                     .frame(alignment: .top)
                 
                 // TODO: PushNotification Button (WIP)
@@ -40,7 +40,7 @@ struct PlacesListArea<Router: AppRouter>: View {
             }
             .padding()
             
-            List(homeViewModel.places, id: \.id) { place in
+            List(viewModel.places, id: \.id) { place in
                 router.view(to: .placeInformationView(place: place))
                     .listRowSeparator(.hidden)
             }
@@ -57,7 +57,7 @@ struct PlacesListArea<Router: AppRouter>: View {
                     Image(systemName: "map")
                         .padding(.horizontal, 4)
                 } action: {
-                    homeViewModel.isMapShowing.toggle()
+                    viewModel.isMapShowing.toggle()
                 }
                 
                 Spacer()

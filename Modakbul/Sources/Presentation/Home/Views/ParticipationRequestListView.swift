@@ -22,7 +22,7 @@ struct ParticipationRequestListView<Router: AppRouter>: View {
     }
     
     var body: some View {
-        List(participationRequestListViewModel.participationRequests) { participatedRequest in
+        List(viewModel.participationRequests) { participatedRequest in
             Cell(
                 participatedRequest.participatedUser,
                 communityRecruitingContent.community.category

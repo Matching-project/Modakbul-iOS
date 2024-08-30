@@ -7,23 +7,6 @@
 
 import SwiftUI
 
-// MARK: Interfaces
-extension PlaceInformationViewModel {
-    func configureView(by place: Place) {
-        let calendar = Calendar.current
-        let weekDay = calendar.component(.weekday, from: .now)
-        let dayOfWeek = DayOfWeek(weekDay)
-        self.selectedOpeningHourByDay = place.openingHours.first(where: {$0.dayOfWeek == dayOfWeek})
-    }
-    
-    func displayOpeningHours(_ openingHour: OpeningHour) -> String {
-        let dayOfWeek = openingHour.dayOfWeek.description
-        let open = openingHour.open
-        let close = openingHour.close
-        return "\(dayOfWeek) \(open) - \(close)"
-    }
-}
-
 struct PlaceInformationView<Router: AppRouter>: View {
     @EnvironmentObject private var router: Router
     @ObservedObject private var viewModel: PlaceInformationViewModel
