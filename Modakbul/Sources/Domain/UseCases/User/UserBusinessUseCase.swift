@@ -8,7 +8,7 @@
 import Foundation
 
 protocol UserBusinessUseCase {
-    func updateProfile(user: User) async throws
+    func updateProfile(user: User, image: Data?) async throws
     func report(_ content: Report) async throws
     func block(blocked: User, blocker: User) async throws
     func fetchBlockedUsers(by user: User) async throws -> [BlockedUser]
@@ -17,5 +17,40 @@ protocol UserBusinessUseCase {
     
     // TODO: Work in progress
     /// 문의하기
-    func contact()
+//    func contact()
+}
+
+final class DefaultUserBusinessUseCase {
+    private let userManagementRepository: UserManagementRepository
+    
+    init(userManagementRepository: UserManagementRepository) {
+        self.userManagementRepository = userManagementRepository
+    }
+}
+
+// MARK: UserBusinessUseCase Conformation
+extension DefaultUserBusinessUseCase: UserBusinessUseCase {
+    func updateProfile(user: User, image: Data?) async throws {
+        <#code#>
+    }
+    
+    func report(_ content: Report) async throws {
+        <#code#>
+    }
+    
+    func block(blocked: User, blocker: User) async throws {
+        <#code#>
+    }
+    
+    func fetchBlockedUsers(by user: User) async throws -> [BlockedUser] {
+        <#code#>
+    }
+    
+    func unblock(blocked: User, blocker: User) async throws {
+        <#code#>
+    }
+    
+    func unregister(by user: User) async throws {
+        <#code#>
+    }
 }
