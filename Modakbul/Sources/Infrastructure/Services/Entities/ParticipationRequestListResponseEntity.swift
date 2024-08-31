@@ -33,7 +33,6 @@ struct ParticipationRequestListResponseEntity: Decodable {
     }
     
     func toDTO() -> [ParticipationRequest] {
-        // TODO: 이거 id가 참여요청목록의 id인데;
         result.map {
             let user = User(
                 id: $0.user.id,

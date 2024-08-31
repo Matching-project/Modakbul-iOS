@@ -8,24 +8,12 @@
 import Foundation
 
 protocol CommunityUseCase {
+    func createCommunityRecruitingContent(_ content: CommunityRecruitingContent) async throws
+    
     func fetchCommunities(with placeId: Int64) async -> [CommunityRecruitingContent]
-    // TODO: 네이밍 수정 될 여지가 있음
-    func fetchCommunities(by userId: Int64, asWriter: Bool, included: Bool) async -> [CommunityRecruitingContent]
-    func fetchCommunity(on chatRoomId: Int64, with communityId: Int64) async -> CommunityRecruitingContent
+    /// 모집글 상세 정보 조회
+    func readCommunityRecruitingContentDetail(with communityRecruitingContentId: Int64) async throws -> CommunityRecruitingContent
     
-    // 요청자 유즈케이스
-    func participate(_ communityId: String, _ userId: String) async
-    // TODO: 취소랑 나가는 상황에 모두 대비 가능한지 확인해볼 필요 있음
-    func cancel(_ communityId: String, _ userId: String) async
-    
-    // 게시자 유즈케이스
-    func fetchParticipantsList(_ communityId: Int64) async -> [ParticipationRequest]
-    func startReqruiting() async
-    func stopReqruiting() async
-    func accept() async
-    func reject() async
-    
-    func write(on location: Location, content: CommunityRecruitingContent) async throws
 }
 
 // TODO: - UseCase 채택 필요

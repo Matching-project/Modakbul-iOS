@@ -46,7 +46,10 @@ struct PlaceInformationView<Router: AppRouter>: View {
             }
             
             if viewModel.communityRecruitingContents.isEmpty {
-                // TODO: 모임 개수 표시 영역
+                Spacer()
+                
+                Text("아직 모집 중인 모임이 없어요.")
+                    .font(.footnote)
             } else {
                 communityRecruitingContentListArea
             }

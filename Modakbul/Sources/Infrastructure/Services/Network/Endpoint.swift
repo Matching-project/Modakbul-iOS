@@ -12,7 +12,7 @@ enum Endpoint {
     // MARK: - User Related
     case login(token: Data?, provider: String)                  // 로그인
     case validateNicknameIntegrity(nickname: String)              // 닉네임 무결성 확인
-    case register(user: UserRegistrationRequestEntity, image: Data?)                        // 회원가입
+    case register(user: UserRegistrationRequestEntity, image: Data?, provider: String)                        // 회원가입
     case logout(token: String)                                  // 로그아웃
     case reissueToken(refreshToken: String)                     // 토큰 재발행
     case updateProfile(token: String, user: UserProfileUpdateRequestEntity, image: Data?)   // 프로필 수정
@@ -25,25 +25,27 @@ enum Endpoint {
     case readPlaces(name: String, lat: Double, lon: Double)     // 카페 이름으로 검색
     case readPlacesByMatches(lat: Double, lon: Double)          // 카페 모임순 목록 조회
     case readPlacesByDistance(lat: Double, lon: Double)         // 카페 거리순 목록 조회
-    case readBoards(token: String, placeId: String)             // 카페 모집글 목록 조회
+    case readBoards(placeId: String)                            // 카페 모집글 목록 조회
     
     // MARK: - Board Related
     case createBoard(token: String, placeId: String, communityRecruitingContent: CommunityRecruitingContentEntity)  // 모집글 작성
     case readBoardForUpdate(token: String, communityRecruitingContent: CommunityRecruitingContentEntity)            // 모집글 수정 정보 조회
     case updateBoard(token: String, communityRecruitingContent: CommunityRecruitingContentEntity)                   // 모집글 수정
     case deleteBoard(token: String, communityRecruitingContent: CommunityRecruitingContentEntity)                   // 모집글 삭제
-    case readBoardDetail(communityRecruitingContentId: String)                                                      // 모집글 상세 조회
+    case readBoardDetail(communityRecruitingContentId: Int64)                                                      // 모집글 상세 조회
+//    case completeBoard(communityRecruitingContentId: Int64)                                                         // 모집글 모집 종료
     
     // MARK: - Match Related
-    case readMatches(token: String, communityRecruitingContentId: String)   // 모임 참여 요청 목록 조회
-    case requestMatch(token: String, communityRecruitingContentId: String)  // 모임 참여 요청
-    case acceptMatchRequest(token: String, matchingId: String)  // 모임 참여 요청에 대한 수락
-    case rejectMatchRequest(token: String, matchingId: String)  // 모임 참여 요청에 대한 거절
+    case readMatches(token: String, communityRecruitingContentId: Int64)   // 모임 참여 요청 목록 조회
+    case requestMatch(token: String, communityRecruitingContentId: Int64)  // 모임 참여 요청
+    case acceptMatchRequest(token: String, matchingId: Int64)  // 모임 참여 요청에 대한 수락
+    case rejectMatchRequest(token: String, matchingId: Int64)  // 모임 참여 요청에 대한 거절
+    case exitMatch(token: String, matchingId: Int64)           // 모임 나가기
     
     // MARK: - Chat Related
-    case createChatRoom(token: String, communityRecruitingContentId: String, opponentUserId: String) // 채팅방 생성
+    case createChatRoom(token: String, communityRecruitingContentId: Int64, opponentUserId: Int64) // 채팅방 생성
     case readChatrooms(token: String)                           // 채팅방 목록 조회
-    case exitChatRoom(token: String, chatRoomId: String)        // 채팅방 나가기
+    case exitChatRoom(token: String, chatRoomId: Int64)        // 채팅방 나가기
 }
 
 extension Endpoint {
@@ -59,12 +61,12 @@ extension Endpoint: TargetType {
     
     var path: String {
         switch self {
-        case .login:
-            return "/users/login"
+        case .login(_, let provider):
+            return "/users/login/\(provider)"
         case .validateNicknameIntegrity:
             return "/users"
-        case .register:
-            return "/users/register"
+        case .register(_, _, let provider):
+            return "/users/register/\(provider)"
         case .logout:
             return "/users/logout"
         case .reissueToken:
@@ -85,7 +87,7 @@ extension Endpoint: TargetType {
             return "/cafes/meeting"
         case .readPlacesByDistance:
             return "/cafes/distance"
-        case .readBoards(_, let placeId):
+        case .readBoards(let placeId):
             return "/cafes/\(placeId)/boards"
         case .createBoard(_, let placeId, _):
             return "/cafes/\(placeId)/boards"
@@ -97,6 +99,8 @@ extension Endpoint: TargetType {
             return "/boards/\(communityRecruitingContent.id)"
         case .readBoardDetail(let communityRecruitingContentId):
             return "/cafes/boards/\(communityRecruitingContentId)"
+//        case .completeBoard(communityRecruitingContentId: let communityRecruitingContentId):
+//            return "/boards/\(communityRecruitingContentId)/completed"
         case .readMatches(_, let communityRecruitingContentId):
             return "/boards/\(communityRecruitingContentId)/matches"
         case .requestMatch(_, let communityRecruitingContentId):
@@ -105,6 +109,8 @@ extension Endpoint: TargetType {
             return "/matches/\(matchingId)/acceptance"
         case .rejectMatchRequest(_, let matchingId):
             return "/matches/\(matchingId)/rejection"
+        case .exitMatch(_, let matchingId):
+            return "/matches/\(matchingId)/exit"
         case .createChatRoom:
             return "/chatrooms"
         case .readChatrooms:
@@ -119,18 +125,18 @@ extension Endpoint: TargetType {
         case .validateNicknameIntegrity, .readMyProfile, .readMyBoards, .readMyMatches, .readMyRequestMatches, .readPlaces, .readPlacesByMatches, .readPlacesByDistance, .readBoards, .readBoardForUpdate, .readBoardDetail, .readMatches, .readChatrooms: return .get
         case .login, .register, .reissueToken, .createBoard, .requestMatch, .createChatRoom: return .post
         case .logout, .deleteBoard: return .delete
-        case .updateProfile, .updateBoard, .acceptMatchRequest, .rejectMatchRequest, .exitChatRoom: return .patch
+        case .updateProfile, .updateBoard, .acceptMatchRequest, .rejectMatchRequest, .exitMatch, .exitChatRoom: return .patch
         }
     }
     
     var task: Moya.Task {
         switch self {
         case .login(_, let provider):
-            return .requestParameters(parameters: ["provider": "\(provider)"], encoding: JSONEncoding.default)
+            return .requestParameters(parameters: ["provider": "\(provider)"], encoding: URLEncoding.queryString)
         case .validateNicknameIntegrity(let nickname):
             return .requestParameters(parameters: ["nickname": "\(nickname)"], encoding: URLEncoding.queryString)
         // TODO: - image 파라미터 빼고 user.imageURL을 개선하기
-        case .register(let user, let image):
+        case .register(let user, let image, _):
             var formData = [MultipartFormData]()
 
             do {
@@ -203,13 +209,15 @@ extension Endpoint: TargetType {
         case .readMatches:
             return .requestPlain
         case .requestMatch(_, let communityRecruitingContentId):
-            return .requestParameters(parameters: ["boardId": "\(communityRecruitingContentId)"], encoding: JSONEncoding.default)
+            return .requestParameters(parameters: ["boardId": "\(communityRecruitingContentId)"], encoding: URLEncoding.queryString)
         case .acceptMatchRequest:
             return .requestPlain
         case .rejectMatchRequest:
             return .requestPlain
+        case .exitMatch:
+            return .requestPlain
         case .createChatRoom(_, let communityRecruitingContentId, let opponentUserId):
-            return .requestParameters(parameters: ["boardId": "\(communityRecruitingContentId)", "theOtherUserId": "\(opponentUserId)"], encoding: JSONEncoding.default)
+            return .requestParameters(parameters: ["boardId": "\(communityRecruitingContentId)", "theOtherUserId": "\(opponentUserId)"], encoding: URLEncoding.queryString)
         case .readChatrooms:
             return .requestPlain
         case .exitChatRoom:

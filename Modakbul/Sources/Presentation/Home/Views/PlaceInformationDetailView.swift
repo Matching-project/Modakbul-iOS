@@ -58,7 +58,11 @@ struct PlaceInformationDetailView<Router: AppRouter>: View {
             .padding()
         }
         .task {
-            await viewModel.configureView(communityRecruitingContentId)
+            do {
+                try await viewModel.configureView(communityRecruitingContentId)
+            } catch {
+                print(error)
+            }
         }
     }
     

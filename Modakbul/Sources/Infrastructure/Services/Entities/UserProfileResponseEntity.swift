@@ -15,6 +15,7 @@ struct UserProfileResponseEntity: Decodable {
     let result: Result
     
     struct Result: Decodable {
+        let id: Int64
         let nickname: String
         let job: Job
         let imageURL: URL?
@@ -23,13 +24,14 @@ struct UserProfileResponseEntity: Decodable {
         
         enum CodingKeys: String,
                          CodingKey {
-            case nickname, categories, job, isGenderVisible
+            case id, nickname, categories, job, isGenderVisible
             case imageURL = "image"
         }
     }
     
     func toDTO() -> User {
         .init(
+            id: result.id,
             nickname: result.nickname,
             job: result.job,
             categoriesOfInterest: result.categories,

@@ -7,7 +7,7 @@
 
 import Foundation
 
-/// 모집글 정보 조회
+/// 모집글 (수정) 정보 조회
 struct CommunityRecruitingContentSearchResponseEntity: Decodable {
     let status: Bool
     let code: Int
@@ -15,12 +15,9 @@ struct CommunityRecruitingContentSearchResponseEntity: Decodable {
     let result: Result
     
     struct Result: Decodable {
-        let placeName, address: String
         let communityRecruitingContent: CommunityRecruitingContentEntity
         
         enum CodingKeys: String, CodingKey {
-            case address
-            case placeName = "cafeName"
             case communityRecruitingContent = "board"
         }
     }
