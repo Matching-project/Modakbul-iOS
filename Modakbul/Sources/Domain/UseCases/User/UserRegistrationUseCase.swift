@@ -11,7 +11,7 @@ protocol UserRegistrationUseCase {
     /// 한글, 영문, 숫자 2~15자 내 닉네임인지 검사합니다.
     func validateInLocal(_ nickname: String) -> Bool
     /// 서버와 통신해 비속어 필터링을 하여 중복되지 않고 유효한 닉네임인지 검사합니다.
-    func validateWithServer(_ nickname: String) async throws -> Bool
+    func validateWithServer(_ nickname: String) async throws -> NicknameIntegrityType
     func register(_ user: User, encoded imageData: Data?) async throws
     func login(_ token: Data, by provider: AuthenticationProvider) async -> Bool
     func logout(with user: User) async
@@ -42,8 +42,8 @@ extension DefaultUserRegistrationUseCase: UserRegistrationUseCase {
         return true
     }
     
-    func validateWithServer(_ nickname: String) async throws -> Bool {
-        return false
+    func validateWithServer(_ nickname: String) async throws -> NicknameIntegrityType {
+        try await socialLoginRepository.validateNicknameIntegrity(nickname)
     }
     
     func register(_ user: User, encoded imageData: Data?) async throws {

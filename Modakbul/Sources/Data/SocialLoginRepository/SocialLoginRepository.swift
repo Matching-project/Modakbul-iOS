@@ -10,6 +10,8 @@ import Foundation
 protocol SocialLoginRepository {
     func login(_ credential: UserCredential) async -> Bool
     func logout() async
+    
+    func validateNicknameIntegrity(_ nickname: String) async throws -> NicknameIntegrityType
 }
 
 fileprivate enum SocialLoginRepositoryError: Error {
@@ -52,5 +54,11 @@ extension DefaultSocialLoginRepository: SocialLoginRepository {
     
     func logout() async {
         
+    }
+    
+    func validateNicknameIntegrity(_ nickname: String) async throws -> NicknameIntegrityType {
+        let endpoint = Endpoint.validateNicknameIntegrity(nickname: nickname)
+        let response = try await networkService.request(endpoint: endpoint, for: NicknameIntergrityResponseEntity.self)
+        return response.body.toDTO()
     }
 }

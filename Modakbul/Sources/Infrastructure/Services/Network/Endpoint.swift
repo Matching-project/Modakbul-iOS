@@ -11,7 +11,7 @@ import Moya
 enum Endpoint {
     // MARK: - User Related
     case login(token: Data?, provider: String)                  // 로그인
-    case checkNicknameForOverlap(nickname: String)              // 닉네임 중복 확인
+    case validateNicknameIntegrity(nickname: String)              // 닉네임 무결성 확인
     case register(user: UserRegistrationRequestEntity, image: Data?)                        // 회원가입
     case logout(token: String)                                  // 로그아웃
     case reissueToken(refreshToken: String)                     // 토큰 재발행
@@ -61,7 +61,7 @@ extension Endpoint: TargetType {
         switch self {
         case .login:
             return "/users/login"
-        case .checkNicknameForOverlap:
+        case .validateNicknameIntegrity:
             return "/users"
         case .register:
             return "/users/register"
@@ -116,7 +116,7 @@ extension Endpoint: TargetType {
     
     var method: Moya.Method {
         switch self {
-        case .checkNicknameForOverlap, .readMyProfile, .readMyBoards, .readMyMatches, .readMyRequestMatches, .readPlaces, .readPlacesByMatches, .readPlacesByDistance, .readBoards, .readBoardForUpdate, .readBoardDetail, .readMatches, .readChatrooms: return .get
+        case .validateNicknameIntegrity, .readMyProfile, .readMyBoards, .readMyMatches, .readMyRequestMatches, .readPlaces, .readPlacesByMatches, .readPlacesByDistance, .readBoards, .readBoardForUpdate, .readBoardDetail, .readMatches, .readChatrooms: return .get
         case .login, .register, .reissueToken, .createBoard, .requestMatch, .createChatRoom: return .post
         case .logout, .deleteBoard: return .delete
         case .updateProfile, .updateBoard, .acceptMatchRequest, .rejectMatchRequest, .exitChatRoom: return .patch
@@ -127,8 +127,8 @@ extension Endpoint: TargetType {
         switch self {
         case .login(_, let provider):
             return .requestParameters(parameters: ["provider": "\(provider)"], encoding: JSONEncoding.default)
-        case .checkNicknameForOverlap(let nickname):
-            return .requestCompositeData(bodyData: Data(), urlParameters: ["nickname": "\(nickname)"])
+        case .validateNicknameIntegrity(let nickname):
+            return .requestParameters(parameters: ["nickname": "\(nickname)"], encoding: URLEncoding.queryString)
         // TODO: - image 파라미터 빼고 user.imageURL을 개선하기
         case .register(let user, let image):
             var formData = [MultipartFormData]()
