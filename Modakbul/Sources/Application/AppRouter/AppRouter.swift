@@ -29,6 +29,7 @@ protocol AppRouter: ObservableObject {
     func dismiss()
     func popToRoot()
     func loginAlert()
+    func loginAlert(cancelAction: @escaping () -> Void)
 }
 
 extension AppRouter {
@@ -139,6 +140,17 @@ extension DefaultAppRouter {
             .defaultAction("로그인", action: {
                 self.route(to: .loginView)
             })
+        ])
+    }
+    
+    func loginAlert(cancelAction: @escaping () -> Void) {
+        alert(for: .login, actions: [
+            .cancelAction("취소") {
+                cancelAction()
+            },
+            .defaultAction("로그인") {
+                self.route(to: .loginView)
+            }
         ])
     }
 }

@@ -47,7 +47,7 @@ enum Route: Routable {
     case participationRequestListView(communityRecruitingContent: CommunityRecruitingContent)
     case notificationView
     case chatView           // MARK: - Chat
-    case chatRoomListView
+    case chatRoomListView(selectedPage: Binding<PageType>, archivedPage: PageType)
     case reportView(result: Binding<Bool>)
     case profileDetailView  // MARK: - Common
     
@@ -115,8 +115,8 @@ enum Route: Routable {
             NotificationView<Router>(router.resolver.resolve(NotificationViewModel.self))
         case .chatView:         // MARK: - Chat
             ChatView<Router>(router.resolver.resolve(ChatViewModel.self))
-        case .chatRoomListView:
-            ChatRoomListView()
+        case .chatRoomListView(let selectedPage, let archivedPage):
+            ChatRoomListView<Router>(selectedPage: selectedPage, archivedPage: archivedPage)
         case .reportView(let isReported):
             ReportView<Router>(router.resolver.resolve(ReportViewModel.self), isReported: isReported)
         case .profileDetailView:
