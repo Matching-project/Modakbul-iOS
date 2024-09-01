@@ -10,17 +10,14 @@ import SwiftUI
 struct PlacesListArea<Router: AppRouter>: View {
     @EnvironmentObject private var router: Router
     @ObservedObject private var viewModel: HomeViewModel
+    @AppStorage("isLoggedIn") private var isLoggedIn: Bool = false
     
     init(_ viewModel: HomeViewModel) {
         self.viewModel = viewModel
     }
     
     var body: some View {
-        ZStack {
-            listArea
-            
-            hoveringButtonsArea
-        }
+        listArea
     }
     
     private var listArea: some View {
@@ -31,11 +28,17 @@ struct PlacesListArea<Router: AppRouter>: View {
                 
                 // TODO: PushNotification Button (WIP)
                 Button {
-                    router.route(to: .notificationView)
+                    isLoggedIn ? router.route(to: .notificationView) : router.loginAlert()
                 } label: {
                     Image(systemName: "bell")
                         .font(.headline)
                         .padding(10)
+                }
+                
+                Button {
+                    viewModel.isMapShowing.toggle()
+                } label: {
+                    Image(systemName: "map")
                 }
             }
             .padding()
@@ -47,22 +50,10 @@ struct PlacesListArea<Router: AppRouter>: View {
             .listStyle(.plain)
         }
     }
-    
-    private var hoveringButtonsArea: some View {
-        VStack {
-            Spacer()
-            
-            HStack {
-                StrokedButton(.circle) {
-                    Image(systemName: "map")
-                        .padding(.horizontal, 4)
-                } action: {
-                    viewModel.isMapShowing.toggle()
-                }
-                
-                Spacer()
-            }
-        }
-        .padding()
+}
+
+struct PlacesListArea_Preview: PreviewProvider {
+    static var previews: some View {
+        router.view(to: .placesListArea)
     }
 }

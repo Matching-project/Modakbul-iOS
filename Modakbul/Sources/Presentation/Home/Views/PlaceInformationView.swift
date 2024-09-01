@@ -10,6 +10,8 @@ import SwiftUI
 struct PlaceInformationView<Router: AppRouter>: View {
     @EnvironmentObject private var router: Router
     @ObservedObject private var viewModel: PlaceInformationViewModel
+    @Environment(\.colorScheme) private var colorScheme
+    @AppStorage("isLoggedIn") private var isLoggedIn: Bool = false
     
     private let place: Place
     
@@ -88,7 +90,7 @@ struct PlaceInformationView<Router: AppRouter>: View {
     
     private var communityRecruitingContentEditButton: some View {
         Button {
-            router.route(to: .placeInformationDetailMakingView)
+            isLoggedIn ? router.route(to: .placeInformationDetailMakingView) : router.loginAlert()
         } label: {
             Image(.photoUploadSelection)
                 .resizable()

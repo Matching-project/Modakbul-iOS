@@ -11,7 +11,8 @@ import MapKit
 struct MapArea<Router: AppRouter>: View {
     @EnvironmentObject private var router: Router
     @ObservedObject private var viewModel: HomeViewModel
-    
+    @AppStorage("isLoggedIn") private var isLoggedIn: Bool = false
+
     init(_ viewModel: HomeViewModel) {
         self.viewModel = viewModel
     }
@@ -49,7 +50,7 @@ struct MapArea<Router: AppRouter>: View {
                 
                 // TODO: PushNotification Button (WIP)
                 Button {
-                    router.route(to: .notificationView)
+                    isLoggedIn ? router.route(to: .notificationView) : router.loginAlert()
                 } label: {
                     Image(systemName: "bell")
                         .font(.headline)
@@ -86,5 +87,11 @@ struct MapArea<Router: AppRouter>: View {
             }
         }
         .padding()
+    }
+}
+
+struct MapArea_Preview: PreviewProvider {
+    static var previews: some View {
+        router.view(to: .mapArea)
     }
 }

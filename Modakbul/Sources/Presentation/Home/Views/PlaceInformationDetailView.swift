@@ -10,6 +10,8 @@ import SwiftUI
 struct PlaceInformationDetailView<Router: AppRouter>: View {
     @EnvironmentObject private var router: Router
 //    @ObservedObject private var placeInformationDetailViewModel: PlaceInformationDetailViewModel
+    @AppStorage("isLoggedIn") private var isLoggedIn: Bool = false
+    @AppStorage("userId") private var userId: String?
     
     private let communityRecruitingContentId: Int64
     
@@ -49,12 +51,14 @@ struct PlaceInformationDetailView<Router: AppRouter>: View {
             
             // TODO: 사용자 종류에 따라 버튼 라벨 달라져야 함
             HStack {
+                // TODO: - 채팅하기 / 요청목록
                 FlatButton("채팅하기") {
-                    //
+                    
                 }
                 
+                // TODO: - 참여요청 / 모집종료
                 FlatButton("모집종료") {
-                    //
+                    
                 }
             }
             .padding()
