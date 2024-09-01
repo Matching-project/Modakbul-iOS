@@ -10,6 +10,7 @@ import SwiftUI
 struct PlaceInformationView<Router: AppRouter>: View {
     @EnvironmentObject private var router: Router
     @ObservedObject private var viewModel: PlaceInformationViewModel
+    @Environment(\.colorScheme) private var colorScheme: ColorScheme
     
     private let place: Place
     
