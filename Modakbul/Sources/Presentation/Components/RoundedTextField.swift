@@ -16,8 +16,6 @@ struct RoundedTextFieldStyle: TextFieldStyle {
             .padding()
             .overlay(alignment: .center) {
                 RoundedRectangle(cornerRadius: 8)
-                // TODO: - When merging homeView to main branch...
-                // 기존 RoundedRectangle(cornerRadius: RegistrationViewValue.RoundedTextField.cornerRadius)으로 바꿔놓을 것
                     .stroke(color)
             }
             .background {

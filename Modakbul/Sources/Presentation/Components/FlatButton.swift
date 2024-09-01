@@ -23,11 +23,9 @@ struct FlatButton: View {
             Text(label)
                 .tint(.white)
                 .bold()
-            // TODO: - RegistrationViewValue 
                 .padding(.vertical, 20)
                 .frame(maxWidth: .infinity, alignment: .center)
                 .background {
-                    // TODO: - RegistrationViewValue
                     RoundedRectangle(cornerRadius: 8)
                 }
         }

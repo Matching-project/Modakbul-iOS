@@ -19,11 +19,11 @@ private enum TokenStorageError: Error {
 
 protocol TokenStorage {
     typealias Query = [String: Any]
-    typealias UserID = Int64
+    typealias UserId = Int64
     
-    func store(_ tokens: TokensProtocol, by userId: UserID) throws
-    func fetch(by userId: UserID) throws -> TokensProtocol
-    func delete(by userId: UserID) throws
+    func store(_ tokens: TokensProtocol, by userId: UserId) throws
+    func fetch(by userId: UserId) throws -> TokensProtocol
+    func delete(by userId: UserId) throws
 }
 
 // MARK: CRUD Methods
@@ -79,7 +79,7 @@ extension DefaultTokenStorage {
         try encoder.encode(tokens)
     }
     
-    private func makeQuery(by userId: UserID) throws -> Query {
+    private func makeQuery(by userId: UserId) throws -> Query {
         [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrService as String: service,
@@ -118,7 +118,7 @@ extension DefaultTokenStorage {
 
 // MARK: TokenStorage Conformation
 extension DefaultTokenStorage: TokenStorage {
-    func store(_ tokens: TokensProtocol, by userId: UserID) throws {
+    func store(_ tokens: TokensProtocol, by userId: UserId) throws {
         let data = try encode(from: tokens)
         let query = try makeQuery(by: userId)
         
@@ -131,14 +131,14 @@ extension DefaultTokenStorage: TokenStorage {
         }
     }
     
-    func fetch(by userId: UserID) throws -> TokensProtocol {
+    func fetch(by userId: UserId) throws -> TokensProtocol {
         let query = try makeQuery(by: userId)
         let data = try _read(query)
         
         return try decode(TokensEntity.self, from: data)
     }
     
-    func delete(by userId: UserID) throws {
+    func delete(by userId: UserId) throws {
         let query = try makeQuery(by: userId)
         try _delete(query)
     }

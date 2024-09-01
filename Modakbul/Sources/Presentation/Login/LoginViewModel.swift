@@ -16,11 +16,6 @@ final class LoginViewModel: ObservableObject {
         self.userRegistrationUseCase = userRegistrationUseCase
     }
     
-    
-    // TODO: - 물어보기
-    // 카카오로그인은 서버로 토큰 줄 필요 없고,
-    // 애플로그인일 때만 서버로 토큰 보내야 하지 않나?
-    
     func loginWithKakaoTalk(_ token: OAuthToken) {
         Task {
             guard let token = try? JSONEncoder().encode(token) else {
