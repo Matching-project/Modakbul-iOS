@@ -10,12 +10,10 @@ import SwiftUI
 struct MyView<Router: AppRouter>: View {
     @EnvironmentObject private var router: Router
     @ObservedObject private var vm: MyViewModel
-    @State private var isLoggedIn: Bool
-    
-    // TODO: - 로그인 상태 AppStorage로 관리 필요
-    init(myViewModel: MyViewModel, isLoggedIn: Bool = false) {
+    @AppStorage("isLoggedIn") private var isLoggedIn: Bool = false
+
+    init(myViewModel: MyViewModel) {
         self.vm = myViewModel
-        self.isLoggedIn = isLoggedIn
     }
     
     var body: some View {
@@ -37,6 +35,7 @@ extension MyView {
     struct HeaderWhenLoggedIn: View {
         @EnvironmentObject private var router: Router
         @Binding private var user: User
+        @AppStorage("isLoggedIn") private var isLoggedIn: Bool = false
         
         init(_ user: Binding<User>) {
             self._user = user
@@ -85,7 +84,7 @@ extension MyView {
                     router.dismiss()
                 },
                 .defaultAction("로그아웃") {
-                    // TODO: -
+                    isLoggedIn = false
                 }
             ])
         }
@@ -144,7 +143,7 @@ extension MyView {
                 
                 Section {
                     button("알림 설정", destination: .notificationSettingsView)
-                    // button("약관 및 정책", destination: )
+//                    Link("약관 및 정책", destination: <#T##URL#>)
                     // button("탈퇴하기", destination: )
                     Text("문의처: modakbul@gmail.com")
                 }
@@ -163,18 +162,7 @@ extension MyView {
         }
         
         private func handleButtonTap(for destination: Route) {
-            if isLoggedIn {
-                router.route(to: destination)
-            } else {
-                router.alert(for: .login, actions: [
-                    .cancelAction("취소") {
-                        router.dismiss()
-                    },
-                    .defaultAction("로그인") {
-                        router.route(to: .loginView)
-                    }
-                ])
-            }
+            isLoggedIn ? router.route(to: destination) : router.loginAlert()
         }
     }
 }

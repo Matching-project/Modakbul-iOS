@@ -12,8 +12,8 @@ struct LoginView<Router: AppRouter>: View {
     @Environment(\.colorScheme) private var scheme
     @EnvironmentObject private var router: Router
     @ObservedObject private var loginViewModel: LoginViewModel
-    
     @State private var isPresented: Bool = false
+    @AppStorage("isLoggedIn") private var isLoggedIn: Bool = false
     
     init(loginViewModel: LoginViewModel) {
         self.loginViewModel = loginViewModel
@@ -43,6 +43,7 @@ struct LoginView<Router: AppRouter>: View {
             switch result {
             case .success(let token):
                 loginViewModel.loginWithKakaoTalk(token)
+                isLoggedIn = true
                 router.dismiss()
             case .failure(let error):
                 print(error)
@@ -59,6 +60,8 @@ struct LoginView<Router: AppRouter>: View {
             switch result {
             case .success(let auth):
                 loginViewModel.loginWithApple(auth.credential)
+                isLoggedIn = true
+                router.dismiss()
             case .failure(let error):
                 print(error)
             }

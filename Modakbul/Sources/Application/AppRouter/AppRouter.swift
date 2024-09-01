@@ -28,6 +28,7 @@ protocol AppRouter: ObservableObject {
     func confirmationDialog(for type: ConfirmationDialogType, actions: [ConfirmationAction])
     func dismiss()
     func popToRoot()
+    func loginAlert()
 }
 
 extension AppRouter {
@@ -126,5 +127,18 @@ final class DefaultAppRouter: AppRouter {
         if path.isEmpty == false {
             path.removeLast(path.count)
         }
+    }
+}
+
+extension DefaultAppRouter {
+    func loginAlert() {
+        alert(for: .login, actions: [
+            .cancelAction("취소", action: {
+                self.dismiss()
+            }),
+            .defaultAction("로그인", action: {
+                self.route(to: .loginView)
+            })
+        ])
     }
 }
