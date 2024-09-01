@@ -9,7 +9,7 @@ import Foundation
 
 protocol UserManagementRepository {
     func updateProfile(user: User, image: Data?) async throws
-    func report(_ content: Report) async throws
+    func report(userId: Int64, _ content: Report) async throws
     func block(blocked: User, blocker: User) async throws
     func fetchBlockedUsers(by user: User) async throws -> [BlockedUser]
     func unblock(blocked: User, blocker: User) async throws
@@ -40,14 +40,16 @@ extension DefaultUserManagementRepository: UserManagementRepository {
         let endpoint = Endpoint.updateProfile(token: token.accessToken, user: entity, image: image)
         let response = try await networkService.request(endpoint: endpoint, for: DefaultResponseEntity.self)
         
+        // 응답코드 2401: 액세스토큰 만료
         if response.body.code == 2401 {
             let endpoint = Endpoint.updateProfile(token: token.refreshToken, user: entity, image: image)
-            let response = try await networkService.request(endpoint: endpoint, for: DefaultResponseEntity.self)
+            _ = try await networkService.request(endpoint: endpoint, for: DefaultResponseEntity.self)
         }
     }
     
-    func report(_ content: Report) async throws {
-        //
+    func report(userId: Int64, _ content: Report) async throws {
+        let token = try tokenStorage.fetch(by: userId)
+        
     }
     
     func block(blocked: User, blocker: User) async throws {
