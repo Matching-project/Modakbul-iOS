@@ -31,7 +31,6 @@ struct PlaceInformationView<Router: AppRouter>: View {
                 
                 Spacer()
             }
-            
             .frame(maxWidth: .infinity)
             .overlay(alignment: .topTrailing) {
                 communityRecruitingContentEditButton
@@ -62,7 +61,7 @@ struct PlaceInformationView<Router: AppRouter>: View {
             }
             
             HStack {
-                Text("운영시간: ")
+                Text("운영시간 ")
                 
                 Menu {
                     ForEach(place.openingHours, id: \.dayOfWeek) { openingHour in
@@ -76,8 +75,8 @@ struct PlaceInformationView<Router: AppRouter>: View {
                     Text(viewModel.openingHourText)
                     Image(systemName: "chevron.down")
                 }
+                .tint(colorScheme == .dark ? .white : .black)
             }
-            .padding(.vertical, 10)
             
             HStack {
                 CapsuleTag(place.powerSocketState.description, .caption)
@@ -96,6 +95,8 @@ struct PlaceInformationView<Router: AppRouter>: View {
                 .scaledToFit()
         }
         .frame(width: 30, height: 30)
+        // MARK: - https://stackoverflow.com/q/56561064
+        .buttonStyle(BorderlessButtonStyle())
         .shadow(color: .gray.opacity(0.3), radius: 4, y: 4)
     }
     
