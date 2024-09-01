@@ -28,9 +28,21 @@ enum ReportType: CaseIterable, Hashable, CustomStringConvertible {
     }
 }
 
+/// 신고 또는 문의에 대한 처리 상태를 표현합니다.
+enum InquiryStatusType: String, Decodable {
+    case completed = "COMPLETED"
+    case waiting = "WAITING"
+    case deleted = "DELETED"
+}
+
+//InquiryStatus
+//문의 완료: COMPLETE
+//문의중: WAITING
+//문의 삭제: DELETED
+
 struct Report {
     var type: ReportType
-    let from: User
-    let to: User
+    let fromUserId: Int64
+    let toUserId: Int64
     var description: String
 }

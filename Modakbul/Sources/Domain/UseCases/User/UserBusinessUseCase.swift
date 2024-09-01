@@ -9,7 +9,7 @@ import Foundation
 
 protocol UserBusinessUseCase {
     func updateProfile(user: User, image: Data?) async throws
-    func report(_ content: Report) async throws
+    func report(userId: Int64, _ content: Report) async throws
     func block(blocked: User, blocker: User) async throws
     func fetchBlockedUsers(by user: User) async throws -> [BlockedUser]
     func unblock(blocked: User, blocker: User) async throws
@@ -34,7 +34,7 @@ extension DefaultUserBusinessUseCase: UserBusinessUseCase {
         <#code#>
     }
     
-    func report(_ content: Report) async throws {
+    func report(userId: Int64, _ content: Report) async throws {
         <#code#>
     }
     
