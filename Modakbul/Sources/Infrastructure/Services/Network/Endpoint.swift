@@ -20,12 +20,19 @@ enum Endpoint {
     case readMyBoards(token: String)                            // 나의 모집글 목록 조회
     case readMyMatches(token: String)                           // 참여 모임 내역 조회
     case readMyRequestMatches(token: String)                    // 나의 참여 요청 목록 조회
+    case block(token: String, blockedUserId: Int64)             // 사용자 차단
+    case unblock(token: String, blockId: Int64)                 // 사용자 차단 해제
+    case readBlockedUsers(token: String)                        // 차단한 사용자 목록 조회
+    case readReports(token: String)                             // 신고 목록 조회
     
     // MARK: - Place Related
-    case readPlaces(name: String, lat: Double, lon: Double)     // 카페 이름으로 검색
-    case readPlacesByMatches(lat: Double, lon: Double)          // 카페 모임순 목록 조회
-    case readPlacesByDistance(lat: Double, lon: Double)         // 카페 거리순 목록 조회
-    case readBoards(placeId: String)                            // 카페 모집글 목록 조회
+    case readPlaces(name: String, lat: Double, lon: Double)                                         // 카페 이름으로 검색
+    case readPlacesByMatches(lat: Double, lon: Double)                                              // 카페 모임순 목록 조회
+    case readPlacesByDistance(lat: Double, lon: Double)                                             // 카페 거리순 목록 조회
+    case readBoards(placeId: Int64)                                                                 // 카페 모집글 목록 조회
+    case readPlacesForShowcaseAndReview(token: String)                                              // 카페 제보 및 리뷰 목록 조회
+    case reviewPlace(placeId: Int64, review: ReviewPlaceRequestEntity)                              // 카페 리뷰
+    case suggestPlace(suggest: SuggestPlaceRequestEntity)                                           // 카페 제보
     
     // MARK: - Board Related
     case createBoard(token: String, placeId: String, communityRecruitingContent: CommunityRecruitingContentEntity)  // 모집글 작성
@@ -33,7 +40,7 @@ enum Endpoint {
     case updateBoard(token: String, communityRecruitingContent: CommunityRecruitingContentEntity)                   // 모집글 수정
     case deleteBoard(token: String, communityRecruitingContent: CommunityRecruitingContentEntity)                   // 모집글 삭제
     case readBoardDetail(communityRecruitingContentId: Int64)                                                       // 모집글 상세 조회
-    case completeBoard(token: String, communityRecruitingContentId: Int64)                                                         // 모집글 모집 종료
+    case completeBoard(token: String, communityRecruitingContentId: Int64)                                          // 모집글 모집 종료
     
     // MARK: - Match Related
     case readMatches(token: String, communityRecruitingContentId: Int64)   // 모임 참여 요청 목록 조회
@@ -61,6 +68,7 @@ extension Endpoint: TargetType {
     
     var path: String {
         switch self {
+            // MARK: User Related
         case .login(_, let provider):
             return "/users/login/\(provider)"
         case .validateNicknameIntegrity:
@@ -81,12 +89,30 @@ extension Endpoint: TargetType {
             return "/users/meetings"
         case .readMyRequestMatches:
             return "/users/matches/requests"
+        case .block(_, let blockedUserId):
+            return "/blocks/\(blockedUserId)"
+        case .unblock(_, let blockId):
+            return "/blocks/\(blockId)"
+        case .readBlockedUsers:
+            return "/users/blocks"
+        case .readReports:
+            return "/users/reports"
+            
+            // MARK: Place Related
         case .readPlaces:
             return "/cafes"
         case .readPlacesByMatches:
             return "/cafes/meeting"
         case .readPlacesByDistance:
             return "/cafes/distance"
+        case .readPlacesForShowcaseAndReview:
+            return "users/cafes"
+        case .reviewPlace(let placeId, _):
+            return "/users/cafes/\(placeId)/reviews"
+        case .suggestPlace:
+            return "/users/cafes/information"
+            
+            // MARK: Board Related
         case .readBoards(let placeId):
             return "/cafes/\(placeId)/boards"
         case .createBoard(_, let placeId, _):
@@ -101,6 +127,8 @@ extension Endpoint: TargetType {
             return "/cafes/boards/\(communityRecruitingContentId)"
         case .completeBoard(_, let communityRecruitingContentId):
             return "/boards/\(communityRecruitingContentId)/completed"
+            
+            // MARK: Match Related
         case .readMatches(_, let communityRecruitingContentId):
             return "/boards/\(communityRecruitingContentId)/matches"
         case .requestMatch(_, let communityRecruitingContentId):
@@ -111,6 +139,8 @@ extension Endpoint: TargetType {
             return "/matches/\(matchingId)/rejection"
         case .exitMatch(_, let matchingId):
             return "/matches/\(matchingId)/exit"
+            
+            // MARK: Chat Related
         case .createChatRoom:
             return "/chatrooms"
         case .readChatrooms:
@@ -122,9 +152,9 @@ extension Endpoint: TargetType {
     
     var method: Moya.Method {
         switch self {
-        case .validateNicknameIntegrity, .readMyProfile, .readMyBoards, .readMyMatches, .readMyRequestMatches, .readPlaces, .readPlacesByMatches, .readPlacesByDistance, .readBoards, .readBoardForUpdate, .readBoardDetail, .readMatches, .readChatrooms, .completeBoard: return .get
-        case .login, .register, .reissueToken, .createBoard, .requestMatch, .createChatRoom: return .post
-        case .logout, .deleteBoard: return .delete
+        case .validateNicknameIntegrity, .readMyProfile, .readMyBoards, .readMyMatches, .readMyRequestMatches, .readPlaces, .readPlacesByMatches, .readPlacesByDistance, .readPlacesForShowcaseAndReview, .readBoards, .readBoardForUpdate, .readBoardDetail, .readMatches, .readChatrooms, .completeBoard, .readBlockedUsers, .readReports: return .get
+        case .login, .register, .reissueToken, .createBoard, .requestMatch, .createChatRoom, .block, .reviewPlace, .suggestPlace: return .post
+        case .logout, .deleteBoard, .unblock: return .delete
         case .updateProfile, .updateBoard, .acceptMatchRequest, .rejectMatchRequest, .exitMatch, .exitChatRoom: return .patch
         }
     }
@@ -154,11 +184,6 @@ extension Endpoint: TargetType {
             }
 
             return .uploadMultipart(formData)
-            
-        case .logout:
-            return .requestPlain
-        case .reissueToken:
-            return .requestPlain
         case .updateProfile(_, let user, let image):
             var formData = [MultipartFormData]()
 
@@ -178,57 +203,34 @@ extension Endpoint: TargetType {
             }
 
             return .uploadMultipart(formData)
-        case .readMyProfile:
-            return .requestPlain
-        case .readMyBoards:
-            return .requestPlain
-        case .readMyMatches:
-            return .requestPlain
-        case .readMyRequestMatches:
-            return .requestPlain
         case .readPlaces(name: let name, lat: let lat, lon: let lon):
             return .requestParameters(parameters: ["name": "\(name)", "latitude": "\(lat)", "longitude": "\(lon)"], encoding: URLEncoding.queryString)
         case .readPlacesByMatches(lat: let lat, lon: let lon):
             return .requestParameters(parameters: ["latitude": "\(lat)", "longitude": "\(lon)"], encoding: URLEncoding.queryString)
         case .readPlacesByDistance(let lat, let lon):
             return .requestParameters(parameters: ["latitude": "\(lat)", "longitude": "\(lon)"], encoding: URLEncoding.queryString)
-        case .readBoards:
-            return .requestPlain
         case .createBoard(_, _, let communityRecruitingContent):
             let communityRecruitingContent = try? encode(communityRecruitingContent)
             return .requestJSONEncodable(communityRecruitingContent)
-        case .readBoardForUpdate:
-            return .requestPlain
         case .updateBoard(_, let communityRecruitingContent):
             let communityRecruitingContent = try? encode(communityRecruitingContent)
             return .requestJSONEncodable(communityRecruitingContent)
-        case .deleteBoard:
-            return .requestPlain
-        case .readBoardDetail:
-            return .requestPlain
-        case .completeBoard:
-            return .requestPlain
-        case .readMatches:
-            return .requestPlain
         case .requestMatch(_, let communityRecruitingContentId):
             return .requestParameters(parameters: ["boardId": "\(communityRecruitingContentId)"], encoding: URLEncoding.queryString)
-        case .acceptMatchRequest:
-            return .requestPlain
-        case .rejectMatchRequest:
-            return .requestPlain
-        case .exitMatch:
-            return .requestPlain
         case .createChatRoom(_, let communityRecruitingContentId, let opponentUserId):
             return .requestParameters(parameters: ["boardId": "\(communityRecruitingContentId)", "theOtherUserId": "\(opponentUserId)"], encoding: URLEncoding.queryString)
-        case .readChatrooms:
-            return .requestPlain
-        case .exitChatRoom:
+        case .reviewPlace(_, let review):
+            return .requestJSONEncodable(review)
+        case .suggestPlace(let suggest):
+            return .requestJSONEncodable(suggest)
+        default:
             return .requestPlain
         }
     }
     
     var headers: [String : String]? {
         switch self {
+            // MARK: User Related
         case .login(let token,  _):
             ["Content-type": "application/json",
              "Authorization": "\(String(describing: token))"]
@@ -243,11 +245,21 @@ extension Endpoint: TargetType {
              "Authorization": "\(token)"]
         case .readMyProfile(let token):
             ["Authorization": "\(token)"]
+        case .block(let token, _):
+            ["Authorization": "\(token)"]
+        case .unblock(let token, _):
+            ["Authorization": "\(token)"]
+        case .readBlockedUsers(let token):
+            ["Authorization": "\(token)"]
+        case .readReports(let token):
+            ["Authorization": "\(token)"]
+            
+            // MARK: Place Related
+        case .readPlacesForShowcaseAndReview(let token):
+            ["Authorization": "\(token)"]
+            
+            // MARK: Board Related
         case .readMyBoards(let token):
-            ["Authorization": "\(token)"]
-        case .readMyMatches(let token):
-            ["Authorization": "\(token)"]
-        case .readMyRequestMatches(let token):
             ["Authorization": "\(token)"]
         case .createBoard(let token, _, _):
             ["Content-type": "application/json",
@@ -261,6 +273,12 @@ extension Endpoint: TargetType {
             ["Authorization": "\(token)"]
         case .completeBoard(let token, _):
             ["Authorization": "\(token)"]
+            
+            // MARK: Match Related
+        case .readMyMatches(let token):
+            ["Authorization": "\(token)"]
+        case .readMyRequestMatches(let token):
+            ["Authorization": "\(token)"]
         case .readMatches(let token, _):
             ["Authorization": "\(token)"]
         case .requestMatch(let token, _):
@@ -269,6 +287,8 @@ extension Endpoint: TargetType {
             ["Authorization": "\(token)"]
         case .rejectMatchRequest(let token, _):
             ["Authorization": "\(token)"]
+            
+            // MARK: Chat Related
         case .createChatRoom(let token, _, _):
             ["Authorization": "\(token)"]
         case .readChatrooms(let token):
@@ -285,7 +305,7 @@ extension Endpoint: TargetType {
     
     var authorizationType: AuthorizationType? {
           switch self {
-          case .login, .logout, .reissueToken, .updateProfile, .readMyProfile, .readMyBoards, .readMyMatches, .readMyRequestMatches, .createBoard, .readBoardForUpdate, .updateBoard, .deleteBoard, .completeBoard, .readMatches, .requestMatch, .acceptMatchRequest, .rejectMatchRequest, .createChatRoom, .readChatrooms, .exitChatRoom:
+          case .login, .logout, .reissueToken, .updateProfile, .readMyProfile, .readMyBoards, .readMyMatches, .readMyRequestMatches, .block, .unblock, .readBlockedUsers, .readReports, .createBoard, .readBoardForUpdate, .updateBoard, .deleteBoard, .completeBoard, .readMatches, .requestMatch, .acceptMatchRequest, .rejectMatchRequest, .createChatRoom, .readChatrooms, .exitChatRoom:
                   .bearer
           default: .none
           }

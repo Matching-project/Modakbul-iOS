@@ -51,7 +51,7 @@ struct PlacesSearchResponseEntity: Decodable {
     }
 }
 
-struct LocationEntity: Decodable {
+struct LocationEntity: Codable {
     let latitude, longitude: Double
     let address: String
     
