@@ -67,7 +67,7 @@ final class RegistrationViewModel: ObservableObject {
     
     func submit() {
         // TODO: Provider 수정할 것
-        let user = User(id: Int64(UUID().hashValue),
+        let user = User(id: -1,
                         name: name,
                         nickname: nickname,
                         gender: gender ?? .unknown,
@@ -77,7 +77,7 @@ final class RegistrationViewModel: ObservableObject {
                         birth: birth.toDate())
         
         Task {
-            try await userRegistrationUseCase.register(user, encoded: image ?? Data())
+            try await userRegistrationUseCase.register(user, encoded: image)
             // TODO: - 회원가입 완료되면 회원정보 조회 API를 통해 user.imageURL 채워넣기.
             // TODO: - 그래야 마이페이지로 이동할 때 API 요청 필요 없음
         }

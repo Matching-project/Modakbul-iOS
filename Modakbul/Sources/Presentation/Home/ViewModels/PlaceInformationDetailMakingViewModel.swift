@@ -8,7 +8,8 @@
 import Foundation
 
 final class PlaceInformationDetailMakingViewModel: ObservableObject {
-    @Published var location: String
+    private var id: Int64
+    @Published var location: Location
     @Published var category: Category
     @Published var peopleCount: Int
     @Published var date: Date
@@ -20,7 +21,8 @@ final class PlaceInformationDetailMakingViewModel: ObservableObject {
     // TODO: - communityUseCase: CommunityUseCase로 변경해야함
     private let communityUseCase: DefaultCommunityUseCase // : CommunityUseCase
     
-    init(location: String = "스타벅스 성수역점",
+    init(id: Int64 = 1,
+         location: Location = Location(),
          category: Category = .interview,
          peopleCount: Int = 1,
          date: Date = .now,
@@ -30,6 +32,7 @@ final class PlaceInformationDetailMakingViewModel: ObservableObject {
          content: String = "",
          communityUseCase: DefaultCommunityUseCase = DefaultCommunityUseCase()
     ) {
+        self.id = id
         self.location = location
         self.category = category
         self.peopleCount = peopleCount
@@ -71,7 +74,8 @@ final class PlaceInformationDetailMakingViewModel: ObservableObject {
     }
     
     func initialize() {
-        location = ""
+        id = -1
+        location = Location()
         category = .interview
         peopleCount = 1
         date = .now

@@ -23,21 +23,31 @@ struct PlaceInformationDetailMakingView<Router: AppRouter>: View {
         VStack {
             ScrollView {
                 LazyVStack(spacing: 20) {
-                    makeRow(title: "장소") {
-                        RoundedTextField("", text: $vm.location, disabled: true)
+                    cell(title: "장소") {
+                        ZStack(alignment: .leading) {
+                            RoundedRectangle(cornerRadius: 8)
+                                .stroke(Color.accent)
+                                .overlay {
+                                    RoundedRectangle(cornerRadius: 8)
+                                        .opacity(0.1)
+                                }
+
+                            Text(vm.location.name)
+                                .padding()
+                        }
                     }
                     
-                    makeRow(title: "카테고리") {
+                    cell(title: "카테고리") {
                         MenuPicker.Default(selection: $vm.category)
                             .roundedRectangleStyle()
                     }
                     
-                    makeRow(title: "모집인원") {
+                    cell(title: "모집인원") {
                         MenuPicker.Range(selection: $vm.peopleCount, range: 1...10)
                             .roundedRectangleStyle()
                     }
                     
-                    makeRow(title: "날짜") {
+                    cell(title: "날짜") {
                         ZStack(alignment: .leading) {
                             Text(vm.date.toString(by: .yyyyMMdd))
                                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -57,7 +67,7 @@ struct PlaceInformationDetailMakingView<Router: AppRouter>: View {
                         .roundedRectangleStyle()
                     }
                     
-                    makeRow(title: "진행시간") {
+                    cell(title: "진행시간") {
                         HStack {
                             ZStack(alignment: .leading) {
                                 Text(vm.startTime.toString(by: .HHmm))
@@ -130,7 +140,7 @@ struct PlaceInformationDetailMakingView<Router: AppRouter>: View {
         }
     }
     
-    private func makeRow(title: String, @ViewBuilder content: () -> some View) -> some View {
+    private func cell(title: String, @ViewBuilder content: () -> some View) -> some View {
         HStack {
             Text(title)
                 .bold()
