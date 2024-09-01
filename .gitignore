@@ -144,3 +144,7 @@ Derived/
 
 ### Tuist managed dependencies ###
 Tuist/.build
+
+### Custom
+GoogleService-Info.plist
+AppSecret.xcconfig
