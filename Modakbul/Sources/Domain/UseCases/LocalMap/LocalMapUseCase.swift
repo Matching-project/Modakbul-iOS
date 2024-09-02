@@ -11,9 +11,13 @@ import CoreLocation
 protocol LocalMapUseCase {
     typealias Coordinate = CLLocationCoordinate2D
     
-    func fetchPlaces(on coordinate: Coordinate, by sortCriteria: PlaceSortCriteria) async throws -> [Place]
+    /// 장소 이름으로 조회
     func fetchPlaces(with keyword: String, on coordinate: Coordinate) async throws -> [Place]
     
+    /// 장소 거리순, 모임순 조회
+    func fetchPlaces(on coordinate: Coordinate, by sortCriteria: PlaceSortCriteria) async throws -> [Place]
+    
+    /// 사용자 최근 위치 정보 갱신
     func updateCoordinate() async throws -> Coordinate
 }
 

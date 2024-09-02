@@ -17,32 +17,30 @@ enum Endpoint {
     case reissueToken(refreshToken: String)                                                 // 토큰 재발행
     case updateProfile(token: String, user: UserProfileUpdateRequestEntity, image: Data?)   // 프로필 수정
     case readMyProfile(token: String)                                                       // 회원 정보 조회
-    case readMyBoards(token: String)                                                        // 나의 모집글 목록 조회
-    case readMyMatches(token: String)                                                       // 참여 모임 내역 조회
-    case readMyRequestMatches(token: String)                                                // 나의 참여 요청 목록 조회
     case block(token: String, blockedUserId: Int64)                                         // 사용자 차단
     case unblock(token: String, blockId: Int64)                                             // 사용자 차단 해제
     case readBlockedUsers(token: String)                                                    // 차단한 사용자 목록 조회
     case readReports(token: String)                                                         // 신고 목록 조회
     case readOpponentUserProfile(token: String, userId: Int64)                              // 사용자(상대방) 프로필 조회
-    case reportOpponentUserProfile(token: String, userId: Int64, report: Report)           // 사용자(상대방) 프로필 신고
+    case reportOpponentUserProfile(token: String, userId: Int64, report: Report)            // 사용자(상대방) 프로필 신고
     
     // MARK: - Place Related
     case readPlaces(name: String, lat: Double, lon: Double)                                         // 카페 이름으로 검색
     case readPlacesByMatches(lat: Double, lon: Double)                                              // 카페 모임순 목록 조회
     case readPlacesByDistance(lat: Double, lon: Double)                                             // 카페 거리순 목록 조회
-    case readBoards(placeId: Int64)                                                                 // 카페 모집글 목록 조회
     case readPlacesForShowcaseAndReview(token: String)                                              // 카페 제보 및 리뷰 목록 조회
     case reviewPlace(placeId: Int64, review: ReviewPlaceRequestEntity)                              // 카페 리뷰
     case suggestPlace(suggest: SuggestPlaceRequestEntity)                                           // 카페 제보
     
     // MARK: - Board Related
     case createBoard(token: String, placeId: String, communityRecruitingContent: CommunityRecruitingContentEntity)  // 모집글 작성
-    case readBoardForUpdate(token: String, communityRecruitingContent: CommunityRecruitingContentEntity)            // 모집글 수정 정보 조회
+    case readBoards(placeId: Int64)        // 카페 모집글 목록 조회
+    case readBoardForUpdate(token: String, communityRecruitingContentId: Int64)            // 모집글 수정 정보 조회
     case updateBoard(token: String, communityRecruitingContent: CommunityRecruitingContentEntity)                   // 모집글 수정
     case deleteBoard(token: String, communityRecruitingContent: CommunityRecruitingContentEntity)                   // 모집글 삭제
     case readBoardDetail(communityRecruitingContentId: Int64)                                                       // 모집글 상세 조회
     case completeBoard(token: String, communityRecruitingContentId: Int64)                                          // 모집글 모집 종료
+    case readMyBoards(token: String)       // 나의 모집글 목록 조회
     
     // MARK: - Match Related
     case readMatches(token: String, communityRecruitingContentId: Int64)   // 모임 참여 요청 목록 조회
@@ -51,6 +49,8 @@ enum Endpoint {
     case rejectMatchRequest(token: String, matchingId: Int64)              // 모임 참여 요청에 대한 거절
     case exitMatch(token: String, matchingId: Int64)                       // 모임 나가기
     case cancelMatchRequest(token: String, matchingId: Int64)              // 모임 참여 요청 취소
+    case readMyMatches(token: String)                                      // 참여 모임 내역 조회
+    case readMyRequestMatches(token: String)                               // 나의 참여 요청 목록 조회
     
     // MARK: - Chat Related
     case createChatRoom(token: String, communityRecruitingContentId: Int64, opponentUserId: Int64) // 채팅방 생성
@@ -125,8 +125,8 @@ extension Endpoint: TargetType {
             return "/cafes/\(placeId)/boards"
         case .createBoard(_, let placeId, _):
             return "/cafes/\(placeId)/boards"
-        case .readBoardForUpdate(_, let communityRecruitingContent):
-            return "/boards/\(communityRecruitingContent.id)"
+        case .readBoardForUpdate(_, let communityRecruitingContentId):
+            return "/boards/\(communityRecruitingContentId)"
         case .updateBoard(_, let communityRecruitingContent):
             return "/boards/\(communityRecruitingContent.id)"
         case .deleteBoard(_, let communityRecruitingContent):

@@ -8,16 +8,29 @@
 import Foundation
 
 protocol UserBusinessUseCase {
+    /// 사용자 프로필 수정
     func updateProfile(user: User, image: Data?) async throws
-    func report(userId: Int64, _ content: Report) async throws
-    func block(blocked: User, blocker: User) async throws
-    func fetchBlockedUsers(by user: User) async throws -> [BlockedUser]
-    func unblock(blocked: User, blocker: User) async throws
-    func unregister(by user: User) async throws
     
-    // TODO: Work in progress
-    /// 문의하기
-//    func contact()
+    /// 사용자 프로필 조회
+    func readMyProfile(userId: Int64) async throws
+    
+    /// 사용자(상대방) 차단
+    func block(userId: Int64, opponentUserId: Int64) async throws
+    
+    /// 사용자(상대방) 차단 해제
+    func unblock(blocked: User, blocker: User) async throws
+    
+    /// 차단한 사용자 목록 조회
+    func readBlockedUsers(by user: User) async throws -> [BlockedUser]
+    
+    /// 신고 목록 조회
+    func readReports(userId: Int64) async throws -> [(user: User, status: InquiryStatusType)]
+    
+    /// 사용자(상대방) 프로필 조회
+    func readOpponentUserProfile(userId: Int64, opponentUserId: Int64) async throws -> User
+    
+    /// 사용자(상대방) 프로필 신고
+    func report(userId: Int64, opponentUserId: Int64, report: Report) async throws
 }
 
 final class DefaultUserBusinessUseCase {
@@ -34,15 +47,11 @@ extension DefaultUserBusinessUseCase: UserBusinessUseCase {
         <#code#>
     }
     
-    func report(userId: Int64, _ content: Report) async throws {
+    func readMyProfile(userId: Int64) async throws {
         <#code#>
     }
     
-    func block(blocked: User, blocker: User) async throws {
-        <#code#>
-    }
-    
-    func fetchBlockedUsers(by user: User) async throws -> [BlockedUser] {
+    func block(userId: Int64, opponentUserId: Int64) async throws {
         <#code#>
     }
     
@@ -50,7 +59,19 @@ extension DefaultUserBusinessUseCase: UserBusinessUseCase {
         <#code#>
     }
     
-    func unregister(by user: User) async throws {
+    func readBlockedUsers(by user: User) async throws -> [BlockedUser] {
+        <#code#>
+    }
+    
+    func readReports(userId: Int64) async throws -> [(user: User, status: InquiryStatusType)] {
+        <#code#>
+    }
+    
+    func readOpponentUserProfile(userId: Int64, opponentUserId: Int64) async throws -> User {
+        <#code#>
+    }
+    
+    func report(userId: Int64, opponentUserId: Int64, report: Report) async throws {
         <#code#>
     }
 }
