@@ -6,15 +6,22 @@
 //
 
 import SwiftUI
+import Combine
 
 final class NotificationViewModel: ObservableObject {
     // TODO: - UseCase 연결 필요
     //    private let notificationUseCase: NotificationUseCase
     
-    @Published var notifications: [PushNotification] = PreviewHelper.shared.notifications
+    @Published var notifications: [PushNotification] = []
     @Published var multiSelection = Set<UUID>()
+    private var cancellable: AnyCancellable?
     
-    func deleteNotification(_ notification: PushNotification) {
+    init() {
+        cancellable = PreviewHelper.shared.$notifications
+            .assign(to: \.notifications, on: self)
+    }
+    
+    func deleteSwipedNotification(_ notification: PushNotification) {
         if let index = notifications.firstIndex(where: { $0.id == notification.id }) {
             notifications.remove(at: index)
         }

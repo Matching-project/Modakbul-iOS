@@ -5,19 +5,19 @@
 //  Created by Lim Seonghyeon on 9/2/24.
 //
 
-import SwiftUI
+import UIKit
 import FirebaseCore
 import FirebaseMessaging
 
 // MARK: - Firebase Quickstart Samples for iOS by Google: https://github.com/firebase/quickstart-ios/blob/14c812998f4fea0338a09bfec877470a1358ff80/messaging/MessagingExampleSwift/AppDelegate.swift#L116-L159
 final class AppDelegate: UIResponder, UIApplicationDelegate {
     // TODO: - 메세지 식별시 사용 예정 (푸시 알림 타입에 따라 화면 분기 필요)
-//    let gcmMessageIDKey = "gcm.message_id"
+    //    let gcmMessageIDKey = "gcm.message_id"
     
     // MARK: - FCM 초기화
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-
+        
         FirebaseApp.configure()
         Messaging.messaging().delegate = self
         Messaging.messaging().isAutoInitEnabled = true
@@ -50,11 +50,20 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     -> UNNotificationPresentationOptions {
         let userInfo = notification.request.content.userInfo
         
-//        if let messageID = userInfo[gcmMessageIDKey] {
-//            print("Message ID: \(messageID)")
-//        }
-        
+        //        if let messageID = userInfo[gcmMessageIDKey] {
+        //            print("Message ID: \(messageID)")
+        //        }
+    
+        if let aps = userInfo["aps"] as? [String: Any],
+           let alert = aps["alert"] as? [String: Any] {
+                let title = alert["title"] as? String ?? "제목 없음"
+                let body = alert["body"] as? String ?? "내용 없음"
+            
         print(userInfo)
+
+            // TODO: - Notification Manager 변경 필요
+            PreviewHelper.shared.notifications.append(PushNotification(imageURL: PreviewHelper.url1, title: title, subtitle: body, timestamp: "방금", type: .accept))
+        }
         
         // MARK: - .badge, .sound: FCM에서 별도 옵션 필요
         // TODO: - .list: foreground에서 푸시 수신시, 푸시 알림이 알림센터에 누적되어야 하나 말아야 하나?
@@ -67,9 +76,9 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         
         let userInfo = response.notification.request.content.userInfo
         
-//        if let messageID = userInfo[gcmMessageIDKey] {
-//            print("Message ID: \(messageID)")
-//        }
+        //        if let messageID = userInfo[gcmMessageIDKey] {
+        //            print("Message ID: \(messageID)")
+        //        }
         
         print(userInfo)
     }
