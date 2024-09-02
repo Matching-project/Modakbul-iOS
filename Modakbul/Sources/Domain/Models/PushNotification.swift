@@ -40,8 +40,15 @@ struct PushNotification: Identifiable {
     let subtitle: String
     let timestamp: String
     let type: `Type`
+    var isTouched: Bool
     
-    init(imageURL: URL?, title: String, subtitle: String, timestamp: String, type: `Type`) {
+    init(imageURL: URL?,
+         title: String,
+         subtitle: String,
+         timestamp: String,
+         type: `Type`,
+         isTouched: Bool = false
+    ) {
         self.imageURL = imageURL
         self.title = title
         self.titlePostfix = type.titlePostfix
@@ -49,5 +56,6 @@ struct PushNotification: Identifiable {
         // TODO: - 초/분/시간 전 표시하기
         self.timestamp = timestamp
         self.type = type
+        self.isTouched = isTouched
     }
 }
