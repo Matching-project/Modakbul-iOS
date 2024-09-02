@@ -13,17 +13,19 @@ enum Endpoint {
     case login(token: Data?, provider: String)                  // 로그인
     case validateNicknameIntegrity(nickname: String)              // 닉네임 무결성 확인
     case register(user: UserRegistrationRequestEntity, image: Data?, provider: String)                        // 회원가입
-    case logout(token: String)                                  // 로그아웃
-    case reissueToken(refreshToken: String)                     // 토큰 재발행
+    case logout(token: String)                                                              // 로그아웃
+    case reissueToken(refreshToken: String)                                                 // 토큰 재발행
     case updateProfile(token: String, user: UserProfileUpdateRequestEntity, image: Data?)   // 프로필 수정
-    case readMyProfile(token: String)                           // 회원 정보 조회
-    case readMyBoards(token: String)                            // 나의 모집글 목록 조회
-    case readMyMatches(token: String)                           // 참여 모임 내역 조회
-    case readMyRequestMatches(token: String)                    // 나의 참여 요청 목록 조회
-    case block(token: String, blockedUserId: Int64)             // 사용자 차단
-    case unblock(token: String, blockId: Int64)                 // 사용자 차단 해제
-    case readBlockedUsers(token: String)                        // 차단한 사용자 목록 조회
-    case readReports(token: String)                             // 신고 목록 조회
+    case readMyProfile(token: String)                                                       // 회원 정보 조회
+    case readMyBoards(token: String)                                                        // 나의 모집글 목록 조회
+    case readMyMatches(token: String)                                                       // 참여 모임 내역 조회
+    case readMyRequestMatches(token: String)                                                // 나의 참여 요청 목록 조회
+    case block(token: String, blockedUserId: Int64)                                         // 사용자 차단
+    case unblock(token: String, blockId: Int64)                                             // 사용자 차단 해제
+    case readBlockedUsers(token: String)                                                    // 차단한 사용자 목록 조회
+    case readReports(token: String)                                                         // 신고 목록 조회
+    case readOpponentUserProfile(token: String, userId: Int64)                              // 사용자(상대방) 프로필 조회
+    case reportOpponentUserProfile(token: String, userId: Int64, report: Report)           // 사용자(상대방) 프로필 신고
     
     // MARK: - Place Related
     case readPlaces(name: String, lat: Double, lon: Double)                                         // 카페 이름으로 검색
@@ -53,6 +55,7 @@ enum Endpoint {
     case createChatRoom(token: String, communityRecruitingContentId: Int64, opponentUserId: Int64) // 채팅방 생성
     case readChatrooms(token: String)                           // 채팅방 목록 조회
     case exitChatRoom(token: String, chatRoomId: Int64)        // 채팅방 나가기
+    case reportAndExitChatRoom(token: String, chatRoomId: Int64, userId: Int64, report: Report) // 채팅방 신고 후 나가기
 }
 
 extension Endpoint {
@@ -97,6 +100,10 @@ extension Endpoint: TargetType {
             return "/users/blocks"
         case .readReports:
             return "/users/reports"
+        case .readOpponentUserProfile(_, let userId):
+            return "/users/profile/\(userId)"
+        case .reportOpponentUserProfile(_, let userId, _):
+            return "/reports/\(userId)"
             
             // MARK: Place Related
         case .readPlaces:
@@ -147,13 +154,15 @@ extension Endpoint: TargetType {
             return "/chatrooms"
         case .exitChatRoom(_, let chatRoomId):
             return "/chatrooms/\(chatRoomId)"
+        case .reportAndExitChatRoom(_, let chatRoomId, let userId, _):
+            return "/reports/\(chatRoomId)/\(userId)"
         }
     }
     
     var method: Moya.Method {
         switch self {
-        case .validateNicknameIntegrity, .readMyProfile, .readMyBoards, .readMyMatches, .readMyRequestMatches, .readPlaces, .readPlacesByMatches, .readPlacesByDistance, .readPlacesForShowcaseAndReview, .readBoards, .readBoardForUpdate, .readBoardDetail, .readMatches, .readChatrooms, .completeBoard, .readBlockedUsers, .readReports: return .get
-        case .login, .register, .reissueToken, .createBoard, .requestMatch, .createChatRoom, .block, .reviewPlace, .suggestPlace: return .post
+        case .validateNicknameIntegrity, .readMyProfile, .readOpponentUserProfile, .readMyBoards, .readMyMatches, .readMyRequestMatches, .readPlaces, .readPlacesByMatches, .readPlacesByDistance, .readPlacesForShowcaseAndReview, .readBoards, .readBoardForUpdate, .readBoardDetail, .readMatches, .readChatrooms, .completeBoard, .readBlockedUsers, .readReports: return .get
+        case .login, .register, .reissueToken, .createBoard, .requestMatch, .createChatRoom, .block, .reviewPlace, .suggestPlace, .reportOpponentUserProfile, .reportAndExitChatRoom: return .post
         case .logout, .deleteBoard, .unblock: return .delete
         case .updateProfile, .updateBoard, .acceptMatchRequest, .rejectMatchRequest, .exitMatch, .exitChatRoom: return .patch
         }
@@ -203,6 +212,9 @@ extension Endpoint: TargetType {
             }
 
             return .uploadMultipart(formData)
+        case .reportOpponentUserProfile(_, _, let report):
+            return .requestJSONEncodable(report
+            )
         case .readPlaces(name: let name, lat: let lat, lon: let lon):
             return .requestParameters(parameters: ["name": "\(name)", "latitude": "\(lat)", "longitude": "\(lon)"], encoding: URLEncoding.queryString)
         case .readPlacesByMatches(lat: let lat, lon: let lon):
@@ -223,6 +235,8 @@ extension Endpoint: TargetType {
             return .requestJSONEncodable(review)
         case .suggestPlace(let suggest):
             return .requestJSONEncodable(suggest)
+        case .reportAndExitChatRoom(_, _, _, let report):
+            return .requestJSONEncodable(report)
         default:
             return .requestPlain
         }
@@ -252,6 +266,8 @@ extension Endpoint: TargetType {
         case .readBlockedUsers(let token):
             ["Authorization": "\(token)"]
         case .readReports(let token):
+            ["Authorization": "\(token)"]
+        case .readOpponentUserProfile(let token, _):
             ["Authorization": "\(token)"]
             
             // MARK: Place Related
@@ -295,6 +311,8 @@ extension Endpoint: TargetType {
             ["Authorization": "\(token)"]
         case .exitChatRoom(let token, _):
             ["Authorization": "\(token)"]
+        case .reportAndExitChatRoom(let token, _, _, _):
+            ["Authorization": "\(token)"]
         default: nil
         }
     }
@@ -305,7 +323,7 @@ extension Endpoint: TargetType {
     
     var authorizationType: AuthorizationType? {
           switch self {
-          case .login, .logout, .reissueToken, .updateProfile, .readMyProfile, .readMyBoards, .readMyMatches, .readMyRequestMatches, .block, .unblock, .readBlockedUsers, .readReports, .createBoard, .readBoardForUpdate, .updateBoard, .deleteBoard, .completeBoard, .readMatches, .requestMatch, .acceptMatchRequest, .rejectMatchRequest, .createChatRoom, .readChatrooms, .exitChatRoom:
+          case .login, .logout, .reissueToken, .updateProfile, .readMyProfile, .readMyBoards, .readMyMatches, .readMyRequestMatches, .block, .unblock, .readBlockedUsers, .readReports, .createBoard, .readBoardForUpdate, .updateBoard, .deleteBoard, .completeBoard, .readMatches, .requestMatch, .acceptMatchRequest, .rejectMatchRequest, .createChatRoom, .readChatrooms, .exitChatRoom, .reportAndExitChatRoom, .reportOpponentUserProfile:
                   .bearer
           default: .none
           }

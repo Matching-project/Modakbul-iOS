@@ -35,14 +35,10 @@ enum InquiryStatusType: String, Decodable {
     case deleted = "DELETED"
 }
 
-//InquiryStatus
-//문의 완료: COMPLETE
-//문의중: WAITING
-//문의 삭제: DELETED
-
-struct Report {
-    var type: ReportType
-    let fromUserId: Int64
-    let toUserId: Int64
-    var description: String
+/// 신고 내용을 표현합니다.
+/// - Note: `ReportType`에 따라 내용을 구성해야 합니다.
+///
+/// * ReportType.other 의 경우, "기타: \(사용자가 작성한 내용)" 으로 내용을 구성합니다.
+struct Report: Encodable {
+    let content: String
 }
