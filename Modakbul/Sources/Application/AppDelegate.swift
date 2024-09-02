@@ -56,13 +56,14 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     
         if let aps = userInfo["aps"] as? [String: Any],
            let alert = aps["alert"] as? [String: Any] {
-                let title = alert["title"] as? String ?? "제목 없음"
-                let body = alert["body"] as? String ?? "내용 없음"
+            let title = alert["title"] as? String ?? "제목 없음"
+            let body = alert["body"] as? String ?? "내용 없음"
             
-        print(userInfo)
-
-            // TODO: - Notification Manager 변경 필요
-            PreviewHelper.shared.notifications.append(PushNotification(imageURL: PreviewHelper.url1, title: title, subtitle: body, timestamp: "방금", type: .accept))
+//            print("🔴 Recevied PushNotification from Foreground")
+//            print(userInfo)
+            
+            // TODO: - 백엔드에 의해 imageURL, timestamp, type 수정 예정
+            NotificationManager.shared.notifications.append(PushNotification(imageURL: PreviewHelper.url1, title: title, subtitle: body, timestamp: "방금", type: .request))
         }
         
         // MARK: - .badge, .sound: FCM에서 별도 옵션 필요
@@ -70,7 +71,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         return [[.banner, .badge, .sound]]
     }
     
-    // MARK: - background에서 푸시 수신 후, 사용자가 노티를 클릭하여 앱을 열었을 때
+    // MARK: - Foreground 또는 background에서 푸시 수신 후, 사용자가 노티를 클릭하여 앱을 열었을 때
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                 didReceive response: UNNotificationResponse) async {
         
@@ -80,7 +81,10 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         //            print("Message ID: \(messageID)")
         //        }
         
-        print(userInfo)
+//        print("🔴 Touched PushNotification")
+//        print(userInfo)
+        
+        NotificationManager.shared.lastNotification?.isTouched = true
     }
 }
 

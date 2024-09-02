@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Combine
 
 protocol AppRouter: ObservableObject {
     associatedtype Destination: Routable where Destination == Route
@@ -21,6 +22,7 @@ protocol AppRouter: ObservableObject {
     var isConfirmationDialogPresented: Bool { get set }
     var assembler: Assembler { get }
     var resolver: DependencyResolver { get }
+    var notification: PushNotification? { get }
     
     @ViewBuilder func view(to destination: Destination) -> Content
     func route(to destination: Destination)
@@ -44,9 +46,15 @@ final class DefaultAppRouter: AppRouter {
     var isModalPresented: Bool { sheet != nil || fullScreenCover != nil }
     @Published var isAlertPresented: Bool = false
     @Published var isConfirmationDialogPresented: Bool = false
+    @Published var notification: PushNotification? = NotificationManager.shared.lastNotification {
+        didSet {
+            if notification?.isTouched == true { route() }
+        }
+    }
     
     private(set) var detents: Set<PresentationDetent> = [.large, .medium]
     let assembler: Assembler
+    private var cancellable: AnyCancellable?
     
     init(
         path: NavigationPath = NavigationPath(),
@@ -54,6 +62,9 @@ final class DefaultAppRouter: AppRouter {
     ) {
         self.path = path
         self.assembler = assembler
+        
+        cancellable = NotificationManager.shared.$lastNotification
+            .assign(to: \.notification, on: self)
     }
     
     convenience init(
@@ -76,6 +87,21 @@ final class DefaultAppRouter: AppRouter {
     private func _fullScreenCover(_ destination: Destination) {
         guard isModalPresented == false else { return }
         fullScreenCover = destination
+    }
+    
+    private func route() {
+        guard let notification = notification else { return }
+        
+        switch notification.type {
+        // TODO: - Route 추가 예정
+//        case .request:
+//            route(to: .)
+        // case .accept:
+        // case .newChat:
+        // case .exit:
+        default:
+            break
+        }
     }
     
     @ViewBuilder func view(to destination: Destination) -> some View {

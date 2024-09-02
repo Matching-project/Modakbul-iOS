@@ -17,7 +17,7 @@ final class NotificationViewModel: ObservableObject {
     private var cancellable: AnyCancellable?
     
     init() {
-        cancellable = PreviewHelper.shared.$notifications
+        cancellable = NotificationManager.shared.$notifications
             .assign(to: \.notifications, on: self)
     }
     
