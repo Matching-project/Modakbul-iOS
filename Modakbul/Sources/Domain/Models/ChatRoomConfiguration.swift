@@ -9,6 +9,11 @@ import Foundation
 
 struct ChatRoomConfiguration: Identifiable {
     let id: Int64
-    let communityRecruitingContent: CommunityRecruitingContent
-    let participants: [User]
+    let title: String?
+    let lastMessage: String?
+    let lastMessageTimestamp: Date?
+    let opponentUserId: Int64
+    let opponentUserImageURL: URL?
+    let relatedCommunityRecruitingContentId: Int64
+    let unreadMessagesCount: Int
 }

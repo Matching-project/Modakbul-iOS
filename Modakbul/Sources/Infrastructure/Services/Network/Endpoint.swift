@@ -53,7 +53,7 @@ enum Endpoint {
     case readMyRequestMatches(token: String)                               // 나의 참여 요청 목록 조회
     
     // MARK: - Chat Related
-    case createChatRoom(token: String, communityRecruitingContentId: Int64, opponentUserId: Int64) // 채팅방 생성
+    case createChatRoom(token: String, configuration: ChatRoomConfigurationRequestEntity) // 채팅방 생성
     case readChatrooms(token: String)                           // 채팅방 목록 조회
     case exitChatRoom(token: String, chatRoomId: Int64)        // 채팅방 나가기
     case reportAndExitChatRoom(token: String, chatRoomId: Int64, userId: Int64, report: Report) // 채팅방 신고 후 나가기
@@ -232,8 +232,8 @@ extension Endpoint: TargetType {
             return .requestJSONEncodable(communityRecruitingContent)
         case .requestMatch(_, let communityRecruitingContentId):
             return .requestParameters(parameters: ["boardId": "\(communityRecruitingContentId)"], encoding: URLEncoding.queryString)
-        case .createChatRoom(_, let communityRecruitingContentId, let opponentUserId):
-            return .requestParameters(parameters: ["boardId": "\(communityRecruitingContentId)", "theOtherUserId": "\(opponentUserId)"], encoding: URLEncoding.queryString)
+        case .createChatRoom(_, let configuration):
+            return .requestJSONEncodable(configuration)
         case .reviewPlace(_, let review):
             return .requestJSONEncodable(review)
         case .suggestPlace(let suggest):
@@ -310,7 +310,7 @@ extension Endpoint: TargetType {
             ["Authorization": "\(token)"]
             
             // MARK: Chat Related
-        case .createChatRoom(let token, _, _):
+        case .createChatRoom(let token, _):
             ["Authorization": "\(token)"]
         case .readChatrooms(let token):
             ["Authorization": "\(token)"]
