@@ -14,7 +14,7 @@ struct PushNotification: Identifiable {
         case newChat
         case exit
         
-        var title: String {
+        var titlePostfix: String {
             switch self {
             case .request: "님의 참여 요청"
             case .accept: "님의 참여 요청 수락"
@@ -23,7 +23,7 @@ struct PushNotification: Identifiable {
             }
         }
         
-        var subtitle: String {
+        var subtitlePostfix: String {
             switch self {
             case .request: " 카페모임에 참여 요청이 왔어요."
             case .accept: " 카페모임 참여 요청이 수락되었어요."
@@ -44,8 +44,8 @@ struct PushNotification: Identifiable {
     init(imageURL: URL?, title: String, subtitle: String, timestamp: String, type: `Type`) {
         self.imageURL = imageURL
         self.title = title
-        self.titlePostfix = type.title
-        self.subtitle = subtitle + type.subtitle
+        self.titlePostfix = type.titlePostfix
+        self.subtitle = subtitle + type.subtitlePostfix
         // TODO: - 초/분/시간 전 표시하기
         self.timestamp = timestamp
         self.type = type

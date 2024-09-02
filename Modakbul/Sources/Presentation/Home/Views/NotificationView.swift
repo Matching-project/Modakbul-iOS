@@ -67,7 +67,7 @@ struct NotificationView<Router: AppRouter>: View {
     
     private func deleteSwipeAction(for notification: PushNotification) -> some View {
         Button(role: .destructive) {
-            vm.deleteNotification(notification)
+            vm.deleteSwipedNotification(notification)
         } label: {
             Label("삭제하기", systemImage: "trash")
         }

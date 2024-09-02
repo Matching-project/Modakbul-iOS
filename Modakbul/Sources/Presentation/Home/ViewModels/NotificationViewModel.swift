@@ -29,6 +29,6 @@ final class NotificationViewModel: ObservableObject {
     }
     
     func deleteAllNotifications() {
-       notifications.removeAll()
-   }
+        notifications.removeAll()
+    }
 }
