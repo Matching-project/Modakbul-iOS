@@ -47,9 +47,10 @@ enum Endpoint {
     // MARK: - Match Related
     case readMatches(token: String, communityRecruitingContentId: Int64)   // 모임 참여 요청 목록 조회
     case requestMatch(token: String, communityRecruitingContentId: Int64)  // 모임 참여 요청
-    case acceptMatchRequest(token: String, matchingId: Int64)  // 모임 참여 요청에 대한 수락
-    case rejectMatchRequest(token: String, matchingId: Int64)  // 모임 참여 요청에 대한 거절
-    case exitMatch(token: String, matchingId: Int64)           // 모임 나가기
+    case acceptMatchRequest(token: String, matchingId: Int64)              // 모임 참여 요청에 대한 수락
+    case rejectMatchRequest(token: String, matchingId: Int64)              // 모임 참여 요청에 대한 거절
+    case exitMatch(token: String, matchingId: Int64)                       // 모임 나가기
+    case cancelMatchRequest(token: String, matchingId: Int64)              // 모임 참여 요청 취소
     
     // MARK: - Chat Related
     case createChatRoom(token: String, communityRecruitingContentId: Int64, opponentUserId: Int64) // 채팅방 생성
@@ -146,6 +147,8 @@ extension Endpoint: TargetType {
             return "/matches/\(matchingId)/rejection"
         case .exitMatch(_, let matchingId):
             return "/matches/\(matchingId)/exit"
+        case .cancelMatchRequest(_, let matchingId):
+            return "/matches/\(matchingId)/cancel"
             
             // MARK: Chat Related
         case .createChatRoom:
@@ -164,7 +167,7 @@ extension Endpoint: TargetType {
         case .validateNicknameIntegrity, .readMyProfile, .readOpponentUserProfile, .readMyBoards, .readMyMatches, .readMyRequestMatches, .readPlaces, .readPlacesByMatches, .readPlacesByDistance, .readPlacesForShowcaseAndReview, .readBoards, .readBoardForUpdate, .readBoardDetail, .readMatches, .readChatrooms, .completeBoard, .readBlockedUsers, .readReports: return .get
         case .login, .register, .reissueToken, .createBoard, .requestMatch, .createChatRoom, .block, .reviewPlace, .suggestPlace, .reportOpponentUserProfile, .reportAndExitChatRoom: return .post
         case .logout, .deleteBoard, .unblock: return .delete
-        case .updateProfile, .updateBoard, .acceptMatchRequest, .rejectMatchRequest, .exitMatch, .exitChatRoom: return .patch
+        case .updateProfile, .updateBoard, .acceptMatchRequest, .rejectMatchRequest, .exitMatch, .cancelMatchRequest, .exitChatRoom: return .patch
         }
     }
     
@@ -303,6 +306,8 @@ extension Endpoint: TargetType {
             ["Authorization": "\(token)"]
         case .rejectMatchRequest(let token, _):
             ["Authorization": "\(token)"]
+        case .cancelMatchRequest(let token, _):
+            ["Authorization": "\(token)"]
             
             // MARK: Chat Related
         case .createChatRoom(let token, _, _):
@@ -322,10 +327,10 @@ extension Endpoint: TargetType {
     }
     
     var authorizationType: AuthorizationType? {
-          switch self {
-          case .login, .logout, .reissueToken, .updateProfile, .readMyProfile, .readMyBoards, .readMyMatches, .readMyRequestMatches, .block, .unblock, .readBlockedUsers, .readReports, .createBoard, .readBoardForUpdate, .updateBoard, .deleteBoard, .completeBoard, .readMatches, .requestMatch, .acceptMatchRequest, .rejectMatchRequest, .createChatRoom, .readChatrooms, .exitChatRoom, .reportAndExitChatRoom, .reportOpponentUserProfile:
-                  .bearer
-          default: .none
-          }
-      }
+        switch self {
+        case .login, .logout, .reissueToken, .updateProfile, .readMyProfile, .readMyBoards, .readMyMatches, .readMyRequestMatches, .block, .unblock, .readBlockedUsers, .readReports, .createBoard, .readBoardForUpdate, .updateBoard, .deleteBoard, .completeBoard, .readMatches, .requestMatch, .acceptMatchRequest, .rejectMatchRequest, .createChatRoom, .readChatrooms, .exitChatRoom, .cancelMatchRequest, .reportAndExitChatRoom, .reportOpponentUserProfile:
+                .bearer
+        default: .none
+        }
+    }
 }
