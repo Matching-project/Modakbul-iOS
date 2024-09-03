@@ -26,17 +26,14 @@ struct SuggestPlaceRequestEntity: Encodable {
         self.groupSeatingState = groupSeatingState
     }
     
-    init(
-        location: Location,
-        powerSocketState: PowerSocketState,
-        groupSeatingState: GroupSeatingState
-    ) {
+    init(place: Place) {
+        let location = place.location
         self.name = location.name
         self.location = LocationEntity(latitude: location.coordinate.latitude,
                                        longitude: location.coordinate.longitude,
                                        address: location.address)
-        self.powerSocketState = powerSocketState
-        self.groupSeatingState = groupSeatingState
+        self.powerSocketState = place.powerSocketState
+        self.groupSeatingState = place.groupSeatingState
     }
     
     enum CodingKeys: String, CodingKey {

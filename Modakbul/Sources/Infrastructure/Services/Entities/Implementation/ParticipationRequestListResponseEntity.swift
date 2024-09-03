@@ -8,7 +8,7 @@
 import Foundation
 
 /// 참여 요청 목록 조회 응답
-struct ParticipationRequestListResponseEntity: Decodable {
+struct ParticipationRequestListResponseEntity: ResponseEntity {
     let status: Bool
     let code: Int
     let message: String

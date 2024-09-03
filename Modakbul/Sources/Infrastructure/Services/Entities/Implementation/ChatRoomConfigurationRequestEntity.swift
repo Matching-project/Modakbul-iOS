@@ -19,7 +19,7 @@ struct ChatRoomConfigurationRequestEntity: Encodable {
 }
 
 /// 채팅방 생성 응답
-struct ChatRoomConfigurationResponseEntity: Decodable {
+struct ChatRoomConfigurationResponseEntity: ResponseEntity {
     let status: Bool
     let code: Int
     let message: String

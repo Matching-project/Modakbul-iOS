@@ -8,7 +8,7 @@
 import Foundation
 
 /// 닉네임 무결성 확인 응답
-struct NicknameIntergrityResponseEntity: Decodable {
+struct NicknameIntergrityResponseEntity: ResponseEntity {
     let status: Bool
     let code: Int
     let message: String

@@ -10,7 +10,7 @@ import Foundation
 /// 사용자가 이용했던 장소 목록 조회 응답
 ///
 /// 카페 제보/리뷰 목록 조회
-struct RelatedPlaceListSearchResponseEntity: Decodable {
+struct RelatedPlaceListSearchResponseEntity: ResponseEntity {
     let status: Bool
     let code: Int
     let message: String

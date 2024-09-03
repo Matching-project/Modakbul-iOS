@@ -8,7 +8,7 @@
 import Foundation
 
 /// 모집글 (수정) 정보 조회
-struct CommunityRecruitingContentSearchResponseEntity: Decodable {
+struct CommunityRecruitingContentSearchResponseEntity: ResponseEntity {
     let status: Bool
     let code: Int
     let message: String
@@ -24,7 +24,7 @@ struct CommunityRecruitingContentSearchResponseEntity: Decodable {
 }
 
 /// 상세 모집글 정보 조회
-struct CommunityRecruitingContentSearchDetailResponseEntity: Decodable {
+struct CommunityRecruitingContentSearchDetailResponseEntity: ResponseEntity {
     let status: Bool
     let code: Int
     let message: String

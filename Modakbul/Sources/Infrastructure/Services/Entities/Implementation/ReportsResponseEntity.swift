@@ -1,5 +1,5 @@
 //
-//  BlockedUsersResponseEntity.swift
+//  ReportsResponseEntity.swift
 //  Modakbul
 //
 //  Created by Swain Yun on 9/1/24.
@@ -7,11 +7,11 @@
 
 import Foundation
 
-/// 차단된 사용자 목록 조회 응답
-struct BlockedUsersResponseEntity: Decodable {
+/// 신고 목록 조회 응답
+struct ReportsResponseEntity: ResponseEntity {
     let status: Bool
     let code: Int
-    let message: String
+    let messages: String
     let result: [Result]
     
     struct Result: Decodable {
@@ -19,22 +19,26 @@ struct BlockedUsersResponseEntity: Decodable {
         let nickname: String
         let category: Set<Category>
         let job: Job
+        let inquiryStatus: InquiryStatusType
         
         enum CodingKeys: String, CodingKey {
             case nickname, job
             case imageURL = "image"
             case category = "categoryName"
+            case inquiryStatus = "status"
         }
     }
     
-    func toDTO() -> [User] {
+    func toDTO() -> [(user: User, status: InquiryStatusType)] {
         result.map {
-            .init(
+            let user = User(
                 nickname: $0.nickname,
                 job: $0.job,
                 categoriesOfInterest: $0.category,
                 imageURL: $0.imageURL
             )
+            
+            return (user, $0.inquiryStatus)
         }
     }
 }

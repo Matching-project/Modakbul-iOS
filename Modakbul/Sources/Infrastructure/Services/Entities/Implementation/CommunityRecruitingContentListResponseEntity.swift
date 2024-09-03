@@ -8,7 +8,7 @@
 import Foundation
 
 /// 모집글 목록 조회 응답
-struct CommunityRecruitingContentListResponseEntity: Decodable {
+struct CommunityRecruitingContentListResponseEntity: ResponseEntity {
     let status: Bool
     let code: Int
     let message: String

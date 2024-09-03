@@ -8,7 +8,7 @@
 import Foundation
 
 /// 채팅방 목록 조회 응답
-struct ChatRoomListResponseEntity: Decodable {
+struct ChatRoomListResponseEntity: ResponseEntity {
     let status: Bool
     let code: Int
     let message: String

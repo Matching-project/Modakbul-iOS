@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct UserAuthenticationResponseEntity: Decodable {
+struct UserAuthenticationResponseEntity: ResponseEntity {
     let status: Bool
     let code: Int
     let message: String

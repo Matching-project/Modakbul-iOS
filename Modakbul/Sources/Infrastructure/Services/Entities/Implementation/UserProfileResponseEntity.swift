@@ -1,14 +1,14 @@
 //
-//  OpponentUserProfileResponseEntity.swift
+//  UserInformationEntity.swift
 //  Modakbul
 //
-//  Created by Swain Yun on 8/13/24.
+//  Created by Swain Yun on 8/10/24.
 //
 
 import Foundation
 
-/// 상대 사용자 프로필 조회 응답
-struct OpponentUserProfileResponseEntity: Decodable {
+/// 사용자 프로필 조회 응답
+struct UserProfileResponseEntity: ResponseEntity {
     let status: Bool
     let code: Int
     let message: String
@@ -17,13 +17,14 @@ struct OpponentUserProfileResponseEntity: Decodable {
     struct Result: Decodable {
         let id: Int64
         let nickname: String
-        let imageURL: URL?
-        let gender: Gender
         let job: Job
+        let imageURL: URL?
+        let isGenderVisible: Bool
         let categories: Set<Category>
         
-        enum CodingKeys: String, CodingKey {
-            case id, nickname, gender, job, categories
+        enum CodingKeys: String,
+                         CodingKey {
+            case id, nickname, categories, job, isGenderVisible
             case imageURL = "image"
         }
     }
@@ -32,9 +33,9 @@ struct OpponentUserProfileResponseEntity: Decodable {
         .init(
             id: result.id,
             nickname: result.nickname,
-            gender: result.gender,
             job: result.job,
             categoriesOfInterest: result.categories,
+            isGenderVisible: result.isGenderVisible,
             imageURL: result.imageURL
         )
     }
