@@ -21,8 +21,8 @@ protocol PlacesRepository {
     func provideSuggestions(by keyword: String)
     
     func readPlacesForShowcaseAndReview(userId: Int64) async throws -> [Place]
-    func reviewPlace(userId: Int64, on place: Place) async throws
-    func suggestPlace(userId: Int64, on place: Place) async throws
+    func reviewPlace(on place: Place) async throws
+    func suggestPlace(on place: Place) async throws
 }
 
 enum PlacesRepositoryError: Error {
@@ -31,10 +31,10 @@ enum PlacesRepositoryError: Error {
 }
 
 final class DefaultPlacesRepository {
-    private let networkService: NetworkService
+    let networkService: NetworkService
     private let localMapService: LocalMapService
     private let locationService: LocationService
-    private let tokenStorage: TokenStorage
+    let tokenStorage: TokenStorage
     
     private var currentCoordinate: Coordinate?
     
@@ -125,14 +125,39 @@ extension DefaultPlacesRepository: PlacesRepository {
     }
     
     func readPlacesForShowcaseAndReview(userId: Int64) async throws -> [Place] {
-        <#code#>
+        do {
+            let token = try tokenStorage.fetch(by: userId)
+            let endpoint = Endpoint.readPlacesForShowcaseAndReview(token: token.accessToken)
+            let response = try await networkService.request(endpoint: endpoint, for: RelatedPlaceListSearchResponseEntity.self)
+            return response.body.toDTO()
+        } catch APIError.accessTokenExpired {
+            let token = try tokenStorage.fetch(by: userId)
+            let endpoint = Endpoint.reissueToken(refreshToken: token.refreshToken)
+            let response = try await networkService.request(endpoint: endpoint, for: DefaultResponseEntity.self)
+            
+            guard let accessToken = response.accessToken,
+                  let refreshToken = response.refreshToken
+            else { throw APIError.responseError }
+            
+            try tokenStorage.store(TokensEntity(accessToken: accessToken, refreshToken: refreshToken), by: userId)
+            
+            let retryEndpoint = Endpoint.readPlacesForShowcaseAndReview(token: accessToken)
+            let retryResponse = try await networkService.request(endpoint: retryEndpoint, for: RelatedPlaceListSearchResponseEntity.self)
+            return retryResponse.body.toDTO()
+        } catch {
+            throw error
+        }
     }
     
-    func reviewPlace(userId: Int64, on place: Place) async throws {
-        <#code#>
+    func reviewPlace(on place: Place) async throws {
+        let entity = ReviewPlaceRequestEntity(powerSocketState: place.powerSocketState, groupSeatingState: place.groupSeatingState)
+        let endpoint = Endpoint.reviewPlace(placeId: place.id, review: entity)
+        try await networkService.request(endpoint: endpoint, for: DefaultResponseEntity.self)
     }
     
-    func suggestPlace(userId: Int64, on place: Place) async throws {
-        <#code#>
+    func suggestPlace(on place: Place) async throws {
+        let entity = SuggestPlaceRequestEntity(place: place)
+        let endpoint = Endpoint.suggestPlace(suggest: entity)
+        try await networkService.request(endpoint: endpoint, for: DefaultResponseEntity.self)
     }
 }
