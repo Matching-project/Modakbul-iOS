@@ -48,7 +48,7 @@ final class DefaultAppRouter: AppRouter {
     @Published var isConfirmationDialogPresented: Bool = false
     @Published var notification: PushNotification? = NotificationManager.shared.lastNotification {
         didSet {
-            if notification?.isTouched == true { route() }
+            if notification?.isRead == true { route() }
         }
     }
     
