@@ -11,7 +11,7 @@ import Foundation
  사용자 정보를 나타냅니다.
  */
 struct User {
-    let id: Int64?
+    let id: Int64
     let name: String
     let nickname: String
     let gender: Gender
@@ -22,7 +22,7 @@ struct User {
     let imageURL: URL?
     
     init(
-        id: Int64? = nil,
+        id: Int64 = -1,
         name: String = "이름 없음",
         nickname: String = "닉네임 없음",
         gender: Gender = .unknown,

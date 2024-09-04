@@ -5,54 +5,36 @@
 //  Created by Swain Yun on 6/13/24.
 //
 
-import Foundation
+import SwiftUI
 import MapKit
 import Combine
 
 final class HomeViewModel: ObservableObject {
     @Published var isMapShowing: Bool = true
-    @Published var region: MKCoordinateRegion
+    @Published var cameraPosition: MapCameraPosition = .userLocation(fallback: .automatic)
     @Published var searchingText: String = String()
-    @Published var places: [Place] = PreviewHelper.shared.places
+    @Published var places: [Place] = []
     @Published var selectedPlace: Place?
     @Published var sortCriteria: PlaceSortCriteria = .distance
     private var locationNeeded: Bool = true
+    private var currentCoordinate = CLLocationCoordinate2D()
     
     private let localMapUseCase: LocalMapUseCase
     
-    private let currentCoordinateSubject = PassthroughSubject<CLLocationCoordinate2D, Error>()
-    private let placesSubject = PassthroughSubject<[Place], Error>()
+    private let placesSubject = PassthroughSubject<[Place], Never>()
     private var cancellables = Set<AnyCancellable>()
     
     init(localMapUseCase: LocalMapUseCase) {
         self.localMapUseCase = localMapUseCase
-        self.region = MKCoordinateRegion(center: CLLocationCoordinate2D(), span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05))
         subscribe()
     }
     
     private func subscribe() {
-        currentCoordinateSubject
-            .delay(for: .seconds(0.5), scheduler: DispatchQueue.main)
-            .receive(on: DispatchQueue.main)
-            .sink { completion in
-                switch completion {
-                case .finished: break
-                case .failure(let error): print(error)
-                }
-            } receiveValue: { [weak self] coordinate in
-                self?.region.center = coordinate
-            }
-            .store(in: &cancellables)
-        
         placesSubject
             .receive(on: DispatchQueue.main)
-            .sink { completion in
-                switch completion {
-                case .finished: break
-                case .failure(let error): print(error)
-                }
-            } receiveValue: { [weak self] places in
+            .sink { [weak self] places in
                 self?.places = places
+                self?.cameraPosition = .automatic
             }
             .store(in: &cancellables)
         
@@ -64,7 +46,7 @@ final class HomeViewModel: ObservableObject {
                       text.isEmpty == false
                 else { return }
                 
-                Task { await self.findPlaces(by: text, on: self.region.center) }
+                Task { await self.findPlaces(by: text, on: self.currentCoordinate) }
             }
             .store(in: &cancellables)
     }
@@ -82,33 +64,29 @@ extension HomeViewModel {
     @MainActor func updateLocationOnce() {
         Task {
             do {
-                let newCoordinate = try await localMapUseCase.updateCoordinate()
-                currentCoordinateSubject.send(newCoordinate)
+                currentCoordinate = try await localMapUseCase.updateCoordinate()
             } catch {
                 print(error)
             }
         }
     }
     
-    @MainActor func findPlaces(by keyword: String? = nil, on coordinate: CLLocationCoordinate2D) {
+    @MainActor func findPlaces(by keyword: String? = nil, on coordinate: CLLocationCoordinate2D? = nil) {
         Task {
             do {
+                guard let center = cameraPosition.camera?.centerCoordinate else { return }
+                
                 guard let keyword = keyword else {
-                    let places = try await localMapUseCase.fetchPlaces(on: coordinate, by: sortCriteria)
+                    let places = try await localMapUseCase.fetchPlaces(on: coordinate ?? center, by: sortCriteria)
                     placesSubject.send(places)
                     return
                 }
                 
-                let places = try await localMapUseCase.fetchPlaces(with: keyword, on: coordinate)
+                let places = try await localMapUseCase.fetchPlaces(with: keyword, on: coordinate ?? center)
                 placesSubject.send(places)
             } catch {
                 print(error)
             }
         }
-    }
-    
-    @MainActor func moveCameraOnLocation(to place: Place) {
-        region.center = place.location.coordinate
-        findPlaces(by: place.location.name, on: place.location.coordinate)
     }
 }

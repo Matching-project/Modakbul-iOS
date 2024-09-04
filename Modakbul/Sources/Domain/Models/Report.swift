@@ -28,9 +28,17 @@ enum ReportType: CaseIterable, Hashable, CustomStringConvertible {
     }
 }
 
-struct Report {
-    var type: ReportType
-    let from: User
-    let to: User
-    var description: String
+/// 신고 또는 문의에 대한 처리 상태를 표현합니다.
+enum InquiryStatusType: String, Decodable {
+    case completed = "COMPLETED"
+    case waiting = "WAITING"
+    case deleted = "DELETED"
+}
+
+/// 신고 내용을 표현합니다.
+/// - Note: `ReportType`에 따라 내용을 구성해야 합니다.
+///
+/// * ReportType.other 의 경우, "기타: \(사용자가 작성한 내용)" 으로 내용을 구성합니다.
+struct Report: Encodable {
+    let content: String
 }

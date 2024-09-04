@@ -20,6 +20,17 @@ struct CommunityRecruitingContentEntity: Codable {
     let recruitCount: Int
     let meetingDate, startTime, endTime, title, content: String
     
+    init(_ communityRecruitingContent: CommunityRecruitingContent) {
+        self.id = communityRecruitingContent.id
+        self.category = communityRecruitingContent.community.category
+        self.recruitCount = communityRecruitingContent.community.participantsLimit
+        self.meetingDate = communityRecruitingContent.community.meetingDate
+        self.startTime = communityRecruitingContent.community.startTime
+        self.endTime = communityRecruitingContent.community.endTime
+        self.title = communityRecruitingContent.title
+        self.content = communityRecruitingContent.content
+    }
+    
     func toDTO() -> CommunityRecruitingContent {
         let community = Community(
             routine: .daily,

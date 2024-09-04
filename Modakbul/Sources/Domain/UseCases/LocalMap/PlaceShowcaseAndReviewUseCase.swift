@@ -8,13 +8,26 @@
 import Foundation
 
 protocol PlaceShowcaseAndReviewUseCase {
+    /// MapKit 장소 검색
     func fetchLocations(with keyword: String) async throws -> [Location]
+    
+    /// MapKit 관심 장소 검색어 제안 시작
     func startSuggestion(with continuation: AsyncStream<[SuggestedResult]>.Continuation)
+    
+    /// MapKit 관심 장소 검색어 제안 종료
     func stopSuggestion()
+    
+    /// MapKit 관심 장소 추천 기반 키워드 제공
     func provideSuggestions(by keyword: String)
     
-    func fetchParticipatedPlaces() async -> [Place]
-    func review(on place: Place) async
+    /// 카페 제보 및 리뷰 목록 조회
+    func readPlacesForShowcaseAndReview(userId: Int64) async throws -> [Place]
+    
+    /// 카페 리뷰
+    func reviewPlace(userId: Int64, on place: Place) async throws
+    
+    /// 카페 제보
+    func suggestPlace(userId: Int64, on place: Place) async throws
 }
 
 final class DefaultPlaceShowcaseAndReviewUseCase {
@@ -28,7 +41,7 @@ final class DefaultPlaceShowcaseAndReviewUseCase {
 // MARK: PlaceShowcaseAndReviewUseCase Conformation
 extension DefaultPlaceShowcaseAndReviewUseCase: PlaceShowcaseAndReviewUseCase {
     func fetchLocations(with keyword: String) async throws -> [Location] {
-        try await placesRepository.findLocations(with: keyword)
+        try await placesRepository.readLocations(with: keyword)
     }
     
     func startSuggestion(with continuation: AsyncStream<[SuggestedResult]>.Continuation) {
@@ -43,12 +56,16 @@ extension DefaultPlaceShowcaseAndReviewUseCase: PlaceShowcaseAndReviewUseCase {
         placesRepository.provideSuggestions(by: keyword)
     }
     
-    func fetchParticipatedPlaces() async -> [Place] {
+    func readPlacesForShowcaseAndReview(userId: Int64) async throws -> [Place] {
         // TODO: 기능 연결 전 Endpoint & Entity 뚫어야함
         []
     }
     
-    func review(on place: Place) async {
+    func reviewPlace(userId: Int64, on place: Place) async throws {
         // TODO: PlacesRepository 인터페이스 추가해야하고 기능 연결 해야함
+    }
+    
+    func suggestPlace(userId: Int64, on place: Place) async throws {
+        
     }
 }

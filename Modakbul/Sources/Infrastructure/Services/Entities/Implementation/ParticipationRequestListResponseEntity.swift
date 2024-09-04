@@ -8,7 +8,7 @@
 import Foundation
 
 /// 참여 요청 목록 조회 응답
-struct ParticipationRequestListResponseEntity: Decodable {
+struct ParticipationRequestListResponseEntity: ResponseEntity {
     let status: Bool
     let code: Int
     let message: String
@@ -33,7 +33,6 @@ struct ParticipationRequestListResponseEntity: Decodable {
     }
     
     func toDTO() -> [ParticipationRequest] {
-        // TODO: 이거 id가 참여요청목록의 id인데;
         result.map {
             let user = User(
                 id: $0.user.id,

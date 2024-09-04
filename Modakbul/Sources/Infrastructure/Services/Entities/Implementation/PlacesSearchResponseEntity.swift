@@ -9,7 +9,7 @@ import Foundation
 import CoreLocation
 
 /// 장소 검색 응답
-struct PlacesSearchResponseEntity: Decodable {
+struct PlacesSearchResponseEntity: ResponseEntity {
     let status: Bool
     let code: Int
     let message: String
@@ -51,7 +51,7 @@ struct PlacesSearchResponseEntity: Decodable {
     }
 }
 
-struct LocationEntity: Decodable {
+struct LocationEntity: Codable {
     let latitude, longitude: Double
     let address: String
     

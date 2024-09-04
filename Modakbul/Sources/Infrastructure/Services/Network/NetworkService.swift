@@ -9,7 +9,7 @@ import Foundation
 import Moya
 
 protocol NetworkService {
-    func request<E: TargetType, T: Decodable>(endpoint: E, for type: T.Type) async throws -> HTTPResponse<T>
+    @discardableResult func request<E: TargetType, T: ResponseEntity>(endpoint: E, for type: T.Type) async throws -> HTTPResponse<T>
 }
 
 enum NetworkServiceError: Error {
@@ -19,6 +19,24 @@ enum NetworkServiceError: Error {
     case decodingError(type: String)
     case generic(type: String)
     case requestFailed
+}
+
+enum APIError: Int, Error {
+    // MARK: Invalid Data
+    case invalidInputValue = 2001
+    case invalidDataValue = 2002
+    
+    // MARK: User
+    case accessDenied = 2011
+    
+    // MARK: Token
+    case accessTokenExpired = 2401
+    case refreshTokenExpired = 2403
+    
+    // MARK: Server & Database
+    case responseError = 3000
+    case databaseError = 4001
+    case serverError = 4002
 }
 
 struct HTTPResponse<T: Decodable> {
@@ -53,6 +71,14 @@ final class DefaultNetworkService {
         return response.allHeaderFields as? [String: String] ?? [:]
     }
     
+    private func performAPIResponse<T: ResponseEntity>(_ response: T) throws -> T {
+        guard (2000..<4050).contains(response.code) else {
+            throw APIError(rawValue: response.code)!
+        }
+        
+        return response
+    }
+    
     private func decode<T: Decodable>(for type: T.Type, with data: Data?) throws -> T {
         guard let data = data,
               let decodedData = try? decoder.decode(type, from: data)
@@ -66,8 +92,7 @@ final class DefaultNetworkService {
 
 // MARK: NetworkService Conformation
 extension DefaultNetworkService: NetworkService {
-    func request<E: TargetType, T: Decodable>(endpoint: E, for type: T.Type) async throws -> HTTPResponse<T> {
-        
+    @discardableResult func request<E: TargetType, T: ResponseEntity>(endpoint: E, for type: T.Type) async throws -> HTTPResponse<T> {
         return try await withCheckedThrowingContinuation { [weak self] continuation in
             guard let self = self else { return }
             
@@ -81,7 +106,8 @@ extension DefaultNetworkService: NetworkService {
                     do {
                         let headers = try handleResponse(response.response)
                         let decodedData = try decode(for: T.self, with: response.data)
-                        let httpResponse = HTTPResponse(headers: headers, body: decodedData)
+                        let performedData = try performAPIResponse(decodedData)
+                        let httpResponse = HTTPResponse(headers: headers, body: performedData)
                         continuation.resume(returning: httpResponse)
                     } catch {
                         continuation.resume(throwing: error)

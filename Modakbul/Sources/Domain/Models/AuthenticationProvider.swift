@@ -13,8 +13,8 @@ enum AuthenticationProvider: String {
     
     var identifier: String {
         switch self {
-        case .apple: "APPLE"
-        case .kakao: "KAKAO"
+        case .apple: "apple"
+        case .kakao: "kakao"
         }
     }
     

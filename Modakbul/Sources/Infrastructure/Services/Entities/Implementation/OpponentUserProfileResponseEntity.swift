@@ -8,7 +8,7 @@
 import Foundation
 
 /// 상대 사용자 프로필 조회 응답
-struct OpponentUserProfileResponseEntity: Decodable {
+struct OpponentUserProfileResponseEntity: ResponseEntity {
     let status: Bool
     let code: Int
     let message: String

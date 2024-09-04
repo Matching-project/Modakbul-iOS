@@ -28,14 +28,18 @@ struct MapArea<Router: AppRouter>: View {
     }
     
     private var localMapArea: some View {
-        Map(coordinateRegion: $viewModel.region, showsUserLocation: true, annotationItems: viewModel.places) { place in
-            MapAnnotation(coordinate: place.location.coordinate) {
-                // TODO: 맵 마커 이미지 필요함
-                Image(systemName: "heart.fill")
-                    .foregroundStyle(.accent)
-                    .onTapGesture {
-                        router.route(to: .placeInformationView(place: place))
-                    }
+        Map(position: $viewModel.cameraPosition) {
+            UserAnnotation()
+            
+            ForEach(viewModel.places, id: \.id) { place in
+                let name = place.location.name
+                let coordinate = place.location.coordinate
+                Annotation(name, coordinate: coordinate) {
+                    Image(systemName: "heart.fill")
+                        .onTapGesture {
+                            router.route(to: .placeInformationView(place: place))
+                        }
+                }
             }
         }
         .ignoresSafeArea(edges: .top)
@@ -74,17 +78,25 @@ struct MapArea<Router: AppRouter>: View {
                     StrokedButton(.circle) {
                         Image(systemName: "arrow.clockwise")
                     } action: {
-                        viewModel.findPlaces(on: viewModel.region.center)
+                        viewModel.findPlaces()
                     }
                     
                     StrokedButton(.circle) {
                         Image(systemName: "location.fill")
                     } action: {
-                        viewModel.updateLocationOnce()
+                        withAnimation(.easeInOut) {
+                            viewModel.cameraPosition = .userLocation(fallback: .automatic)
+                        }
                     }
                 }
             }
         }
         .padding()
+    }
+}
+
+struct HomeView_Preview2: PreviewProvider {
+    static var previews: some View {
+        router.view(to: .contentView)
     }
 }

@@ -8,17 +8,21 @@
 import Foundation
 import CoreLocation
 
-protocol PlacesRepository {
+protocol PlacesRepository: TokenRefreshable {
     typealias Coordinate = CLLocationCoordinate2D
     
-    func findPlaces(with keyword: String, on coordinate: Coordinate) async throws -> [Place]
-    func findPlacesOrderedByDistance(on coordinate: Coordinate) async throws -> [Place]
-    func findPlacesOrderedByMatchesCount(on coordinate: Coordinate) async throws -> [Place]
-    func findLocations(with keyword: String) async throws -> [Location]
-    func fetchCurrentCoordinate() async throws -> Coordinate
+    func readPlaces(with keyword: String, on coordinate: Coordinate) async throws -> [Place]
+    func readPlacesOrderedByDistance(on coordinate: Coordinate) async throws -> [Place]
+    func readPlacesOrderedByMatchesCount(on coordinate: Coordinate) async throws -> [Place]
+    func readLocations(with keyword: String) async throws -> [Location]
+    func readCurrentCoordinate() async throws -> Coordinate
     func startSuggestion(with continuation: AsyncStream<[SuggestedResult]>.Continuation)
     func stopSuggestion()
     func provideSuggestions(by keyword: String)
+    
+    func readPlacesForShowcaseAndReview(userId: Int64) async throws -> [Place]
+    func reviewPlace(on place: Place) async throws
+    func suggestPlace(on place: Place) async throws
 }
 
 enum PlacesRepositoryError: Error {
@@ -27,26 +31,29 @@ enum PlacesRepositoryError: Error {
 }
 
 final class DefaultPlacesRepository {
-    private let networkService: NetworkService
+    let networkService: NetworkService
     private let localMapService: LocalMapService
     private let locationService: LocationService
+    let tokenStorage: TokenStorage
     
     private var currentCoordinate: Coordinate?
     
     init(
         networkService: NetworkService,
         localMapService: LocalMapService,
-        locationService: LocationService
+        locationService: LocationService,
+        tokenStorage: TokenStorage
     ) {
         self.networkService = networkService
         self.localMapService = localMapService
         self.locationService = locationService
+        self.tokenStorage = tokenStorage
     }
 }
 
 // MARK: PlacesRepository Conformation
 extension DefaultPlacesRepository: PlacesRepository {
-    func findPlacesOrderedByDistance(on coordinate: Coordinate) async throws -> [Place] {
+    func readPlacesOrderedByDistance(on coordinate: Coordinate) async throws -> [Place] {
         let endpoint = Endpoint.readPlacesByDistance(lat: coordinate.latitude, lon: coordinate.longitude)
         
         do {
@@ -57,7 +64,7 @@ extension DefaultPlacesRepository: PlacesRepository {
         }
     }
     
-    func findPlacesOrderedByMatchesCount(on coordinate: Coordinate) async throws -> [Place] {
+    func readPlacesOrderedByMatchesCount(on coordinate: Coordinate) async throws -> [Place] {
         let endpoint = Endpoint.readPlacesByDistance(lat: coordinate.latitude, lon: coordinate.longitude)
         
         do {
@@ -68,8 +75,7 @@ extension DefaultPlacesRepository: PlacesRepository {
         }
     }
     
-    func findPlaces(with keyword: String, on coordinate: Coordinate) async throws -> [Place] {
-        // TODO: 키워드로 장소검색 Endpoint 필요
+    func readPlaces(with keyword: String, on coordinate: Coordinate) async throws -> [Place] {
         let endpoint = Endpoint.readPlaces(name: keyword, lat: coordinate.latitude, lon: coordinate.longitude)
         
         do {
@@ -80,13 +86,13 @@ extension DefaultPlacesRepository: PlacesRepository {
         }
     }
     
-    func findLocations(with keyword: String) async throws -> [Location] {
+    func readLocations(with keyword: String) async throws -> [Location] {
         do {
             if let currentCoordinate = currentCoordinate {
                 let locations = await localMapService.search(by: keyword, on: currentCoordinate)
                 return locations
             } else {
-                let coordinate = try await fetchCurrentCoordinate()
+                let coordinate = try await readCurrentCoordinate()
                 return await localMapService.search(by: keyword, on: coordinate)
             }
         } catch {
@@ -94,7 +100,7 @@ extension DefaultPlacesRepository: PlacesRepository {
         }
     }
     
-    func fetchCurrentCoordinate() async throws -> Coordinate {
+    func readCurrentCoordinate() async throws -> Coordinate {
         switch await locationService.updateOnce() {
         case .success(let coordinate):
             currentCoordinate = coordinate
@@ -116,5 +122,35 @@ extension DefaultPlacesRepository: PlacesRepository {
         if let currentCoordinate = currentCoordinate {
             localMapService.provideSuggestions(by: keyword, on: currentCoordinate)
         }
+    }
+    
+    func readPlacesForShowcaseAndReview(userId: Int64) async throws -> [Place] {
+        let token = try tokenStorage.fetch(by: userId)
+        
+        do {
+            let endpoint = Endpoint.readPlacesForShowcaseAndReview(token: token.accessToken)
+            let response = try await networkService.request(endpoint: endpoint, for: RelatedPlaceListSearchResponseEntity.self)
+            return response.body.toDTO()
+        } catch APIError.accessTokenExpired {
+            let tokens = try await reissueTokens(key: userId, token.refreshToken)
+            
+            let endpoint = Endpoint.readPlacesForShowcaseAndReview(token: tokens.accessToken)
+            let response = try await networkService.request(endpoint: endpoint, for: RelatedPlaceListSearchResponseEntity.self)
+            return response.body.toDTO()
+        } catch {
+            throw error
+        }
+    }
+    
+    func reviewPlace(on place: Place) async throws {
+        let entity = ReviewPlaceRequestEntity(powerSocketState: place.powerSocketState, groupSeatingState: place.groupSeatingState)
+        let endpoint = Endpoint.reviewPlace(placeId: place.id, review: entity)
+        try await networkService.request(endpoint: endpoint, for: DefaultResponseEntity.self)
+    }
+    
+    func suggestPlace(on place: Place) async throws {
+        let entity = SuggestPlaceRequestEntity(place: place)
+        let endpoint = Endpoint.suggestPlace(suggest: entity)
+        try await networkService.request(endpoint: endpoint, for: DefaultResponseEntity.self)
     }
 }

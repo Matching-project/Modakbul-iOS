@@ -11,9 +11,13 @@ import CoreLocation
 protocol LocalMapUseCase {
     typealias Coordinate = CLLocationCoordinate2D
     
-    func fetchPlaces(on coordinate: Coordinate, by sortCriteria: PlaceSortCriteria) async throws -> [Place]
+    /// 장소 이름으로 조회
     func fetchPlaces(with keyword: String, on coordinate: Coordinate) async throws -> [Place]
     
+    /// 장소 거리순, 모임순 조회
+    func fetchPlaces(on coordinate: Coordinate, by sortCriteria: PlaceSortCriteria) async throws -> [Place]
+    
+    /// 사용자 최근 위치 정보 갱신
     func updateCoordinate() async throws -> Coordinate
 }
 
@@ -29,16 +33,16 @@ final class DefaultLocalMapUseCase {
 extension DefaultLocalMapUseCase: LocalMapUseCase {
     func fetchPlaces(on coordinate: Coordinate, by sortCriteria: PlaceSortCriteria) async throws -> [Place] {
         switch sortCriteria {
-        case .distance: return try await placesRepository.findPlacesOrderedByDistance(on: coordinate)
-        case .matchesCount: return try await placesRepository.findPlacesOrderedByMatchesCount(on: coordinate)
+        case .distance: return try await placesRepository.readPlacesOrderedByDistance(on: coordinate)
+        case .matchesCount: return try await placesRepository.readPlacesOrderedByMatchesCount(on: coordinate)
         }
     }
     
     func fetchPlaces(with keyword: String, on coordinate: Coordinate) async throws -> [Place] {
-        try await placesRepository.findPlaces(with: keyword, on: coordinate)
+        try await placesRepository.readPlaces(with: keyword, on: coordinate)
     }
     
     func updateCoordinate() async throws -> Coordinate {
-        try await placesRepository.fetchCurrentCoordinate()
+        try await placesRepository.readCurrentCoordinate()
     }
 }

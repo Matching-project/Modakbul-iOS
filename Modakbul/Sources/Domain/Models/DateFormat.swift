@@ -89,6 +89,12 @@ extension DateFormat {
         formatter.locale = Locale(identifier: "ko_KR")
         return formatter
     }
+    
+    static func toDate(iso8601String: String) -> Date? {
+        let formatter = ISO8601DateFormatter()
+        let date = formatter.date(from: iso8601String)
+        return date
+    }
 }
 
 // MARK: Date+Format

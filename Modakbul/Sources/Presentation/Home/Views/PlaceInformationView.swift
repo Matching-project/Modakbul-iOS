@@ -9,6 +9,7 @@ import SwiftUI
 
 struct PlaceInformationView<Router: AppRouter>: View {
     @EnvironmentObject private var router: Router
+    @Environment(\.colorScheme) private var colorScheme
     @ObservedObject private var viewModel: PlaceInformationViewModel
     @Environment(\.colorScheme) private var colorScheme: ColorScheme
     
@@ -25,10 +26,17 @@ struct PlaceInformationView<Router: AppRouter>: View {
     var body: some View {
         VStack {
             HStack {
-                AsyncImageView(imageData: Data())
-                    .background(.gray)
+                if let url = place.imageURLs.first {
+                    AsyncImageView(url: url)
+                } else {
+                    Image(colorScheme == .light ? .modakbulMainLight : .modakbulMainDark)
+                        .resizable()
+                        .aspectRatio(1, contentMode: .fit)
+                        .containerRelativeFrame(.vertical, alignment: .center)
+                }
                 
                 informationArea
+                    .layoutPriority(1)
                 
                 Spacer()
             }
@@ -38,7 +46,10 @@ struct PlaceInformationView<Router: AppRouter>: View {
             }
             
             if viewModel.communityRecruitingContents.isEmpty {
-                // TODO: 모임 개수 표시 영역
+                Spacer()
+                
+                Text("아직 모집 중인 모임이 없어요.")
+                    .font(.footnote)
             } else {
                 communityRecruitingContentListArea
             }
@@ -46,8 +57,9 @@ struct PlaceInformationView<Router: AppRouter>: View {
             Spacer()
         }
         .padding()
-        .onAppear {
+        .task {
             viewModel.configureView(by: place)
+            await viewModel.fetchCommunityRecruitingContents(with: place.id)
         }
     }
     
@@ -106,6 +118,7 @@ struct PlaceInformationView<Router: AppRouter>: View {
             LazyVStack {
                 ForEach(viewModel.communityRecruitingContents, id: \.id) { communityRecruitingContent in
                     Cell(communityRecruitingContent)
+                        .contentShape(.rect)
                         .onTapGesture {
                             router.dismiss()
                             router.route(to: .placeInformationDetailView(communityRecruitingContentId: communityRecruitingContent.id))

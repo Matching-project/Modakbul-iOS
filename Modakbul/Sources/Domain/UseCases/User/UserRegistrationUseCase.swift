@@ -8,13 +8,23 @@
 import Foundation
 
 protocol UserRegistrationUseCase {
-    /// 한글, 영문, 숫자 2~15자 내 닉네임인지 검사합니다.
+    /// 로그인
+    func login(_ token: Data, by provider: AuthenticationProvider, fcm: String) async throws -> Bool
+    
+    /// 로그아웃
+    func logout(userId: Int64) async
+    
+    /// 한글, 영문, 숫자 2~15자 내 닉네임인지 검사
     func validateInLocal(_ nickname: String) -> Bool
-    /// 서버와 통신해 비속어 필터링을 하여 중복되지 않고 유효한 닉네임인지 검사합니다.
-    func validateWithServer(_ nickname: String) async throws -> Bool
-    func register(_ user: User, encoded imageData: Data?) async throws
-    func login(_ token: Data, by provider: AuthenticationProvider) async -> Bool
-    func logout(with user: User) async
+    
+    /// 서버와 통신해 비속어 필터링을 하여 중복되지 않고 유효한 닉네임인지 검사
+    func validateWithServer(_ nickname: String) async throws -> NicknameIntegrityType
+    
+    /// 회원가입
+    func register(_ user: User, encoded imageData: Data?, provider: AuthenticationProvider, fcm: String) async throws -> Int64
+    
+    /// 회원탈퇴
+    func unregister(userId: Int64, provider: AuthenticationProvider) async throws
 }
 
 final class DefaultUserRegistrationUseCase {
@@ -27,6 +37,15 @@ final class DefaultUserRegistrationUseCase {
 
 // MARK: UserRegistrationUseCase Confirmation
 extension DefaultUserRegistrationUseCase: UserRegistrationUseCase {
+    func login(_ token: Data, by provider: AuthenticationProvider, fcm: String) async throws -> Bool {
+        let credential = UserCredential(authorizationCode: token, provider: provider)
+        return await socialLoginRepository.login(credential, fcm: fcm)
+    }
+    
+    func logout(userId: Int64) async {
+        <#code#>
+    }
+    
     func validateInLocal(_ nickname: String) -> Bool {
         let nicknamePattern = "^[가-힣a-zA-Z0-9]+$"
         let nicknamePredicate = NSPredicate(format: "SELF MATCHES %@", nicknamePattern)
@@ -42,19 +61,15 @@ extension DefaultUserRegistrationUseCase: UserRegistrationUseCase {
         return true
     }
     
-    func validateWithServer(_ nickname: String) async throws -> Bool {
-        return false
+    func validateWithServer(_ nickname: String) async throws -> NicknameIntegrityType {
+        try await socialLoginRepository.validateNicknameIntegrity(nickname)
     }
     
-    func register(_ user: User, encoded imageData: Data?) async throws {
-        //
+    func register(_ user: User, encoded imageData: Data?, provider: AuthenticationProvider, fcm: String) async throws -> Int64 {
+        <#code#>
     }
     
-    func login(_ token: Data, by provider: AuthenticationProvider) async -> Bool {
-        await socialLoginRepository.login(UserCredential(authorizationCode: token, provider: provider))
-    }
-    
-    func logout(with user: User) async {
-        
+    func unregister(userId: Int64, provider: AuthenticationProvider) async throws {
+        <#code#>
     }
 }
