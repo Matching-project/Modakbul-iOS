@@ -12,7 +12,7 @@ enum Endpoint {
     // MARK: - User Related
     case login(token: Data?, provider: String, fcm: String)                                             // 로그인
     case validateNicknameIntegrity(nickname: String)                                                    // 닉네임 무결성 확인
-    case register(user: UserRegistrationRequestEntity, image: Data?, fcm: String, provider: String)     // 회원가입
+    case register(user: UserRegistrationRequestEntity, image: Data?, provider: String, fcm: String)     // 회원가입
     case logout(token: String)                                                                          // 로그아웃
     case reissueToken(refreshToken: String)                                                             // 토큰 재발행
     case updateProfile(token: String, user: UserProfileUpdateRequestEntity, image: Data?)               // 프로필 수정
@@ -33,7 +33,7 @@ enum Endpoint {
     case suggestPlace(suggest: SuggestPlaceRequestEntity)                                           // 카페 제보
     
     // MARK: - Board Related
-    case createBoard(token: String, placeId: String, communityRecruitingContent: CommunityRecruitingContentEntity)  // 모집글 작성
+    case createBoard(token: String, placeId: Int64, communityRecruitingContent: CommunityRecruitingContentEntity)  // 모집글 작성
     case readBoards(placeId: Int64)        // 카페 모집글 목록 조회
     case readBoardForUpdate(token: String, communityRecruitingContentId: Int64)            // 모집글 수정 정보 조회
     case updateBoard(token: String, communityRecruitingContent: CommunityRecruitingContentEntity)                   // 모집글 수정
@@ -73,11 +73,11 @@ extension Endpoint: TargetType {
     var path: String {
         switch self {
             // MARK: User Related
-        case .login(_, let provider):
+        case .login(_, let provider, _):
             return "/users/login/\(provider)"
         case .validateNicknameIntegrity:
             return "/users"
-        case .register(_, _, let provider):
+        case .register(_, _, let provider, _):
             return "/users/register/\(provider)"
         case .logout:
             return "/users/logout"
@@ -173,12 +173,12 @@ extension Endpoint: TargetType {
     
     var task: Moya.Task {
         switch self {
-        case .login(_, let provider):
+        case .login(_, let provider, _):
             return .requestParameters(parameters: ["provider": "\(provider)"], encoding: URLEncoding.queryString)
         case .validateNicknameIntegrity(let nickname):
             return .requestParameters(parameters: ["nickname": "\(nickname)"], encoding: URLEncoding.queryString)
         // TODO: - image 파라미터 빼고 user.imageURL을 개선하기
-        case .register(let user, let image, _):
+        case .register(let user, let image, _, let fcm):
             var formData = [MultipartFormData]()
 
             do {
