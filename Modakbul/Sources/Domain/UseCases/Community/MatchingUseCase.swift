@@ -34,10 +34,44 @@ protocol MatchingUseCase {
 }
 
 final class DefaultMatchingUseCase {
+    private let matchingRepository: MatchingRepository
     
+    init(matchingRepository: MatchingRepository) {
+        self.matchingRepository = matchingRepository
+    }
 }
 
 // MARK: MatchingUseCase Conformation
-extension DefaultMatchingUseCase {
+extension DefaultMatchingUseCase: MatchingUseCase {
+    func readMatches(userId: Int64, with communityRecruitingContentId: Int64) async throws -> [ParticipationRequest] {
+        try await matchingRepository.readMatches(userId: userId, with: communityRecruitingContentId)
+    }
     
+    func requestMatch(userId: Int64, with communityRecruitingContentId: Int64) async throws {
+        try await matchingRepository.requestMatch(userId: userId, with: communityRecruitingContentId)
+    }
+    
+    func acceptMatchRequest(userId: Int64, with matchingId: Int64) async throws {
+        try await matchingRepository.acceptMatchRequest(userId: userId, with: matchingId)
+    }
+    
+    func rejectMatchRequest(userId: Int64, with matchingId: Int64) async throws {
+        try await matchingRepository.rejectMatchRequest(userId: userId, with: matchingId)
+    }
+    
+    func exitMatch(userId: Int64, with matchingId: Int64) async throws {
+        try await matchingRepository.exitMatch(userId: userId, with: matchingId)
+    }
+    
+    func cancelMatchRequest(userId: Int64, with matchingId: Int64) async throws {
+        try await matchingRepository.cancelMatchRequest(userId: userId, with: matchingId)
+    }
+    
+    func readMyMatches(userId: Int64) async throws -> [CommunityRecruitingContent] {
+        try await matchingRepository.readMyMatches(userId: userId)
+    }
+    
+    func readMyRequestMatches(userId: Int64) async throws -> [CommunityRecruitingContent] {
+        try await matchingRepository.readMyRequestMatches(userId: userId)
+    }
 }
