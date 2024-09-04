@@ -33,22 +33,24 @@ struct PushNotification: Identifiable {
         }
     }
     
-    let id = UUID()
+    let id: Int
     let imageURL: URL?
     let title: String
     let titlePostfix: String
     let subtitle: String
     let timestamp: String
     let type: `Type`
-    var isTouched: Bool
+    var isRead: Bool
     
-    init(imageURL: URL?,
+    init(id: Int,
+         imageURL: URL?,
          title: String,
          subtitle: String,
          timestamp: String,
          type: `Type`,
-         isTouched: Bool = false
+         isRead: Bool = false
     ) {
+        self.id = id
         self.imageURL = imageURL
         self.title = title
         self.titlePostfix = type.titlePostfix
@@ -56,6 +58,6 @@ struct PushNotification: Identifiable {
         // TODO: - 초/분/시간 전 표시하기
         self.timestamp = timestamp
         self.type = type
-        self.isTouched = isTouched
+        self.isRead = isRead
     }
 }

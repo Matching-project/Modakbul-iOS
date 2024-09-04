@@ -9,10 +9,10 @@ import UIKit
 import FirebaseCore
 import FirebaseMessaging
 
-// MARK: - Firebase Quickstart Samples for iOS by Google: https://github.com/firebase/quickstart-ios/blob/14c812998f4fea0338a09bfec877470a1358ff80/messaging/MessagingExamㅈpleSwift/AppDelegate.swift#L116-L159
+// MARK: - Firebase Quickstart Samples for iOS by Google: https://github.com/firebase/quickstart-ios/blob/14c812998f4fea0338a09bfec877470a1358ff80/messaging/MessagingExampleSwift/AppDelegate.swift#L116-L159
 final class AppDelegate: UIResponder, UIApplicationDelegate {
-    // TODO: - 메세지 식별시 사용 예정 (푸시 알림 타입에 따라 화면 분기 필요)
-    //    let gcmMessageIDKey = "gcm.message_id"
+    // TODO: - 백엔드 내부에서 id 발급 예정
+    let gcmMessageIDKey = "gcm.message_id"
     
     // MARK: - FCM 초기화
     func application(_ application: UIApplication,
@@ -54,21 +54,27 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
                                 willPresent notification: UNNotification) async
     -> UNNotificationPresentationOptions {
         let userInfo = notification.request.content.userInfo
-        
-        //        if let messageID = userInfo[gcmMessageIDKey] {
-        //            print("Message ID: \(messageID)")
-        //        }
-        
-        if let aps = userInfo["aps"] as? [String: Any],
+        // TODO: - 백엔드 내부에서 id 발급 예정
+        if let id = userInfo[gcmMessageIDKey],
+           let aps = userInfo["aps"] as? [String: Any],
            let alert = aps["alert"] as? [String: Any] {
-            let title = alert["title"] as? String ?? "제목 없음"
-            let body = alert["body"] as? String ?? "내용 없음"
             
-            print("🔴 Recevied PushNotification from Foreground")
+            let title = alert["title"] as? String ?? "제목 없음"
+            let subtitle = alert["body"] as? String ?? "내용 없음"
+            
+            print("🔴 willPresent: Recevied PushNotification from Foreground")
             print(userInfo)
             
-            // TODO: - 백엔드에 의해 imageURL, timestamp, type 수정 예정
-            NotificationManager.shared.notifications.append(PushNotification(imageURL: PreviewHelper.url1, title: title, subtitle: body, timestamp: "방금", type: .request))
+            let notification = PushNotification(
+                id: id,
+                imageURL: nil,
+                title: title,
+                subtitle: subtitle,
+                timestamp: "방금",
+                type: .request)
+            
+            // TODO: - 백엔드에 의해 type 수정 예정 (imageURL 지연 예정)
+            NotificationManager.shared.notifications.append(notification)
         }
         
         // MARK: - .badge, .sound: FCM에서 별도 옵션 필요
@@ -82,14 +88,33 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         
         let userInfo = response.notification.request.content.userInfo
         
-        //        if let messageID = userInfo[gcmMessageIDKey] {
-        //            print("Message ID: \(messageID)")
-        //        }
-        
-        print("🔴 Touched PushNotification")
-        print(userInfo)
-        
-        NotificationManager.shared.lastNotification?.isTouched = true
+        if let id = userInfo[gcmMessageIDKey],
+           let aps = userInfo["aps"] as? [String: Any],
+           let alert = aps["alert"] as? [String: Any] {
+            
+            let title = alert["title"] as? String ?? "제목 없음"
+            let subtitle = alert["body"] as? String ?? "내용 없음"
+            
+            print("🔴 didReceive: Touched PushNotification")
+            print(userInfo)
+            
+            // TODO: - 백엔드에 의해 type 수정 예정 (imageURL 지연 예정)
+            let notification = PushNotification(
+                id: id,
+                imageURL: nil,
+                title: title,
+                subtitle: subtitle,
+                timestamp: "방금",
+                type: .request
+            )
+            
+            if NotificationManager.shared.lastNotification?.id != notification.id {
+                NotificationManager.shared.notifications.append(notification)
+            }
+            
+            // TODO: - 읽음 확인시 API call 필요
+            NotificationManager.shared.lastNotification?.isRead = true
+        }
     }
 }
 
@@ -110,7 +135,7 @@ extension AppDelegate: MessagingDelegate {
             object: nil,
             userInfo: dataDict
         )
-        // TODO: If necessary send token to application server.
+        // TODO: 서버로 FCM 토큰 전송 필요
         // Note: This callback is fired at each app startup and whenever a new token is generated.
     }
 }

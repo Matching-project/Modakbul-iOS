@@ -13,10 +13,11 @@ final class NotificationViewModel: ObservableObject {
     //    private let notificationUseCase: NotificationUseCase
     
     @Published var notifications: [PushNotification] = []
-    @Published var multiSelection = Set<UUID>()
+    @Published var multiSelection = Set<Int>()
     private var cancellable: AnyCancellable?
     
     init() {
+        // TODO: - API call 통해 기존 알림 목록 조회 후 알림 수신 필요
         cancellable = NotificationManager.shared.$notifications
             .assign(to: \.notifications, on: self)
     }
@@ -28,6 +29,8 @@ final class NotificationViewModel: ObservableObject {
     }
     
     func deleteSelectedNotifications() {
+        // TODO: - 삭제할 알림 API call 필요
+        
         notifications.removeAll { notification in
             multiSelection.contains(notification.id)
         }
