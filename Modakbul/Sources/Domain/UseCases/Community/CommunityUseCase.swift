@@ -34,5 +34,44 @@ protocol CommunityUseCase {
 }
 
 final class DefaultCommunityUseCase {
+    private let communityRepository: CommunityRepository
     
+    init(communityRepository: CommunityRepository) {
+        self.communityRepository = communityRepository
+    }
+}
+
+// MARK: CommunityUseCase Conformation
+extension DefaultCommunityUseCase: CommunityUseCase {
+    func createCommunityRecruitingContent(userId: Int64, placeId: Int64, _ content: CommunityRecruitingContent) async throws {
+        try await communityRepository.createCommunityRecruitingContent(userId: userId, placeId: placeId, content)
+    }
+    
+    func readCommunityRecruitingContents(placeId: Int64) async throws -> [CommunityRecruitingContent] {
+        try await communityRepository.readCommunityRecruitingContents(placeId: placeId)
+    }
+    
+    func readCommunityRecruitingContent(userId: Int64, with communityRecruitingContentId: Int64) async throws -> CommunityRecruitingContent {
+        try await communityRepository.readCommunityRecruitingContent(userId: userId, with: communityRecruitingContentId)
+    }
+    
+    func updateCommunityRecruitingContent(userId: Int64, _ content: CommunityRecruitingContent) async throws {
+        try await communityRepository.updateCommunityRecruitingContent(userId: userId, content)
+    }
+    
+    func deleteCommunityRecruitingContent(userId: Int64, _ content: CommunityRecruitingContent) async throws {
+        try await communityRepository.deleteCommunityRecruitingContent(userId: userId, content)
+    }
+    
+    func readCommunityRecruitingContentDetail(with communityRecruitingContentId: Int64) async throws -> CommunityRecruitingContent {
+        try await communityRepository.readCommunityRecruitingContentDetail(with: communityRecruitingContentId)
+    }
+    
+    func completeCommunityRecruiting(userId: Int64, with communityRecruitingContentId: Int64) async throws {
+        try await communityRepository.completeCommunityRecruiting(userId: userId, with: communityRecruitingContentId)
+    }
+    
+    func readMyCommunityRecruitingContents(userId: Int64) async throws -> [CommunityRecruitingContent] {
+        try await communityRepository.readMyCommunityRecruitingContents(userId: userId)
+    }
 }
