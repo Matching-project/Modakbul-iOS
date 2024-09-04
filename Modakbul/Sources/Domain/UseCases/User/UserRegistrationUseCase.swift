@@ -9,7 +9,7 @@ import Foundation
 
 protocol UserRegistrationUseCase {
     /// 로그인
-    func login(_ token: Data, by provider: AuthenticationProvider) async throws -> Int64
+    func login(_ token: Data, fcm: String, by provider: AuthenticationProvider) async throws -> Int64
     
     /// 로그아웃
     func logout(userId: Int64) async
@@ -21,10 +21,10 @@ protocol UserRegistrationUseCase {
     func validateWithServer(_ nickname: String) async throws -> NicknameIntegrityType
     
     /// 회원가입
-    func register(_ user: User, encoded imageData: Data?) async throws -> Int64
+    func register(_ user: User, encoded imageData: Data?, fcm: String, provider: AuthenticationProvider) async throws -> Int64
     
     /// 회원탈퇴
-    func unregister(userId: Int64) async throws
+    func unregister(userId: Int64, provider: AuthenticationProvider) async throws
 }
 
 final class DefaultUserRegistrationUseCase {
@@ -37,7 +37,7 @@ final class DefaultUserRegistrationUseCase {
 
 // MARK: UserRegistrationUseCase Confirmation
 extension DefaultUserRegistrationUseCase: UserRegistrationUseCase {
-    func login(_ token: Data, by provider: AuthenticationProvider) async throws -> Int64 {
+    func login(_ token: Data, fcm: String, by provider: AuthenticationProvider) async throws -> Int64 {
         let credential = UserCredential(authorizationCode: token, provider: provider)
         await socialLoginRepository.login(credential)
     }
@@ -65,11 +65,11 @@ extension DefaultUserRegistrationUseCase: UserRegistrationUseCase {
         try await socialLoginRepository.validateNicknameIntegrity(nickname)
     }
     
-    func register(_ user: User, encoded imageData: Data?) async throws -> Int64 {
+    func register(_ user: User, encoded imageData: Data?, fcm: String, provider: AuthenticationProvider) async throws -> Int64 {
         <#code#>
     }
     
-    func unregister(userId: Int64) async throws {
+    func unregister(userId: Int64, provider: AuthenticationProvider) async throws {
         <#code#>
     }
 }

@@ -12,16 +12,16 @@ protocol UserBusinessUseCase {
     func updateProfile(user: User, image: Data?) async throws
     
     /// 사용자 프로필 조회
-    func readMyProfile(userId: Int64) async throws
+    func readMyProfile(userId: Int64) async throws -> User
     
     /// 사용자(상대방) 차단
     func block(userId: Int64, opponentUserId: Int64) async throws
     
     /// 사용자(상대방) 차단 해제
-    func unblock(blocked: User, blocker: User) async throws
+    func unblock(userId: Int64, opponentUserId: Int64) async throws
     
     /// 차단한 사용자 목록 조회
-    func readBlockedUsers(by user: User) async throws -> [BlockedUser]
+    func readBlockedUsers(userId: Int64) async throws -> [User]
     
     /// 신고 목록 조회
     func readReports(userId: Int64) async throws -> [(user: User, status: InquiryStatusType)]
@@ -44,34 +44,34 @@ final class DefaultUserBusinessUseCase {
 // MARK: UserBusinessUseCase Conformation
 extension DefaultUserBusinessUseCase: UserBusinessUseCase {
     func updateProfile(user: User, image: Data?) async throws {
-        <#code#>
+        try await userManagementRepository.updateProfile(user: user, image: image)
     }
     
-    func readMyProfile(userId: Int64) async throws {
-        <#code#>
+    func readMyProfile(userId: Int64) async throws -> User {
+        try await userManagementRepository.readMyProfile(userId: userId)
     }
     
     func block(userId: Int64, opponentUserId: Int64) async throws {
-        <#code#>
+        try await userManagementRepository.block(userId: userId, opponentUserId: opponentUserId)
     }
     
-    func unblock(blocked: User, blocker: User) async throws {
-        <#code#>
+    func unblock(userId: Int64, opponentUserId: Int64) async throws {
+        try await userManagementRepository.unblock(userId: userId, opponentUserId: opponentUserId)
     }
     
-    func readBlockedUsers(by user: User) async throws -> [BlockedUser] {
-        <#code#>
+    func readBlockedUsers(userId: Int64) async throws -> [User] {
+        try await userManagementRepository.readBlockedUsers(userId: userId)
     }
     
     func readReports(userId: Int64) async throws -> [(user: User, status: InquiryStatusType)] {
-        <#code#>
+        try await userManagementRepository.readReports(userId: userId)
     }
     
     func readOpponentUserProfile(userId: Int64, opponentUserId: Int64) async throws -> User {
-        <#code#>
+        try await userManagementRepository.readOpponentUserProfile(userId: userId, opponentUserId: opponentUserId)
     }
     
     func report(userId: Int64, opponentUserId: Int64, report: Report) async throws {
-        <#code#>
+        try await userManagementRepository.report(userId: userId, opponentUserId: opponentUserId, report: report)
     }
 }
