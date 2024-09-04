@@ -21,6 +21,10 @@ struct CommunityRecruitingContentSearchResponseEntity: ResponseEntity {
             case communityRecruitingContent = "board"
         }
     }
+    
+    func toDTO() -> CommunityRecruitingContent {
+        result.communityRecruitingContent.toDTO()
+    }
 }
 
 /// 상세 모집글 정보 조회
