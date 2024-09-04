@@ -10,19 +10,19 @@ import Moya
 
 enum Endpoint {
     // MARK: - User Related
-    case login(token: Data?, provider: String)                  // 로그인
-    case validateNicknameIntegrity(nickname: String)              // 닉네임 무결성 확인
-    case register(user: UserRegistrationRequestEntity, image: Data?, provider: String)                        // 회원가입
-    case logout(token: String)                                                              // 로그아웃
-    case reissueToken(refreshToken: String)                                                 // 토큰 재발행
-    case updateProfile(token: String, user: UserProfileUpdateRequestEntity, image: Data?)   // 프로필 수정
-    case readMyProfile(token: String)                                                       // 회원 정보 조회
-    case block(token: String, blockedUserId: Int64)                                         // 사용자 차단
-    case unblock(token: String, blockId: Int64)                                             // 사용자 차단 해제
-    case readBlockedUsers(token: String)                                                    // 차단한 사용자 목록 조회
-    case readReports(token: String)                                                         // 신고 목록 조회
-    case readOpponentUserProfile(token: String, userId: Int64)                              // 사용자(상대방) 프로필 조회
-    case reportOpponentUserProfile(token: String, userId: Int64, report: Report)            // 사용자(상대방) 프로필 신고
+    case login(token: Data?, provider: String, fcm: String)                                             // 로그인
+    case validateNicknameIntegrity(nickname: String)                                                    // 닉네임 무결성 확인
+    case register(user: UserRegistrationRequestEntity, image: Data?, fcm: String, provider: String)     // 회원가입
+    case logout(token: String)                                                                          // 로그아웃
+    case reissueToken(refreshToken: String)                                                             // 토큰 재발행
+    case updateProfile(token: String, user: UserProfileUpdateRequestEntity, image: Data?)               // 프로필 수정
+    case readMyProfile(token: String)                                                                   // 회원 정보 조회
+    case block(token: String, opponentUserId: Int64)                                                    // 사용자 차단
+    case unblock(token: String, blockId: Int64)                                                         // 사용자 차단 해제
+    case readBlockedUsers(token: String)                                                                // 차단한 사용자 목록 조회
+    case readReports(token: String)                                                                     // 신고 목록 조회
+    case readOpponentUserProfile(token: String, userId: Int64)                                          // 사용자(상대방) 프로필 조회
+    case reportOpponentUserProfile(token: String, userId: Int64, report: Report)                        // 사용자(상대방) 프로필 신고
     
     // MARK: - Place Related
     case readPlaces(name: String, lat: Double, lon: Double)                                         // 카페 이름으로 검색
@@ -93,8 +93,8 @@ extension Endpoint: TargetType {
             return "/users/meetings"
         case .readMyRequestMatches:
             return "/users/matches/requests"
-        case .block(_, let blockedUserId):
-            return "/blocks/\(blockedUserId)"
+        case .block(_, let opponentUserId):
+            return "/blocks/\(opponentUserId)"
         case .unblock(_, let blockId):
             return "/blocks/\(blockId)"
         case .readBlockedUsers:
