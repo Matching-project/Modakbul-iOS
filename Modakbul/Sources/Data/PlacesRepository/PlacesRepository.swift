@@ -8,7 +8,7 @@
 import Foundation
 import CoreLocation
 
-protocol PlacesRepository {
+protocol PlacesRepository: TokenRefreshable {
     typealias Coordinate = CLLocationCoordinate2D
     
     func readPlaces(with keyword: String, on coordinate: Coordinate) async throws -> [Place]
@@ -125,25 +125,18 @@ extension DefaultPlacesRepository: PlacesRepository {
     }
     
     func readPlacesForShowcaseAndReview(userId: Int64) async throws -> [Place] {
+        let token = try tokenStorage.fetch(by: userId)
+        
         do {
-            let token = try tokenStorage.fetch(by: userId)
             let endpoint = Endpoint.readPlacesForShowcaseAndReview(token: token.accessToken)
             let response = try await networkService.request(endpoint: endpoint, for: RelatedPlaceListSearchResponseEntity.self)
             return response.body.toDTO()
         } catch APIError.accessTokenExpired {
-            let token = try tokenStorage.fetch(by: userId)
-            let endpoint = Endpoint.reissueToken(refreshToken: token.refreshToken)
-            let response = try await networkService.request(endpoint: endpoint, for: DefaultResponseEntity.self)
+            let tokens = try await reissueTokens(key: userId, token.refreshToken)
             
-            guard let accessToken = response.accessToken,
-                  let refreshToken = response.refreshToken
-            else { throw APIError.responseError }
-            
-            try tokenStorage.store(TokensEntity(accessToken: accessToken, refreshToken: refreshToken), by: userId)
-            
-            let retryEndpoint = Endpoint.readPlacesForShowcaseAndReview(token: accessToken)
-            let retryResponse = try await networkService.request(endpoint: retryEndpoint, for: RelatedPlaceListSearchResponseEntity.self)
-            return retryResponse.body.toDTO()
+            let endpoint = Endpoint.readPlacesForShowcaseAndReview(token: tokens.accessToken)
+            let response = try await networkService.request(endpoint: endpoint, for: RelatedPlaceListSearchResponseEntity.self)
+            return response.body.toDTO()
         } catch {
             throw error
         }

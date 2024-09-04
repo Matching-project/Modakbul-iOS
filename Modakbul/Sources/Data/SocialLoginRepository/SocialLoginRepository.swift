@@ -7,11 +7,14 @@
 
 import Foundation
 
-protocol SocialLoginRepository {
-    func login(_ credential: UserCredential) async -> Bool
+protocol SocialLoginRepository: TokenRefreshable {
+    func login(_ credential: UserCredential, fcm: String) async -> Bool
     func logout() async
     
     func validateNicknameIntegrity(_ nickname: String) async throws -> NicknameIntegrityType
+    
+    func register(_ user: User, encoded imageData: Data?, fcm: String, provider: AuthenticationProvider) async throws -> Int64
+    func unregister(userId: Int64, provider: AuthenticationProvider) async throws
 }
 
 fileprivate enum SocialLoginRepositoryError: Error {
@@ -19,8 +22,8 @@ fileprivate enum SocialLoginRepositoryError: Error {
 }
 
 final class DefaultSocialLoginRepository {
-    private let tokenStorage: TokenStorage
-    private let networkService: NetworkService
+    let tokenStorage: TokenStorage
+    let networkService: NetworkService
     
     init(
         tokenStorage: TokenStorage,
@@ -33,10 +36,10 @@ final class DefaultSocialLoginRepository {
 
 // MARK: SocialLoginRepository Conformation
 extension DefaultSocialLoginRepository: SocialLoginRepository {
-    func login(_ credential: UserCredential) async -> Bool {
+    func login(_ credential: UserCredential, fcm: String) async -> Bool {
         do {
-            let endpoint = Endpoint.login(token: credential.authorizationCode, provider: credential.provider.identifier)
-            let response = try await networkService.request(endpoint: endpoint, for: UserAuthenticationResponseEntity.self)
+            let endpoint = Endpoint.login(token: credential.authorizationCode, provider: credential.provider.identifier, fcm: fcm)
+            let response = try await networkService.request(endpoint: endpoint, for: UserRegistrationResponseEntity.self)
             
             guard let accessToken = response.accessToken,
                   let refreshToken = response.refreshToken
@@ -60,5 +63,30 @@ extension DefaultSocialLoginRepository: SocialLoginRepository {
         let endpoint = Endpoint.validateNicknameIntegrity(nickname: nickname)
         let response = try await networkService.request(endpoint: endpoint, for: NicknameIntergrityResponseEntity.self)
         return response.body.toDTO()
+    }
+    
+    func register(_ user: User, encoded imageData: Data?, fcm: String, provider: AuthenticationProvider) async throws -> Int64 {
+        let entity = UserRegistrationRequestEntity(name: user.name,
+                                                   nickname: user.nickname,
+                                                   birth: user.birth.toString(by: .yyyyMMdd),
+                                                   gender: user.gender,
+                                                   job: user.job,
+                                                   categories: user.categoriesOfInterest)
+        let endpoint = Endpoint.register(user: entity, image: imageData, fcm: fcm, provider: provider.identifier)
+        let response = try await networkService.request(endpoint: endpoint, for: UserRegistrationResponseEntity.self)
+        return response.body.toDTO()
+    }
+    
+    // TODO: 회원탈퇴 WIP
+    func unregister(userId: Int64, provider: AuthenticationProvider) async throws {
+//        let token = try tokenStorage.fetch(by: userId)
+//
+//        do {
+//            let endpoint = Endpoint
+//        } catch APIError.accessTokenExpired {
+//
+//        } catch {
+//            throw error
+//        }
     }
 }
