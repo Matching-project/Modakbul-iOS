@@ -22,30 +22,38 @@ struct ParticipationRequestListView<Router: AppRouter>: View {
     }
     
     var body: some View {
-        List(viewModel.participationRequests) { participatedRequest in
-            Cell(
-                participatedRequest.participatedUser,
-                communityRecruitingContent.community.category
-            )
-                .swipeActions(edge: .trailing) {
-                    Button {
-                        // TODO: 참여 요청 수락
-                    } label: {
-                        Text("수락")
+        content(viewModel.participationRequests.isEmpty)
+            .navigationTitle("참여 요청 목록")
+            .navigationBarTitleDisplayMode(.inline)
+            .task {
+                await viewModel.fetchParticipationRequests(userId: <#T##Int64#>, by: communityRecruitingContent.id)
+            }
+    }
+    
+    @ViewBuilder private func content(_ condition: Bool) -> some View {
+        if condition {
+            ContentUnavailableView("참여 요청 목록이 비어있어요.", systemImage: "doc.append.fill", description: nil)
+        } else {
+            List(viewModel.participationRequests) { participatedRequest in
+                Cell(
+                    participatedRequest.participatedUser,
+                    communityRecruitingContent.community.category
+                )
+                    .swipeActions(edge: .trailing) {
+                        Button {
+                            viewModel.acceptParticipationRequest(<#T##userId: Int64##Int64#>, matchingId: participatedRequest.id)
+                        } label: {
+                            Text("수락")
+                        }
+                        
+                        Button(role: .destructive) {
+                            viewModel.rejectParticipationRequest(<#T##userId: Int64##Int64#>, matchingId: participatedRequest.id)
+                        } label: {
+                            Text("거절")
+                        }
                     }
-                    
-                    Button(role: .destructive) {
-                        // TODO: 참여 요청 목록에서 삭제 및 거절
-                    } label: {
-                        Text("거절")
-                    }
-                }
-        }
-        .listStyle(.plain)
-        .navigationTitle("참여 요청 목록")
-        .navigationBarTitleDisplayMode(.inline)
-        .task {
-            await viewModel.fetchParticipationRequests(by: communityRecruitingContent.id)
+            }
+            .listStyle(.plain)
         }
     }
 }
@@ -82,7 +90,7 @@ extension ParticipationRequestListView {
                 Spacer()
                 
                 Button {
-                    // MARK: 채팅
+                    // TODO: 채팅 기능 연결
                 } label: {
                     Text("채팅")
                         .font(.footnote.bold())

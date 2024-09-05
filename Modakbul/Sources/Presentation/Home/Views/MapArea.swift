@@ -34,15 +34,35 @@ struct MapArea<Router: AppRouter>: View {
             ForEach(viewModel.places, id: \.id) { place in
                 let name = place.location.name
                 let coordinate = place.location.coordinate
-                Annotation(name, coordinate: coordinate) {
-                    Image(systemName: "heart.fill")
-                        .onTapGesture {
-                            router.route(to: .placeInformationView(place: place))
-                        }
+                let count = place.communityRecruitingContents.count
+                
+                Annotation(coordinate: coordinate) {
+                    mapAnnotation(count)
+                } label: {
+                    //
                 }
             }
         }
         .ignoresSafeArea(edges: .top)
+    }
+    
+    @ViewBuilder private func mapAnnotation(_ count: Int) -> some View {
+        // TODO: 크기 조정
+        switch count {
+        case 0:
+            Image(systemName: "circle.fill")
+                .tint(.accentColor)
+                .frame(width: 20, height: 20)
+        case 1:
+            Image(.marker)
+                .frame(width: 30, height: 30)
+        case 2:
+            Image(.marker)
+                .frame(width: 60, height: 60)
+        default:
+            Image(.marker)
+                .frame(width: 80, height: 80)
+        }
     }
     
     private var hoveringButtonsArea: some View {
