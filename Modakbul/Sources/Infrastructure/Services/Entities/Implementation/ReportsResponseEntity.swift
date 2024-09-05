@@ -11,7 +11,7 @@ import Foundation
 struct ReportsResponseEntity: ResponseEntity {
     let status: Bool
     let code: Int
-    let messages: String
+    let message: String
     let result: [Result]
     
     struct Result: Decodable {

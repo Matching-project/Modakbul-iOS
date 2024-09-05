@@ -43,7 +43,7 @@ extension DefaultUserRegistrationUseCase: UserRegistrationUseCase {
     }
     
     func logout(userId: Int64) async {
-        <#code#>
+        //
     }
     
     func validateInLocal(_ nickname: String) -> Bool {
@@ -66,10 +66,10 @@ extension DefaultUserRegistrationUseCase: UserRegistrationUseCase {
     }
     
     func register(_ user: User, encoded imageData: Data?, provider: AuthenticationProvider, fcm: String) async throws -> Int64 {
-        <#code#>
+        -1
     }
     
     func unregister(userId: Int64, provider: AuthenticationProvider) async throws {
-        <#code#>
+        //
     }
 }

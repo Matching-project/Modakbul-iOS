@@ -48,7 +48,9 @@ struct PresentationAssembly: Assembly {
         //            PlaceInformationDetailViewModel()
         //        }
         
-        container.register(for: PlaceInformationDetailMakingViewModel.self, PlaceInformationDetailMakingViewModel())
+        container.register(for: PlaceInformationDetailMakingViewModel.self) { resolver in
+            PlaceInformationDetailMakingViewModel(communityUseCase: resolver.resolve(CommunityUseCase.self))
+        }
         
         container.register(for: ParticipationRequestListViewModel.self) { resolver in
             ParticipationRequestListViewModel()

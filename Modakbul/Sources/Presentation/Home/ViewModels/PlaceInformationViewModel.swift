@@ -58,7 +58,11 @@ extension PlaceInformationViewModel {
     }
     
     func fetchCommunityRecruitingContents(with placeId: Int64) async {
-        let contents = await communityUseCase.fetchCommunities(with: placeId)
-        communityRecruitingContentSubject.send(contents)
+        do {
+            let contents = try await communityUseCase.readCommunityRecruitingContents(placeId: placeId)
+            communityRecruitingContentSubject.send(contents)
+        } catch {
+            print(error)
+        }
     }
 }

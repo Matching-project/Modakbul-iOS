@@ -14,14 +14,14 @@ final class PlaceInformationDetailViewModel: ObservableObject {
     private let communityRecruitingContentSubject = PassthroughSubject<CommunityRecruitingContent, Never>()
     private var cancellables = Set<AnyCancellable>()
     
-    private let chatUseCase: ChatUseCase
+//    private let chatUseCase: ChatUseCase
     private let communityUseCase: CommunityUseCase
     
     init(
-        chatUseCase: ChatUseCase,
+//        chatUseCase: ChatUseCase,
         communityUseCase: CommunityUseCase
     ) {
-        self.chatUseCase = chatUseCase
+//        self.chatUseCase = chatUseCase
         self.communityUseCase = communityUseCase
         subscribe()
     }

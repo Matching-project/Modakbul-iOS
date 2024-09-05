@@ -22,9 +22,11 @@ struct DataAssembly: Assembly {
             let networkService = resolver.resolve(NetworkService.self)
             let localMapService = resolver.resolve(LocalMapService.self)
             let locationService = resolver.resolve(LocationService.self)
+            let tokenStorage = resolver.resolve(TokenStorage.self)
             return DefaultPlacesRepository(networkService: networkService,
-                                    localMapService: localMapService,
-                                    locationService: locationService)
+                                           localMapService: localMapService,
+                                           locationService: locationService,
+                                           tokenStorage: tokenStorage)
         }
         
         // ChatRepository

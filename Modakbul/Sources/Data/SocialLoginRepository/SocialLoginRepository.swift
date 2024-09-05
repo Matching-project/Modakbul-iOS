@@ -72,7 +72,7 @@ extension DefaultSocialLoginRepository: SocialLoginRepository {
                                                    gender: user.gender,
                                                    job: user.job,
                                                    categories: user.categoriesOfInterest)
-        let endpoint = Endpoint.register(user: entity, image: imageData, fcm: fcm, provider: provider.identifier)
+        let endpoint = Endpoint.register(user: entity, image: imageData, provider: provider.identifier, fcm: fcm)
         let response = try await networkService.request(endpoint: endpoint, for: UserRegistrationResponseEntity.self)
         return response.body.toDTO()
     }

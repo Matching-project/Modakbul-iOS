@@ -8,39 +8,21 @@
 import Foundation
 
 final class PlaceInformationDetailMakingViewModel: ObservableObject {
-    private var id: Int64
-    @Published var location: Location
-    @Published var category: Category
-    @Published var peopleCount: Int
-    @Published var date: Date
-    @Published var startTime: Date
-    @Published var endTime: Date
-    @Published var title: String
-    @Published var content: String
+    private var id: Int64 = -1
+    @Published var location: Location = Location()
+    @Published var category: Category = .interview
+    @Published var peopleCount: Int = 1
+    @Published var date: Date = .now
+    @Published var startTime: Date = .now.unitizeToTenMinutes()
+    @Published var endTime: Date = .now.unitizeToTenMinutes()
+    @Published var title: String = ""
+    @Published var content: String = ""
     
-    // TODO: - communityUseCase: CommunityUseCase로 변경해야함
-    private let communityUseCase: DefaultCommunityUseCase // : CommunityUseCase
+    private let communityUseCase: CommunityUseCase
     
-    init(id: Int64 = 1,
-         location: Location = Location(),
-         category: Category = .interview,
-         peopleCount: Int = 1,
-         date: Date = .now,
-         startTime: Date = .now.unitizeToTenMinutes(),
-         endTime: Date = .now.unitizeToTenMinutes(),
-         title: String = "",
-         content: String = "",
-         communityUseCase: DefaultCommunityUseCase = DefaultCommunityUseCase()
+    init(
+         communityUseCase: CommunityUseCase
     ) {
-        self.id = id
-        self.location = location
-        self.category = category
-        self.peopleCount = peopleCount
-        self.date = date
-        self.startTime = startTime
-        self.endTime = endTime
-        self.title = title
-        self.content = content
         self.communityUseCase = communityUseCase
     }
     

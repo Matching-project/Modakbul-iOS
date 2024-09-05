@@ -16,15 +16,17 @@ final class LoginViewModel: ObservableObject {
         self.userRegistrationUseCase = userRegistrationUseCase
     }
     
-    func loginWithKakaoTalk(_ token: OAuthToken) {
+    func loginWithKakaoTalk(_ token: OAuthToken, fcm: String) {
         Task {
-            guard let token = try? JSONEncoder().encode(token) else {
-                return print("카카오 로그인 실패")
+            do {
+                let token = try JSONEncoder().encode(token)
+                let credential = UserCredential(authorizationCode: token, provider: .kakao)
+                _ = try await userRegistrationUseCase.login(token, by: .kakao, fcm: fcm)
+            } catch {
+                
             }
             
-            let credential = UserCredential(authorizationCode: token, provider: .kakao)
-            // TODO: 결과값 처리
-            _ = await userRegistrationUseCase.login(token, by: .kakao)
+            
         }
     }
     
@@ -36,7 +38,7 @@ final class LoginViewModel: ObservableObject {
             }
             
             // TODO: 결과값 처리
-            _ = await userRegistrationUseCase.login(authorizationCode, by: .apple)
+            _ = await userRegistrationUseCase.login(authorizationCode, by: .apple, fcm: <#String#>)
         }
     }
     
