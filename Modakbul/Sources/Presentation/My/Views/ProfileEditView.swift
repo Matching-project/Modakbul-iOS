@@ -138,10 +138,22 @@ final class ProfileEditViewModel: ObservableObject {
     
     @MainActor
     func checkNicknameForOverlap() {
-        // TODO: - NetworkService를 통해 닉네임 쿼리 필요
+        // TODO: - 로직 완성할 것
         Task {
-            isOverlappedNickname = try await userRegistrationUseCase.validateWithServer(nickname)
-          }
+            do {
+                let status = try await userRegistrationUseCase.validateWithServer(nickname)
+                switch status {
+                case .normal:
+                    <#code#>
+                case .overlapped:
+                    <#code#>
+                case .abused:
+                    <#code#>
+                }
+            } catch {
+                
+            }
+        }
     }
     
     func submit() {

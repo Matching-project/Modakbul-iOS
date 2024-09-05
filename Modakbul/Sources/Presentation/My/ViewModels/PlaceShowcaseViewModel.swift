@@ -34,8 +34,12 @@ final class PlaceShowcaseViewModel: ObservableObject {
 
 // MARK: Interfaces
 extension PlaceShowcaseViewModel {
-    func fetchPlaces() async {
-        let places = await placeShowcaseAndReviewUseCase.fetchParticipatedPlaces()
-        fetchPlaces.send(places)
+    func fetchPlaces(userId: Int64) async {
+        do {
+            let places = try await placeShowcaseAndReviewUseCase.readPlacesForShowcaseAndReview(userId: userId)
+            fetchPlaces.send(places)
+        } catch {
+            places = []
+        }
     }
 }

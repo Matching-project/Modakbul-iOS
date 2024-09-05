@@ -248,7 +248,7 @@ extension Endpoint: TargetType {
     var headers: [String : String]? {
         switch self {
             // MARK: User Related
-        case .login(let token,  _):
+        case .login(let token, _, _):
             ["Content-type": "application/json",
              "Authorization": "\(String(describing: token))"]
         case .register:

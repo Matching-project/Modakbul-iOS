@@ -30,15 +30,18 @@ final class LoginViewModel: ObservableObject {
         }
     }
     
-    func loginWithApple(_ credential: ASAuthorizationCredential) {
+    func loginWithApple(_ credential: ASAuthorizationCredential, fcm: String) {
         Task {
             guard let appleIDCredential = credential as? ASAuthorizationAppleIDCredential,
                   let authorizationCode = appleIDCredential.authorizationCode else {
                 return print("애플 아이디로 로그인만 지원함")
             }
             
-            // TODO: 결과값 처리
-            _ = await userRegistrationUseCase.login(authorizationCode, by: .apple, fcm: <#String#>)
+            do {
+                _ = try await userRegistrationUseCase.login(authorizationCode, by: .apple, fcm: fcm)
+            } catch {
+                
+            }
         }
     }
     
