@@ -41,7 +41,7 @@ struct PlacesListArea<Router: AppRouter>: View {
             .padding()
             
             List(viewModel.places, id: \.id) { place in
-                router.view(to: .placeInformationView(place: place))
+                router.view(to: .placeInformationView(place: place, displayMode: .summary))
                     .listRowSeparator(.hidden)
             }
             .listStyle(.plain)
