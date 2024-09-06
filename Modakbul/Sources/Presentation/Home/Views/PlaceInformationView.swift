@@ -13,13 +13,16 @@ struct PlaceInformationView<Router: AppRouter>: View {
     @ObservedObject private var viewModel: PlaceInformationViewModel
     
     private let place: Place
+    private let displayMode: DisplayMode
     
     init(
         _ viewModel: PlaceInformationViewModel,
-        place: Place
+        place: Place,
+        displayMode: DisplayMode
     ) {
         self.viewModel = viewModel
         self.place = place
+        self.displayMode = displayMode
     }
     
     var body: some View {
@@ -50,7 +53,7 @@ struct PlaceInformationView<Router: AppRouter>: View {
                 Text("아직 모집 중인 모임이 없어요.")
                     .font(.footnote)
             } else {
-                communityRecruitingContentListArea
+                communityRecruitingContentListArea(displayMode)
             }
             
             Spacer()
@@ -112,20 +115,29 @@ struct PlaceInformationView<Router: AppRouter>: View {
         .shadow(color: .gray.opacity(0.3), radius: 4, y: 4)
     }
     
-    private var communityRecruitingContentListArea: some View {
-        ScrollView {
-            LazyVStack {
-                ForEach(viewModel.communityRecruitingContents, id: \.id) { communityRecruitingContent in
-                    Cell(communityRecruitingContent)
-                        .contentShape(.rect)
-                        .onTapGesture {
-                            router.dismiss()
-                            router.route(to: .placeInformationDetailView(communityRecruitingContentId: communityRecruitingContent.id))
-                        }
+    @ViewBuilder private func communityRecruitingContentListArea(_ displayMode: DisplayMode) -> some View {
+        switch displayMode {
+        case .summary:
+            HStack(spacing: 20) {
+                Image(.marker)
+                
+                Text("모임 \(viewModel.communityRecruitingContents.count)개 진행 중")
+            }
+        case .full:
+            ScrollView {
+                LazyVStack {
+                    ForEach(viewModel.communityRecruitingContents, id: \.id) { communityRecruitingContent in
+                        Cell(communityRecruitingContent)
+                            .contentShape(.rect)
+                            .onTapGesture {
+                                router.dismiss()
+                                router.route(to: .placeInformationDetailView(communityRecruitingContentId: communityRecruitingContent.id))
+                            }
+                    }
                 }
             }
+            .padding(.top)
         }
-        .padding(.top)
     }
 }
 
@@ -169,8 +181,22 @@ extension PlaceInformationView {
     }
 }
 
+extension PlaceInformationView {
+    enum DisplayMode {
+        /// 모집글 목록 축약 표시
+        ///
+        /// 진행 중인 모임의 개수만 표시합니다.
+        case summary
+        
+        /// 모집글 목록 전부 표시
+        ///
+        /// 모집글 목록을 모두 표시합니다.
+        case full
+    }
+}
+
 struct PlaceInformationSheet_Preview: PreviewProvider {
     static var previews: some View {
-        router.view(to: .placeInformationView(place: previewHelper.places.first!))
+        router.view(to: .placeInformationView(place: previewHelper.places.first!, displayMode: .full))
     }
 }
