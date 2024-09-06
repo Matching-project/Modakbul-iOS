@@ -10,10 +10,15 @@ import SwiftUI
 struct BlockedListView<Router: AppRouter>: View {
     @EnvironmentObject private var router: Router
     @ObservedObject private var viewModel: BlockedListViewModel
-    @AppStorage(AppStorageKey.userId) private var userId: Int?
     
-    init(_ viewModel: BlockedListViewModel) {
+    private let userId: Int64
+    
+    init(
+        _ viewModel: BlockedListViewModel,
+        userId: Int64
+    ) {
         self.viewModel = viewModel
+        self.userId = userId
     }
     
     var body: some View {
@@ -21,10 +26,7 @@ struct BlockedListView<Router: AppRouter>: View {
             .navigationTitle("차단 목록")
             .navigationBarTitleDisplayMode(.inline)
             .task {
-                guard let userId = userId else {
-                    router.route(to: .loginView)
-                }
-                await viewModel.configureView(userId: Int64(userId))
+                await viewModel.configureView(userId: userId)
             }
     }
     
@@ -62,8 +64,7 @@ struct BlockedListView<Router: AppRouter>: View {
             Spacer()
             
             Button {
-                guard let userId = userId else { return }
-                viewModel.cancelBlock(userId: Int64(userId), opponentUserId: user.id)
+                viewModel.cancelBlock(userId: userId, opponentUserId: user.id)
             } label: {
                 Text("차단 해제")
                     .font(.footnote.bold())
