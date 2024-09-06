@@ -7,10 +7,10 @@
 
 import SwiftUI
 
-// TODO: - 명세에 없으나, 토스, 당근 같은 서비스는 당겨서 새로고침(Refreshable) 및 해당 화면으로 이동 지원함.
 struct NotificationView<Router: AppRouter>: View {
-    @ObservedObject private var vm: NotificationViewModel
     @EnvironmentObject private var router: Router
+    @ObservedObject private var vm: NotificationViewModel
+    @Environment(\.colorScheme) private var colorScheme
     @Environment(\.editMode) private var editMode
     
     init(_ notificationViewModel: NotificationViewModel) {
@@ -26,6 +26,7 @@ struct NotificationView<Router: AppRouter>: View {
                 .listRowSeparator(.hidden)
                 .onTapGesture {
                     vm.readNotification(notification)
+                    router.route(to: notification.type.route)
                 }
         }
         .listStyle(.inset)
@@ -109,9 +110,11 @@ extension NotificationView {
                 .padding(.vertical, 15)
             }
             .padding(.horizontal)
-            .background(colorScheme == .dark ? .gray.opacity(0.2) : .white)
+            .background(
+                colorScheme == .dark
+                    ? (notification.isRead ? Color.gray.opacity(0.2) : Color.gray.opacity(0.45))
+                    : (notification.isRead ? Color.gray.opacity(0.2) : Color.accent.opacity(0.45)))
             .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
-            .shadow(radius: 4)
         }
         
         private var titleView: some View {
