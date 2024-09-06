@@ -31,6 +31,16 @@ struct PushNotification: Identifiable {
             case .exit: " 카페모임을 나갔어요."
             }
         }
+        
+        var route: Route {
+            switch self {
+            // TODO: - route 추가 예정
+            case .request:
+            case .accept:
+            case .newChat:
+            case .exit:
+            }
+        }
     }
     
     let id: Int
