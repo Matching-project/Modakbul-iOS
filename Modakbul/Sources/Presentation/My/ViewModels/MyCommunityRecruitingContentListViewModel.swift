@@ -16,10 +16,10 @@ final class MyCommunityRecruitingContentListViewModel: ObservableObject {
     private let communityRecruitingContentsSubject = PassthroughSubject<[CommunityRecruitingContent], Never>()
     private var cancellables = Set<AnyCancellable>()
     
-    private let matchingUseCase: MatchingUseCase
+    private let communityUseCase: CommunityUseCase
     
-    init(matchingUseCase: MatchingUseCase) {
-        self.matchingUseCase = matchingUseCase
+    init(communityUseCase: CommunityUseCase) {
+        self.communityUseCase = communityUseCase
         subscribe()
     }
     
@@ -37,7 +37,7 @@ final class MyCommunityRecruitingContentListViewModel: ObservableObject {
 extension MyCommunityRecruitingContentListViewModel {
     func configureView(userId: Int64) async {
         do {
-            let communityRecruitingContents = try await matchingUseCase.readMyRequestMatches(userId: userId)
+            let communityRecruitingContents = try await communityUseCase.readMyCommunityRecruitingContents(userId: userId)
             communityRecruitingContentsSubject.send(communityRecruitingContents)
         } catch {
             print(error)
