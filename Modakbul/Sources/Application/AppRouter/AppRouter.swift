@@ -22,7 +22,6 @@ protocol AppRouter: ObservableObject {
     var isConfirmationDialogPresented: Bool { get set }
     var assembler: Assembler { get }
     var resolver: DependencyResolver { get }
-    var notification: PushNotification? { get }
     
     @ViewBuilder func view(to destination: Destination) -> Content
     func route(to destination: Destination)
@@ -46,9 +45,11 @@ final class DefaultAppRouter: AppRouter {
     var isModalPresented: Bool { sheet != nil || fullScreenCover != nil }
     @Published var isAlertPresented: Bool = false
     @Published var isConfirmationDialogPresented: Bool = false
-    @Published var notification: PushNotification? = NotificationManager.shared.lastNotification {
+    @Published var notification: Destination? = RouterAdapter.shared.destionation {
         didSet {
-            if notification?.isRead == true { route() }
+            if let notification = notification {
+                route(to: notification)
+            }
         }
     }
     
@@ -63,7 +64,7 @@ final class DefaultAppRouter: AppRouter {
         self.path = path
         self.assembler = assembler
         
-        cancellable = NotificationManager.shared.$lastNotification
+        cancellable = RouterAdapter.shared.$destionation
             .assign(to: \.notification, on: self)
     }
     
@@ -87,21 +88,6 @@ final class DefaultAppRouter: AppRouter {
     private func _fullScreenCover(_ destination: Destination) {
         guard isModalPresented == false else { return }
         fullScreenCover = destination
-    }
-    
-    private func route() {
-        guard let notification = notification else { return }
-        
-        switch notification.type {
-        // TODO: - Route 추가 예정
-//        case .request:
-//            route(to: .)
-        // case .accept:
-        // case .newChat:
-        // case .exit:
-        default:
-            break
-        }
     }
     
     @ViewBuilder func view(to destination: Destination) -> some View {

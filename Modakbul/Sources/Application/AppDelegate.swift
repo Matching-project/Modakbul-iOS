@@ -12,7 +12,7 @@ import FirebaseMessaging
 // MARK: - Firebase Quickstart Samples for iOS by Google: https://github.com/firebase/quickstart-ios/blob/14c812998f4fea0338a09bfec877470a1358ff80/messaging/MessagingExampleSwift/AppDelegate.swift#L116-L159
 final class AppDelegate: UIResponder, UIApplicationDelegate {
     // TODO: - 백엔드 내부에서 id 발급 예정
-    let gcmMessageIDKey = "gcm.message_id"
+//    let gcmMessageIDKey = "gcm.message_id"
     
     // MARK: - FCM 초기화
     func application(_ application: UIApplication,
@@ -54,28 +54,9 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
                                 willPresent notification: UNNotification) async
     -> UNNotificationPresentationOptions {
         let userInfo = notification.request.content.userInfo
-        // TODO: - 백엔드 내부에서 id 발급 예정
-        if let id = userInfo[gcmMessageIDKey],
-           let aps = userInfo["aps"] as? [String: Any],
-           let alert = aps["alert"] as? [String: Any] {
-            
-            let title = alert["title"] as? String ?? "제목 없음"
-            let subtitle = alert["body"] as? String ?? "내용 없음"
-            
-            print("🔴 willPresent: Recevied PushNotification from Foreground")
-            print(userInfo)
-            
-            let notification = PushNotification(
-                id: id,
-                imageURL: nil,
-                title: title,
-                subtitle: subtitle,
-                timestamp: "방금",
-                type: .request)
-            
-            // TODO: - 백엔드에 의해 type 수정 예정 (imageURL 지연 예정)
-            NotificationManager.shared.notifications.append(notification)
-        }
+        
+        print("🔴 willPresent: Recevied PushNotification from Foreground")
+        print(userInfo)
         
         // MARK: - .badge, .sound: FCM에서 별도 옵션 필요
         // TODO: - .list: foreground에서 푸시 수신시, 푸시 알림이 알림센터에 누적되어야 하나 말아야 하나?
@@ -88,32 +69,16 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         
         let userInfo = response.notification.request.content.userInfo
         
-        if let id = userInfo[gcmMessageIDKey],
-           let aps = userInfo["aps"] as? [String: Any],
+        if let aps = userInfo["aps"] as? [String: Any],
            let alert = aps["alert"] as? [String: Any] {
-            
-            let title = alert["title"] as? String ?? "제목 없음"
-            let subtitle = alert["body"] as? String ?? "내용 없음"
+            // TODO: - API Response 확인 필요
+//            let type = alert["type"] as? [String: Any]
             
             print("🔴 didReceive: Touched PushNotification")
             print(userInfo)
             
-            // TODO: - 백엔드에 의해 type 수정 예정 (imageURL 지연 예정)
-            let notification = PushNotification(
-                id: id,
-                imageURL: nil,
-                title: title,
-                subtitle: subtitle,
-                timestamp: "방금",
-                type: .request
-            )
-            
-            if NotificationManager.shared.lastNotification?.id != notification.id {
-                NotificationManager.shared.notifications.append(notification)
-            }
-            
-            // TODO: - 읽음 확인시 API call 필요
-            NotificationManager.shared.lastNotification?.isRead = true
+            // TODO: - API Response에 따른 View Routing 필요
+//            RouterAdapter.shared.destionation = PushNotification.Type.route
         }
     }
 }
