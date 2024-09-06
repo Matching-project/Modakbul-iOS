@@ -7,8 +7,10 @@
 
 import SwiftUI
 
-struct BlockedListView: View {
+struct BlockedListView<Router: AppRouter>: View {
+    @EnvironmentObject private var router: Router
     @ObservedObject private var viewModel: BlockedListViewModel
+    @AppStorage(AppStorageKey.userId) private var userId: Int?
     
     init(_ viewModel: BlockedListViewModel) {
         self.viewModel = viewModel
@@ -18,6 +20,12 @@ struct BlockedListView: View {
         content(viewModel.blockedUsers.isEmpty)
             .navigationTitle("차단 목록")
             .navigationBarTitleDisplayMode(.inline)
+            .task {
+                guard let userId = userId else {
+                    router.route(to: .loginView)
+                }
+                await viewModel.configureView(userId: Int64(userId))
+            }
     }
     
     @ViewBuilder private func content(_ condition: Bool) -> some View {
@@ -54,18 +62,13 @@ struct BlockedListView: View {
             Spacer()
             
             Button {
-                // MARK: 차단 해제
+                guard let userId = userId else { return }
+                viewModel.cancelBlock(userId: Int64(userId), opponentUserId: user.id)
             } label: {
                 Text("차단 해제")
                     .font(.footnote.bold())
             }
             .buttonStyle(.capsuledInset)
         }
-    }
-}
-
-#Preview {
-    NavigationStack {
-        BlockedListView(BlockedListViewModel())
     }
 }
