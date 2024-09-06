@@ -23,46 +23,55 @@ struct PlaceInformationDetailView<Router: AppRouter>: View {
     }
     
     var body: some View {
-        // TODO: Connect to data source
-        VStack {
-            GeometryReader { proxy in
-                ScrollView(.vertical) {
-                    imageCarouselArea(proxy.size)
-                    
-                    header
-                    
-                    HStack(spacing: 10) {
-                        tagArea("카테고리", "디자인")
-                        tagArea("모집인원", "4/6")
-                        tagArea("요일", "수요일")
-                        tagArea("진행시간", "16:00~22:00")
-                    }
-                    .padding(.horizontal)
-                    
-                    Text("글 내용, 글 내용, 글 내용, 글 내용, 글 내용, 글 내용, 글 내용, 글 내용, 글 내용, 글 내용, 글 내용, 글 내용, 글 내용, 글 내용, 글 내용, 글 내용, 글 내용, 글 내용, 글 내용, 글 내용, 글 내용, 글 내용, 글 내용, 글 내용, 글 내용, 글 내용, 글 내용, 글 내용, 글 내용, 글 내용, 글 내용, 글 내용, 글 내용, 글 내용, 글 내용, 글 내용, 글 내용, 글 내용, 글 내용, 글 내용, 글 내용, 글 내용, 글 내용, 글 내용, 글 내용, 글 내용, 글 내용, 글 내용, 글 내용, 글 내용, 글 내용, 글 내용, 글 내용, 글 내용, 글 내용, 글 내용, 글 내용, 글 내용, 글 내용, 글 내용, 글 내용, 글 내용, 글 내용, 글 내용, 글 내용, 글 내용, 글 내용, 글 내용, 글 내용, 글 내용, 글 내용, 글 내용, 글 내용, 글 내용, 글 내용, 글 내용, 글 내용, 글 내용, 글 내용, ")
-                        .padding()
+        content(viewModel.communityRecruitingContent)
+            .task {
+                do {
+                    try await viewModel.configureView(communityRecruitingContentId)
+                } catch {
+                    print(error)
                 }
-                .scrollIndicators(.hidden)
             }
+    }
+    
+    @ViewBuilder private func content(_ communityRecruitingContent: CommunityRecruitingContent?) -> some View {
+        if let communityRecruitingContent = communityRecruitingContent {
+            let community = communityRecruitingContent.community
             
-            // TODO: 사용자 종류에 따라 버튼 라벨 달라져야 함
-            HStack {
-                FlatButton("채팅하기") {
-                    //
+            VStack {
+                GeometryReader { proxy in
+                    ScrollView(.vertical) {
+                        imageCarouselArea(proxy.size)
+                        
+                        header(viewModel.title, viewModel.creationDate, viewModel.writer)
+                        
+                        HStack(spacing: 10) {
+                            tagArea("카테고리", viewModel.category)
+                            tagArea("모집인원", viewModel.recruitingCount)
+                            tagArea("날짜", viewModel.meetingDate)
+                            tagArea("진행시간", viewModel.meetingTime)
+                        }
+                        .padding(.horizontal)
+                        
+                        Text(viewModel.content)
+                            .padding()
+                    }
+                    .scrollIndicators(.hidden)
                 }
                 
-                FlatButton("모집종료") {
-                    //
+                // TODO: 사용자 종류에 따라 버튼 라벨 달라져야 함
+                HStack {
+                    FlatButton("채팅하기") {
+                        //
+                    }
+                    
+                    FlatButton("모집종료") {
+                        //
+                    }
                 }
+                .padding()
             }
-            .padding()
-        }
-        .task {
-            do {
-                try await viewModel.configureView(communityRecruitingContentId)
-            } catch {
-                print(error)
-            }
+        } else {
+            ContentUnavailableView("내용을 불러오는 중 입니다.", image: "Marker")
         }
     }
     
@@ -87,18 +96,19 @@ struct PlaceInformationDetailView<Router: AppRouter>: View {
         }
     }
     
-    private var header: some View {
+    @ViewBuilder private func header(_ title: String, _ date: String, _ user: User) -> some View {
         VStack(alignment: .leading, spacing: 20) {
-            Text("UIUX 디자인 스터디 모임")
+            Text(title)
                 .font(.title2.bold())
+                .lineLimit(1)
             
             HStack {
-                AsyncImageView(url: nil)
+                AsyncImageView(url: user.imageURL)
                 
                 VStack(alignment: .leading) {
                     Text("작성자")
-                    Text("디자인마스터")
-                    Text("게시일: 2024. 3. 3")
+                    Text(user.nickname)
+                    Text("게시일: \(viewModel.creationDate)")
                         .font(.caption)
                 }
                 .font(.headline)
