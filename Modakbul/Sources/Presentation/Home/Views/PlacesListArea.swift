@@ -21,6 +21,9 @@ struct PlacesListArea<Router: AppRouter>: View {
             
             hoveringButtonsArea
         }
+        .onAppear {
+            viewModel.fetchUnreadNotificationCount()
+        }
     }
     
     private var listArea: some View {

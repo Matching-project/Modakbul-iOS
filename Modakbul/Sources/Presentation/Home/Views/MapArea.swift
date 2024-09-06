@@ -24,6 +24,7 @@ struct MapArea<Router: AppRouter>: View {
         }
         .onAppear {
             viewModel.updateLocationOnceIfNeeded()
+            viewModel.fetchUnreadNotificationCount()
         }
     }
     

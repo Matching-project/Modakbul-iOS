@@ -16,16 +16,19 @@ final class HomeViewModel: ObservableObject {
     @Published var places: [Place] = PreviewHelper.shared.places
     @Published var selectedPlace: Place?
     @Published var sortCriteria: PlaceSortCriteria = .distance
+    @Published var unreadCount: Int = 0
     private var locationNeeded: Bool = true
     
     private let localMapUseCase: LocalMapUseCase
+    private let notificationUseCase: NotificationUseCase
     
     private let currentCoordinateSubject = PassthroughSubject<CLLocationCoordinate2D, Error>()
     private let placesSubject = PassthroughSubject<[Place], Error>()
     private var cancellables = Set<AnyCancellable>()
     
-    init(localMapUseCase: LocalMapUseCase) {
+    init(localMapUseCase: LocalMapUseCase, notificationUseCase: NotificationUseCase) {
         self.localMapUseCase = localMapUseCase
+        self.notificationUseCase = notificationUseCase
         self.region = MKCoordinateRegion(center: CLLocationCoordinate2D(), span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05))
         subscribe()
     }
@@ -70,7 +73,7 @@ final class HomeViewModel: ObservableObject {
     }
 }
 
-// MARK: Interfaces
+// MARK: Interfaces for LocalMapUseCase
 extension HomeViewModel {
     @MainActor func updateLocationOnceIfNeeded() {
         if locationNeeded {
@@ -110,5 +113,19 @@ extension HomeViewModel {
     @MainActor func moveCameraOnLocation(to place: Place) {
         region.center = place.location.coordinate
         findPlaces(by: place.location.name, on: place.location.coordinate)
+    }
+}
+
+// MARK: - Interface for NotificationUseCase
+extension HomeViewModel {
+    @MainActor
+    func fetchUnreadNotificationCount() {
+        Task {
+            do {
+                unreadCount = try await notificationUseCase.fetchUnreadCount()
+            } catch {
+                print(error)
+            }
+        }
     }
 }

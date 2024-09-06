@@ -6,39 +6,74 @@
 //
 
 import SwiftUI
-import Combine
 
 final class NotificationViewModel: ObservableObject {
-    // TODO: - UseCase 연결 필요
-    //    private let notificationUseCase: NotificationUseCase
-    
     @Published var notifications: [PushNotification] = []
     @Published var multiSelection = Set<Int>()
-    private var cancellable: AnyCancellable?
+    private let notificationUseCase: NotificationUseCase
     
-    init() {
-        // TODO: - API call 통해 기존 알림 목록 조회 후 알림 수신 필요
-        cancellable = NotificationManager.shared.$notifications
-            .assign(to: \.notifications, on: self)
+    init(notificationUseCase: NotificationUseCase) {
+        self.notificationUseCase = notificationUseCase
     }
     
-    func deleteSwipedNotification(_ notification: PushNotification) {
+    func readNotification(_ notification: PushNotification) {
+        if notifications.firstIndex(where: { $0.id == notification.id }) != nil {
+            readNotification(notification.id)
+        }
+    }
+    
+    func removeSwipedNotification(_ notification: PushNotification) {
         if let index = notifications.firstIndex(where: { $0.id == notification.id }) {
+            removeNotifications([notification.id])
             notifications.remove(at: index)
         }
     }
     
-    func deleteSelectedNotifications() {
-        // TODO: - 삭제할 알림 API call 필요
-        
+    func removeSelectedNotifications() {
         notifications.removeAll { notification in
             multiSelection.contains(notification.id)
         }
         
+        removeNotifications(Array(multiSelection))
         multiSelection.removeAll()
     }
     
-    func deleteAllNotifications() {
+    @MainActor func removeAllNotifications() {
+        removeNotifications(notifications.map { $0.id })
         notifications.removeAll()
+    }
+}
+
+// MARK: - Interface for NotificationUseCase
+extension NotificationViewModel {
+    private func removeNotifications(_ notificationIds: [Int]) {
+        Task {
+            do {
+                try await notificationUseCase.remove(notificationIds)
+            } catch {
+                print(error)
+            }
+        }
+    }
+    
+    private func readNotification(_ notificationIds: Int) {
+        Task {
+            do {
+                try await notificationUseCase.read(notificationIds)
+            } catch {
+                print(error)
+            }
+        }
+    }
+    
+    @MainActor
+    func fetchNotifications() {
+        Task {
+            do {
+                try await notifications = notificationUseCase.fetch()
+            } catch {
+                print(error)
+            }
+        }
     }
 }

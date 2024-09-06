@@ -24,6 +24,9 @@ struct NotificationView<Router: AppRouter>: View {
                     deleteSwipeAction(for: notification)
                 }
                 .listRowSeparator(.hidden)
+                .onTapGesture {
+                    vm.readNotification(notification)
+                }
         }
         .listStyle(.inset)
         .navigationModifier(title: "알림") {
@@ -37,17 +40,23 @@ struct NotificationView<Router: AppRouter>: View {
                 editButton
             }
         }
+        .onAppear {
+            vm.fetchNotifications()
+        }
+        .refreshable {
+            vm.fetchNotifications()
+        }
     }
     
     private var deleteButton: some View {
         Group {
             if !vm.multiSelection.isEmpty {
                 Button("삭제") {
-                    vm.deleteSelectedNotifications()
+                    vm.removeSelectedNotifications()
                 }
             } else {
                 Button("전체삭제") {
-                    vm.deleteAllNotifications()
+                    vm.removeAllNotifications()
                     toggleEditMode()
                 }
             }
@@ -67,7 +76,7 @@ struct NotificationView<Router: AppRouter>: View {
     
     private func deleteSwipeAction(for notification: PushNotification) -> some View {
         Button(role: .destructive) {
-            vm.deleteSwipedNotification(notification)
+            vm.removeSwipedNotification(notification)
         } label: {
             Label("삭제하기", systemImage: "trash")
         }
