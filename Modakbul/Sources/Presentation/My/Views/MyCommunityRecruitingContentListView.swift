@@ -11,8 +11,14 @@ struct MyCommunityRecruitingContentListView<Router: AppRouter>: View {
     @EnvironmentObject private var router: Router
     @ObservedObject private var viewModel: MyCommunityRecruitingContentListViewModel
     
-    init(_ viewModel: MyCommunityRecruitingContentListViewModel) {
+    private let userId: Int64
+    
+    init(
+        _ viewModel: MyCommunityRecruitingContentListViewModel,
+        userId: Int64
+    ) {
         self.viewModel = viewModel
+        self.userId = userId
     }
     
     var body: some View {
@@ -29,14 +35,8 @@ struct MyCommunityRecruitingContentListView<Router: AppRouter>: View {
         .padding()
         .navigationTitle("나의 모집글")
         .navigationBarTitleDisplayMode(.inline)
-    }
-}
-
-struct MyCommunityRecruitingContentListView_Preview: PreviewProvider {
-    static var previews: some View {
-        NavigationStack {
-            MyCommunityRecruitingContentListView<DefaultAppRouter>(MyCommunityRecruitingContentListViewModel())
-                .environmentObject(router)
+        .task {
+            await viewModel.configureView(userId: userId)
         }
     }
 }
