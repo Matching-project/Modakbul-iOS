@@ -10,14 +10,23 @@ import SwiftUI
 struct MyParticipationRequestListView: View {
     @ObservedObject private var viewModel: MyParticipationRequestListViewModel
     
-    init(_ viewModel: MyParticipationRequestListViewModel) {
+    private let userId: Int64
+    
+    init(
+        _ viewModel: MyParticipationRequestListViewModel,
+        userId: Int64
+    ) {
         self.viewModel = viewModel
+        self.userId = userId
     }
     
     var body: some View {
         content(viewModel.communityRecruitingContents.isEmpty)
             .navigationTitle("나의 참여 요청 목록")
             .navigationBarTitleDisplayMode(.inline)
+            .task {
+                await viewModel.configureView(userId: userId)
+            }
     }
     
     @ViewBuilder private func content(_ condition: Bool) -> some View {
@@ -28,7 +37,6 @@ struct MyParticipationRequestListView: View {
             List {
                 ForEach(viewModel.communityRecruitingContents, id: \.id) { content in
                     listCell(content)
-                        
                 }
             }
             .listStyle(.plain)
@@ -59,20 +67,12 @@ struct MyParticipationRequestListView: View {
             Spacer()
             
             Button {
-                // TODO: 요청 취소
+                viewModel.cancelParticipationRequest(userId: userId, with: content.id)
             } label: {
                 Text("요청 취소")
                     .font(.footnote.bold())
             }
             .buttonStyle(.capsuledInset)
-        }
-    }
-}
-
-struct MyParticipationRequestListView_Preview: PreviewProvider {
-    static var previews: some View {
-        NavigationStack {
-            MyParticipationRequestListView(MyParticipationRequestListViewModel())
         }
     }
 }
