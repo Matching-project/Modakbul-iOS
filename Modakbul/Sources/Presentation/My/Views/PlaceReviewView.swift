@@ -30,8 +30,9 @@ struct PlaceReviewView: View {
             Spacer()
             
             FlatButton("등록하기") {
-                // TODO: 카페제보/리뷰 등록하기
+                viewModel.submit(isNewPlace: place == nil)
             }
+            .disabled(viewModel.selectedLocation == nil)
         }
         .padding()
         .navigationTitle(viewModel.place == nil ? "카페 제보" : "카페 리뷰")
@@ -62,7 +63,7 @@ struct PlaceReviewView: View {
                 RoundedTextField("카페를 검색하세요.", text: $viewModel.searchingText)
                 
                 RoundedButton {
-                    //
+                    viewModel.searchLocation()
                 } label: {
                     Text("검색")
                 }
@@ -81,8 +82,26 @@ struct PlaceReviewView: View {
                             }
                             .contentShape(.rect)
                             .onTapGesture {
-                                // TODO: 추천된 장소 선택하면 해당 지명or주소로 검색할 수 있게 수정해야 함
+                                viewModel.searchingText = result.title + result.subtitle
                                 viewModel.searchLocation()
+                            }
+                        }
+                    }
+                }
+            } else {
+                ScrollView(.vertical) {
+                    LazyVStack(alignment: .leading, spacing: 10) {
+                        ForEach(viewModel.searchedLocations, id: \.id) { location in
+                            VStack {
+                                Text(location.name)
+                                    .font(.headline)
+                                
+                                Text(location.address)
+                                    .font(.caption)
+                            }
+                            .contentShape(.rect)
+                            .onTapGesture {
+                                viewModel.selectedLocation = location
                             }
                         }
                     }

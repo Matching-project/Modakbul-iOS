@@ -18,7 +18,7 @@ struct Place: Identifiable {
     let imageURLs: [URL?]
     
     init(
-        id: Int64,
+        id: Int64 = -1,
         location: Location,
         openingHours: [OpeningHour] = [],
         powerSocketState: PowerSocketState = .moderate,

@@ -24,10 +24,10 @@ protocol PlaceShowcaseAndReviewUseCase {
     func readPlacesForShowcaseAndReview(userId: Int64) async throws -> [Place]
     
     /// 카페 리뷰
-    func reviewPlace(userId: Int64, on place: Place) async throws
+    func reviewPlace(on place: Place) async throws
     
     /// 카페 제보
-    func suggestPlace(userId: Int64, on place: Place) async throws
+    func suggestPlace(on place: Place) async throws
 }
 
 final class DefaultPlaceShowcaseAndReviewUseCase {
@@ -57,15 +57,14 @@ extension DefaultPlaceShowcaseAndReviewUseCase: PlaceShowcaseAndReviewUseCase {
     }
     
     func readPlacesForShowcaseAndReview(userId: Int64) async throws -> [Place] {
-        // TODO: 기능 연결 전 Endpoint & Entity 뚫어야함
-        []
+        try await placesRepository.readPlacesForShowcaseAndReview(userId: userId)
     }
     
-    func reviewPlace(userId: Int64, on place: Place) async throws {
-        // TODO: PlacesRepository 인터페이스 추가해야하고 기능 연결 해야함
+    func reviewPlace(on place: Place) async throws {
+        try await placesRepository.reviewPlace(on: place)
     }
     
-    func suggestPlace(userId: Int64, on place: Place) async throws {
-        
+    func suggestPlace(on place: Place) async throws {
+        try await placesRepository.suggestPlace(on: place)
     }
 }
