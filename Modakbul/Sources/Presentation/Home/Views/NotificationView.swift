@@ -13,8 +13,13 @@ struct NotificationView<Router: AppRouter>: View {
     @Environment(\.colorScheme) private var colorScheme
     @Environment(\.editMode) private var editMode
     
-    init(_ notificationViewModel: NotificationViewModel) {
+    private let userId: Int64
+    
+    init(_ notificationViewModel: NotificationViewModel,
+         userId: Int64
+    ) {
         self.vm = notificationViewModel
+        self.userId = userId
     }
     
     var body: some View {
@@ -25,8 +30,8 @@ struct NotificationView<Router: AppRouter>: View {
                 }
                 .listRowSeparator(.hidden)
                 .onTapGesture {
-                    vm.readNotification(notification)
-                    router.route(to: notification.type.route)
+                    vm.readNotification(userId: userId, notification)
+//                    router.route(to: notification.type.route)
                 }
         }
         .listStyle(.inset)
@@ -42,10 +47,10 @@ struct NotificationView<Router: AppRouter>: View {
             }
         }
         .onAppear {
-            vm.fetchNotifications()
+            vm.fetchNotifications(userId: userId)
         }
         .refreshable {
-            vm.fetchNotifications()
+            vm.fetchNotifications(userId: userId)
         }
     }
     
@@ -53,11 +58,11 @@ struct NotificationView<Router: AppRouter>: View {
         Group {
             if !vm.multiSelection.isEmpty {
                 Button("삭제") {
-                    vm.removeSelectedNotifications()
+                    vm.removeSelectedNotifications(userId: userId)
                 }
             } else {
                 Button("전체삭제") {
-                    vm.removeAllNotifications()
+                    vm.removeAllNotifications(userId: userId)
                     toggleEditMode()
                 }
             }
@@ -77,7 +82,7 @@ struct NotificationView<Router: AppRouter>: View {
     
     private func deleteSwipeAction(for notification: PushNotification) -> some View {
         Button(role: .destructive) {
-            vm.removeSwipedNotification(notification)
+            vm.removeSwipedNotification(userId: userId, notification)
         } label: {
             Label("삭제하기", systemImage: "trash")
         }
@@ -144,7 +149,7 @@ extension NotificationView {
 struct NotificationView_Preview: PreviewProvider {
     static var previews: some View {
         NavigationStack {
-            router.view(to: .notificationView)
+            router.view(to: .notificationView(userId: 0))
         }
     }
 }

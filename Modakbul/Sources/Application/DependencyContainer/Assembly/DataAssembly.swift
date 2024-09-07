@@ -36,6 +36,13 @@ struct DataAssembly: Assembly {
             return DefaultChatRepository(chatService: chatService,
                                          networkService: networkService)
         }
+        
+        // NotificationRepository
+        container.register(for: DefaultNotificationRepository.self) { resolver in
+            let tokenStorage = resolver.resolve(TokenStorage.self)
+            let networkService = resolver.resolve(NetworkService.self)
+            return DefaultNotificationRepository(tokenStorage: tokenStorage, networkService: networkService)
+        }
     }
     
     func loaded(resolver: DependencyResolver) {

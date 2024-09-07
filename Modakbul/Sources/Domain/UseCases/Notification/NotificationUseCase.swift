@@ -35,8 +35,8 @@ final class DefaultNotificationUseCase {
     
     private let r: NotificationRepository
     
-    init(r: NotificationRepository) {
-        self.r = r
+    init(notificationRepository: NotificationRepository) {
+        self.r = notificationRepository
     }
 }
 

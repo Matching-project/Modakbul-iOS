@@ -16,50 +16,50 @@ final class NotificationViewModel: ObservableObject {
         self.notificationUseCase = notificationUseCase
     }
     
-    func readNotification(_ notification: PushNotification) {
+    func readNotification(userId: Int64,_ notification: PushNotification) {
         if notifications.firstIndex(where: { $0.id == notification.id }) != nil {
-            readNotification(notification.id)
+            readNotification(userId: userId, notification.id)
         }
     }
     
-    func removeSwipedNotification(_ notification: PushNotification) {
+    func removeSwipedNotification(userId: Int64,_ notification: PushNotification) {
         if let index = notifications.firstIndex(where: { $0.id == notification.id }) {
-            removeNotifications([notification.id])
+            removeNotifications(userId: userId, [notification.id])
             notifications.remove(at: index)
         }
     }
     
-    func removeSelectedNotifications() {
+    func removeSelectedNotifications(userId: Int64) {
         notifications.removeAll { notification in
             multiSelection.contains(notification.id)
         }
         
-        removeNotifications(Array(multiSelection))
+        removeNotifications(userId: userId, Array(multiSelection))
         multiSelection.removeAll()
     }
     
-    @MainActor func removeAllNotifications() {
-        removeNotifications(notifications.map { $0.id })
+    @MainActor func removeAllNotifications(userId: Int64) {
+        removeNotifications(userId: userId, notifications.map { $0.id })
         notifications.removeAll()
     }
 }
 
 // MARK: - Interface for NotificationUseCase
 extension NotificationViewModel {
-    private func removeNotifications(_ notificationIds: [Int64]) {
+    private func removeNotifications(userId: Int64, _ notificationIds: [Int64]) {
         Task {
             do {
-                try await notificationUseCase.remove(userId: <#인트64#>, notificationIds)
+                try await notificationUseCase.remove(userId: userId, notificationIds)
             } catch {
                 print(error)
             }
         }
     }
     
-    private func readNotification(_ notificationId: Int64) {
+    private func readNotification(userId: Int64,_ notificationId: Int64) {
         Task {
             do {
-                try await notificationUseCase.read(userId: <#T##Int64#>, notificationId)
+                try await notificationUseCase.read(userId: userId, notificationId)
             } catch {
                 print(error)
             }
@@ -67,10 +67,10 @@ extension NotificationViewModel {
     }
     
     @MainActor
-    func fetchNotifications() {
+    func fetchNotifications(userId: Int64) {
         Task {
             do {
-                try await notifications = notificationUseCase.fetch(userId: <#T##Int64#>)
+                try await notifications = notificationUseCase.fetch(userId: userId)
             } catch {
                 print(error)
             }

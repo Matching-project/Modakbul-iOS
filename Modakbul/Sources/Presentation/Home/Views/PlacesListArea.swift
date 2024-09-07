@@ -11,8 +11,13 @@ struct PlacesListArea<Router: AppRouter>: View {
     @EnvironmentObject private var router: Router
     @ObservedObject private var viewModel: HomeViewModel
     
-    init(_ viewModel: HomeViewModel) {
+    private let userId: Int64
+    
+    init(_ viewModel: HomeViewModel,
+         userId: Int64
+    ) {
         self.viewModel = viewModel
+        self.userId = userId
     }
     
     var body: some View {
@@ -22,7 +27,7 @@ struct PlacesListArea<Router: AppRouter>: View {
             hoveringButtonsArea
         }
         .onAppear {
-            viewModel.fetchUnreadNotificationCount()
+            viewModel.fetchUnreadNotificationCount(userId: userId)
         }
     }
     
@@ -34,7 +39,7 @@ struct PlacesListArea<Router: AppRouter>: View {
                 
                 // TODO: PushNotification Button (WIP)
                 Button {
-                    router.route(to: .notificationView)
+                    router.route(to: .notificationView(userId: userId))
                 } label: {
                     if viewModel.unreadCount > 0 {
                         NotificationIcon(badge: true)
@@ -76,6 +81,6 @@ struct PlacesListArea<Router: AppRouter>: View {
 
 struct PlaceListArea_Preview: PreviewProvider {
     static var previews: some View {
-        router.view(to: .placesListArea)
+        router.view(to: .placesListArea(userId: 0))
     }
 }

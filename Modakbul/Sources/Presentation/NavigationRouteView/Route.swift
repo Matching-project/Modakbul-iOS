@@ -40,13 +40,13 @@ enum Route: Routable {
     case placeReviewView(place: Place?)
     case notificationSettingsView
     case homeView           // MARK: - Home
-    case mapArea
-    case placesListArea
+    case mapArea(userId: Int64)
+    case placesListArea(userId: Int64)
     case placeInformationView(place: Place, displayMode: PlaceInformationView<Route.Router>.DisplayMode)
     case placeInformationDetailView(communityRecruitingContentId: Int64)
     case placeInformationDetailMakingView
     case participationRequestListView(communityRecruitingContent: CommunityRecruitingContent, userId: Int64)
-    case notificationView
+    case notificationView(userId: Int64)
     case chatView           // MARK: - Chat
     case chatRoomListView
     case reportView(result: Binding<Bool>)
@@ -103,10 +103,10 @@ enum Route: Routable {
             NotificationSettingsView<Router>(notificationSettingsViewModel: router.resolver.resolve(NotificationSettingsViewModel.self))
         case .homeView:         // MARK: - Home
             HomeView<Router>(router.resolver.resolve(HomeViewModel.self))
-        case .mapArea:
-            MapArea<Router>(router.resolver.resolve(HomeViewModel.self))
-        case .placesListArea:
-            PlacesListArea<Router>(router.resolver.resolve(HomeViewModel.self))
+        case .mapArea(let userId):
+            MapArea<Router>(router.resolver.resolve(HomeViewModel.self), userId: userId)
+        case .placesListArea(let userId):
+            PlacesListArea<Router>(router.resolver.resolve(HomeViewModel.self), userId: userId)
         case .placeInformationView(let place, let displayMode):
             PlaceInformationView<Router>(router.resolver.resolve(PlaceInformationViewModel.self), place: place, displayMode: displayMode)
         case .placeInformationDetailView(let communityRecruitingContentId):
@@ -115,8 +115,8 @@ enum Route: Routable {
             PlaceInformationDetailMakingView<Router>(router.resolver.resolve(PlaceInformationDetailMakingViewModel.self))
         case .participationRequestListView(let communityRecruitingContent, let userId):
             ParticipationRequestListView<Router>(participationRequestListViewModel: router.resolver.resolve(ParticipationRequestListViewModel.self), communityRecruitingContent: communityRecruitingContent, userId: userId)
-        case .notificationView:
-            NotificationView<Router>(router.resolver.resolve(NotificationViewModel.self))
+        case .notificationView(let userId):
+            NotificationView<Router>(router.resolver.resolve(NotificationViewModel.self), userId: userId)
         case .chatView:         // MARK: - Chat
             ChatView<Router>(router.resolver.resolve(ChatViewModel.self))
         case .chatRoomListView:

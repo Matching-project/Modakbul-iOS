@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol NotificationRepository {
+protocol NotificationRepository: TokenRefreshable {
     func send(_ notificiation: PushNotification, from userId: Int64, to opponentUserId: Int64) async throws
     func fetch(userId: Int64) async throws -> [PushNotification]
     func remove(userId: Int64, _ notificationIds: [Int64]) async throws
@@ -15,8 +15,8 @@ protocol NotificationRepository {
 }
 
 final class DefaultNotificationRepository {
-    private let tokenStorage: TokenStorage
-    private let networkService: NetworkService
+    let tokenStorage: TokenStorage
+    let networkService: NetworkService
     
     init(
         tokenStorage: TokenStorage,
@@ -65,7 +65,7 @@ extension DefaultNotificationRepository: NotificationRepository {
         }
     }
     
-    func remove(userId: Int64, _ notificationIds: [Int64]) throws {
+    func remove(userId: Int64, _ notificationIds: [Int64]) async throws {
         let token = try tokenStorage.fetch(by: userId)
         
         do {

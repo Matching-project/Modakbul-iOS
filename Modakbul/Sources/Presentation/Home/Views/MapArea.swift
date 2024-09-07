@@ -12,8 +12,13 @@ struct MapArea<Router: AppRouter>: View {
     @EnvironmentObject private var router: Router
     @ObservedObject private var viewModel: HomeViewModel
     
-    init(_ viewModel: HomeViewModel) {
+    private let userId: Int64
+    
+    init(_ viewModel: HomeViewModel,
+         userId: Int64
+    ) {
         self.viewModel = viewModel
+        self.userId = userId
     }
     
     var body: some View {
@@ -24,7 +29,7 @@ struct MapArea<Router: AppRouter>: View {
         }
         .onAppear {
             viewModel.updateLocationOnceIfNeeded()
-            viewModel.fetchUnreadNotificationCount()
+            viewModel.fetchUnreadNotificationCount(userId: userId)
         }
     }
     
@@ -77,7 +82,7 @@ struct MapArea<Router: AppRouter>: View {
                 
                 // TODO: PushNotification Button (WIP)
                 Button {
-                    router.route(to: .notificationView)
+                    router.route(to: .notificationView(userId: userId))
                 } label: {
                     if viewModel.unreadCount > 0 {
                         NotificationIcon(badge: true)

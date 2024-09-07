@@ -26,8 +26,10 @@ struct DomainAssembly: Assembly {
             DefaultLocalMapUseCase(placesRepository: resolver.resolve(PlacesRepository.self))
         }
         
-        // TODO: - Repo 연결 예정
-        container.register(for: NotificationUseCase.self, )
+        // MARK: - Notification
+        container.register(for: NotificationUseCase.self) { resolver in
+            DefaultNotificationUseCase(notificationRepository: resolver.resolve(NotificationRepository.self))
+        }
         
         
 //        container.register(for: UserBusinessUseCase.self) { resolver in

@@ -97,10 +97,11 @@ extension HomeViewModel {
 // MARK: - Interface for NotificationUseCase
 extension HomeViewModel {
     @MainActor
-    func fetchUnreadNotificationCount() {
+    func fetchUnreadNotificationCount(userId: Int64) {
         Task {
             do {
-                unreadCount = try await notificationUseCase.fetchUnreadCount()
+                let pushNotifications = try await notificationUseCase.fetch(userId: userId)
+                unreadCount = pushNotifications.filter { $0.isRead == true }.count
             } catch {
                 print(error)
             }

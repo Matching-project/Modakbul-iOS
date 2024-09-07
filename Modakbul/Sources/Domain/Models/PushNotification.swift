@@ -8,7 +8,7 @@
 import Foundation
 
 struct PushNotification: Identifiable {
-    enum ShowingType: CustomStringConvertible {
+    enum ShowingType: String, CustomStringConvertible {
         case request
         case accept
         case newChat
