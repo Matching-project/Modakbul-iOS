@@ -36,7 +36,8 @@ enum Route: Routable {
     case registrationView
     case myView             // MARK: - My
     case profileEditView
-    case placeShowcaseView
+    case placeShowcaseView(userId: Int64)
+    case placeReviewView(place: Place?)
     case notificationSettingsView
     case homeView           // MARK: - Home
     case mapArea
@@ -60,6 +61,7 @@ enum Route: Routable {
         case .registrationView: return .push
         case .myView: return .sheet(detents: [.medium, .large])     // MARK: - My
         case .placeShowcaseView: return .push
+        case .placeReviewView: return .push
         case .profileEditView: return .push
         case .notificationSettingsView: return .push
         case .homeView: return .push                                // MARK: - Home
@@ -91,8 +93,10 @@ enum Route: Routable {
             RegistrationView<Router>(registrationViewModel: router.resolver.resolve(RegistrationViewModel.self))
         case .myView:           // MARK: - My
             MyView<Router>(myViewModel: router.resolver.resolve(MyViewModel.self))
-        case .placeShowcaseView:
-            PlaceShowcaseView<Router>(router.resolver.resolve(PlaceShowcaseViewModel.self))
+        case .placeShowcaseView(let userId):
+            PlaceShowcaseView<Router>(router.resolver.resolve(PlaceShowcaseViewModel.self), userId: userId)
+        case .placeReviewView(let place):
+            PlaceReviewView(router.resolver.resolve(PlaceReviewViewModel.self), place: place)
         case .profileEditView:
             ProfileEditView<Router>(profileEditViewModel: router.resolver.resolve(ProfileEditViewModel.self))
         case .notificationSettingsView:

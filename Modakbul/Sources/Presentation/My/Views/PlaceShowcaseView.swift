@@ -11,8 +11,14 @@ struct PlaceShowcaseView<Router: AppRouter>: View {
     @EnvironmentObject private var router: Router
     @ObservedObject private var viewModel: PlaceShowcaseViewModel
     
-    init(_ viewModel: PlaceShowcaseViewModel) {
+    private let userId: Int64
+    
+    init(
+        _ viewModel: PlaceShowcaseViewModel,
+        userId: Int64
+    ) {
         self.viewModel = viewModel
+        self.userId = userId
     }
     
     var body: some View {
@@ -24,12 +30,15 @@ struct PlaceShowcaseView<Router: AppRouter>: View {
             Spacer()
             
             FlatButton("다른 카페 제보하기") {
-                // TODO: 카페 제보화면으로 이동
+                router.route(to: .placeReviewView(place: nil))
             }
         }
         .padding()
         .navigationTitle("카페 제보/리뷰")
         .navigationBarTitleDisplayMode(.inline)
+        .task {
+            await viewModel.fetchPlaces(userId: userId)
+        }
     }
     
     @ViewBuilder private func content(_ condition: Bool) -> some View {
@@ -70,20 +79,12 @@ struct PlaceShowcaseView<Router: AppRouter>: View {
             Spacer()
             
             Button {
-                // TODO: 리뷰 화면으로 이동
+                router.route(to: .placeReviewView(place: place))
             } label: {
                 Text("리뷰")
                     .font(.footnote.bold())
             }
             .buttonStyle(.capsuledInset)
-        }
-    }
-}
-
-struct PlaceShowcaseView_Preview: PreviewProvider {
-    static var previews: some View {
-        NavigationStack {
-            router.view(to: .placeShowcaseView)
         }
     }
 }

@@ -11,8 +11,7 @@ import Combine
 final class PlaceShowcaseViewModel: ObservableObject {
     @Published var places: [Place] = []
     
-    let fetchPlaces = PassthroughSubject<[Place], Never>()
-    
+    private let placesSubject = PassthroughSubject<[Place], Never>()
     private var cancellables = Set<AnyCancellable>()
     
     private let placeShowcaseAndReviewUseCase: PlaceShowcaseAndReviewUseCase
@@ -23,7 +22,7 @@ final class PlaceShowcaseViewModel: ObservableObject {
     }
     
     private func subscribe() {
-        fetchPlaces
+        placesSubject
             .receive(on: DispatchQueue.main)
             .sink { [weak self] places in
                 self?.places = places
@@ -37,9 +36,9 @@ extension PlaceShowcaseViewModel {
     func fetchPlaces(userId: Int64) async {
         do {
             let places = try await placeShowcaseAndReviewUseCase.readPlacesForShowcaseAndReview(userId: userId)
-            fetchPlaces.send(places)
+            placesSubject.send(places)
         } catch {
-            places = []
+            placesSubject.send([])
         }
     }
 }
