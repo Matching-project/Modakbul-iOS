@@ -43,7 +43,7 @@ extension DefaultUserManagementRepository: UserManagementRepository {
         } catch APIError.accessTokenExpired {
             let tokens = try await reissueTokens(key: userId, token.refreshToken)
             
-            let endpoint = Endpoint.readMyProfile(token: token.accessToken)
+            let endpoint = Endpoint.readMyProfile(token: tokens.accessToken)
             let response = try await networkService.request(endpoint: endpoint, for: UserProfileResponseEntity.self)
             return response.body.toDTO()
         } catch {
