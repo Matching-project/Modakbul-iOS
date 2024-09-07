@@ -8,7 +8,7 @@
 import Foundation
 
 struct PushNotification: Identifiable {
-    enum ShowingType: String {
+    enum ShowingType: CustomStringConvertible {
         case request
         case accept
         case newChat
@@ -32,6 +32,16 @@ struct PushNotification: Identifiable {
             case .newChat: "님이 보낸 새로운 채팅을 확인하세요."
             case .exit: " 카페모임을 나갔어요."
             default: "알 수 없는 에러입니다"
+            }
+        }
+        
+        var description: String {
+            switch self {
+            case .request: "request"
+            case .accept: "accept"
+            case .newChat: "newChat"
+            case .exit: "exit"
+            case .unknown: "unknown"
             }
         }
         

@@ -9,7 +9,7 @@ import SwiftUI
 
 final class NotificationViewModel: ObservableObject {
     @Published var notifications: [PushNotification] = []
-    @Published var multiSelection = Set<Int>()
+    @Published var multiSelection = Set<Int64>()
     private let notificationUseCase: NotificationUseCase
     
     init(notificationUseCase: NotificationUseCase) {
@@ -46,20 +46,20 @@ final class NotificationViewModel: ObservableObject {
 
 // MARK: - Interface for NotificationUseCase
 extension NotificationViewModel {
-    private func removeNotifications(_ notificationIds: [Int]) {
+    private func removeNotifications(_ notificationIds: [Int64]) {
         Task {
             do {
-                try await notificationUseCase.remove(notificationIds)
+                try await notificationUseCase.remove(userId: <#인트64#>, notificationIds)
             } catch {
                 print(error)
             }
         }
     }
     
-    private func readNotification(_ notificationIds: Int) {
+    private func readNotification(_ notificationId: Int64) {
         Task {
             do {
-                try await notificationUseCase.read(notificationIds)
+                try await notificationUseCase.read(userId: <#T##Int64#>, notificationId)
             } catch {
                 print(error)
             }
@@ -70,7 +70,7 @@ extension NotificationViewModel {
     func fetchNotifications() {
         Task {
             do {
-                try await notifications = notificationUseCase.fetch()
+                try await notifications = notificationUseCase.fetch(userId: <#T##Int64#>)
             } catch {
                 print(error)
             }

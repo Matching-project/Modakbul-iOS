@@ -44,6 +44,12 @@ enum Endpoint {
     case createChatRoom(token: String, communityRecruitingContentId: String, opponentUserId: String) // 채팅방 생성
     case readChatrooms(token: String)                           // 채팅방 목록 조회
     case exitChatRoom(token: String, chatRoomId: String)        // 채팅방 나가기
+    
+    // MARK: - Notification Related
+    case sendNotification(token: String, notification: NotificationSendingRequestEntity)// 알림 전송
+    case fetchNotifications(token: String)                                              // 알림 목록 조회
+    case removeNotifications(token: String, notificationsIds: [Int64])                  // 알림 삭제 (단일, 선택, 전체)
+    case readNotification(token: String, notificationId: Int64)                         // 알림 읽기
 }
 
 extension Endpoint {
@@ -111,15 +117,23 @@ extension Endpoint: TargetType {
             return "/chatrooms"
         case .exitChatRoom(_, let chatRoomId):
             return "/chatrooms/\(chatRoomId)"
+        case .sendNotification(_, let notification):
+            return "/notifications/\(notification.opponentUserId)"
+        case .fetchNotifications:
+            return "/notifications"
+        case .removeNotifications:
+            return "/notifications"
+        case .readNotification(_, let notificationId):
+            return "/notifications/\(notificationId)"
         }
     }
     
     var method: Moya.Method {
         switch self {
-        case .checkNicknameForOverlap, .readMyProfile, .readMyBoards, .readMyMatches, .readMyRequestMatches, .readPlaces, .readPlacesByMatches, .readPlacesByDistance, .readBoards, .readBoardForUpdate, .readBoardDetail, .readMatches, .readChatrooms: return .get
-        case .login, .register, .reissueToken, .createBoard, .requestMatch, .createChatRoom: return .post
-        case .logout, .deleteBoard: return .delete
-        case .updateProfile, .updateBoard, .acceptMatchRequest, .rejectMatchRequest, .exitChatRoom: return .patch
+        case .checkNicknameForOverlap, .readMyProfile, .readMyBoards, .readMyMatches, .readMyRequestMatches, .readPlaces, .readPlacesByMatches, .readPlacesByDistance, .readBoards, .readBoardForUpdate, .readBoardDetail, .readMatches, .readChatrooms, .fetchNotifications: return .get
+        case .login, .register, .reissueToken, .createBoard, .requestMatch, .createChatRoom, .sendNotification: return .post
+        case .logout, .deleteBoard, .removeNotifications: return .delete
+        case .updateProfile, .updateBoard, .acceptMatchRequest, .rejectMatchRequest, .exitChatRoom, .readNotification: return .patch
         }
     }
     
@@ -214,6 +228,10 @@ extension Endpoint: TargetType {
             return .requestPlain
         case .exitChatRoom:
             return .requestPlain
+        case .sendNotification(_, let notification):
+            return .requestJSONEncodable(notification)
+        case .removeNotifications(_, let notificationsIds):
+            return .requestParameters(parameters: ["notificationIds": notificationsIds], encoding: JSONEncoding.default)
         }
     }
     
@@ -263,6 +281,14 @@ extension Endpoint: TargetType {
             ["Authorization": "\(token)"]
         case .exitChatRoom(let token, _):
             ["Authorization": "\(token)"]
+        case .sendNotification(let token, _):
+            ["Authorization": "\(token)"]
+        case .fetchNotifications(let token):
+            ["Authorization": "\(token)"]
+        case .removeNotifications(let token, _):
+            ["Authorization": "\(token)"]
+        case .readNotification(let token, _):
+            ["Authorization": "\(token)"]
         default: nil
         }
     }
@@ -273,7 +299,7 @@ extension Endpoint: TargetType {
     
     var authorizationType: AuthorizationType? {
           switch self {
-          case .login, .logout, .reissueToken, .updateProfile, .readMyProfile, .readMyBoards, .readMyMatches, .readMyRequestMatches, .createBoard, .readBoardForUpdate, .updateBoard, .deleteBoard, .readMatches, .requestMatch, .acceptMatchRequest, .rejectMatchRequest, .createChatRoom, .readChatrooms, .exitChatRoom:
+          case .login, .logout, .reissueToken, .updateProfile, .readMyProfile, .readMyBoards, .readMyMatches, .readMyRequestMatches, .createBoard, .readBoardForUpdate, .updateBoard, .deleteBoard, .readMatches, .requestMatch, .acceptMatchRequest, .rejectMatchRequest, .createChatRoom, .readChatrooms, .exitChatRoom, .sendNotification, .fetchNotifications, .removeNotifications, .readNotification:
                   .bearer
           default: .none
           }
