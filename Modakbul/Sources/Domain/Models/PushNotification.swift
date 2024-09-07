@@ -8,11 +8,12 @@
 import Foundation
 
 struct PushNotification: Identifiable {
-    enum `Type` {
+    enum ShowingType: String {
         case request
         case accept
         case newChat
         case exit
+        case unknown
         
         var titlePostfix: String {
             switch self {
@@ -20,6 +21,7 @@ struct PushNotification: Identifiable {
             case .accept: "님의 참여 요청 수락"
             case .newChat: "님의 새로운 채팅"
             case .exit: "님 모임 참여 종료"
+            default: "알 수 없는 에러입니다"
             }
         }
         
@@ -29,35 +31,36 @@ struct PushNotification: Identifiable {
             case .accept: " 카페모임 참여 요청이 수락되었어요."
             case .newChat: "님이 보낸 새로운 채팅을 확인하세요."
             case .exit: " 카페모임을 나갔어요."
+            default: "알 수 없는 에러입니다"
             }
         }
         
-        var route: Route {
-            switch self {
-            // TODO: - route 추가 예정
-            case .request:
-            case .accept:
-            case .newChat:
-            case .exit:
-            }
-        }
+//        var route: Route {
+//            switch self {
+//            // TODO: - route 추가 예정
+//            case .request:
+//            case .accept:
+//            case .newChat:
+//            case .exit:
+//            }
+//        }
     }
     
-    let id: Int
+    let id: Int64
     let imageURL: URL?
     let title: String
     let titlePostfix: String
     let subtitle: String
     let timestamp: String
-    let type: `Type`
+    let type: ShowingType
     var isRead: Bool
     
-    init(id: Int,
-         imageURL: URL?,
+    init(id: Int64,
+         imageURL: URL? = nil,
          title: String,
          subtitle: String,
          timestamp: String,
-         type: `Type`,
+         type: ShowingType,
          isRead: Bool = false
     ) {
         self.id = id
