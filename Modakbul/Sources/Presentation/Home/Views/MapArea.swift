@@ -11,14 +11,10 @@ import MapKit
 struct MapArea<Router: AppRouter>: View {
     @EnvironmentObject private var router: Router
     @ObservedObject private var viewModel: HomeViewModel
+    @AppStorage(AppStorageKey.userId) private var userId: Int?
     
-    private let userId: Int64
-    
-    init(_ viewModel: HomeViewModel,
-         userId: Int64
-    ) {
+    init(_ viewModel: HomeViewModel) {
         self.viewModel = viewModel
-        self.userId = userId
     }
     
     var body: some View {
@@ -27,9 +23,9 @@ struct MapArea<Router: AppRouter>: View {
             
             hoveringButtonsArea
         }
-        .onAppear {
+        .task {
             viewModel.updateLocationOnceIfNeeded()
-            viewModel.fetchUnreadNotificationCount(userId: userId)
+            await viewModel.fetchUnreadNotificationCount(userId: userId)
         }
     }
     

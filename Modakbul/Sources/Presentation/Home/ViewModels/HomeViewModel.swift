@@ -24,6 +24,7 @@ final class HomeViewModel: ObservableObject {
     private let notificationUseCase: NotificationUseCase
     
     private let placesSubject = PassthroughSubject<[Place], Never>()
+    private let notificationsSubject = PassthroughSubject<[PushNotification], Never>()
     private var cancellables = Set<AnyCancellable>()
     
     init(localMapUseCase: LocalMapUseCase, notificationUseCase: NotificationUseCase) {
@@ -38,6 +39,13 @@ final class HomeViewModel: ObservableObject {
             .sink { [weak self] places in
                 self?.places = places
                 self?.cameraPosition = .automatic
+            }
+            .store(in: &cancellables)
+        
+        notificationsSubject
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] notifications in
+                self?.unreadCount = notifications.filter { $0.isRead == false }.count
             }
             .store(in: &cancellables)
         
@@ -96,15 +104,14 @@ extension HomeViewModel {
 
 // MARK: - Interface for NotificationUseCase
 extension HomeViewModel {
-    @MainActor
-    func fetchUnreadNotificationCount(userId: Int64) {
-        Task {
-            do {
-                let pushNotifications = try await notificationUseCase.fetch(userId: userId)
-                unreadCount = pushNotifications.filter { $0.isRead == true }.count
-            } catch {
-                print(error)
-            }
+    func fetchUnreadNotificationCount(userId: Int?) async {
+        guard let userId = userId else { return }
+        
+        do {
+            let pushNotifications = try await notificationUseCase.fetch(userId: Int64(userId))
+            notificationsSubject.send(pushNotifications)
+        } catch {
+            print(error)
         }
     }
 }
