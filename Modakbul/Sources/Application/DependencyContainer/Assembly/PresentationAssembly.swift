@@ -40,9 +40,9 @@ struct PresentationAssembly: Assembly {
             HomeViewModel(localMapUseCase: resolver.resolve(LocalMapUseCase.self))
         }
         
-//        container.register(for: PlaceInformationViewModel.self) { resolver in
-//            PlaceInformationViewModel()
-//        }
+        container.register(for: PlaceInformationViewModel.self) { resolver in
+            PlaceInformationViewModel(communityUseCase: resolver.resolve(CommunityUseCase.self))
+        }
         
         //        container.register(for: PlaceInformationDetailViewModel.self) { resolver in
         //            PlaceInformationDetailViewModel()
@@ -53,7 +53,7 @@ struct PresentationAssembly: Assembly {
         }
         
         container.register(for: ParticipationRequestListViewModel.self) { resolver in
-            ParticipationRequestListViewModel()
+            ParticipationRequestListViewModel(matchingUseCase: resolver.resolve(MatchingUseCase.self))
         }
         
         container.register(for: NotificationViewModel.self, NotificationViewModel())

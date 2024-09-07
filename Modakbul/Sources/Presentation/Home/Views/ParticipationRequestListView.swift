@@ -12,13 +12,16 @@ struct ParticipationRequestListView<Router: AppRouter>: View {
     @ObservedObject private var viewModel: ParticipationRequestListViewModel
     
     private let communityRecruitingContent: CommunityRecruitingContent
+    private let userId: Int64
     
     init(
         participationRequestListViewModel: ParticipationRequestListViewModel,
-        communityRecruitingContent: CommunityRecruitingContent
+        communityRecruitingContent: CommunityRecruitingContent,
+        userId: Int64
     ) {
         self.viewModel = participationRequestListViewModel
         self.communityRecruitingContent = communityRecruitingContent
+        self.userId = userId
     }
     
     var body: some View {
@@ -26,7 +29,7 @@ struct ParticipationRequestListView<Router: AppRouter>: View {
             .navigationTitle("참여 요청 목록")
             .navigationBarTitleDisplayMode(.inline)
             .task {
-                await viewModel.fetchParticipationRequests(userId: <#T##Int64#>, by: communityRecruitingContent.id)
+                await viewModel.fetchParticipationRequests(userId: userId, by: communityRecruitingContent.id)
             }
     }
     
@@ -41,13 +44,13 @@ struct ParticipationRequestListView<Router: AppRouter>: View {
                 )
                     .swipeActions(edge: .trailing) {
                         Button {
-                            viewModel.acceptParticipationRequest(<#T##userId: Int64##Int64#>, matchingId: participatedRequest.id)
+                            viewModel.acceptParticipationRequest(userId, matchingId: participatedRequest.id)
                         } label: {
                             Text("수락")
                         }
                         
                         Button(role: .destructive) {
-                            viewModel.rejectParticipationRequest(<#T##userId: Int64##Int64#>, matchingId: participatedRequest.id)
+                            viewModel.rejectParticipationRequest(userId, matchingId: participatedRequest.id)
                         } label: {
                             Text("거절")
                         }
@@ -104,11 +107,5 @@ extension ParticipationRequestListView {
             let candidates = participatedUser.categoriesOfInterest
             return candidates.contains(majorCategory) ? majorCategory : candidates.randomElement() ?? .other
         }
-    }
-}
-
-struct ParticipationRequestListView_Preview: PreviewProvider {
-    static var previews: some View {
-        router.view(to: .participationRequestListView(communityRecruitingContent: previewHelper.communityRecruitingContents.first!))
     }
 }

@@ -132,7 +132,7 @@ extension MyView {
 //                    button("나의 모집글", destination: )
 //                    button("참여 모집 내역", destination: )
 //                    button("나의 참여 요청", destination: )
-                    button("카페 제보/리뷰", destination: .placeShowcaseView)
+//                    button("카페 제보/리뷰", destination: .placeShowcaseView)
                 }
                 .listRowSeparator(.hidden, edges: .top)
                 

@@ -61,8 +61,16 @@ final class RegistrationViewModel: ObservableObject {
     func checkNicknameForOverlap() {
         // TODO: NetworkService를 통해 닉네임 쿼리 필요
         Task {
-            isOverlappedNickname = try await userRegistrationUseCase.validateWithServer(nickname)
-          }
+            let status = try await userRegistrationUseCase.validateWithServer(nickname)
+            switch status {
+            case .normal:
+                break
+            case .overlapped:
+                break
+            case .abused:
+                break
+            }
+        }
     }
     
     func submit() {
@@ -77,7 +85,7 @@ final class RegistrationViewModel: ObservableObject {
                         birth: birth.toDate())
         
         Task {
-            try await userRegistrationUseCase.register(user, encoded: image)
+//            try await userRegistrationUseCase.register(user, encoded: image)
             // TODO: - 회원가입 완료되면 회원정보 조회 API를 통해 user.imageURL 채워넣기.
             // TODO: - 그래야 마이페이지로 이동할 때 API 요청 필요 없음
         }

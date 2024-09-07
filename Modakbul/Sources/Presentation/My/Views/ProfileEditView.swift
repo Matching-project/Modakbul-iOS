@@ -144,11 +144,14 @@ final class ProfileEditViewModel: ObservableObject {
                 let status = try await userRegistrationUseCase.validateWithServer(nickname)
                 switch status {
                 case .normal:
-                    <#code#>
+                    // TODO: 정상
+                    break
                 case .overlapped:
-                    <#code#>
+                    // TODO: 중복된 닉네임
+                    break
                 case .abused:
-                    <#code#>
+                    // TODO: 부적절한 닉네임
+                    break
                 }
             } catch {
                 

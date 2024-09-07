@@ -42,7 +42,8 @@ struct LoginView<Router: AppRouter>: View {
         SignInKakaoButton { result in
             switch result {
             case .success(let token):
-                loginViewModel.loginWithKakaoTalk(token)
+                // TODO: FCM 전달
+                loginViewModel.loginWithKakaoTalk(token, fcm: "")
                 router.dismiss()
             case .failure(let error):
                 print(error)
@@ -58,7 +59,8 @@ struct LoginView<Router: AppRouter>: View {
         } onCompletion: { result in
             switch result {
             case .success(let auth):
-                loginViewModel.loginWithApple(auth.credential)
+                // TODO: FCM 전달
+                loginViewModel.loginWithApple(auth.credential, fcm: "")
             case .failure(let error):
                 print(error)
             }
@@ -66,16 +68,5 @@ struct LoginView<Router: AppRouter>: View {
         .signInWithAppleButtonStyle(scheme == .dark ? .white : .black)
         .clipShape(RoundedRectangle(cornerRadius: 14))
         .frame(height: 44)
-    }
-}
-
-struct LoginView_Preview: PreviewProvider {
-    static var previews: some View {
-        Group {
-            router.view(to: .loginView)
-            
-            router.view(to: .loginView)
-                .preferredColorScheme(.dark)
-        }
     }
 }
