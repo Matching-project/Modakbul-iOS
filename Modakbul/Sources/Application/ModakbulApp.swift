@@ -6,7 +6,7 @@ struct ModakbulApp: App {
                                                            DataAssembly(),
                                                            DomainAssembly(),
                                                            PresentationAssembly())
-    @AppStorage("isFirstLaunch") private var isFirstLaunch: Bool = true
+    @AppStorage(AppStorageKey.isFirstLaunch) private var isFirstLaunch: Bool = true
     @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
     
     var body: some Scene {
