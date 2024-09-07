@@ -37,7 +37,8 @@ struct PresentationAssembly: Assembly {
         
         // MARK: - Home
         container.register(for: HomeViewModel.self) { resolver in
-            HomeViewModel(localMapUseCase: resolver.resolve(LocalMapUseCase.self))
+            HomeViewModel(localMapUseCase: resolver.resolve(LocalMapUseCase.self),
+                          notificationUseCase: resolver.resolve(NotificationUseCase.self))
         }
         
         container.register(for: PlaceInformationViewModel.self) { resolver in
@@ -56,7 +57,9 @@ struct PresentationAssembly: Assembly {
             ParticipationRequestListViewModel(matchingUseCase: resolver.resolve(MatchingUseCase.self))
         }
         
-        container.register(for: NotificationViewModel.self, NotificationViewModel())
+        container.register(for: NotificationViewModel.self) { resolver in
+            NotificationViewModel(notificationUseCase: resolver.resolve(NotificationUseCase.self))
+        }
         
         // MARK: - Chat
         container.register(for: ReportViewModel.self, ReportViewModel())

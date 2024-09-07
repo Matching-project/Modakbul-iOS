@@ -24,6 +24,7 @@ struct MapArea<Router: AppRouter>: View {
         }
         .onAppear {
             viewModel.updateLocationOnceIfNeeded()
+            viewModel.fetchUnreadNotificationCount()
         }
     }
     
@@ -78,10 +79,13 @@ struct MapArea<Router: AppRouter>: View {
                 Button {
                     router.route(to: .notificationView)
                 } label: {
-                    Image(systemName: "bell")
-                        .font(.headline)
-                        .padding(10)
-                        .foregroundStyle(.accent)
+                    if viewModel.unreadCount > 0 {
+                        NotificationIcon(badge: true)
+                            .padding(5)
+                    } else {
+                        NotificationIcon(badge: false)
+                            .padding(10)
+                    }
                 }
             }
             

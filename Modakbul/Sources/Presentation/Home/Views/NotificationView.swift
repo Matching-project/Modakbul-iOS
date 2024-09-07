@@ -7,10 +7,10 @@
 
 import SwiftUI
 
-// TODO: - 명세에 없으나, 토스, 당근 같은 서비스는 당겨서 새로고침(Refreshable) 및 해당 화면으로 이동 지원함.
 struct NotificationView<Router: AppRouter>: View {
-    @ObservedObject private var vm: NotificationViewModel
     @EnvironmentObject private var router: Router
+    @ObservedObject private var vm: NotificationViewModel
+    @Environment(\.colorScheme) private var colorScheme
     @Environment(\.editMode) private var editMode
     
     init(_ notificationViewModel: NotificationViewModel) {
@@ -24,6 +24,10 @@ struct NotificationView<Router: AppRouter>: View {
                     deleteSwipeAction(for: notification)
                 }
                 .listRowSeparator(.hidden)
+                .onTapGesture {
+                    vm.readNotification(notification)
+                    router.route(to: notification.type.route)
+                }
         }
         .listStyle(.inset)
         .navigationModifier(title: "알림") {
@@ -37,17 +41,23 @@ struct NotificationView<Router: AppRouter>: View {
                 editButton
             }
         }
+        .onAppear {
+            vm.fetchNotifications()
+        }
+        .refreshable {
+            vm.fetchNotifications()
+        }
     }
     
     private var deleteButton: some View {
         Group {
             if !vm.multiSelection.isEmpty {
                 Button("삭제") {
-                    vm.deleteSelectedNotifications()
+                    vm.removeSelectedNotifications()
                 }
             } else {
                 Button("전체삭제") {
-                    vm.deleteAllNotifications()
+                    vm.removeAllNotifications()
                     toggleEditMode()
                 }
             }
@@ -67,7 +77,7 @@ struct NotificationView<Router: AppRouter>: View {
     
     private func deleteSwipeAction(for notification: PushNotification) -> some View {
         Button(role: .destructive) {
-            vm.deleteNotification(notification)
+            vm.removeSwipedNotification(notification)
         } label: {
             Label("삭제하기", systemImage: "trash")
         }
@@ -100,9 +110,11 @@ extension NotificationView {
                 .padding(.vertical, 15)
             }
             .padding(.horizontal)
-            .background(colorScheme == .dark ? .gray.opacity(0.2) : .white)
+            .background(
+                colorScheme == .dark
+                    ? (notification.isRead ? Color.gray.opacity(0.2) : Color.gray.opacity(0.45))
+                    : (notification.isRead ? Color.gray.opacity(0.2) : Color.accent.opacity(0.45)))
             .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
-            .shadow(radius: 4)
         }
         
         private var titleView: some View {

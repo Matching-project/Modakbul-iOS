@@ -16,16 +16,19 @@ final class HomeViewModel: ObservableObject {
     @Published var places: [Place] = []
     @Published var selectedPlace: Place?
     @Published var sortCriteria: PlaceSortCriteria = .distance
+    @Published var unreadCount: Int = 0
     private var locationNeeded: Bool = true
     private var currentCoordinate = CLLocationCoordinate2D()
     
     private let localMapUseCase: LocalMapUseCase
+    private let notificationUseCase: NotificationUseCase
     
     private let placesSubject = PassthroughSubject<[Place], Never>()
     private var cancellables = Set<AnyCancellable>()
     
-    init(localMapUseCase: LocalMapUseCase) {
+    init(localMapUseCase: LocalMapUseCase, notificationUseCase: NotificationUseCase) {
         self.localMapUseCase = localMapUseCase
+        self.notificationUseCase = notificationUseCase
         subscribe()
     }
     
@@ -52,7 +55,7 @@ final class HomeViewModel: ObservableObject {
     }
 }
 
-// MARK: Interfaces
+// MARK: Interfaces for LocalMapUseCase
 extension HomeViewModel {
     @MainActor func updateLocationOnceIfNeeded() {
         if locationNeeded {
@@ -84,6 +87,20 @@ extension HomeViewModel {
                 
                 let places = try await localMapUseCase.fetchPlaces(with: keyword, on: coordinate ?? center)
                 placesSubject.send(places)
+            } catch {
+                print(error)
+            }
+        }
+    }
+}
+
+// MARK: - Interface for NotificationUseCase
+extension HomeViewModel {
+    @MainActor
+    func fetchUnreadNotificationCount() {
+        Task {
+            do {
+                unreadCount = try await notificationUseCase.fetchUnreadCount()
             } catch {
                 print(error)
             }

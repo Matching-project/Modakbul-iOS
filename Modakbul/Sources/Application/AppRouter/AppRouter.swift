@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Combine
 
 protocol AppRouter: ObservableObject {
     associatedtype Destination: Routable where Destination == Route
@@ -44,9 +45,17 @@ final class DefaultAppRouter: AppRouter {
     var isModalPresented: Bool { sheet != nil || fullScreenCover != nil }
     @Published var isAlertPresented: Bool = false
     @Published var isConfirmationDialogPresented: Bool = false
+    @Published var notification: Destination? = RouterAdapter.shared.destionation {
+        didSet {
+            if let notification = notification {
+                route(to: notification)
+            }
+        }
+    }
     
     private(set) var detents: Set<PresentationDetent> = [.large, .medium]
     let assembler: Assembler
+    private var cancellable: AnyCancellable?
     
     init(
         path: NavigationPath = NavigationPath(),
@@ -54,6 +63,9 @@ final class DefaultAppRouter: AppRouter {
     ) {
         self.path = path
         self.assembler = assembler
+        
+        cancellable = RouterAdapter.shared.$destionation
+            .assign(to: \.notification, on: self)
     }
     
     convenience init(

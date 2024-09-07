@@ -16,10 +16,15 @@ let project = Project(
                 .external(name: "KakaoSDKCommon"),
                 .external(name: "KakaoSDKAuth"),
                 .external(name: "KakaoSDKUser"),
-                .external(name: "Moya")
+                .external(name: "Moya"),
+                .external(name: "FirebaseAnalytics"),
+                .external(name: "FirebaseMessaging"),
             ],
             settings: .settings(
-                base: ["CODE_SIGN_STYLE": "Manual"],
+                base: [
+                       "CODE_SIGN_STYLE": "Manual",
+                       "OTHER_LDFLAGS": "-ObjC"
+                ],
                 configurations: [
                     .debug(name: "Debug",
                            settings: ["CODE_SIGN_IDENTITY": "iPhone Developer",

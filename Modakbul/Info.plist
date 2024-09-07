@@ -21,7 +21,11 @@
 	</array>
 	<key>UIBackgroundModes</key>
 	<array>
+		<string>fetch</string>
+		<string>processing</string>
 		<string>remote-notification</string>
 	</array>
+	<key>FirebaseMessagingAutoInitEnabled</key>
+	<false/>
 </dict>
 </plist>

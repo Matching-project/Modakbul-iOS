@@ -21,6 +21,9 @@ struct PlacesListArea<Router: AppRouter>: View {
             
             hoveringButtonsArea
         }
+        .onAppear {
+            viewModel.fetchUnreadNotificationCount()
+        }
     }
     
     private var listArea: some View {
@@ -33,9 +36,13 @@ struct PlacesListArea<Router: AppRouter>: View {
                 Button {
                     router.route(to: .notificationView)
                 } label: {
-                    Image(systemName: "bell")
-                        .font(.headline)
-                        .padding(10)
+                    if viewModel.unreadCount > 0 {
+                        NotificationIcon(badge: true)
+                            .padding(5)
+                    } else {
+                        NotificationIcon(badge: false)
+                            .padding(10)
+                    }
                 }
             }
             .padding()
@@ -64,5 +71,11 @@ struct PlacesListArea<Router: AppRouter>: View {
             }
         }
         .padding()
+    }
+}
+
+struct PlaceListArea_Preview: PreviewProvider {
+    static var previews: some View {
+        router.view(to: .placesListArea)
     }
 }

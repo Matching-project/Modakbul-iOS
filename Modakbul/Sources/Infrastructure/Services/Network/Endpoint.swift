@@ -57,6 +57,11 @@ enum Endpoint {
     case readChatrooms(token: String)                           // 채팅방 목록 조회
     case exitChatRoom(token: String, chatRoomId: Int64)        // 채팅방 나가기
     case reportAndExitChatRoom(token: String, chatRoomId: Int64, userId: Int64, report: Report) // 채팅방 신고 후 나가기
+    case sendNotification(token: String, notification: NotificationSendingRequestEntity)// 알림 전송
+    case fetchNotifications(token: String)                                              // 알림 목록 조회
+    case removeNotifications(token: String, notificationsIds: [Int64])                  // 알림 삭제 (단일, 선택, 전체)
+    case readNotification(token: String, notificationId: Int64)                         // 알림 읽기
+    // MARK: - Notification Related
 }
 
 extension Endpoint {
@@ -159,6 +164,14 @@ extension Endpoint: TargetType {
             return "/chatrooms/\(chatRoomId)"
         case .reportAndExitChatRoom(_, let chatRoomId, let userId, _):
             return "/reports/\(chatRoomId)/\(userId)"
+        case .sendNotification(_, let notification):
+            return "/notifications/\(notification.opponentUserId)"
+        case .fetchNotifications:
+            return "/notifications"
+        case .removeNotifications:
+            return "/notifications"
+        case .readNotification(_, let notificationId):
+            return "/notifications/\(notificationId)"
         }
     }
     
@@ -168,6 +181,10 @@ extension Endpoint: TargetType {
         case .login, .register, .reissueToken, .createBoard, .requestMatch, .createChatRoom, .block, .reviewPlace, .suggestPlace, .reportOpponentUserProfile, .reportAndExitChatRoom: return .post
         case .logout, .deleteBoard, .unblock: return .delete
         case .updateProfile, .updateBoard, .acceptMatchRequest, .rejectMatchRequest, .exitMatch, .cancelMatchRequest, .exitChatRoom: return .patch
+        case .checkNicknameForOverlap, .readMyProfile, .readMyBoards, .readMyMatches, .readMyRequestMatches, .readPlaces, .readPlacesByMatches, .readPlacesByDistance, .readBoards, .readBoardForUpdate, .readBoardDetail, .readMatches, .readChatrooms, .fetchNotifications: return .get
+        case .login, .register, .reissueToken, .createBoard, .requestMatch, .createChatRoom, .sendNotification: return .post
+        case .logout, .deleteBoard, .removeNotifications: return .delete
+        case .updateProfile, .updateBoard, .acceptMatchRequest, .rejectMatchRequest, .exitChatRoom, .readNotification: return .patch
         }
     }
     
@@ -242,6 +259,10 @@ extension Endpoint: TargetType {
             return .requestJSONEncodable(report)
         default:
             return .requestPlain
+        case .sendNotification(_, let notification):
+            return .requestJSONEncodable(notification)
+        case .removeNotifications(_, let notificationsIds):
+            return .requestParameters(parameters: ["notificationIds": notificationsIds], encoding: JSONEncoding.default)
         }
     }
     
@@ -318,6 +339,14 @@ extension Endpoint: TargetType {
             ["Authorization": "\(token)"]
         case .reportAndExitChatRoom(let token, _, _, _):
             ["Authorization": "\(token)"]
+        case .sendNotification(let token, _):
+            ["Authorization": "\(token)"]
+        case .fetchNotifications(let token):
+            ["Authorization": "\(token)"]
+        case .removeNotifications(let token, _):
+            ["Authorization": "\(token)"]
+        case .readNotification(let token, _):
+            ["Authorization": "\(token)"]
         default: nil
         }
     }
@@ -333,4 +362,10 @@ extension Endpoint: TargetType {
         default: .none
         }
     }
+          switch self {
+          case .login, .logout, .reissueToken, .updateProfile, .readMyProfile, .readMyBoards, .readMyMatches, .readMyRequestMatches, .createBoard, .readBoardForUpdate, .updateBoard, .deleteBoard, .readMatches, .requestMatch, .acceptMatchRequest, .rejectMatchRequest, .createChatRoom, .readChatrooms, .exitChatRoom, .sendNotification, .fetchNotifications, .removeNotifications, .readNotification:
+                  .bearer
+          default: .none
+          }
+      }
 }
