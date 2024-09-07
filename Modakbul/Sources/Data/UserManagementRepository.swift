@@ -13,8 +13,8 @@ protocol UserManagementRepository: TokenRefreshable {
     func report(userId: Int64, opponentUserId: Int64, report: Report) async throws
     func readReports(userId: Int64) async throws -> [(user: User, status: InquiryStatusType)]
     func block(userId: Int64, opponentUserId: Int64) async throws
-    func readBlockedUsers(userId: Int64) async throws -> [User]
-    func unblock(userId: Int64, opponentUserId: Int64) async throws
+    func readBlockedUsers(userId: Int64) async throws -> [(blockId: Int64, blockedUser: User)]
+    func unblock(userId: Int64, blockId: Int64) async throws
     func readOpponentUserProfile(userId: Int64, opponentUserId: Int64) async throws -> User
 }
 
@@ -97,7 +97,7 @@ extension DefaultUserManagementRepository: UserManagementRepository {
         } catch APIError.accessTokenExpired {
             let tokens = try await reissueTokens(key: userId, token.refreshToken)
             
-            let endpoint = Endpoint.readReports(token: token.accessToken)
+            let endpoint = Endpoint.readReports(token: tokens.accessToken)
             let response = try await networkService.request(endpoint: endpoint, for: ReportsResponseEntity.self)
             return response.body.toDTO()
         } catch {
@@ -121,7 +121,7 @@ extension DefaultUserManagementRepository: UserManagementRepository {
         }
     }
     
-    func readBlockedUsers(userId: Int64) async throws -> [User] {
+    func readBlockedUsers(userId: Int64) async throws -> [(blockId: Int64, blockedUser: User)] {
         let token = try tokenStorage.fetch(by: userId)
         
         do {
@@ -139,18 +139,20 @@ extension DefaultUserManagementRepository: UserManagementRepository {
         }
     }
     
-    func unblock(userId: Int64, opponentUserId: Int64) async throws {
-//        let token = tokenStorage.fetch(by: userId)
-//        
-//        do {
-//            // TODO: 차단 해제를 위해서는 차단ID가 필요한데, 차단ID를 구할 곳이 없음
-//            let endpoint = Endpoint.blo
-//            let endpoint = Endpoint.unblock(token: token.accessToken, blockId: oppo)
-//        } catch APIError.accessTokenExpired {
-//            
-//        } catch {
-//            throws error
-//        }
+    func unblock(userId: Int64, blockId: Int64) async throws {
+        let token = try tokenStorage.fetch(by: userId)
+        
+        do {
+            let endpoint = Endpoint.unblock(token: token.accessToken, blockId: blockId)
+            try await networkService.request(endpoint: endpoint, for: DefaultResponseEntity.self)
+        } catch APIError.accessTokenExpired {
+            let tokens = try await reissueTokens(key: userId, token.refreshToken)
+            
+            let endpoint = Endpoint.unblock(token: tokens.accessToken, blockId: blockId)
+            try await networkService.request(endpoint: endpoint, for: DefaultResponseEntity.self)
+        } catch {
+            throw error
+        }
     }
     
     func readOpponentUserProfile(userId: Int64, opponentUserId: Int64) async throws -> User {
