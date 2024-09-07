@@ -8,7 +8,7 @@
 import Foundation
 
 /// 알림 목록 조회 요청
-struct NotificationResponseEntity: Decodable {
+struct NotificationResponseEntity: ResponseEntity {
     let status: Bool
     let code: Int
     let message: String

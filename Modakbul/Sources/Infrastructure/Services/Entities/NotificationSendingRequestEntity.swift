@@ -12,7 +12,7 @@ import Foundation
 struct NotificationSendingRequestEntity: Encodable {
     let type: String
     let subtitle: String
-    let opponentUserId: String
+    let opponentUserId: Int64
     
     enum CodingKeys: String, CodingKey {
         case type = "notificationType"
