@@ -24,11 +24,11 @@ protocol NotificationUseCase {
 
     /// 1개 이상의 알림을 삭제합니다.
     /// - Parameter ids: 삭제할 알림의 아이디입니다.
-    func remove(_ notificatioIds: [Int]) async throws
+    func remove(_ notificationIds: [Int]) async throws
     
     /// 알림을 읽음처리 합니다.
     /// - Parameter id: 읽음 처리할 알림 아이디입니다.
-    func read(_ notificatioIds: Int) async throws
+    func read(_ notificationIds: Int) async throws
     
 }
 
@@ -39,7 +39,7 @@ final class DefaultNotificationUseCase {
 
 extension DefaultNotificationUseCase: NotificationUseCase {
     func send(_ notificiation: PushNotification, to userId: Int64) async throws {
-            
+        
     }
     
     func fetch() async throws -> [PushNotification] {
@@ -50,11 +50,11 @@ extension DefaultNotificationUseCase: NotificationUseCase {
 
     }
     
-    func remove(_ notificatioIds: [Int]) async throws {
+    func remove(_ notificationIds: [Int]) async throws {
         
     }
     
-    func read(_ notificatioIds: Int) async throws {
+    func read(_ notificationIds: Int) async throws {
         
     }
 }
