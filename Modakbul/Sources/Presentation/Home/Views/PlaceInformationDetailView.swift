@@ -58,10 +58,10 @@ struct PlaceInformationDetailView<Router: AppRouter>: View {
                     .scrollIndicators(.hidden)
                 }
                 
-                // TODO: 사용자 종류에 따라 버튼 라벨 달라져야 함
+                // TODO: 사용자 종류에 따라 버튼 라벨 및 알림 전송 유형이 달라져야 함
                 HStack {
                     FlatButton("채팅하기") {
-                        //
+//                        viewModel.send(communityRecruitingContentId, from: userid, to: communityRecruitingContent.id, type: .newChat)
                     }
                     
                     FlatButton("모집종료") {
