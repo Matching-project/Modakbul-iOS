@@ -6,14 +6,25 @@
 //
 
 import Foundation
+import SwiftUI
 
 struct PushNotification: Identifiable {
-    enum ShowingType: String, CustomStringConvertible {
-        case request
-        case accept
+    enum ShowingType: CustomStringConvertible {
+        case request(communityRecruitingContentId: Int64)
+        case accept(communityRecruitingContentId: Int64)
         case newChat
         case exit
         case unknown
+        
+        init(from type: String, communityRecruitingContentId: Int64) {
+            switch type {
+            case "request": self = .request(communityRecruitingContentId: communityRecruitingContentId)
+            case "accept": self = .accept(communityRecruitingContentId: communityRecruitingContentId)
+            case "newChat": self = .newChat
+            case "exit": self = .exit
+            default: self = .unknown
+            }
+        }
         
         var titlePostfix: String {
             switch self {
@@ -45,15 +56,14 @@ struct PushNotification: Identifiable {
             }
         }
         
-//        var route: Route {
-//            switch self {
-//            // TODO: - route 추가 예정
-//            case .request:
-//            case .accept:
-//            case .newChat:
-//            case .exit:
-//            }
-//        }
+        var route: Route? {
+            switch self {
+            case .request(let communityRecruitingContentId): .placeInformationDetailView(communityRecruitingContentId: communityRecruitingContentId)
+            case .accept(let communityRecruitingContentId): .placeInformationDetailView(communityRecruitingContentId: communityRecruitingContentId)
+            case .newChat: .chatView
+            default: nil
+            }
+        }
     }
     
     let id: Int64
@@ -62,7 +72,7 @@ struct PushNotification: Identifiable {
     let titlePostfix: String
     let subtitle: String
     let timestamp: String
-    let type: ShowingType
+    var type: ShowingType
     var isRead: Bool
     
     init(id: Int64,

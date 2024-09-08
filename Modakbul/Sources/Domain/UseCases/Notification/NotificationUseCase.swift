@@ -10,10 +10,11 @@ import Foundation
 protocol NotificationUseCase {
     /// 알림을 전송합니다.
     /// - Parameters:
-    ///   - notificiation: 보낼 알림을 의미합니다.
+    ///   - communityRecruitingContentId: 알림의 출처가 어떤 모집글인지 의미합니다.
     ///   - userId: 나의 아이디를 의미합니다.
     ///   - opponentUserId: 상대방의 아이디를 의미합니다.
-    func send(_ notificiation: PushNotification, from userId: Int64, to opponentUserId: Int64) async throws
+    ///   - type: 보낼 알림의 유형을 의미합니다.
+    func send(_ communityRecruitingContentId: Int64, from userId: Int64, to opponentUserId: Int64, type: PushNotification.ShowingType) async throws
     
     /// 알림 목록을 조회합니다.
     /// - Parameter userId: 나의 아이디를 의미합니다.
@@ -33,27 +34,27 @@ protocol NotificationUseCase {
 
 final class DefaultNotificationUseCase {
     
-    private let r: NotificationRepository
+    private let notificationRepository: NotificationRepository
     
     init(notificationRepository: NotificationRepository) {
-        self.r = notificationRepository
+        self.notificationRepository = notificationRepository
     }
 }
 
 extension DefaultNotificationUseCase: NotificationUseCase {
-    func send(_ notificiation: PushNotification, from userId: Int64, to opponentUserId: Int64) async throws {
-        try await r.send(notificiation, from: userId, to: opponentUserId)
+    func send(_ communityRecruitingContentId: Int64, from userId: Int64, to opponentUserId: Int64, type: PushNotification.ShowingType) async throws {
+        try await notificationRepository.send(communityRecruitingContentId, from: userId, to: opponentUserId, type: type)
     }
     
     func fetch(userId: Int64) async throws -> [PushNotification] {
-        return try await r.fetch(userId: userId)
+        return try await notificationRepository.fetch(userId: userId)
     }
     
     func remove(userId: Int64, _ notificationIds: [Int64]) async throws {
-        try await r.remove(userId: userId, notificationIds)
+        try await notificationRepository.remove(userId: userId, notificationIds)
     }
     
     func read(userId: Int64, _ notificationIds: Int64) async throws {
-        try await r.read(userId: userId, notificationIds)
+        try await notificationRepository.read(userId: userId, notificationIds)
     }
 }

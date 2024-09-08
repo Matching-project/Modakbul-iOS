@@ -8,7 +8,7 @@
 import Foundation
 
 protocol NotificationRepository: TokenRefreshable {
-    func send(_ notificiation: PushNotification, from userId: Int64, to opponentUserId: Int64) async throws
+    func send(_ communityRecruitingContentId: Int64, from userId: Int64, to opponentUserId: Int64, type: PushNotification.ShowingType) async throws
     func fetch(userId: Int64) async throws -> [PushNotification]
     func remove(userId: Int64, _ notificationIds: [Int64]) async throws
     func read(userId: Int64, _ notificationIds: Int64) async throws
@@ -28,11 +28,9 @@ final class DefaultNotificationRepository {
 }
 
 extension DefaultNotificationRepository: NotificationRepository {
-    func send(_ notificiation: PushNotification, from userId: Int64, to opponentUserId: Int64) async throws {
+    func send(_ communityRecruitingContentId: Int64, from userId: Int64, to opponentUserId: Int64, type: PushNotification.ShowingType) async throws {
         let token = try tokenStorage.fetch(by: userId)
-        let entity = NotificationSendingRequestEntity(type: notificiation.type.description,
-                                                      subtitle: notificiation.subtitle,
-                                                      opponentUserId: opponentUserId)
+        let entity = NotificationSendingRequestEntity(communityRecruitingContentId: communityRecruitingContentId, opponentUserId: opponentUserId, type: type.description)
         
         do {
             let endpoint = Endpoint.sendNotification(token: token.accessToken, notification: entity)
@@ -40,7 +38,7 @@ extension DefaultNotificationRepository: NotificationRepository {
         } catch APIError.accessTokenExpired {
             let tokens = try await reissueTokens(key: userId, token.refreshToken)
             
-            let endpoint = Endpoint.sendNotification(token: token.accessToken, notification: entity)
+            let endpoint = Endpoint.sendNotification(token: tokens.accessToken, notification: entity)
             try await networkService.request(endpoint: endpoint, for: DefaultResponseEntity.self)
         } catch {
             throw error
@@ -57,7 +55,7 @@ extension DefaultNotificationRepository: NotificationRepository {
         } catch APIError.accessTokenExpired {
             let tokens = try await reissueTokens(key: userId, token.refreshToken)
             
-            let endpoint = Endpoint.fetchNotifications(token: token.accessToken)
+            let endpoint = Endpoint.fetchNotifications(token: tokens.accessToken)
             let response = try await networkService.request(endpoint: endpoint, for: NotificationResponseEntity.self)
             return response.body.toDTO()
         } catch {
@@ -74,7 +72,7 @@ extension DefaultNotificationRepository: NotificationRepository {
         } catch APIError.accessTokenExpired {
             let tokens = try await reissueTokens(key: userId, token.refreshToken)
             
-            let endpoint = Endpoint.removeNotifications(token: token.accessToken, notificationsIds: notificationIds)
+            let endpoint = Endpoint.removeNotifications(token: tokens.accessToken, notificationsIds: notificationIds)
             try await networkService.request(endpoint: endpoint, for: DefaultResponseEntity.self)
         } catch {
             throw error
@@ -90,12 +88,10 @@ extension DefaultNotificationRepository: NotificationRepository {
         } catch APIError.accessTokenExpired {
             let tokens = try await reissueTokens(key: userId, token.refreshToken)
             
-            let endpoint = Endpoint.readNotification(token: token.accessToken, notificationId: notificationId)
+            let endpoint = Endpoint.readNotification(token: tokens.accessToken, notificationId: notificationId)
             try await networkService.request(endpoint: endpoint, for: DefaultResponseEntity.self)
         } catch {
             throw error
         }
-        
     }
-    
 }
