@@ -10,14 +10,23 @@ import SwiftUI
 struct ReportListView: View {
     @ObservedObject private var viewModel: ReportListViewModel
     
-    init(_ viewModel: ReportListViewModel) {
+    private let userId: Int64
+    
+    init(
+        _ viewModel: ReportListViewModel,
+        userId: Int64
+    ) {
         self.viewModel = viewModel
+        self.userId = userId
     }
     
     var body: some View {
         content(viewModel.reportedUsers.isEmpty)
             .navigationTitle("신고 목록")
             .navigationBarTitleDisplayMode(.inline)
+            .task {
+                await viewModel.configureView(userId: userId)
+            }
     }
     
     @ViewBuilder private func content(_ condition: Bool) -> some View {
@@ -26,8 +35,8 @@ struct ReportListView: View {
                 .font(.headline)
         } else {
             List {
-                ForEach(viewModel.reportedUsers, id: \.id) { user in
-                    listCell(user)
+                ForEach(viewModel.reportedUsers, id: \.user.id) { (user, status) in
+                    listCell(user, status)
                         .listRowSeparator(.hidden)
                 }
             }
@@ -35,7 +44,7 @@ struct ReportListView: View {
         }
     }
     
-    @ViewBuilder private func listCell(_ user: User) -> some View {
+    @ViewBuilder private func listCell(_ user: User, _ status: InquiryStatusType) -> some View {
         HStack {
             AsyncImageView(url: user.imageURL)
                 .frame(maxWidth: 64, maxHeight: 64)
@@ -53,18 +62,23 @@ struct ReportListView: View {
             
             Spacer()
             
-            // TODO:  처리 상태를 나타내는 요소가 있는데 개발 협의 중
-//            Button {
-//                // MARK: 차단 해제
-//            } label: {
-//                Text("차단 해제")
-//                    .font(.footnote.bold())
-//            }
-//            .buttonStyle(.capsuledInset)
+            Button {
+                //
+            } label: {
+                inquiryStatus(status)
+                    .font(.footnote.bold())
+            }
+            .buttonStyle(.capsuledInset)
+            .disabled(true)
         }
     }
-}
-
-#Preview {
-    ReportListView(ReportListViewModel())
+    
+    @ViewBuilder private func inquiryStatus(_ status: InquiryStatusType) -> some View {
+        switch status {
+        case .completed, .deleted:
+            Text("처리 완료")
+        case .waiting:
+            Text("처리 중")
+        }
+    }
 }
