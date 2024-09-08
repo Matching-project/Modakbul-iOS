@@ -8,18 +8,6 @@
 import Foundation
 import Combine
 
-/// 사용자 역할을 나타냅니다.
-enum UserRole {
-    /// 대표자, 방장, 모집글 게시자
-    case exponent
-    
-    /// 기참여자
-    case participant
-    
-    /// 미참여자
-    case nonParticipant
-}
-
 final class PlaceInformationDetailViewModel: ObservableObject {
     @Published var communityRecruitingContent: CommunityRecruitingContent?
     @Published var role: UserRole = .participant

@@ -78,7 +78,10 @@ struct MapArea<Router: AppRouter>: View {
                 
                 // TODO: PushNotification Button (WIP)
                 Button {
-                    router.route(to: .notificationView(userId: userId))
+                    guard let userId = userId else {
+                        return router.route(to: .loginView)
+                    }
+                    router.route(to: .notificationView(userId: Int64(userId)))
                 } label: {
                     if viewModel.unreadCount > 0 {
                         NotificationIcon(badge: true)

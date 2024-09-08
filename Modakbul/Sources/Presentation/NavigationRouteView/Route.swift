@@ -40,8 +40,8 @@ enum Route: Routable {
     case placeReviewView(place: Place?)
     case notificationSettingsView
     case homeView           // MARK: - Home
-    case mapArea(userId: Int64)
-    case placesListArea(userId: Int64)
+    case mapArea
+    case placesListArea
     case placeInformationView(place: Place, displayMode: PlaceInformationView<Route.Router>.DisplayMode)
     case placeInformationDetailView(communityRecruitingContentId: Int64)
     case placeInformationDetailMakingView
@@ -103,10 +103,10 @@ enum Route: Routable {
             NotificationSettingsView<Router>(notificationSettingsViewModel: router.resolver.resolve(NotificationSettingsViewModel.self))
         case .homeView:         // MARK: - Home
             HomeView<Router>(router.resolver.resolve(HomeViewModel.self))
-        case .mapArea(let userId):
-            MapArea<Router>(router.resolver.resolve(HomeViewModel.self), userId: userId)
-        case .placesListArea(let userId):
-            PlacesListArea<Router>(router.resolver.resolve(HomeViewModel.self), userId: userId)
+        case .mapArea:
+            MapArea<Router>(router.resolver.resolve(HomeViewModel.self))
+        case .placesListArea:
+            PlacesListArea<Router>(router.resolver.resolve(HomeViewModel.self))
         case .placeInformationView(let place, let displayMode):
             PlaceInformationView<Router>(router.resolver.resolve(PlaceInformationViewModel.self), place: place, displayMode: displayMode)
         case .placeInformationDetailView(let communityRecruitingContentId):
