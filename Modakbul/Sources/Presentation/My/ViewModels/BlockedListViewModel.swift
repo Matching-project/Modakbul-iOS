@@ -9,9 +9,9 @@ import Foundation
 import Combine
 
 final class BlockedListViewModel: ObservableObject {
-    @Published var blockedUsers: [User] = []
+    @Published var blockedUsers: [(blockId: Int64, blockedUser: User)] = []
     
-    private let usersSubject = PassthroughSubject<[User], Never>()
+    private let usersSubject = PassthroughSubject<[(blockId: Int64, blockedUser: User)], Never>()
     private var cancellables = Set<AnyCancellable>()
     
     private let userBusinessUseCase: UserBusinessUseCase
@@ -42,13 +42,10 @@ extension BlockedListViewModel {
         }
     }
     
-    func cancelBlock(userId: Int64, opponentUserId: Int64) {
+    func cancelBlock(userId: Int64, blockId: Int64) {
         Task {
             do {
-                try await userBusinessUseCase.unblock(userId: userId, opponentUserId: opponentUserId)
-                if let index = blockedUsers.firstIndex(where: {$0.id == opponentUserId}) {
-                    blockedUsers.remove(at: index)
-                }
+                try await userBusinessUseCase.unblock(userId: userId, blockId: blockId)
             } catch {
                 print(error)
             }
