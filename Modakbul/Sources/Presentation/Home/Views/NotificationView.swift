@@ -31,7 +31,9 @@ struct NotificationView<Router: AppRouter>: View {
                 .listRowSeparator(.hidden)
                 .onTapGesture {
                     vm.readNotification(userId: userId, notification)
-//                    router.route(to: notification.type.route)
+                    if let route = notification.type.route {
+                        router.route(to: route)
+                    }
                 }
         }
         .listStyle(.inset)
