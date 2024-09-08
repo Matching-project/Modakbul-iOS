@@ -18,7 +18,7 @@ protocol UserBusinessUseCase {
     func block(userId: Int64, opponentUserId: Int64) async throws
     
     /// 사용자(상대방) 차단 해제
-    func unblock(userId: Int64, opponentUserId: Int64) async throws
+    func unblock(userId: Int64, blockId: Int64) async throws
     
     /// 차단한 사용자 목록 조회
     func readBlockedUsers(userId: Int64) async throws -> [(blockId: Int64, blockedUser: User)]
@@ -55,8 +55,8 @@ extension DefaultUserBusinessUseCase: UserBusinessUseCase {
         try await userManagementRepository.block(userId: userId, opponentUserId: opponentUserId)
     }
     
-    func unblock(userId: Int64, opponentUserId: Int64) async throws {
-        try await userManagementRepository.unblock(userId: userId, opponentUserId: opponentUserId)
+    func unblock(userId: Int64, blockId: Int64) async throws {
+        try await userManagementRepository.unblock(userId: userId, blockId: blockId)
     }
     
     func readBlockedUsers(userId: Int64) async throws -> [(blockId: Int64, blockedUser: User)] {
