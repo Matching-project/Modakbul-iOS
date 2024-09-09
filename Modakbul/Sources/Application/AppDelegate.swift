@@ -77,8 +77,9 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
             print("🔴 didReceive: Touched PushNotification")
             print(userInfo)
             
+            // TODO: - 알림 읽음 처리 API call 필요
             // TODO: - API Response에 따른 View Routing 필요
-//            RouterAdapter.shared.destionation = PushNotification.Type.route
+//            RouterAdapter.shared.destionation = PushNotification.ShowingType.routes           
         }
     }
 }

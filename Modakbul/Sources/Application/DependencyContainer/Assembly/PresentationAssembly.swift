@@ -45,9 +45,10 @@ struct PresentationAssembly: Assembly {
             PlaceInformationViewModel(communityUseCase: resolver.resolve(CommunityUseCase.self))
         }
         
-        //        container.register(for: PlaceInformationDetailViewModel.self) { resolver in
-        //            PlaceInformationDetailViewModel()
-        //        }
+        container.register(for: PlaceInformationDetailViewModel.self) { resolver in
+            PlaceInformationDetailViewModel(communityUseCase: resolver.resolve(CommunityUseCase.self),
+                                            notificationUseCase: resolver.resolve(NotificationUseCase.self))
+        }
         
         container.register(for: PlaceInformationDetailMakingViewModel.self) { resolver in
             PlaceInformationDetailMakingViewModel(communityUseCase: resolver.resolve(CommunityUseCase.self))

@@ -27,16 +27,16 @@ final class PlaceInformationDetailViewModel: ObservableObject {
     
 //    private let chatUseCase: ChatUseCase
     private let communityUseCase: CommunityUseCase
-    private let matchingUseCase: MatchingUseCase
+    private let notificationUseCase: NotificationUseCase
     
     init(
 //        chatUseCase: ChatUseCase,
         communityUseCase: CommunityUseCase,
-        matchingUseCase: MatchingUseCase
+        notificationUseCase: NotificationUseCase
     ) {
 //        self.chatUseCase = chatUseCase
         self.communityUseCase = communityUseCase
-        self.matchingUseCase = matchingUseCase
+        self.notificationUseCase = notificationUseCase
         subscribe()
     }
     
@@ -68,7 +68,7 @@ final class PlaceInformationDetailViewModel: ObservableObject {
     }
 }
 
-// MARK: Interfaces
+// MARK: Interface for CommunityUseCase
 extension PlaceInformationDetailViewModel {
     func configureView(_ communityRecruitingContentId: Int64) async throws {
         let communityRecruitingContent = try await communityUseCase.readCommunityRecruitingContentDetail(with: communityRecruitingContentId)
@@ -96,6 +96,23 @@ extension PlaceInformationDetailViewModel {
         Task {
             do {
                 try await matchingUseCase.exitMatch(userId: userId, with: <#matchingId#>)
+            } catch {
+                print(error)
+            }
+        }
+    }
+}
+
+// MARK: - Interface for NotificationUseCase
+extension PlaceInformationDetailViewModel {
+    @MainActor
+    func send(_ communityRecruitingContentId: Int64,
+              from userId: Int64,
+              to opponentUserId: Int64,
+              type: PushNotification.ShowingType) {
+        Task {
+            do {
+                try await notificationUseCase.send(communityRecruitingContentId, from: userId, to: opponentUserId, type: type)
             } catch {
                 print(error)
             }

@@ -18,12 +18,13 @@ struct NotificationResponseEntity: ResponseEntity {
         let notifications: [PushNotification]
         
         struct PushNotification: Decodable {
-            let id: Int64
+            let id, communityRecruitingContentId: Int64
             let title, type, subtitle, timestamp: String
             let isRead: Bool
             
             enum CodingKeys: String, CodingKey {
                 case id, title, type, isRead
+                case communityRecruitingContentId = "boardId"
                 case subtitle = "content"
                 case timestamp = "createdAt"
             }
@@ -36,7 +37,8 @@ struct NotificationResponseEntity: ResponseEntity {
                   title: $0.title,
                   subtitle: $0.subtitle,
                   timestamp: $0.timestamp,
-                  type: PushNotification.ShowingType(rawValue: $0.type) ?? .unknown)
+                  type: .init(from: $0.type,
+                              communityRecruitingContentId: $0.communityRecruitingContentId))
         }
     }
 }
