@@ -38,10 +38,24 @@ struct DataAssembly: Assembly {
         }
         
         // NotificationRepository
-        container.register(for: DefaultNotificationRepository.self) { resolver in
+        container.register(for: NotificationRepository.self) { resolver in
             let tokenStorage = resolver.resolve(TokenStorage.self)
             let networkService = resolver.resolve(NetworkService.self)
             return DefaultNotificationRepository(tokenStorage: tokenStorage, networkService: networkService)
+        }
+        
+        // CommunityRepository
+        container.register(for: CommunityRepository.self) { resolver in
+            let tokenStorage = resolver.resolve(TokenStorage.self)
+            let networkService = resolver.resolve(NetworkService.self)
+            return DefaultCommunityRepository(tokenStorage: tokenStorage, networkService: networkService)
+        }
+        
+        // MatchingRepository
+        container.register(for: MatchingRepository.self) { resolver in
+            let tokenStorage = resolver.resolve(TokenStorage.self)
+            let networkService = resolver.resolve(NetworkService.self)
+            return DefaultMatchingRepository(tokenStorage: tokenStorage, networkService: networkService)
         }
     }
     
