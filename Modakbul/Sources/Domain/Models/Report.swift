@@ -7,7 +7,6 @@
 
 import Foundation
 
-// TODO: - Selectable로 하는건?
 enum ReportType: CaseIterable, Hashable, CustomStringConvertible {
     case disparagement
     case pornography
