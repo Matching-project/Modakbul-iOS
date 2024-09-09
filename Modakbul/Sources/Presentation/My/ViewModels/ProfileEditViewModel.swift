@@ -11,30 +11,25 @@ final class ProfileEditViewModel: ObservableObject {
     private let userRegistrationUseCase: UserRegistrationUseCase
 
     // MARK: - Original Data
-    @Published var user: User
+    @Published var user: User = User()
     
     // MARK: - Modified Data
     // 닉네임은 화면에 표시하지 않음.
     @Published var image: Data?
-    @Published var nickname: String
-    @Published var isGenderVisible: Bool
+    @Published var nickname: String = ""
+    @Published var isGenderVisible: Bool = true
     // 회원가입시 Job?으로 받는 코드 구조여서 불가피하게 Job이 아닌 Job?으로 선언
     @Published var job: Job?
-    @Published var categoriesOfInterest: Set<Category>
+    @Published var categoriesOfInterest: Set<Category> = []
     
     // MARK: - For Binding
-    @Published var isOverlappedNickname: Bool? = nil
+    @Published var isOverlappedNickname: Bool?
 
     // TODO: - 임시 mock 데이터 주입 수정 필요
-    init(userRegistrationUseCase: UserRegistrationUseCase,
-         user: User = PreviewHelper.shared.users.first ?? User()
+    init(
+        userRegistrationUseCase: UserRegistrationUseCase
     ) {
         self.userRegistrationUseCase = userRegistrationUseCase
-        self.user = user
-        self.nickname = ""
-        self.isGenderVisible = user.isGenderVisible
-        self.job = user.job
-        self.categoriesOfInterest = user.categoriesOfInterest
     }
     
     func isPassedNicknameRule() -> Bool {

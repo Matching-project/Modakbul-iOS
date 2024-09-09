@@ -33,7 +33,6 @@ struct PlacesListArea<Router: AppRouter>: View {
                 SearchBar("카페 이름으로 검색", text: $viewModel.searchingText)
                     .frame(alignment: .top)
                 
-                // TODO: PushNotification Button (WIP)
                 Button {
                     guard let userId = userId else {
                         return router.route(to: .loginView)

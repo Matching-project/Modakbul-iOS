@@ -52,7 +52,6 @@ struct MapArea<Router: AppRouter>: View {
     }
     
     @ViewBuilder private func mapAnnotation(_ count: Int) -> some View {
-        // TODO: 크기 조정
         switch count {
         case 0:
             Image(systemName: "circle.fill")
@@ -76,7 +75,6 @@ struct MapArea<Router: AppRouter>: View {
                 SearchBar("카페 이름으로 검색", text: $viewModel.searchingText)
                     .frame(alignment: .top)
                 
-                // TODO: PushNotification Button (WIP)
                 Button {
                     guard let userId = userId else {
                         return router.route(to: .loginView)
