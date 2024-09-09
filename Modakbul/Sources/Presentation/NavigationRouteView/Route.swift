@@ -43,7 +43,7 @@ enum Route: Routable {
     case mapArea
     case placesListArea
     case placeInformationView(place: Place, displayMode: PlaceInformationView<Route.Router>.DisplayMode)
-    case placeInformationDetailView(communityRecruitingContentId: Int64)
+    case placeInformationDetailView(communityRecruitingContentId: Int64, userId: Int64)
     case placeInformationDetailMakingView
     case participationRequestListView(communityRecruitingContent: CommunityRecruitingContent, userId: Int64)
     case notificationView(userId: Int64)
@@ -109,8 +109,8 @@ enum Route: Routable {
             PlacesListArea<Router>(router.resolver.resolve(HomeViewModel.self))
         case .placeInformationView(let place, let displayMode):
             PlaceInformationView<Router>(router.resolver.resolve(PlaceInformationViewModel.self), place: place, displayMode: displayMode)
-        case .placeInformationDetailView(let communityRecruitingContentId):
-            PlaceInformationDetailView<Router>(router.resolver.resolve(PlaceInformationDetailViewModel.self), communityRecruitingContentId: communityRecruitingContentId)
+        case .placeInformationDetailView(let communityRecruitingContentId, let userId):
+            PlaceInformationDetailView<Router>(router.resolver.resolve(PlaceInformationDetailViewModel.self), communityRecruitingContentId: communityRecruitingContentId, userId: userId)
         case .placeInformationDetailMakingView:
             PlaceInformationDetailMakingView<Router>(router.resolver.resolve(PlaceInformationDetailMakingViewModel.self))
         case .participationRequestListView(let communityRecruitingContent, let userId):

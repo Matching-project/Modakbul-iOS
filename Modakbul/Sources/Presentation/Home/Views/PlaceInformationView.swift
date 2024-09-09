@@ -11,6 +11,7 @@ struct PlaceInformationView<Router: AppRouter>: View {
     @EnvironmentObject private var router: Router
     @Environment(\.colorScheme) private var colorScheme
     @ObservedObject private var viewModel: PlaceInformationViewModel
+    @AppStorage(AppStorageKey.userId) private var userId: Int?
     
     private let place: Place
     private let displayMode: DisplayMode
@@ -131,7 +132,10 @@ struct PlaceInformationView<Router: AppRouter>: View {
                             .contentShape(.rect)
                             .onTapGesture {
                                 router.dismiss()
-                                router.route(to: .placeInformationDetailView(communityRecruitingContentId: communityRecruitingContent.id))
+                                guard let userId = userId else {
+                                    router.route(to: .loginView)
+                                }
+                                router.route(to: .placeInformationDetailView(communityRecruitingContentId: communityRecruitingContent.id, userId: Int64(userId)))
                             }
                     }
                 }
