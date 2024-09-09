@@ -133,7 +133,7 @@ struct PlaceInformationView<Router: AppRouter>: View {
                             .onTapGesture {
                                 router.dismiss()
                                 guard let userId = userId else {
-                                    router.route(to: .loginView)
+                                    return router.route(to: .loginView)
                                 }
                                 router.route(to: .placeInformationDetailView(communityRecruitingContentId: communityRecruitingContent.id, userId: Int64(userId)))
                             }
