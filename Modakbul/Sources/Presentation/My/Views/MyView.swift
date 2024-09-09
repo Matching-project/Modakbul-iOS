@@ -178,19 +178,3 @@ extension MyView {
         }
     }
 }
-
-final class MyViewModel: ObservableObject {
-    @Published var user: User
-    //    private let userBusinessUseCase: UserBusinessUseCase
-    
-    init(user: User = PreviewHelper.shared.users.first ?? User()) {
-        self.user = user
-        //        self.userBusinessUseCase = userBusinessUseCase
-    }
-}
-
-struct MyView_Preview: PreviewProvider {
-    static var previews: some View {
-        router.view(to: .myView)
-    }
-}
