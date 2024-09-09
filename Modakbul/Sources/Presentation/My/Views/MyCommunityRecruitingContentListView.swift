@@ -29,7 +29,7 @@ struct MyCommunityRecruitingContentListView<Router: AppRouter>: View {
                 viewModel.communityRecruitingContents) { content in
                     content.activeState == viewModel.selectedTab
                 } onSelectCell: { content in
-                    router.route(to: .placeInformationDetailView(communityRecruitingContentId: content.id))
+                    router.route(to: .placeInformationDetailView(communityRecruitingContentId: content.id, userId: userId))
                 }
         }
         .padding()
