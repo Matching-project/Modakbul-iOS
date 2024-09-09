@@ -13,13 +13,16 @@ struct PlaceInformationDetailView<Router: AppRouter>: View {
     @State private var index: Int = 0
     
     private let communityRecruitingContentId: Int64
+    private let userId: Int64
     
     init(
         _ viewModel: PlaceInformationDetailViewModel,
-        communityRecruitingContentId: Int64
+        communityRecruitingContentId: Int64,
+        userId: Int64
     ) {
         self.viewModel = viewModel
         self.communityRecruitingContentId = communityRecruitingContentId
+        self.userId = userId
     }
     
     var body: some View {
@@ -27,6 +30,7 @@ struct PlaceInformationDetailView<Router: AppRouter>: View {
             .task {
                 do {
                     try await viewModel.configureView(communityRecruitingContentId)
+                    try await viewModel.checkUserRole(userId)
                 } catch {
                     print(error)
                 }
@@ -35,8 +39,6 @@ struct PlaceInformationDetailView<Router: AppRouter>: View {
     
     @ViewBuilder private func content(_ communityRecruitingContent: CommunityRecruitingContent?) -> some View {
         if let communityRecruitingContent = communityRecruitingContent {
-            let community = communityRecruitingContent.community
-            
             VStack {
                 GeometryReader { proxy in
                     ScrollView(.vertical) {
@@ -58,20 +60,48 @@ struct PlaceInformationDetailView<Router: AppRouter>: View {
                     .scrollIndicators(.hidden)
                 }
                 
-                // TODO: 사용자 종류에 따라 버튼 라벨 달라져야 함
-                HStack {
-                    FlatButton("채팅하기") {
-                        //
-                    }
-                    
-                    FlatButton("모집종료") {
-                        //
-                    }
-                }
-                .padding()
+                controls()
+                    .padding()
             }
         } else {
             ContentUnavailableView("내용을 불러오는 중 입니다.", image: "Marker")
+        }
+    }
+    
+    @ViewBuilder private func controls() -> some View {
+        switch viewModel.role {
+        case .exponent:
+            HStack {
+                FlatButton("요청목록") {
+                    if let communityRecruitingContent = viewModel.communityRecruitingContent {
+                        router.route(to: .participationRequestListView(communityRecruitingContent: communityRecruitingContent, userId: userId))
+                    }
+                }
+                
+                FlatButton("모집종료") {
+                    viewModel.completeCommunityRecruiting(userId: userId, with: communityRecruitingContentId)
+                }
+            }
+        case .participant:
+            HStack {
+                FlatButton("채팅하기") {
+                    // TODO: 채팅하기 기능 연결
+                }
+                
+                FlatButton("나가기") {
+                    //
+                }
+            }
+        case .nonParticipant:
+            HStack {
+                FlatButton("채팅하기") {
+                    //
+                }
+                
+                FlatButton("참여요청") {
+                    //
+                }
+            }
         }
     }
     

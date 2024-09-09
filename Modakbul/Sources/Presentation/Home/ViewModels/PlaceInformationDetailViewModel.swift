@@ -10,7 +10,7 @@ import Combine
 
 final class PlaceInformationDetailViewModel: ObservableObject {
     @Published var communityRecruitingContent: CommunityRecruitingContent?
-    @Published var role: UserRole = .participant
+    @Published var role: UserRole = .nonParticipant
     
     // MARK: Presenting Data
     @Published var category: String = String()
@@ -27,13 +27,16 @@ final class PlaceInformationDetailViewModel: ObservableObject {
     
 //    private let chatUseCase: ChatUseCase
     private let communityUseCase: CommunityUseCase
+    private let matchingUseCase: MatchingUseCase
     
     init(
 //        chatUseCase: ChatUseCase,
-        communityUseCase: CommunityUseCase
+        communityUseCase: CommunityUseCase,
+        matchingUseCase: MatchingUseCase
     ) {
 //        self.chatUseCase = chatUseCase
         self.communityUseCase = communityUseCase
+        self.matchingUseCase = matchingUseCase
         subscribe()
     }
     
@@ -70,5 +73,32 @@ extension PlaceInformationDetailViewModel {
     func configureView(_ communityRecruitingContentId: Int64) async throws {
         let communityRecruitingContent = try await communityUseCase.readCommunityRecruitingContentDetail(with: communityRecruitingContentId)
         communityRecruitingContentSubject.send(communityRecruitingContent)
+    }
+    
+    func checkUserRole(_ userId: Int64) async throws {
+        // TODO: 로직 코드 스멜 있음: 복잡함, 용도에 맞지 않은 API 사용, 백엔드 협조 필요
+        guard let communityRecruitingContent = communityRecruitingContent else { return }
+        
+    }
+    
+    func completeCommunityRecruiting(userId: Int64, with communityRecruitingContentId: Int64) {
+        Task {
+            do {
+                try await communityUseCase.completeCommunityRecruiting(userId: userId, with: communityRecruitingContentId)
+            } catch {
+                print(error)
+            }
+        }
+    }
+    
+    func exitCommunity(userId: Int64) {
+        // TODO: 매칭id 필요
+        Task {
+            do {
+                try await matchingUseCase.exitMatch(userId: userId, with: <#matchingId#>)
+            } catch {
+                print(error)
+            }
+        }
     }
 }

@@ -31,6 +31,10 @@ protocol MatchingUseCase {
     
     /// 사용자가 참여 요청을 제출한 모임 목록 조회
     func readMyRequestMatches(userId: Int64) async throws -> [CommunityRecruitingContent]
+    
+    /// 해당 모임에서 사용자의 역할을 확인합니다.
+    /// - Returns: 게시자(방장), 기참여자, 미참여자 중 하나
+//    func checkUserRole(userId: Int64)
 }
 
 final class DefaultMatchingUseCase {
