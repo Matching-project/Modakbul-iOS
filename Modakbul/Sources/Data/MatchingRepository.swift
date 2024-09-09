@@ -15,7 +15,7 @@ protocol MatchingRepository: TokenRefreshable {
     func exitMatch(userId: Int64, with matchingId: Int64) async throws
     func cancelMatchRequest(userId: Int64, with matchingId: Int64) async throws
     func readMyMatches(userId: Int64) async throws -> [CommunityRecruitingContent]
-    func readMyRequestMatches(userId: Int64) async throws -> [CommunityRecruitingContent]
+    func readMyRequestMatches(userId: Int64) async throws -> [(communityRecruitingContent: CommunityRecruitingContent, matchingId: Int64, matchState: MatchState)]
 }
 
 final class DefaultMatchingRepository {
@@ -136,7 +136,7 @@ extension DefaultMatchingRepository: MatchingRepository {
         
         do {
             let endpoint = Endpoint.readMyMatches(token: token.accessToken)
-            let response = try await networkService.request(endpoint: endpoint, for: RelatedParticipationRequestListResponseEntity.self)
+            let response = try await networkService.request(endpoint: endpoint, for: RelatedCommunityRecruitingContentListResponseEntity.self)
             return response.body.toDTO()
         } catch APIError.accessTokenExpired {
             let tokens = try await reissueTokens(key: userId, token.refreshToken)
@@ -149,7 +149,7 @@ extension DefaultMatchingRepository: MatchingRepository {
         }
     }
     
-    func readMyRequestMatches(userId: Int64) async throws -> [CommunityRecruitingContent] {
+    func readMyRequestMatches(userId: Int64) async throws -> [(communityRecruitingContent: CommunityRecruitingContent, matchingId: Int64, matchState: MatchState)] {
         let token = try tokenStorage.fetch(by: userId)
         
         do {

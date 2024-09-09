@@ -30,11 +30,11 @@ protocol MatchingUseCase {
     func readMyMatches(userId: Int64) async throws -> [CommunityRecruitingContent]
     
     /// 사용자가 참여 요청을 제출한 모임 목록 조회
-    func readMyRequestMatches(userId: Int64) async throws -> [CommunityRecruitingContent]
+    func readMyRequestMatches(userId: Int64) async throws -> [(communityRecruitingContent: CommunityRecruitingContent, matchingId: Int64, matchState: MatchState)]
     
     /// 해당 모임에서 사용자의 역할을 확인합니다.
-    /// - Returns: 게시자(방장), 기참여자, 미참여자 중 하나
-//    func checkUserRole(userId: Int64)
+    /// - Returns: 기참여자, 미참여자 중 하나
+    func checkUserRole(userId: Int64, with communityRecruitingContentId: Int64) async throws -> (role: UserRole, matchingId: Int64?, state: MatchState)
 }
 
 final class DefaultMatchingUseCase {
@@ -75,7 +75,20 @@ extension DefaultMatchingUseCase: MatchingUseCase {
         try await matchingRepository.readMyMatches(userId: userId)
     }
     
-    func readMyRequestMatches(userId: Int64) async throws -> [CommunityRecruitingContent] {
+    func readMyRequestMatches(userId: Int64) async throws -> [(communityRecruitingContent: CommunityRecruitingContent, matchingId: Int64, matchState: MatchState)] {
         try await matchingRepository.readMyRequestMatches(userId: userId)
+    }
+    
+    func checkUserRole(userId: Int64, with communityRecruitingContentId: Int64) async throws -> (role: UserRole, matchingId: Int64?, state: MatchState) {
+        let matchRequests = try await matchingRepository.readMyRequestMatches(userId: userId)
+        guard let request = matchRequests.first(where: { $0.communityRecruitingContent.id == communityRecruitingContentId }) else {
+            return (UserRole.nonParticipant, nil, MatchState.cancel)
+        }
+        
+        guard request.matchState == .accepted else {
+            return (UserRole.nonParticipant, request.matchingId, request.matchState)
+        }
+        
+        return (UserRole.participant, request.matchingId, request.matchState)
     }
 }

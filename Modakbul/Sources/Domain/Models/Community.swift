@@ -84,3 +84,21 @@ enum ActiveState: String, Decodable {
     case completed = "COMPLETED"
     case deleted = "DELETED"
 }
+
+/// Match Request의 활성 상태를 나타냅니다.
+enum MatchState: String, Decodable {
+    /// 참여 요청 중 (참여 요청이 제출된 상태에서 상대방의 수락, 거절 의사를 기다리는 중)
+    case pending = "PENDING"
+    
+    /// 요청 거절됨
+    case rejected = "REJECTED"
+    
+    /// 요청 수락됨
+    case accepted = "ACCEPTED"
+    
+    /// 요청 삭제됨 (pending 상태에서 상대방의 수락, 거절 의사를 대기하지 않고 취소했을 경우 + 아무런 상호작용 없을 때 기본값)
+    case cancel = "CANCEL"
+    
+    /// 모임 탈퇴됨 (accepted 상태에서 모임을 나갈 의사를 제출했을 경우)
+    case exit = "EXIT"
+}

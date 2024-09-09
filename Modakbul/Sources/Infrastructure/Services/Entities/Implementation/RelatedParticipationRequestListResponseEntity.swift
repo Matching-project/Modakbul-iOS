@@ -17,21 +17,25 @@ struct RelatedParticipationRequestListResponseEntity: ResponseEntity {
     
     struct Result: Decodable {
         let title, startTime, endTime: String
-        let id: Int64
+        let communityRecruitingContentId, matchingId: Int64
         let category: Category
         let recruitCount, currentCount: Int
         let meetingDate: String
         let dayOfWeek: DayOfWeek
         let activeState: ActiveState
+        let matchState: MatchState
         
         enum CodingKeys: String, CodingKey {
-            case title, startTime, endTime, category, recruitCount, currentCount, meetingDate, dayOfWeek
-            case id = "boardId"
+            case title, startTime, endTime, recruitCount, currentCount, meetingDate, dayOfWeek
+            case communityRecruitingContentId = "boardId"
+            case category = "categoryName"
+            case matchingId = "matchId"
             case activeState = "boardStatus"
+            case matchState = "matchStatus"
         }
     }
     
-    func toDTO() -> [CommunityRecruitingContent] {
+    func toDTO() -> [(communityRecruitingContent: CommunityRecruitingContent, matchingId: Int64, matchState: MatchState)] {
         result.map {
             let community = Community(
                 routine: .daily,
@@ -43,13 +47,15 @@ struct RelatedParticipationRequestListResponseEntity: ResponseEntity {
                 endTime: $0.endTime
             )
             
-            return .init(
-                id: $0.id,
+            let communityRecruitingContent: CommunityRecruitingContent = .init(
+                id: $0.communityRecruitingContentId,
                 title: $0.title,
                 content: String(),
                 community: community,
                 activeState: $0.activeState
             )
+            
+            return (communityRecruitingContent, $0.matchingId, $0.matchState)
         }
     }
 }

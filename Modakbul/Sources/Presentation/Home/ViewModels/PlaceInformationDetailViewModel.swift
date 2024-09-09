@@ -11,6 +11,7 @@ import Combine
 final class PlaceInformationDetailViewModel: ObservableObject {
     @Published var communityRecruitingContent: CommunityRecruitingContent?
     @Published var role: UserRole = .nonParticipant
+    @Published var matchState: MatchState = .cancel
     
     // MARK: Presenting Data
     @Published var category: String = String()
@@ -22,20 +23,27 @@ final class PlaceInformationDetailViewModel: ObservableObject {
     @Published var creationDate: String = String()
     @Published var writer: User = User()
     
+    private var matchingId: Int64 = -1
+    private var userId: Int64 = -1
+    
     private let communityRecruitingContentSubject = PassthroughSubject<CommunityRecruitingContent, Never>()
+    private let userRoleSubject = PassthroughSubject<(role: UserRole, matchingId: Int64?, state: MatchState), Never>()
     private var cancellables = Set<AnyCancellable>()
     
 //    private let chatUseCase: ChatUseCase
     private let communityUseCase: CommunityUseCase
+    private let matchingUseCase: MatchingUseCase
     private let notificationUseCase: NotificationUseCase
     
     init(
 //        chatUseCase: ChatUseCase,
         communityUseCase: CommunityUseCase,
+        matchingUseCase: MatchingUseCase,
         notificationUseCase: NotificationUseCase
     ) {
 //        self.chatUseCase = chatUseCase
         self.communityUseCase = communityUseCase
+        self.matchingUseCase = matchingUseCase
         self.notificationUseCase = notificationUseCase
         subscribe()
     }
@@ -65,37 +73,63 @@ final class PlaceInformationDetailViewModel: ObservableObject {
                 self?.writer = content.writer
             }
             .store(in: &cancellables)
+        
+        userRoleSubject
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] (role, matchingId, state) in
+                self?.role = role
+                self?.matchingId = matchingId ?? -1
+                self?.matchState = state
+            }
+            .store(in: &cancellables)
     }
 }
 
 // MARK: Interface for CommunityUseCase
 extension PlaceInformationDetailViewModel {
-    func configureView(_ communityRecruitingContentId: Int64) async throws {
+    func configureView(_ communityRecruitingContentId: Int64, _ userId: Int64) async throws {
+        self.userId = userId
+        
         let communityRecruitingContent = try await communityUseCase.readCommunityRecruitingContentDetail(with: communityRecruitingContentId)
         communityRecruitingContentSubject.send(communityRecruitingContent)
-    }
-    
-    func checkUserRole(_ userId: Int64) async throws {
-        // TODO: 로직 코드 스멜 있음: 복잡함, 용도에 맞지 않은 API 사용, 백엔드 협조 필요
-        guard let communityRecruitingContent = communityRecruitingContent else { return }
         
+        // 모집글 작성자의 id와 사용자의 id가 같으면 role은 exponent, 다르면 사용자 역할 확인 작업 전개
+        guard communityRecruitingContent.writer.id != userId else {
+            return userRoleSubject.send((.exponent, nil, .cancel))
+        }
+        
+        let (role, matchingId, state) = try await matchingUseCase.checkUserRole(userId: userId, with: communityRecruitingContentId)
+        userRoleSubject.send((role, matchingId, state))
     }
     
-    func completeCommunityRecruiting(userId: Int64, with communityRecruitingContentId: Int64) {
+    func completeCommunityRecruiting() {
+        guard let id = communityRecruitingContent?.id else { return }
+        
         Task {
             do {
-                try await communityUseCase.completeCommunityRecruiting(userId: userId, with: communityRecruitingContentId)
+                try await communityUseCase.completeCommunityRecruiting(userId: userId, with: id)
             } catch {
                 print(error)
             }
         }
     }
     
-    func exitCommunity(userId: Int64) {
-        // TODO: 매칭id 필요
+    func exitCommunity() {
         Task {
             do {
-                try await matchingUseCase.exitMatch(userId: userId, with: <#matchingId#>)
+                try await matchingUseCase.exitMatch(userId: userId, with: matchingId)
+            } catch {
+                print(error)
+            }
+        }
+    }
+    
+    func requestMatch() {
+        guard let id = communityRecruitingContent?.id else { return }
+        
+        Task {
+            do {
+                try await matchingUseCase.requestMatch(userId: userId, with: id)
             } catch {
                 print(error)
             }

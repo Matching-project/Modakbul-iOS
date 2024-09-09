@@ -29,8 +29,7 @@ struct PlaceInformationDetailView<Router: AppRouter>: View {
         content(viewModel.communityRecruitingContent)
             .task {
                 do {
-                    try await viewModel.configureView(communityRecruitingContentId)
-                    try await viewModel.checkUserRole(userId)
+                    try await viewModel.configureView(communityRecruitingContentId, userId)
                 } catch {
                     print(error)
                 }
@@ -79,7 +78,7 @@ struct PlaceInformationDetailView<Router: AppRouter>: View {
                 }
                 
                 FlatButton("모집종료") {
-                    viewModel.completeCommunityRecruiting(userId: userId, with: communityRecruitingContentId)
+                    viewModel.completeCommunityRecruiting()
                 }
             }
         case .participant:
@@ -89,18 +88,16 @@ struct PlaceInformationDetailView<Router: AppRouter>: View {
                 }
                 
                 FlatButton("나가기") {
-                    //
+                    viewModel.exitCommunity()
                 }
             }
         case .nonParticipant:
             HStack {
                 FlatButton("채팅하기") {
-                    //
+                    // TODO: 채팅하기 기능 연결
                 }
                 
-                FlatButton("참여요청") {
-                    //
-                }
+                MatchRequestButton($viewModel.matchState)
             }
         }
     }
@@ -109,7 +106,7 @@ struct PlaceInformationDetailView<Router: AppRouter>: View {
         if let imageURLs = viewModel.communityRecruitingContent?.placeImageURLs {
             TabView(selection: $index) {
                 ForEach(0..<imageURLs.count, id: \.self) { index in
-                    // TODO: 카페 이미지
+                    AsyncImageView(url: imageURLs[index])
                 }
             }
             .tabViewStyle(.page(indexDisplayMode: .never))
@@ -168,10 +165,31 @@ struct PlaceInformationDetailView<Router: AppRouter>: View {
                 .stroke(.accent)
         )
     }
-}
-
-struct PlaceInformationDetailView_Preview: PreviewProvider {
-    static var previews: some View {
-        router.view(to: .placeInformationDetailView(communityRecruitingContentId: previewHelper.communityRecruitingContents.first!.id))
+    
+    struct MatchRequestButton: View {
+        @Binding var state: MatchState
+        
+        init(_ state: Binding<MatchState>) {
+            self._state = state
+        }
+        
+        var body: some View {
+            switch state {
+            case .pending:
+                FlatButton("요청 중") {
+                    //
+                }
+                .disabled(true)
+            case .rejected:
+                FlatButton("거절됨") {
+                    //
+                }
+                .disabled(true)
+            default:
+                FlatButton("참여 요청하기") {
+                    viewModel.requestMatch()
+                }
+            }
+        }
     }
 }
