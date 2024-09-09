@@ -143,10 +143,11 @@ extension PlaceInformationDetailViewModel {
     func send(_ communityRecruitingContentId: Int64,
               from userId: Int64,
               to opponentUserId: Int64,
+              communityRecruitingContentName: String,
               type: PushNotification.ShowingType) {
         Task {
             do {
-                try await notificationUseCase.send(communityRecruitingContentId, from: userId, to: opponentUserId, type: type)
+                try await notificationUseCase.send(communityRecruitingContentId, from: userId, to: opponentUserId, subtitle: communityRecruitingContentName, type: type)
             } catch {
                 print(error)
             }

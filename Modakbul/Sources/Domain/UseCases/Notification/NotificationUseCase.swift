@@ -13,8 +13,9 @@ protocol NotificationUseCase {
     ///   - communityRecruitingContentId: 알림의 출처가 어떤 모집글인지 의미합니다.
     ///   - userId: 나의 아이디를 의미합니다.
     ///   - opponentUserId: 상대방의 아이디를 의미합니다.
+    ///   - subtitle: 모집글 이름을 의미합니다.
     ///   - type: 보낼 알림의 유형을 의미합니다.
-    func send(_ communityRecruitingContentId: Int64, from userId: Int64, to opponentUserId: Int64, type: PushNotification.ShowingType) async throws
+    func send(_ communityRecruitingContentId: Int64, from userId: Int64, to opponentUserId: Int64, subtitle: String, type: PushNotification.ShowingType) async throws
     
     /// 알림 목록을 조회합니다.
     /// - Parameter userId: 나의 아이디를 의미합니다.
@@ -42,8 +43,8 @@ final class DefaultNotificationUseCase {
 }
 
 extension DefaultNotificationUseCase: NotificationUseCase {
-    func send(_ communityRecruitingContentId: Int64, from userId: Int64, to opponentUserId: Int64, type: PushNotification.ShowingType) async throws {
-        try await notificationRepository.send(communityRecruitingContentId, from: userId, to: opponentUserId, type: type)
+    func send(_ communityRecruitingContentId: Int64, from userId: Int64, to opponentUserId: Int64, subtitle: String, type: PushNotification.ShowingType) async throws {
+        try await notificationRepository.send(communityRecruitingContentId, from: userId, to: opponentUserId, subtitle: subtitle, type: type)
     }
     
     func fetch(userId: Int64) async throws -> [PushNotification] {
