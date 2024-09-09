@@ -10,56 +10,55 @@ import SwiftUI
 
 struct PushNotification: Identifiable {
     enum ShowingType: CustomStringConvertible {
-        case request(communityRecruitingContentId: Int64)
-        case accept(communityRecruitingContentId: Int64)
+        case requestParticipation(communityRecruitingContentId: Int64)
+        case acceptParticipation(communityRecruitingContentId: Int64)
         case newChat
-        case exit
+        case exitParticipation
         case unknown
         
         init(from type: String, communityRecruitingContentId: Int64) {
             switch type {
-            case "request": self = .request(communityRecruitingContentId: communityRecruitingContentId)
-            case "accept": self = .accept(communityRecruitingContentId: communityRecruitingContentId)
+            case "requestParticipation": self = .requestParticipation(communityRecruitingContentId: communityRecruitingContentId)
+            case "acceptParticipation": self = .acceptParticipation(communityRecruitingContentId: communityRecruitingContentId)
             case "newChat": self = .newChat
-            case "exit": self = .exit
+            case "exit": self = .exitParticipation
             default: self = .unknown
             }
         }
         
-        var titlePostfix: String {
+        private var baseMessages: (title: String, subtitle: String) {
             switch self {
-            case .request: "님의 참여 요청"
-            case .accept: "님의 참여 요청 수락"
-            case .newChat: "님의 새로운 채팅"
-            case .exit: "님 모임 참여 종료"
-            default: "알 수 없는 에러입니다"
+            case .requestParticipation:
+                return ("참여 요청", " 카페모임에 참여 요청이 왔어요.")
+            case .acceptParticipation:
+                return ("참여 요청 수락", " 카페모임 참여 요청이 수락되었어요.")
+            case .newChat:
+                return ("새로운 채팅", "님이 보낸 새로운 채팅을 확인하세요.")
+            case .exitParticipation:
+                return ("참여 종료", " 카페모임을 나갔어요.")
+            case .unknown:
+                return ("알 수 없음", "알 수 없는 에러입니다.")
             }
         }
         
-        var subtitlePostfix: String {
-            switch self {
-            case .request: " 카페모임에 참여 요청이 왔어요."
-            case .accept: " 카페모임 참여 요청이 수락되었어요."
-            case .newChat: "님이 보낸 새로운 채팅을 확인하세요."
-            case .exit: " 카페모임을 나갔어요."
-            default: "알 수 없는 에러입니다"
-            }
-        }
+        var titlePostfix: String { baseMessages.title }
+        
+        var subtitlePostfix: String { baseMessages.subtitle }
         
         var description: String {
             switch self {
-            case .request: "request"
-            case .accept: "accept"
+            case .requestParticipation: "requestParticipation"
+            case .acceptParticipation: "acceptParticipation"
             case .newChat: "newChat"
-            case .exit: "exit"
+            case .exitParticipation: "exitParticipation"
             case .unknown: "unknown"
             }
         }
         
         var route: Route? {
             switch self {
-            case .request(let communityRecruitingContentId): .placeInformationDetailView(communityRecruitingContentId: communityRecruitingContentId)
-            case .accept(let communityRecruitingContentId): .placeInformationDetailView(communityRecruitingContentId: communityRecruitingContentId)
+//                            case .requestParticipation(let communityRecruitingContentId): .placeInformationDetailView(communityRecruitingContentId: <#T##Int64#>, userId: <#T##Int64#>)
+                //            case .acceptParticipation(let communityRecruitingContentId): .placeInformationDetailView(communityRecruitingContentId: communityRecruitingContentId)
             case .newChat: .chatView
             default: nil
             }

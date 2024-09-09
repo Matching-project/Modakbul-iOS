@@ -34,7 +34,6 @@ protocol NotificationUseCase {
 }
 
 final class DefaultNotificationUseCase {
-    
     private let notificationRepository: NotificationRepository
     
     init(notificationRepository: NotificationRepository) {
@@ -43,12 +42,21 @@ final class DefaultNotificationUseCase {
 }
 
 extension DefaultNotificationUseCase: NotificationUseCase {
+    private func filter(fetchingFrom notifications: [PushNotification]) -> [PushNotification]{
+        return notifications.filter { notification in
+            !AppStorageKey.PushNotification.allCases.description.contains { appStorageKey in
+                notification.type.description == appStorageKey.description
+            }
+        }
+    }
+    
     func send(_ communityRecruitingContentId: Int64, from userId: Int64, to opponentUserId: Int64, subtitle: String, type: PushNotification.ShowingType) async throws {
         try await notificationRepository.send(communityRecruitingContentId, from: userId, to: opponentUserId, subtitle: subtitle, type: type)
     }
     
     func fetch(userId: Int64) async throws -> [PushNotification] {
-        return try await notificationRepository.fetch(userId: userId)
+        let notifications = try await notificationRepository.fetch(userId: userId)
+        return filter(fetchingFrom: notifications)
     }
     
     func remove(userId: Int64, _ notificationIds: [Int64]) async throws {

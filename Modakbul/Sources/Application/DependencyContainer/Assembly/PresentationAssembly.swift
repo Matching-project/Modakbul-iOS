@@ -30,8 +30,6 @@ struct PresentationAssembly: Assembly {
             ProfileEditViewModel(userRegistrationUseCase: resolver.resolve(UserRegistrationUseCase.self))
         }
         
-        container.register(for: NotificationSettingsViewModel.self, NotificationSettingsViewModel())
-        
         // MARK: - Home
         container.register(for: HomeViewModel.self) { resolver in
             HomeViewModel(localMapUseCase: resolver.resolve(LocalMapUseCase.self),
