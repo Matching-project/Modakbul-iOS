@@ -11,11 +11,20 @@ struct PlaceInformationDetailMakingView<Router: AppRouter>: View {
     @Environment(\.colorScheme) private var colorScheme
     @EnvironmentObject private var router: Router
     @ObservedObject private var vm: PlaceInformationDetailMakingViewModel
+    @AppStorage(AppStorageKey.userId) private var userId: Int = Constants.loggedOutUserId
     
     private let labelWidth: CGFloat = 80
+    private let place: Place
+    private let communityRecruitingContent: CommunityRecruitingContent?
     
-    init(_ placeInformationDetailMakingViewModel: PlaceInformationDetailMakingViewModel) {
-        self.vm = placeInformationDetailMakingViewModel
+    init(
+        _ vm: PlaceInformationDetailMakingViewModel,
+        place: Place,
+        communityRecruitingContent: CommunityRecruitingContent?
+    ) {
+        self.vm = vm
+        self.place = place
+        self.communityRecruitingContent = communityRecruitingContent
         UIDatePicker.appearance().minuteInterval = 10
     }
     
@@ -32,7 +41,7 @@ struct PlaceInformationDetailMakingView<Router: AppRouter>: View {
                                         .opacity(0.1)
                                 }
 
-                            Text(vm.location.name)
+                            Text(vm.place?.location.name ?? "")
                                 .padding()
                         }
                     }
@@ -122,9 +131,8 @@ struct PlaceInformationDetailMakingView<Router: AppRouter>: View {
                 .padding(.bottom, 10)
             }
             
-            // TODO: - 최초 게시 여부에 따라 게시하기 / 수정하기로 분기 필요
             // TODO: - padding 값 설정 필요
-            FlatButton("게시하기") {
+            FlatButton(communityRecruitingContent == nil ? "게시하기" : "수정하기") {
                 vm.submit()
                 vm.initialize()
                 router.dismiss()
@@ -137,6 +145,9 @@ struct PlaceInformationDetailMakingView<Router: AppRouter>: View {
         .navigationModifier(title: "모집글 작성") {
             vm.initialize()
             router.dismiss()
+        }
+        .onAppear {
+            vm.place = place
         }
     }
     

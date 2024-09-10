@@ -8,7 +8,7 @@
 import Foundation
 
 final class PlaceInformationDetailMakingViewModel: ObservableObject {
-    @Published var location: Location = Location()
+    @Published var place: Place?
     @Published var category: Category = .interview
     @Published var peopleCount: Int = 1
     @Published var date: Date = .now
@@ -28,34 +28,41 @@ final class PlaceInformationDetailMakingViewModel: ObservableObject {
         Calendar.current.isDate(date, inSameDayAs: Date.now) ? date.unitizeToTenMinutes()... : Date.distantPast...
     }
     
-    func submit() {
-        // TODO: - id, writer, participants 이전 뷰에서 받도록 처리 필요
+    @MainActor
+    func submit(
+        _ communityRecruitingContentId: Int64? = nil,
+        userId: Int64
+    ) {
+        guard let place = place else { return }
+        
         let community = Community(routine: .daily,
                                   category: category,
-                                  participants: PreviewHelper.shared.users,
                                   participantsLimit: peopleCount,
                                   meetingDate: date.toString(by: .yyyyMMdd),
                                   startTime: startTime.toString(by: .HHmm),
                                   endTime: endTime.toString(by: .HHmm))
         
-        // TODO: - writtenDate가 최초글작성날짜를 의미하는지, 아니면 수정된 날짜를 포함하여 작성된 날짜를 의미하는지?
-        let communityRecruitingContent = CommunityRecruitingContent(id: Int64(UUID().hashValue),
-                                                                    title: title,
-                                                                    content: content,
-                                                                    writtenDate: Date().toString(by: .yyyyMMdd),
-                                                                    writtenTime: Date().toString(by: .HHmm),
-                                                                    writer: PreviewHelper.shared.users.first!,
-                                                                    community: community)
+        let communityRecruitingContent = CommunityRecruitingContent(
+            id: communityRecruitingContentId ?? Constants.temporalId,
+            title: title,
+            content: content,
+            writtenDate: Date().toString(by: .yyyyMMdd),
+            writtenTime: Date().toString(by: .HHmm),
+            community: community
+        )
         
-        // TODO: - 구현 필요
         Task {
-//            try? await communityUseCase.write(on: <#T##Location#>, content: communityRecruitingContent)
+            do {
+                try await communityUseCase.createCommunityRecruitingContent(userId: userId, placeId: place.id, communityRecruitingContent)
+            } catch {
+                print(error)
+            }
         }
     }
     
     func initialize() {
         id = Int64(Constants.loggedOutUserId)
-        location = Location()
+        place = nil
         category = .interview
         peopleCount = 1
         date = .now

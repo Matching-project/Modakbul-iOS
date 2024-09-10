@@ -14,4 +14,5 @@ struct Constants {
 
 extension Constants {
     static let loggedOutUserId: Int = -1
+    static let temporalId: Int64 = -1
 }
