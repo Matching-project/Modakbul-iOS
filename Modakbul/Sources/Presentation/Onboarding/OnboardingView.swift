@@ -19,6 +19,8 @@ struct OnboradingView: View {
     private let titles = ["같이 공부하고, 같이 취미를\n즐기고 싶은 당신에게.",
                           "카페별로 진행 중인 모임에 참여해요!",
                           "모임에서 당신의 모닥불을 지펴봐요!"]
+    private let images = ["Onboarding 1", "Onboarding 2", "Onboarding 3"]
+
 
     var body: some View {
         VStack {
@@ -47,8 +49,10 @@ struct OnboradingView: View {
                     
                     Spacer()
                     
-                    // TODO: - 이미지 추가 예정
-                    Text("Some Image Will Add")
+                    Image(images[num])
+                        .resizable()
+                        .scaledToFit()
+                        .frame(height: size.height * 0.4)
                     
                     Spacer()
                 }
@@ -60,5 +64,13 @@ struct OnboradingView: View {
             CustomPageControl(currentPageIndex: $selection, pageCountLimit: index.count),
             alignment: .bottom
         )
+    }
+}
+
+struct OnboardingView_Preview: PreviewProvider {
+    @State private static var isFirstLaunch: Bool = false
+
+    static var previews: some View {
+        OnboradingView($isFirstLaunch)
     }
 }
