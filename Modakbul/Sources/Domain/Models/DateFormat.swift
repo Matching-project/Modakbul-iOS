@@ -55,8 +55,11 @@ enum DateFormat: String {
     /// 축약 요일 (월, 화)
     case ee = "EE"
     
+    /// 서버 날짜, 시간 (년-월-일'시각구분'시:분:초)
+    case serverDateTime1 = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS"
+    
     /// 서버 날짜, 시간 (년-월-일 시:분:초)
-    case serverDateTime = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS"
+    case serverDateTime2 = "yyyy-MM-dd HH:mm:ss"
 }
 
 // MARK: DateFormatter 관련
@@ -107,6 +110,10 @@ extension Date {
     func toString(by dateFormat: String) -> String {
         let formatter = DateFormat.cachedFormatter(dateFormat: dateFormat)
         return formatter.string(from: self)
+    }
+    
+    func toDate(by dateFormat: DateFormat) -> Date? {
+        dateFormat.formatter.date(from: dateFormat.rawValue)
     }
 }
 
