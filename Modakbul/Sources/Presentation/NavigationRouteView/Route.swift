@@ -55,7 +55,7 @@ enum Route: Routable {
     case chatView           // MARK: - Chat
     case chatRoomListView
     case reportView(opponentUserId: Int64, isReported: Binding<Bool>)
-    case profileDetailView(opponentUserId: Int64)  // opponentUserId: opponentUserId, MARK: - Common
+    case profileDetailView(opponentUserId: Int64)  // MARK: - Common
     
     var presentingType: PresentingType {
         switch self {
@@ -85,7 +85,7 @@ enum Route: Routable {
         case .chatView: return .push                                // MARK: - Chat
         case .chatRoomListView: return .push
         case .reportView: return .push
-        case .profileDetailView: return .push                       // opponentUserId: opponentUserId, MARK: - Common
+        case .profileDetailView: return .push                       // MARK: - Common
         }
     }
     
@@ -102,7 +102,7 @@ enum Route: Routable {
         case .registrationView:
             RegistrationView<Router>(registrationViewModel: router.resolver.resolve(RegistrationViewModel.self))
         case .myView:           // MARK: - My
-            MyView<Router>(myViewModel: router.resolver.resolve(MyViewModel.self))
+            MyView<Router>(router.resolver.resolve(MyViewModel.self))
         case .placeShowcaseView(let userId):
             PlaceShowcaseView<Router>(router.resolver.resolve(PlaceShowcaseViewModel.self), userId: userId)
         case .placeReviewView(let place):

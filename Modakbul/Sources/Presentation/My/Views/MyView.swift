@@ -10,24 +10,22 @@ import SwiftUI
 struct MyView<Router: AppRouter>: View {
     @EnvironmentObject private var router: Router
     @ObservedObject private var vm: MyViewModel
-    @State private var isLoggedIn: Bool
+    @AppStorage(AppStorageKey.userId) private var userId: Int = Constants.loggedOutUserId
     
-    // TODO: - 로그인 상태 AppStorage로 관리 필요
-    init(myViewModel: MyViewModel, isLoggedIn: Bool = false) {
+    init(_ myViewModel: MyViewModel) {
         self.vm = myViewModel
-        self.isLoggedIn = isLoggedIn
     }
     
     var body: some View {
         VStack(alignment: .leading) {
-            if isLoggedIn {
-                HeaderWhenLoggedIn($vm.user)
-                    .padding(.bottom, -10)
-            } else {
+            if userId == Constants.loggedOutUserId {
                 HeaderWhenLoggedOut()
+            } else {
+                HeaderWhenLoggedIn(vm)
+                    .padding(.bottom, -10)
             }
             
-            Cell($isLoggedIn, for: $vm.user)
+            Cell(for: $vm.user)
         }
         .padding(.horizontal, Constants.horizontal)
     }
@@ -36,24 +34,25 @@ struct MyView<Router: AppRouter>: View {
 extension MyView {
     struct HeaderWhenLoggedIn: View {
         @EnvironmentObject private var router: Router
-        @Binding private var user: User
+        @ObservedObject private var vm: MyViewModel
+        @AppStorage(AppStorageKey.userId) private var userId: Int = Constants.loggedOutUserId
         
-        init(_ user: Binding<User>) {
-            self._user = user
+        init(_ vm: MyViewModel) {
+            self.vm = vm
         }
         
         var body: some View {
             HStack {
-                AsyncImageView(url: user.imageURL)
+                AsyncImageView(url: vm.user.imageURL)
                     .clipShape(.circle)
                     .frame(maxHeight: 128)
                 
                 VStack(alignment: .leading) {
                     // MARK: - 한글 닉네임 10자까지 가능(iPhone 15 Pro)
-                    Text(user.nickname + "님, 반가워요!")
+                    Text(vm.user.nickname + "님, 반가워요!")
                         .bold()
                     
-                    Text(user.categoriesOfInterest.description + " · " + user.job.description + " · " + user.birth.toAge())
+                    Text(vm.user.categoriesOfInterest.description + " · " + vm.user.job.description + " · " + vm.user.birth.toAge())
                         .font(.subheadline)
                     
                     HStack {
@@ -85,7 +84,7 @@ extension MyView {
                     router.dismiss()
                 },
                 .defaultAction("로그아웃") {
-                    // TODO: -
+                    vm.logout(userId: Int64(userId))
                 }
             ])
         }
@@ -118,12 +117,10 @@ extension MyView {
     
     struct Cell: View {
         @EnvironmentObject private var router: Router
-        @Binding private var isLoggedIn: Bool
         @Binding private var user: User
-        @AppStorage(AppStorageKey.userId) private var userId: Int = -1
+        @AppStorage(AppStorageKey.userId) private var userId: Int = Constants.loggedOutUserId
         
-        init(_ isLoggedIn: Binding<Bool>, for user: Binding<User>) {
-            self._isLoggedIn = isLoggedIn
+        init(for user: Binding<User>) {
             self._user = user
         }
         
@@ -145,6 +142,7 @@ extension MyView {
                 
                 Section {
                     button("알림 설정", destination: .notificationSettingsView)
+                    // TODO: - 약관 및 정책 노션 링크 만들기
                     // button("약관 및 정책", destination: )
                     
                     // TODO: - 탈퇴하기 뷰를 따로 추가할지 건의함
@@ -173,9 +171,7 @@ extension MyView {
         }
         
         private func handleButtonTap(for destination: Route) {
-            if isLoggedIn {
-                router.route(to: destination)
-            } else {
+            if userId == Constants.loggedOutUserId {
                 router.alert(for: .login, actions: [
                     .cancelAction("취소") {
                         router.dismiss()
@@ -184,6 +180,8 @@ extension MyView {
                         router.route(to: .loginView)
                     }
                 ])
+            } else {
+                router.route(to: destination)
             }
         }
     }

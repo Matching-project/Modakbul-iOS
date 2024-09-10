@@ -10,7 +10,7 @@ import SwiftUI
 struct BlockedListView<Router: AppRouter>: View {
     @EnvironmentObject private var router: Router
     @ObservedObject private var viewModel: BlockedListViewModel
-    @AppStorage(AppStorageKey.userId) private var userId: Int = -1
+    @AppStorage(AppStorageKey.userId) private var userId: Int = Constants.loggedOutUserId
     
     init(_ viewModel: BlockedListViewModel) {
         self.viewModel = viewModel

@@ -50,7 +50,7 @@ struct CommunityRecruitingContent {
     let activeState: ActiveState
     
     init(
-        id: Int64 = -1,
+        id: Int64 = Int64(Constants.loggedOutUserId),
         placeImageURLs: [URL?] = [],
         title: String,
         content: String,

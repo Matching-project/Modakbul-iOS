@@ -20,7 +20,9 @@ struct PresentationAssembly: Assembly {
         }
         
         // MARK: - My
-        container.register(for: MyViewModel.self, MyViewModel())
+        container.register(for: MyViewModel.self) { resolver in
+            MyViewModel(userRegistrationUseCase: resolver.resolve(UserRegistrationUseCase.self))
+        }
         
         container.register(for: PlaceShowcaseViewModel.self) { resolver in
             PlaceShowcaseViewModel(placeShowcaseAndReviewUseCase: resolver.resolve(PlaceShowcaseAndReviewUseCase.self))
