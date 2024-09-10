@@ -133,9 +133,10 @@ struct PlaceInformationView<Router: AppRouter>: View {
                             .onTapGesture {
                                 router.dismiss()
                                 if userId == Constants.loggedOutUserId {
-                                    return router.route(to: .loginView)
+                                    router.route(to: .loginView)
+                                } else {
+                                    router.route(to: .placeInformationDetailView(communityRecruitingContentId: communityRecruitingContent.id, userId: Int64(userId)))
                                 }
-                                router.route(to: .placeInformationDetailView(communityRecruitingContentId: communityRecruitingContent.id, userId: Int64(userId)))
                             }
                     }
                 }

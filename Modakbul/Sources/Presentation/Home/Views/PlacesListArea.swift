@@ -36,8 +36,9 @@ struct PlacesListArea<Router: AppRouter>: View {
                 Button {
                     if userId == Constants.loggedOutUserId {
                         router.route(to: .loginView)
+                    } else {
+                        router.route(to: .notificationView(userId: Int64(userId)))
                     }
-                    router.route(to: .notificationView(userId: Int64(userId)))
                 } label: {
                     if viewModel.unreadCount > 0 {
                         NotificationIcon(badge: true)
