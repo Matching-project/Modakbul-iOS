@@ -104,7 +104,7 @@ struct PlaceInformationView<Router: AppRouter>: View {
     
     private var communityRecruitingContentEditButton: some View {
         Button {
-            router.route(to: .placeInformationDetailMakingView)
+            router.route(to: .placeInformationDetailMakingView(place: place, communityRecruitingContent: nil))
         } label: {
             Image(.photoUploadSelection)
                 .resizable()

@@ -93,7 +93,7 @@ struct PlaceInformationDetailView<Router: AppRouter>: View {
                     // TODO: 채팅하기 기능 연결
                 }
                 
-                MatchRequestButton($viewModel.matchState)
+                MatchRequestButton(viewModel: viewModel)
             }
         }
     }
@@ -163,14 +163,10 @@ struct PlaceInformationDetailView<Router: AppRouter>: View {
     }
     
     struct MatchRequestButton: View {
-        @Binding var state: MatchState
-        
-        init(_ state: Binding<MatchState>) {
-            self._state = state
-        }
+        @ObservedObject var viewModel: PlaceInformationDetailViewModel
         
         var body: some View {
-            switch state {
+            switch viewModel.matchState {
             case .pending:
                 FlatButton("요청 중") {
                     //
