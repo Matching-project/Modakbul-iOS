@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+fileprivate typealias Match = (communityRecruitingContent: CommunityRecruitingContent, matchingId: Int64, matchState: MatchState)
+
 struct MyParticipationRequestListView<Router: AppRouter>: View {
     @EnvironmentObject private var router: Router
     @ObservedObject private var viewModel: MyParticipationRequestListViewModel
@@ -17,7 +19,7 @@ struct MyParticipationRequestListView<Router: AppRouter>: View {
     }
     
     var body: some View {
-        content(viewModel.communityRecruitingContents.isEmpty)
+        content(viewModel.matches.isEmpty)
             .navigationTitle("나의 참여 요청 목록")
             .navigationBarTitleDisplayMode(.inline)
             .task {
@@ -31,15 +33,19 @@ struct MyParticipationRequestListView<Router: AppRouter>: View {
                 .font(.headline)
         } else {
             List {
-                ForEach(viewModel.communityRecruitingContents, id: \.id) { content in
-                    listCell(content)
+                ForEach(viewModel.matches, id: \.communityRecruitingContent.id) { match in
+                    listCell(match)
                 }
             }
             .listStyle(.plain)
         }
     }
     
-    @ViewBuilder private func listCell(_ content: CommunityRecruitingContent) -> some View {
+    @ViewBuilder private func listCell(_ match: Match) -> some View {
+        let state = match.matchState
+        let matchingId = match.matchingId
+        let content = match.communityRecruitingContent
+        
         HStack {
             VStack(alignment: .leading, spacing: 10) {
                 Text(content.title)
@@ -68,8 +74,14 @@ struct MyParticipationRequestListView<Router: AppRouter>: View {
             Button {
                 viewModel.cancelParticipationRequest(userId: Int64(userId), with: content.id)
             } label: {
-                Text("요청 취소")
-                    .font(.footnote.bold())
+                switch state {
+                case .accepted:
+                    Text("나가기")
+                        .font(.footnote.bold())
+                default:
+                    Text("요청 취소")
+                        .font(.footnote.bold())
+                }
             }
             .buttonStyle(.capsuledInset)
         }

@@ -8,10 +8,12 @@
 import Foundation
 import Combine
 
+typealias Matches = [(communityRecruitingContent: CommunityRecruitingContent, matchingId: Int64, matchState: MatchState)]
+
 final class MyParticipationRequestListViewModel: ObservableObject {
-    @Published var communityRecruitingContents: [CommunityRecruitingContent] = []
+    @Published var matches: Matches = []
     
-    private let communityRecruitingContentsSubject = PassthroughSubject<[CommunityRecruitingContent], Never>()
+    private let matchesSubject = PassthroughSubject<Matches, Never>()
     private var cancellables = Set<AnyCancellable>()
     
     private let matchingUseCase: MatchingUseCase
@@ -21,10 +23,10 @@ final class MyParticipationRequestListViewModel: ObservableObject {
     }
     
     private func subscribe() {
-        communityRecruitingContentsSubject
+        matchesSubject
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] contents in
-                self?.communityRecruitingContents = contents
+            .sink { [weak self] matches in
+                self?.matches = matches
             }
             .store(in: &cancellables)
     }
@@ -34,8 +36,8 @@ final class MyParticipationRequestListViewModel: ObservableObject {
 extension MyParticipationRequestListViewModel {
     func configureView(userId: Int64) async {
         do {
-            let communityRecruitingContents = try await matchingUseCase.readMyRequestMatches(userId: userId)
-            communityRecruitingContentsSubject.send(communityRecruitingContents)
+            let matches = try await matchingUseCase.readMyRequestMatches(userId: userId)
+            matchesSubject.send(matches)
         } catch {
             print(error)
         }
@@ -45,8 +47,8 @@ extension MyParticipationRequestListViewModel {
         Task {
             do {
                 try await matchingUseCase.cancelMatchRequest(userId: userId, with: communityRecruitingContentId)
-                if let index = communityRecruitingContents.firstIndex(where: {$0.id == communityRecruitingContentId}) {
-                    communityRecruitingContents.remove(at: index)
+                if let index = matches.firstIndex(where: {$0.communityRecruitingContent.id == communityRecruitingContentId}) {
+                    matches.remove(at: index)
                 }
             } catch {
                 print(error)
