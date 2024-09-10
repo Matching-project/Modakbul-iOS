@@ -66,7 +66,7 @@ extension DefaultUserRegistrationUseCase: UserRegistrationUseCase {
     }
     
     func register(_ user: User, encoded imageData: Data?, provider: AuthenticationProvider, fcm: String) async throws -> Int64 {
-        -1
+        Int64(Constants.loggedOutUserId)
     }
     
     func unregister(userId: Int64, provider: AuthenticationProvider) async throws {

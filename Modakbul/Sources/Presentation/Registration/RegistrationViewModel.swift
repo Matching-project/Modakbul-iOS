@@ -75,7 +75,7 @@ final class RegistrationViewModel: ObservableObject {
     
     func submit() {
         // TODO: Provider 수정할 것
-        let user = User(id: -1,
+        let user = User(id: Int64(Constants.loggedOutUserId),
                         name: name,
                         nickname: nickname,
                         gender: gender ?? .unknown,

@@ -22,7 +22,7 @@ struct User {
     let imageURL: URL?
     
     init(
-        id: Int64 = -1,
+        id: Int64 = Int64(Constants.loggedOutUserId),
         name: String = "이름 없음",
         nickname: String = "닉네임 없음",
         gender: Gender = .unknown,

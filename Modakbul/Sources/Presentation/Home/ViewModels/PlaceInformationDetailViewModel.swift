@@ -23,8 +23,8 @@ final class PlaceInformationDetailViewModel: ObservableObject {
     @Published var creationDate: String = String()
     @Published var writer: User = User()
     
-    private var matchingId: Int64 = -1
-    private var userId: Int64 = -1
+    private var matchingId: Int64 = Int64(Constants.loggedOutUserId)
+    private var userId: Int64 = Int64(Constants.loggedOutUserId)
     
     private let communityRecruitingContentSubject = PassthroughSubject<CommunityRecruitingContent, Never>()
     private let userRoleSubject = PassthroughSubject<(role: UserRole, matchingId: Int64?, state: MatchState), Never>()
@@ -78,7 +78,7 @@ final class PlaceInformationDetailViewModel: ObservableObject {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] (role, matchingId, state) in
                 self?.role = role
-                self?.matchingId = matchingId ?? -1
+                self?.matchingId = matchingId ?? Int64(Constants.loggedOutUserId)
                 self?.matchState = state
             }
             .store(in: &cancellables)

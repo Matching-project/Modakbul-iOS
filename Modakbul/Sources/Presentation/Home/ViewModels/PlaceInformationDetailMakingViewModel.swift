@@ -8,7 +8,6 @@
 import Foundation
 
 final class PlaceInformationDetailMakingViewModel: ObservableObject {
-    private var id: Int64 = -1
     @Published var location: Location = Location()
     @Published var category: Category = .interview
     @Published var peopleCount: Int = 1
@@ -18,11 +17,10 @@ final class PlaceInformationDetailMakingViewModel: ObservableObject {
     @Published var title: String = ""
     @Published var content: String = ""
     
+    private var id: Int64 = Int64(Constants.loggedOutUserId)
     private let communityUseCase: CommunityUseCase
     
-    init(
-         communityUseCase: CommunityUseCase
-    ) {
+    init(communityUseCase: CommunityUseCase) {
         self.communityUseCase = communityUseCase
     }
     
@@ -56,7 +54,7 @@ final class PlaceInformationDetailMakingViewModel: ObservableObject {
     }
     
     func initialize() {
-        id = -1
+        id = Int64(Constants.loggedOutUserId)
         location = Location()
         category = .interview
         peopleCount = 1
