@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-// TODO: DynamicType 지원하도록 수정할 것
 struct CapsuleTag: View {
     private let title: String
     private let font: Font
