@@ -8,22 +8,22 @@
 import Foundation
 
 final class ProfileDetailViewModel: ObservableObject {
+    @Published var user: User
     @Published var isBlocked: Bool
     @Published var isReported: Bool
     
     private let userBusinessUseCase: UserBusinessUseCase
     /// - WARNING: 하나의 `ProfileDetailViewModel`를 토대로 여러 사용자를 표시해야 하므로 `private` 키워드를 생략해야 합니다.
-    var user: User
     
-    init(userBusinessUseCase: UserBusinessUseCase,
-         user: User = User(),
+    init(user: User = User(),
          isBlocked: Bool = false,
-         isReported: Bool = false
+         isReported: Bool = false,
+         userBusinessUseCase: UserBusinessUseCase
     ) {
-        self.userBusinessUseCase = userBusinessUseCase
         self.user = user
         self.isBlocked = isBlocked
         self.isReported = isReported
+        self.userBusinessUseCase = userBusinessUseCase
     }
 }
 
