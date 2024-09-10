@@ -10,18 +10,30 @@ import Foundation
 final class ReportViewModel: ObservableObject {
     @Published var reportType: ReportType? = nil
     @Published var description: String = ""
+
+    private let userBusinessUseCase: UserBusinessUseCase
+    
+    init(userBusinessUseCase: UserBusinessUseCase) {
+        self.userBusinessUseCase = userBusinessUseCase
+    }
     
     func initialize() {
         reportType = nil
         description = ""
     }
     
-    func submit() {
-        if reportType != .other {
-            description = ""
-        }
+    @MainActor
+    func report(userId: Int64, opponentUserId: Int64) {
+        if reportType != .other { description = "" }
         
-        // TODO: - UseCase 연결 필요
-        //        Report(type: reportType, from: <#T##User#>, to: <#T##User#>, description: description)
+        Task {
+            do {
+                try await userBusinessUseCase.report(userId: userId,
+                                                     opponentUserId: opponentUserId,
+                                                     report: Report(content: description))
+            } catch {
+                print(error)
+            }
+        }
     }
 }

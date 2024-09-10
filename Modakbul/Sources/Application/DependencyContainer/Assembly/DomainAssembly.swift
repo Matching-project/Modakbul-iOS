@@ -17,6 +17,10 @@ struct DomainAssembly: Assembly {
         // MARK: - Registartion
         
         // MARK: - My
+        container.register(for: UserBusinessUseCase.self) { resolver in
+            DefaultUserBusinessUseCase(userManagementRepository: resolver.resolve(UserManagementRepository.self))
+        }
+        
         container.register(for: PlaceShowcaseAndReviewUseCase.self) { resolver in
             DefaultPlaceShowcaseAndReviewUseCase(placesRepository: resolver.resolve(PlacesRepository.self))
         }
@@ -38,11 +42,6 @@ struct DomainAssembly: Assembly {
         container.register(for: NotificationUseCase.self) { resolver in
             DefaultNotificationUseCase(notificationRepository: resolver.resolve(NotificationRepository.self))
         }
-        
-        
-//        container.register(for: UserBusinessUseCase.self) { resolver in
-//            <#code#>
-//        }
     }
     
     func loaded(resolver: DependencyResolver) {

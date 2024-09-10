@@ -30,6 +30,22 @@ struct PresentationAssembly: Assembly {
             ProfileEditViewModel(userRegistrationUseCase: resolver.resolve(UserRegistrationUseCase.self))
         }
         
+        container.register(for: MyCommunityRecruitingContentListViewModel.self) { resolver in
+            MyCommunityRecruitingContentListViewModel(communityUseCase: resolver.resolve(CommunityUseCase.self))
+        }
+        
+        container.register(for: MyCommunityListViewModel.self) { resolver in
+            MyCommunityListViewModel(matchingUseCase: resolver.resolve(MatchingUseCase.self))
+        }
+        
+        container.register(for: MyParticipationRequestListViewModel.self) { resolver in
+            MyParticipationRequestListViewModel(matchingUseCase: resolver.resolve(MatchingUseCase.self))
+        }
+        
+        container.register(for: BlockedListViewModel.self) { resolver in
+            BlockedListViewModel(userBusinessUseCase: resolver.resolve(UserBusinessUseCase.self))
+        }
+        
         // MARK: - Home
         container.register(for: HomeViewModel.self) { resolver in
             HomeViewModel(localMapUseCase: resolver.resolve(LocalMapUseCase.self),
@@ -59,12 +75,16 @@ struct PresentationAssembly: Assembly {
         }
         
         // MARK: - Chat
-        container.register(for: ReportViewModel.self, ReportViewModel())
+        container.register(for: ReportViewModel.self) { resolver in
+            ReportViewModel(userBusinessUseCase: resolver.resolve(UserBusinessUseCase.self))
+        }
         
         container.register(for: ChatViewModel.self, ChatViewModel())
         
         // MARK: - Common
-        container.register(for: ProfileDetailViewModel.self, ProfileDetailViewModel())
+        container.register(for: ProfileDetailViewModel.self) { resolver in
+            ProfileDetailViewModel(userBusinessUseCase: resolver.resolve(UserBusinessUseCase.self))
+        }
     }
     
     func loaded(resolver: DependencyResolver) {

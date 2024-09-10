@@ -7,17 +7,13 @@
 
 import SwiftUI
 
-struct MyParticipationRequestListView: View {
+struct MyParticipationRequestListView<Router: AppRouter>: View {
+    @EnvironmentObject private var router: Router
     @ObservedObject private var viewModel: MyParticipationRequestListViewModel
+    @AppStorage(AppStorageKey.userId) private var userId: Int = -1
     
-    private let userId: Int64
-    
-    init(
-        _ viewModel: MyParticipationRequestListViewModel,
-        userId: Int64
-    ) {
+    init(_ viewModel: MyParticipationRequestListViewModel) {
         self.viewModel = viewModel
-        self.userId = userId
     }
     
     var body: some View {
@@ -25,7 +21,7 @@ struct MyParticipationRequestListView: View {
             .navigationTitle("나의 참여 요청 목록")
             .navigationBarTitleDisplayMode(.inline)
             .task {
-                await viewModel.configureView(userId: userId)
+                await viewModel.configureView(userId: Int64(userId))
             }
     }
     
@@ -63,11 +59,14 @@ struct MyParticipationRequestListView: View {
             .listRowSeparator(.hidden)
             .padding(.vertical, 4)
             .contentShape(.rect)
+            .onTapGesture {
+                router.route(to: .placeInformationDetailView(communityRecruitingContentId: content.id, userId: Int64(userId)))
+            }
             
             Spacer()
             
             Button {
-                viewModel.cancelParticipationRequest(userId: userId, with: content.id)
+                viewModel.cancelParticipationRequest(userId: Int64(userId), with: content.id)
             } label: {
                 Text("요청 취소")
                     .font(.footnote.bold())

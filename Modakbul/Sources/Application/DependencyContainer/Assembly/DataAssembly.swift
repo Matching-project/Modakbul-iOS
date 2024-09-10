@@ -57,6 +57,13 @@ struct DataAssembly: Assembly {
             let networkService = resolver.resolve(NetworkService.self)
             return DefaultMatchingRepository(tokenStorage: tokenStorage, networkService: networkService)
         }
+        
+        // UserManagementRepository
+        container.register(for: UserManagementRepository.self) { resolver in
+            let tokenStorage = resolver.resolve(TokenStorage.self)
+            let networkService = resolver.resolve(NetworkService.self)
+            return DefaultUserManagementRepository(tokenStorage: tokenStorage, networkService: networkService)
+        }
     }
     
     func loaded(resolver: DependencyResolver) {

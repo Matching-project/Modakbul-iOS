@@ -120,6 +120,7 @@ extension MyView {
         @EnvironmentObject private var router: Router
         @Binding private var isLoggedIn: Bool
         @Binding private var user: User
+        @AppStorage(AppStorageKey.userId) private var userId: Int = -1
         
         init(_ isLoggedIn: Binding<Bool>, for user: Binding<User>) {
             self._isLoggedIn = isLoggedIn
@@ -129,23 +130,32 @@ extension MyView {
         var body: some View {
             List {
                 Section("이용정보") {
-//                    button("나의 모집글", destination: )
-//                    button("참여 모집 내역", destination: )
-//                    button("나의 참여 요청", destination: )
-//                    button("카페 제보/리뷰", destination: .placeShowcaseView)
+                    button("나의 모집글", destination: .myCommunityRecruitingContentListView)
+                    button("참여 모임 내역", destination: .myCommunityListView)
+                    button("나의 참여 요청", destination: .myParticipationRequestListView)
+                    button("카페 제보/리뷰", destination: .placeShowcaseView(userId: Int64(userId)))
                 }
                 .listRowSeparator(.hidden, edges: .top)
                 
                 Section("차단/신고") {
-                    // button("차단 목록", destination: )
-                    // button("신고 내역", destination: )
+                    button("차단 목록", destination: .blockedListView)
+                    button("신고 내역", destination: .reportListView)
                 }
                 .listRowSeparator(.hidden, edges: .top)
                 
                 Section {
                     button("알림 설정", destination: .notificationSettingsView)
                     // button("약관 및 정책", destination: )
-                    // button("탈퇴하기", destination: )
+                    
+                    // TODO: - 탈퇴하기 뷰를 따로 추가할지 건의함
+//                    button("탈퇴하기", destination: Route)
+//                    router.alert(for: .exitUser(nickname: user.nickname), actions: [
+//                        .cancelAction("남아있기") {},
+//                        .defaultAction("그래도 탈퇴하기") {
+//                            // TODO: - 탈퇴 처리
+//                        }
+//                    ])
+                    
                     Text("문의처: modakbul@gmail.com")
                 }
                 .listRowSeparator(.hidden)
@@ -176,5 +186,11 @@ extension MyView {
                 ])
             }
         }
+    }
+}
+
+struct MyView_Preview: PreviewProvider {
+    static var previews: some View {
+        router.view(to: .myView)
     }
 }
