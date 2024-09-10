@@ -12,7 +12,7 @@ protocol UserRegistrationUseCase {
     func login(_ token: Data, by provider: AuthenticationProvider, fcm: String) async throws -> Bool
     
     /// 로그아웃
-    func logout(userId: Int64) async
+    func logout(userId: Int64) async throws
     
     /// 한글, 영문, 숫자 2~15자 내 닉네임인지 검사
     func validateInLocal(_ nickname: String) -> Bool
@@ -42,7 +42,7 @@ extension DefaultUserRegistrationUseCase: UserRegistrationUseCase {
         return await socialLoginRepository.login(credential, fcm: fcm)
     }
     
-    func logout(userId: Int64) async {
+    func logout(userId: Int64) async throws {
         //
     }
     
