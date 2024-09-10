@@ -10,7 +10,7 @@ import SwiftUI
 struct PlacesListArea<Router: AppRouter>: View {
     @EnvironmentObject private var router: Router
     @ObservedObject private var viewModel: HomeViewModel
-    @AppStorage(AppStorageKey.userId) private var userId: Int?
+    @AppStorage(AppStorageKey.userId) private var userId: Int = Constants.loggedOutUserId
     
     init(_ viewModel: HomeViewModel) {
         self.viewModel = viewModel
@@ -34,8 +34,8 @@ struct PlacesListArea<Router: AppRouter>: View {
                     .frame(alignment: .top)
                 
                 Button {
-                    guard let userId = userId else {
-                        return router.route(to: .loginView)
+                    if userId == Constants.loggedOutUserId {
+                        router.route(to: .loginView)
                     }
                     router.route(to: .notificationView(userId: Int64(userId)))
                 } label: {

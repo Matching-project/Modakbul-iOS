@@ -10,7 +10,7 @@ import SwiftUI
 struct ProfileDetailView<Router: AppRouter>: View {
     @EnvironmentObject private var router: Router
     @ObservedObject private var vm: ProfileDetailViewModel
-    @AppStorage(AppStorageKey.userId) private var userId: Int = -1
+    @AppStorage(AppStorageKey.userId) private var userId: Int = Constants.loggedOutUserId
     
     private let opponentUserId: Int64
     

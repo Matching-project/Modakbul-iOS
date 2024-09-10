@@ -11,7 +11,7 @@ import MapKit
 struct MapArea<Router: AppRouter>: View {
     @EnvironmentObject private var router: Router
     @ObservedObject private var viewModel: HomeViewModel
-    @AppStorage(AppStorageKey.userId) private var userId: Int?
+    @AppStorage(AppStorageKey.userId) private var userId: Int = Constants.loggedOutUserId
     
     init(_ viewModel: HomeViewModel) {
         self.viewModel = viewModel
@@ -76,7 +76,7 @@ struct MapArea<Router: AppRouter>: View {
                     .frame(alignment: .top)
                 
                 Button {
-                    guard let userId = userId else {
+                    if userId == Constants.loggedOutUserId {
                         return router.route(to: .loginView)
                     }
                     router.route(to: .notificationView(userId: Int64(userId)))

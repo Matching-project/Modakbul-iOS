@@ -13,7 +13,7 @@ struct ReportView<Router: AppRouter>: View {
     @EnvironmentObject private var router: Router
     @ObservedObject private var vm: ReportViewModel
     @Binding private var isReported: Bool
-    @AppStorage(AppStorageKey.userId) private var userId: Int = -1
+    @AppStorage(AppStorageKey.userId) private var userId: Int = Constants.loggedOutUserId
     
     private let opponentUserId: Int64
     

@@ -10,24 +10,22 @@ import SwiftUI
 struct MyView<Router: AppRouter>: View {
     @EnvironmentObject private var router: Router
     @ObservedObject private var vm: MyViewModel
-    @State private var isLoggedIn: Bool
+    @AppStorage(AppStorageKey.userId) private var userId: Int = Constants.loggedOutUserId
     
-    // TODO: - 로그인 상태 AppStorage로 관리 필요
-    init(myViewModel: MyViewModel, isLoggedIn: Bool = false) {
+    init(_ myViewModel: MyViewModel) {
         self.vm = myViewModel
-        self.isLoggedIn = isLoggedIn
     }
     
     var body: some View {
         VStack(alignment: .leading) {
-            if isLoggedIn {
+            if userId == Constants.loggedOutUserId {
+                HeaderWhenLoggedOut()
+            } else {
                 HeaderWhenLoggedIn($vm.user)
                     .padding(.bottom, -10)
-            } else {
-                HeaderWhenLoggedOut()
             }
             
-            Cell($isLoggedIn, for: $vm.user)
+            Cell(for: $vm.user)
         }
         .padding(.horizontal, Constants.horizontal)
     }
@@ -118,12 +116,10 @@ extension MyView {
     
     struct Cell: View {
         @EnvironmentObject private var router: Router
-        @Binding private var isLoggedIn: Bool
         @Binding private var user: User
-        @AppStorage(AppStorageKey.userId) private var userId: Int = -1
+        @AppStorage(AppStorageKey.userId) private var userId: Int = Constants.loggedOutUserId
         
-        init(_ isLoggedIn: Binding<Bool>, for user: Binding<User>) {
-            self._isLoggedIn = isLoggedIn
+        init(for user: Binding<User>) {
             self._user = user
         }
         
@@ -173,9 +169,7 @@ extension MyView {
         }
         
         private func handleButtonTap(for destination: Route) {
-            if isLoggedIn {
-                router.route(to: destination)
-            } else {
+            if userId == Constants.loggedOutUserId {
                 router.alert(for: .login, actions: [
                     .cancelAction("취소") {
                         router.dismiss()
@@ -184,6 +178,8 @@ extension MyView {
                         router.route(to: .loginView)
                     }
                 ])
+            } else {
+                router.route(to: destination)
             }
         }
     }
