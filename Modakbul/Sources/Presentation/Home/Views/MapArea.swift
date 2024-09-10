@@ -124,9 +124,3 @@ struct MapArea<Router: AppRouter>: View {
         .padding()
     }
 }
-
-struct HomeView_Preview2: PreviewProvider {
-    static var previews: some View {
-        router.view(to: .contentView)
-    }
-}

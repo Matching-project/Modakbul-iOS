@@ -66,7 +66,7 @@ extension ParticipationRequestListViewModel {
                 try await matchingUseCase.acceptMatchRequest(userId: userId, with: matchingId)
                 indexPerformSubject.send(matchingId)
             } catch {
-                // TODO: Error Handling
+                print(error)
             }
         }
     }
@@ -78,7 +78,7 @@ extension ParticipationRequestListViewModel {
                 try await matchingUseCase.rejectMatchRequest(userId: userId, with: matchingId)
                 indexPerformSubject.send(matchingId)
             } catch {
-                
+                print(error)
             }
         }
     }
