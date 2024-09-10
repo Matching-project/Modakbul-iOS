@@ -9,10 +9,27 @@ import Foundation
 
 final class MyViewModel: ObservableObject {
     @Published var user: User
-    //    private let userBusinessUseCase: UserBusinessUseCase
     
-    init(user: User = PreviewHelper.shared.users.first ?? User()) {
+    private let userRegistrationUseCase: UserRegistrationUseCase
+    
+    init(user: User = User(),
+         userRegistrationUseCase: UserRegistrationUseCase
+    ) {
         self.user = user
-        //        self.userBusinessUseCase = userBusinessUseCase
+        self.userRegistrationUseCase = userRegistrationUseCase
+    }
+}
+
+// MARK: - Interfaces for userRegistrationUseCase
+extension MyViewModel {
+    @MainActor
+    func logout(userId: Int64) {
+        Task {
+            do {
+                try await userRegistrationUseCase.logout(userId: userId)
+            } catch {
+                print(error)
+            }
+        }
     }
 }

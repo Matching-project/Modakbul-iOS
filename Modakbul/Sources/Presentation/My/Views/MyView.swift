@@ -21,7 +21,7 @@ struct MyView<Router: AppRouter>: View {
             if userId == Constants.loggedOutUserId {
                 HeaderWhenLoggedOut()
             } else {
-                HeaderWhenLoggedIn($vm.user)
+                HeaderWhenLoggedIn(vm)
                     .padding(.bottom, -10)
             }
             
@@ -34,24 +34,25 @@ struct MyView<Router: AppRouter>: View {
 extension MyView {
     struct HeaderWhenLoggedIn: View {
         @EnvironmentObject private var router: Router
-        @Binding private var user: User
+        @ObservedObject private var vm: MyViewModel
+        @AppStorage(AppStorageKey.userId) private var userId: Int = Constants.loggedOutUserId
         
-        init(_ user: Binding<User>) {
-            self._user = user
+        init(_ vm: MyViewModel) {
+            self.vm = vm
         }
         
         var body: some View {
             HStack {
-                AsyncImageView(url: user.imageURL)
+                AsyncImageView(url: vm.user.imageURL)
                     .clipShape(.circle)
                     .frame(maxHeight: 128)
                 
                 VStack(alignment: .leading) {
                     // MARK: - 한글 닉네임 10자까지 가능(iPhone 15 Pro)
-                    Text(user.nickname + "님, 반가워요!")
+                    Text(vm.user.nickname + "님, 반가워요!")
                         .bold()
                     
-                    Text(user.categoriesOfInterest.description + " · " + user.job.description + " · " + user.birth.toAge())
+                    Text(vm.user.categoriesOfInterest.description + " · " + vm.user.job.description + " · " + vm.user.birth.toAge())
                         .font(.subheadline)
                     
                     HStack {
@@ -83,7 +84,7 @@ extension MyView {
                     router.dismiss()
                 },
                 .defaultAction("로그아웃") {
-                    // TODO: -
+                    vm.logout(userId: Int64(userId))
                 }
             ])
         }
@@ -141,6 +142,7 @@ extension MyView {
                 
                 Section {
                     button("알림 설정", destination: .notificationSettingsView)
+                    // TODO: - 약관 및 정책 노션 링크 만들기
                     // button("약관 및 정책", destination: )
                     
                     // TODO: - 탈퇴하기 뷰를 따로 추가할지 건의함
