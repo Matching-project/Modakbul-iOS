@@ -13,6 +13,8 @@ struct RequiredTermView<Router: AppRouter>: View {
     @State private var locationChecked: Bool = false
     @State private var privacyChecked: Bool = false
     
+    let provider: AuthenticationProvider
+    
     var body: some View {
         VStack {
             LazyVStack(alignment: .leading,
@@ -53,7 +55,7 @@ struct RequiredTermView<Router: AppRouter>: View {
            .padding(.horizontal, 30)
             
             FlatButton("확인") {
-                router.route(to: .registrationView)
+                router.route(to: .registrationView(provider: provider))
                 router.dismiss()
             }
             .disabled(!allChecked)
@@ -84,11 +86,5 @@ extension RequiredTermView {
         case .location: return "https:/google.co.kr"
         case .privacy: return "https://daum.net"
         }
-    }
-}
-
-struct RequiredTermView_Preview: PreviewProvider {
-    static var previews: some View {
-        router.view(to: .requiredTermView)
     }
 }

@@ -25,8 +25,12 @@ struct RegistrationView<Router: AppRouter>: View {
         view()
             .padding(.horizontal, Constants.horizontal)
             .onDisappear {
-                userId = Int(vm.submit(provider, fcm: <#String#>))
                 vm.initialize()
+            }
+            .onReceive(vm.$id) { id in
+                guard let id = id else { return }
+                userId = Int(id)
+                router.popToRoot()
             }
     }
 }
@@ -114,14 +118,14 @@ extension RegistrationView {
                 Spacer()
                 Spacer()
                 
-                FlatButton(vm.currentField.buttonLabel(image: vm.image)) {
+                FlatButton(vm.isWaiting ? "처리 중" : vm.currentField.buttonLabel(image: vm.image)) {
                     if vm.currentField != .image {
                         vm.proceedToNextField()
                     } else {
-                        router.popToRoot()
+                        vm.submit(provider)
                     }
                 }
-                .disabled(!vm.isNextButtonEnabled)
+                .disabled(!vm.isNextButtonEnabled || vm.isWaiting)
             }
         }
     }
@@ -140,11 +144,5 @@ extension RegistrationView {
         }
         .padding(.top, 50)
         .frame(maxWidth: .infinity, alignment: .leading)
-    }
-}
-
-struct RegistrationView_Preview: PreviewProvider {
-    static var previews: some View {
-        router.view(to: .registrationView)
     }
 }

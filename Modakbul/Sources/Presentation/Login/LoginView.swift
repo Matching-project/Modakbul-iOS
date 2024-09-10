@@ -42,8 +42,7 @@ struct LoginView<Router: AppRouter>: View {
         SignInKakaoButton { result in
             switch result {
             case .success(let token):
-                // TODO: FCM 전달
-                loginViewModel.loginWithKakaoTalk(token, fcm: "")
+                loginViewModel.loginWithKakaoTalk(token)
                 router.dismiss()
             case .failure(let error):
                 print(error)
@@ -59,8 +58,7 @@ struct LoginView<Router: AppRouter>: View {
         } onCompletion: { result in
             switch result {
             case .success(let auth):
-                // TODO: FCM 전달
-                loginViewModel.loginWithApple(auth.credential, fcm: "")
+                loginViewModel.loginWithApple(auth.credential)
             case .failure(let error):
                 print(error)
             }

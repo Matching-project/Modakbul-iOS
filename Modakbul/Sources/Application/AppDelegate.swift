@@ -10,11 +10,9 @@ import FirebaseCore
 import FirebaseMessaging
 
 // MARK: - Firebase Quickstart Samples for iOS by Google: https://github.com/firebase/quickstart-ios/blob/14c812998f4fea0338a09bfec877470a1358ff80/messaging/MessagingExampleSwift/AppDelegate.swift#L116-L159
-final class AppDelegate: UIResponder, UIApplicationDelegate {
-    // TODO: - 백엔드 내부에서 id 발급 예정
-//    let gcmMessageIDKey = "gcm.message_id"
+final class AppDelegate: UIResponder, UIApplicationDelegate, ObservableObject {
+    private let fcmManager = FcmManager.instance
     
-    // MARK: - FCM 초기화
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
@@ -87,6 +85,9 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
 // MARK: - FCM 토큰 수신
 extension AppDelegate: MessagingDelegate {
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
+        guard let fcmToken = fcmToken else { return }
+        fcmManager.updateToken(fcmToken)
+        
         Messaging.messaging().token { token, error in
             if let error = error {
                 print("Error fetching FCM registration token: \(error)")
@@ -95,7 +96,7 @@ extension AppDelegate: MessagingDelegate {
             }
         }
         
-        let dataDict: [String: String] = ["token": fcmToken ?? ""]
+        let dataDict: [String: String] = ["token": fcmToken]
         NotificationCenter.default.post(
             name: Notification.Name("FCMToken"),
             object: nil,

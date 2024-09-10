@@ -10,10 +10,12 @@ import Combine
 
 final class RegistrationViewModel: ObservableObject {
     private let userRegistrationUseCase: UserRegistrationUseCase
+    private let fcmManager = FcmManager.instance
     private let allFields: [RegisterField] = RegisterField.allCases
     private var fieldIndex: Int = 0
 
     // MARK: Data From User
+    @Published var id: Int64?
     @Published var email = ""
     @Published var name = ""
     @Published var nickname = ""
@@ -26,7 +28,11 @@ final class RegistrationViewModel: ObservableObject {
     // MARK: For Binding
     @Published var currentField: RegisterField = .name
     @Published var integrityResult: NicknameIntegrityType?
+    @Published var isWaiting: Bool = false
     
+    private var fcm: String?
+    
+    private let userIdSubject = PassthroughSubject<Int64, Never>()
     private let integrityResultSubject = PassthroughSubject<NicknameIntegrityType, Never>()
     private var cancellables = Set<AnyCancellable>()
     
@@ -52,10 +58,24 @@ final class RegistrationViewModel: ObservableObject {
     }
     
     private func subscribe() {
+        userIdSubject
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] id in
+                self?.id = id
+                self?.isWaiting = false
+            }
+            .store(in: &cancellables)
+        
         integrityResultSubject
             .receive(on: DispatchQueue.main)
             .sink { [weak self] result in
                 self?.integrityResult = result
+            }
+            .store(in: &cancellables)
+        
+        fcmManager.$fcmToken
+            .sink { [weak self] fcmToken in
+                self?.fcm = fcmToken
             }
             .store(in: &cancellables)
     }
@@ -80,8 +100,9 @@ final class RegistrationViewModel: ObservableObject {
     }
     
     @MainActor
-    func submit(_ provider: AuthenticationProvider, fcm: String) -> Int64 {
-        // TODO: Provider 수정할 것
+    func submit(_ provider: AuthenticationProvider) {
+        guard let fcm = fcm else { return }
+        
         let user = User(name: name,
                         nickname: nickname,
                         gender: gender ?? .unknown,
@@ -90,9 +111,12 @@ final class RegistrationViewModel: ObservableObject {
                         isGenderVisible: false,
                         birth: birth.toDate())
         
+        isWaiting.toggle()
+        
         Task {
             do {
-                return try await userRegistrationUseCase.register(user, encoded: image, provider: provider, fcm: <#FCM TOKEN#>)
+                let userId = try await userRegistrationUseCase.register(user, encoded: image, provider: provider, fcm: fcm)
+                userIdSubject.send(userId)
             } catch {
                 print(error)
             }
