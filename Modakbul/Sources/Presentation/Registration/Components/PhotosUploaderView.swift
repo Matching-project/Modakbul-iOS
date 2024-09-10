@@ -51,13 +51,6 @@ struct PhotosUploaderView: View {
                             .getPhoto(selectedPhoto: $selectedPhoto, image: $image)
                     }
                 }
-                
-                // TODO: - 오른쪽 하단 편집 아이콘 회원가입시에도 제거할지?
-                //  .overlay(alignment: .bottomTrailing) {
-                //      Image(.photoUploadSelection)
-                //          .resizable()
-                //          .frame(maxWidth: 50, maxHeight: 50)
-                //  }
             }
     }
 }

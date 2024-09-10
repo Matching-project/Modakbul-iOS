@@ -10,15 +10,22 @@ import SwiftUI
 struct RegistrationView<Router: AppRouter>: View {
     @EnvironmentObject private var router: Router
     @ObservedObject private var vm: RegistrationViewModel
+    @AppStorage(AppStorageKey.userId) private var userId: Int = Constants.loggedOutUserId
     
-    init(registrationViewModel: RegistrationViewModel) {
+    private let provider: AuthenticationProvider
+    
+    init(
+        registrationViewModel: RegistrationViewModel,
+        provider: AuthenticationProvider
+    ) {
         self.vm = registrationViewModel
+        self.provider = provider
     }
     var body: some View {
         view()
             .padding(.horizontal, Constants.horizontal)
             .onDisappear {
-                vm.submit()
+                userId = Int(vm.submit(provider, fcm: <#String#>))
                 vm.initialize()
             }
     }
@@ -36,14 +43,14 @@ extension RegistrationView {
             contentStackView(isZStack: true) {
                 GeometryReader { geometry in
                     NicknameTextField(nickname: $vm.nickname,
-                                      isOverlapped: $vm.isOverlappedNickname,
+                                      integrityResult: $vm.integrityResult,
                                       disabledCondition: vm.isPassedNicknameRule()
                     ) {
                         vm.checkNicknameForOverlap()
                     }
                     .position(x: geometry.size.width / 2, y: geometry.size.height / 2)
                     
-                    NicknameAlert(isOverlapped: $vm.isOverlappedNickname)
+                    NicknameAlert(integrityResult: $vm.integrityResult)
                         .position(x: geometry.size.width / 2 - 70, y: geometry.size.height / 2 + 60)
                 }
             }
