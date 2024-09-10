@@ -87,19 +87,23 @@ final class PlaceInformationDetailViewModel: ObservableObject {
 
 // MARK: Interfaces for CommunityUseCase
 extension PlaceInformationDetailViewModel {
-    func configureView(_ communityRecruitingContentId: Int64, _ userId: Int64) async throws {
-        self.userId = userId
-        
-        let communityRecruitingContent = try await communityUseCase.readCommunityRecruitingContentDetail(with: communityRecruitingContentId)
-        communityRecruitingContentSubject.send(communityRecruitingContent)
-        
-        // 모집글 작성자의 id와 사용자의 id가 같으면 role은 exponent, 다르면 사용자 역할 확인 작업 전개
-        guard communityRecruitingContent.writer.id != userId else {
-            return userRoleSubject.send((.exponent, nil, .cancel))
+    func configureView(_ communityRecruitingContentId: Int64, _ userId: Int64) async {
+        do {
+            self.userId = userId
+            
+            let communityRecruitingContent = try await communityUseCase.readCommunityRecruitingContentDetail(with: communityRecruitingContentId)
+            communityRecruitingContentSubject.send(communityRecruitingContent)
+            
+            // 모집글 작성자의 id와 사용자의 id가 같으면 role은 exponent, 다르면 사용자 역할 확인 작업 전개
+            guard communityRecruitingContent.writer.id != userId else {
+                return userRoleSubject.send((.exponent, nil, .cancel))
+            }
+            
+            let (role, matchingId, state) = try await matchingUseCase.checkUserRole(userId: userId, with: communityRecruitingContentId)
+            userRoleSubject.send((role, matchingId, state))
+        } catch {
+            userRoleSubject.send((UserRole.nonParticipant, nil, .cancel))
         }
-        
-        let (role, matchingId, state) = try await matchingUseCase.checkUserRole(userId: userId, with: communityRecruitingContentId)
-        userRoleSubject.send((role, matchingId, state))
     }
     
     func completeCommunityRecruiting() {

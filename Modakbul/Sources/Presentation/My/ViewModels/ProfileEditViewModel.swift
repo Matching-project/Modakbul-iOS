@@ -6,9 +6,11 @@
 //
 
 import Foundation
+import Combine
 
 final class ProfileEditViewModel: ObservableObject {
     private let userRegistrationUseCase: UserRegistrationUseCase
+    private let userBusinessUseCase: UserBusinessUseCase
 
     // MARK: - Original Data
     @Published var user: User = User()
@@ -23,13 +25,35 @@ final class ProfileEditViewModel: ObservableObject {
     @Published var categoriesOfInterest: Set<Category> = []
     
     // MARK: - For Binding
-    @Published var isOverlappedNickname: Bool?
+    @Published var integrityResult: NicknameIntegrityType?
+    
+    private let nicknameIntegritySubject = PassthroughSubject<NicknameIntegrityType, Never>()
+    private var cancellables = Set<AnyCancellable>()
 
-    // TODO: - 임시 mock 데이터 주입 수정 필요
     init(
-        userRegistrationUseCase: UserRegistrationUseCase
+        userRegistrationUseCase: UserRegistrationUseCase,
+        userBusinessUseCase: UserBusinessUseCase
     ) {
         self.userRegistrationUseCase = userRegistrationUseCase
+        self.userBusinessUseCase = userBusinessUseCase
+        subscribe()
+    }
+    
+    private func subscribe() {
+        nicknameIntegritySubject
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] result in
+                self?.integrityResult = result
+            }
+            .store(in: &cancellables)
+        
+        $nickname
+            .removeDuplicates()
+            .debounce(for: .seconds(0.8), scheduler: RunLoop.main)
+            .sink { [weak self] text in
+                self?.integrityResult = nil
+            }
+            .store(in: &cancellables)
     }
     
     func isPassedNicknameRule() -> Bool {
@@ -38,36 +62,23 @@ final class ProfileEditViewModel: ObservableObject {
     
     @MainActor
     func checkNicknameForOverlap() {
-        // TODO: - 로직 완성할 것
         Task {
             do {
                 let status = try await userRegistrationUseCase.validateWithServer(nickname)
-                switch status {
-                case .normal:
-                    // TODO: 정상
-                    break
-                case .overlapped:
-                    // TODO: 중복된 닉네임
-                    break
-                case .abused:
-                    // TODO: 부적절한 닉네임
-                    break
-                }
+                nicknameIntegritySubject.send(status)
             } catch {
-                
+                print(error)
             }
         }
     }
     
     func submit() {
-        // TODO: - 서버로 프로필
-
-        // if nickname != user.nickname && nickname != "" {
-        //     user.nickname = nickname
-        // }
-        
-        // user.isGenderVisible = isGenderVisible
-        // user.job = job!
-        // user.categoriesOfInterest = categoriesOfInterest
+        Task {
+            do {
+                try await userBusinessUseCase.updateProfile(user: user, image: image)
+            } catch {
+                print(error)
+            }
+        }
     }
 }

@@ -133,7 +133,7 @@ struct PlaceInformationDetailMakingView<Router: AppRouter>: View {
             
             // TODO: - padding 값 설정 필요
             FlatButton(communityRecruitingContent == nil ? "게시하기" : "수정하기") {
-                vm.submit()
+                vm.submit(communityRecruitingContent?.id, userId: Int64(userId))
                 vm.initialize()
                 router.dismiss()
             }
@@ -141,8 +141,7 @@ struct PlaceInformationDetailMakingView<Router: AppRouter>: View {
             .padding(.vertical, 5)
             
         }
-        // TODO: - 최초 게시 여부에 따라 모집글 작성 / 모집글 수정으로 분기 필요
-        .navigationModifier(title: "모집글 작성") {
+        .navigationModifier(title: communityRecruitingContent == nil ? "모집글 작성" : "모집글 수정") {
             vm.initialize()
             router.dismiss()
         }

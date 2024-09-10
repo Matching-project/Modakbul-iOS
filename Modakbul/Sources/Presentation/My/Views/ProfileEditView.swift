@@ -10,9 +10,15 @@ import SwiftUI
 struct ProfileEditView<Router: AppRouter>: View {
     @EnvironmentObject private var router: Router
     @ObservedObject private var vm: ProfileEditViewModel
+    
+    private let user: User
 
-    init(profileEditViewModel: ProfileEditViewModel) {
+    init(
+        profileEditViewModel: ProfileEditViewModel,
+        user: User
+    ) {
         self.vm = profileEditViewModel
+        self.user = user
     }
     
     var body: some View {
@@ -25,6 +31,9 @@ struct ProfileEditView<Router: AppRouter>: View {
                 categoriesOfInterest
             }
             .padding(.horizontal, Constants.horizontal)
+        }
+        .onAppear {
+            vm.user = user
         }
         
         FlatButton("저장") {
@@ -42,12 +51,12 @@ struct ProfileEditView<Router: AppRouter>: View {
                 .bold()
             
             NicknameTextField(nickname: $vm.nickname,
-                              isOverlapped: $vm.isOverlappedNickname,
+                              integrityResult: $vm.integrityResult,
                               disabledCondition: vm.isPassedNicknameRule()) {
                 vm.checkNicknameForOverlap()
             }
             
-            NicknameAlert(isOverlapped: $vm.isOverlappedNickname)
+            NicknameAlert(integrityResult: $vm.integrityResult)
                 .frame(maxWidth: .infinity, alignment: .leading)
         }
     }
