@@ -160,9 +160,3 @@ struct PlaceInformationDetailMakingView<Router: AppRouter>: View {
         }
     }
 }
-
-struct PlaceInformationDetailMakingView_Preview: PreviewProvider {
-    static var previews: some View {
-        router.view(to: .placeInformationDetailMakingView)
-    }
-}

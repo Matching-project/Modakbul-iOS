@@ -12,7 +12,7 @@ struct ProfileEditView<Router: AppRouter>: View {
     @ObservedObject private var vm: ProfileEditViewModel
     
     private let user: User
-
+    
     init(
         profileEditViewModel: ProfileEditViewModel,
         user: User
@@ -107,17 +107,6 @@ struct ProfileEditView<Router: AppRouter>: View {
             MultipleSelectionButton<Category, DefaultMultipleSelectionButton>(selectedItems: $vm.categoriesOfInterest) { (item, selectedItem) in
                 DefaultMultipleSelectionButton(item: item, selectedItems: selectedItem)
             }
-        }
-    }
-}
-
-struct ProfileEditView_Preview: PreviewProvider {
-    static var previews: some View {
-        NavigationStack {
-            router.view(to: .profileEditView)
-                .navigationModifier(title: "") { 
-                    router.dismiss()
-                }
         }
     }
 }
