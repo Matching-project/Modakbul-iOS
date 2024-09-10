@@ -190,7 +190,6 @@ extension Endpoint: TargetType {
             return .requestParameters(parameters: ["provider": "\(provider)"], encoding: URLEncoding.queryString)
         case .validateNicknameIntegrity(let nickname):
             return .requestParameters(parameters: ["nickname": "\(nickname)"], encoding: URLEncoding.queryString)
-        // TODO: - image 파라미터 빼고 user.imageURL을 개선하기
         case .register(let user, let image, _, let fcm):
             var formData = [MultipartFormData]()
 
