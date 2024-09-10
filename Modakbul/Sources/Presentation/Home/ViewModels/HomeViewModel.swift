@@ -102,7 +102,7 @@ extension HomeViewModel {
     }
 }
 
-// MARK: - Interface for NotificationUseCase
+// MARK: - Interfaces for NotificationUseCase
 extension HomeViewModel {
     func fetchUnreadNotificationCount(userId: Int?) async {
         guard let userId = userId else { return }

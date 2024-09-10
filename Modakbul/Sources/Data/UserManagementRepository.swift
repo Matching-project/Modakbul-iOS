@@ -19,15 +19,15 @@ protocol UserManagementRepository: TokenRefreshable {
 }
 
 final class DefaultUserManagementRepository {
-    let networkService: NetworkService
     let tokenStorage: TokenStorage
+    let networkService: NetworkService
     
     init(
-        networkService: NetworkService,
-        tokenStorage: TokenStorage
+        tokenStorage: TokenStorage,
+        networkService: NetworkService
     ) {
-        self.networkService = networkService
         self.tokenStorage = tokenStorage
+        self.networkService = networkService
     }
 }
 

@@ -27,6 +27,7 @@ struct PlaceInformationDetailView<Router: AppRouter>: View {
     
     var body: some View {
         content(viewModel.communityRecruitingContent)
+        // TODO: - 다른 뷰들의 .task는 error를 viewModel에서 처리하는데 여기선 뷰에서 처리하는 이유?
             .task {
                 do {
                     try await viewModel.configureView(communityRecruitingContentId, userId)

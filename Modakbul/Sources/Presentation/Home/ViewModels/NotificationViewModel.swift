@@ -44,7 +44,7 @@ final class NotificationViewModel: ObservableObject {
     }
 }
 
-// MARK: - Interface for NotificationUseCase
+// MARK: - Interfaces for NotificationUseCase
 extension NotificationViewModel {
     private func removeNotifications(userId: Int64, _ notificationIds: [Int64]) {
         Task {

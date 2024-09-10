@@ -7,17 +7,13 @@
 
 import SwiftUI
 
-struct ReportListView: View {
+struct ReportListView<Router: AppRouter>: View {
+    @EnvironmentObject private var router: Router
     @ObservedObject private var viewModel: ReportListViewModel
+    @AppStorage(AppStorageKey.userId) private var userId: Int = -1
     
-    private let userId: Int64
-    
-    init(
-        _ viewModel: ReportListViewModel,
-        userId: Int64
-    ) {
+    init(_ viewModel: ReportListViewModel) {
         self.viewModel = viewModel
-        self.userId = userId
     }
     
     var body: some View {
@@ -25,7 +21,7 @@ struct ReportListView: View {
             .navigationTitle("신고 목록")
             .navigationBarTitleDisplayMode(.inline)
             .task {
-                await viewModel.configureView(userId: userId)
+                await viewModel.configureView(userId: Int64(userId))
             }
     }
     
@@ -59,6 +55,9 @@ struct ReportListView: View {
                     .foregroundStyle(.accent)
             }
             .lineLimit(1)
+            .onTapGesture {
+                router.route(to: .profileDetailView(opponentUserId: user.id))
+            }
             
             Spacer()
             

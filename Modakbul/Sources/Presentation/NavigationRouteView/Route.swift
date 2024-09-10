@@ -36,6 +36,11 @@ enum Route: Routable {
     case registrationView
     case myView             // MARK: - My
     case profileEditView
+    case myCommunityRecruitingContentListView
+    case myCommunityListView
+    case myParticipationRequestListView
+    case blockedListView
+    case reportListView
     case placeShowcaseView(userId: Int64)
     case placeReviewView(place: Place?)
     case notificationSettingsView
@@ -49,8 +54,8 @@ enum Route: Routable {
     case notificationView(userId: Int64)
     case chatView           // MARK: - Chat
     case chatRoomListView
-    case reportView(result: Binding<Bool>)
-    case profileDetailView  // MARK: - Common
+    case reportView(opponentUserId: Int64, isReported: Binding<Bool>)
+    case profileDetailView(opponentUserId: Int64)  // opponentUserId: opponentUserId, MARK: - Common
     
     var presentingType: PresentingType {
         switch self {
@@ -63,6 +68,11 @@ enum Route: Routable {
         case .placeShowcaseView: return .push
         case .placeReviewView: return .push
         case .profileEditView: return .push
+        case .myCommunityRecruitingContentListView: return .push
+        case .myCommunityListView: return .push
+        case .myParticipationRequestListView: return .push
+        case .blockedListView: return .push
+        case .reportListView: return .push
         case .notificationSettingsView: return .push
         case .homeView: return .push                                // MARK: - Home
         case .mapArea: return .push
@@ -75,7 +85,7 @@ enum Route: Routable {
         case .chatView: return .push                                // MARK: - Chat
         case .chatRoomListView: return .push
         case .reportView: return .push
-        case .profileDetailView: return .push                       // MARK: - Common
+        case .profileDetailView: return .push                       // opponentUserId: opponentUserId, MARK: - Common
         }
     }
     
@@ -99,8 +109,18 @@ enum Route: Routable {
             PlaceReviewView(router.resolver.resolve(PlaceReviewViewModel.self), place: place)
         case .profileEditView:
             ProfileEditView<Router>(profileEditViewModel: router.resolver.resolve(ProfileEditViewModel.self))
+        case .myCommunityRecruitingContentListView:
+            MyCommunityRecruitingContentListView<Router>(router.resolver.resolve(MyCommunityRecruitingContentListViewModel.self))
+        case .myCommunityListView:
+            MyCommunityListView<Router>(router.resolver.resolve(MyCommunityListViewModel.self))
+        case .myParticipationRequestListView:
+            MyParticipationRequestListView<Router>(router.resolver.resolve(MyParticipationRequestListViewModel.self))
+        case .blockedListView:
+            BlockedListView<Router>(router.resolver.resolve(BlockedListViewModel.self))
+        case .reportListView:
+            ReportListView<Router>(router.resolver.resolve(ReportListViewModel.self))
         case .notificationSettingsView:
-            NotificationSettingsView<Router>(notificationSettingsViewModel: router.resolver.resolve(NotificationSettingsViewModel.self))
+            NotificationSettingsView<Router>()
         case .homeView:         // MARK: - Home
             HomeView<Router>(router.resolver.resolve(HomeViewModel.self))
         case .mapArea:
@@ -121,10 +141,10 @@ enum Route: Routable {
             ChatView<Router>(router.resolver.resolve(ChatViewModel.self))
         case .chatRoomListView:
             ChatRoomListView()
-        case .reportView(let isReported):
-            ReportView<Router>(router.resolver.resolve(ReportViewModel.self), isReported: isReported)
-        case .profileDetailView:
-            ProfileDetailView<Router>(profileDetailViewModel: router.resolver.resolve(ProfileDetailViewModel.self))
+        case .reportView(let opponentUserId, let isReported):
+            ReportView<Router>(router.resolver.resolve(ReportViewModel.self), opponentUserId: opponentUserId, isReported: isReported)
+        case .profileDetailView(let opponentUserId):// MARK: - Common
+            ProfileDetailView<Router>(router.resolver.resolve(ProfileDetailViewModel.self), opponentUserId: opponentUserId)
         }
     }
 }

@@ -10,9 +10,13 @@ import SwiftUI
 struct ProfileDetailView<Router: AppRouter>: View {
     @EnvironmentObject private var router: Router
     @ObservedObject private var vm: ProfileDetailViewModel
+    @AppStorage(AppStorageKey.userId) private var userId: Int = -1
     
-    init(profileDetailViewModel: ProfileDetailViewModel) {
+    private let opponentUserId: Int64
+    
+    init(_ profileDetailViewModel: ProfileDetailViewModel, opponentUserId: Int64) {
         self.vm = profileDetailViewModel
+        self.opponentUserId = opponentUserId
     }
     
     var body: some View {
@@ -35,49 +39,67 @@ struct ProfileDetailView<Router: AppRouter>: View {
         } menuButtonAction: {
             menuButtonAction
         }
+        .task {
+            await vm.configureView(userId: Int64(userId), opponentUserId: opponentUserId)
+        }
     }
     
     private var menuButtonAction: some View {
         Group {
-            // TODO: - 차단하기 / 차단해제 토글 필요
             if vm.isBlocked {
-                Button {
-                    vm.isBlocked.toggle()
-                } label: {
-                    Text("차단해제")
-                }
+                unBlockButton
             } else {
-                Button {
-                    router.alert(for: .blockUserConfirmation, actions: [
-                        .cancelAction("취소") {},
-                        .destructiveAction("차단") {
-                            vm.isBlocked.toggle()
-                        },
-                    ])
-                } label: {
-                    Text("차단하기")
-                }
+                blockButton
             }
             
-            if vm.isRepoerted {
-                Button {
-                    // TODO: - 신고하기 후 신고내역으로 이동
-                    //                    router.route(to: .)
-                } label: {
-                    Text("신고내역")
-                }
+            if vm.isReported {
+                reportListButton
             } else {
-                Button {
-                    router.alert(for: .reportUser, actions: [
-                        .cancelAction("취소") {},
-                        .destructiveAction("신고") {
-                            router.route(to: .reportView(result: $vm.isRepoerted))
-                        },
-                    ])
-                } label: {
-                    Text("신고하기")
-                }
+                reportButton
             }
+        }
+    }
+    
+    private var unBlockButton: some View {
+        Button {
+            vm.block(userId: Int64(userId), opponentUserId: opponentUserId)
+        } label: {
+            Text("차단해제")
+        }
+    }
+    
+    private var blockButton: some View {
+        Button {
+            router.alert(for: .blockUserConfirmation, actions: [
+                .cancelAction("취소") {},
+                .destructiveAction("차단") {
+                    vm.unblock(userId: Int64(userId), blockId: opponentUserId)
+                },
+            ])
+        } label: {
+            Text("차단하기")
+        }
+    }
+    
+    private var reportListButton: some View {
+        Button {
+            router.route(to: .reportListView)
+        } label: {
+            Text("신고내역")
+        }
+    }
+    
+    private var reportButton: some View {
+        Button {
+            router.alert(for: .reportUser, actions: [
+                .cancelAction("취소") {},
+                .destructiveAction("신고") {
+                    router.route(to: .reportView(opponentUserId: opponentUserId,
+                                                 isReported: $vm.isReported))
+                },
+            ])
+        } label: {
+            Text("신고하기")
         }
     }
 }
@@ -102,28 +124,10 @@ extension ProfileDetailView {
     }
 }
 
-final class ProfileDetailViewModel: ObservableObject {
-    var user: User
-    @Published var isBlocked: Bool
-    @Published var isRepoerted: Bool
-    
-    // TODO: - isBlocked, isRepoerted 기본값 제거할 것
-    init(user: User = PreviewHelper.shared.users.first!,
-         isBlocked: Bool = false,
-         isRepoerted: Bool = false
-    ) {
-        self.user = user
-        self.isBlocked = isBlocked
-        self.isRepoerted = isRepoerted
-    }
-    
-    // TODO: - isBlocked, isReported가 true가 되면 UseCase를 통해 처리하는 func 필요
-}
-
 struct ProfileDetailView_Preview: PreviewProvider {
     static var previews: some View {
         NavigationStack {
-            router.view(to: .profileDetailView)
+            router.view(to: .profileDetailView(opponentUserId: -1))
         }
     }
 }
