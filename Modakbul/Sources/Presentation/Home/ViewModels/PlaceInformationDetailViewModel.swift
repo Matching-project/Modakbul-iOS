@@ -85,7 +85,7 @@ final class PlaceInformationDetailViewModel: ObservableObject {
     }
 }
 
-// MARK: Interface for CommunityUseCase
+// MARK: Interfaces for CommunityUseCase
 extension PlaceInformationDetailViewModel {
     func configureView(_ communityRecruitingContentId: Int64, _ userId: Int64) async throws {
         self.userId = userId
@@ -137,7 +137,7 @@ extension PlaceInformationDetailViewModel {
     }
 }
 
-// MARK: - Interface for NotificationUseCase
+// MARK: - Interfaces for NotificationUseCase
 extension PlaceInformationDetailViewModel {
     @MainActor
     func send(_ communityRecruitingContentId: Int64,
