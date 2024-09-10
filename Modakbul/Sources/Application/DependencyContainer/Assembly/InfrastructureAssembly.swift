@@ -20,9 +20,9 @@ struct InfrastructureAssembly: Assembly {
         container.register(for: LocationService.self, DefaultLocationService())
         
         // Chat
-        container.register(for: ChatService.self) { resolver in
-            DefaultChatService(socketManager: resolver.resolve(SocketManager.self))
-        }
+//        container.register(for: ChatService.self) { resolver in
+//            DefaultChatService(socketManager: resolver.resolve(SocketManager.self))
+//        }
         
         // Storages
         container.register(for: TokenStorage.self, DefaultTokenStorage())
