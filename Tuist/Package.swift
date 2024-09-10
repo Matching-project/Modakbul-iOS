@@ -20,6 +20,7 @@ let package = Package(
         // You can read more about dependencies here: https://docs.tuist.io/documentation/tuist/dependencies
         .package(url: "https://github.com/kakao/kakao-ios-sdk.git", .upToNextMajor(from: "2.22.5")),
         .package(url: "https://github.com/Moya/Moya.git", .upToNextMajor(from: "15.0.3")),
-        .package(url: "https://github.com/firebase/firebase-ios-sdk", .upToNextMajor(from: "11.1.0"))
+        .package(url: "https://github.com/firebase/firebase-ios-sdk", .upToNextMajor(from: "11.1.0")),
+        .package(url: "https://github.com/Romixery/SwiftStomp.git", .upToNextMajor(from: "1.2.1"))
     ]
 )

@@ -19,6 +19,7 @@ let project = Project(
                 .external(name: "Moya"),
                 .external(name: "FirebaseAnalytics"),
                 .external(name: "FirebaseMessaging"),
+                .external(name: "SwiftStomp")
             ],
             settings: .settings(
                 base: [
