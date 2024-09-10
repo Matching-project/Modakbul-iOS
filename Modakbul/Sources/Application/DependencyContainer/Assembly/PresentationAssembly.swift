@@ -29,7 +29,7 @@ struct PresentationAssembly: Assembly {
         }
         
         container.register(for: ProfileEditViewModel.self) { resolver in
-            ProfileEditViewModel(userRegistrationUseCase: resolver.resolve(UserRegistrationUseCase.self))
+            ProfileEditViewModel(userRegistrationUseCase: resolver.resolve(UserRegistrationUseCase.self), userBusinessUseCase: resolver.resolve(UserBusinessUseCase.self))
         }
         
         container.register(for: MyCommunityRecruitingContentListViewModel.self) { resolver in
