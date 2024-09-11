@@ -23,13 +23,11 @@ final class AppDelegate: UIResponder, UIApplicationDelegate, ObservableObject {
         Task { @MainActor in
             do {
                 try await UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound])
+                application.registerForRemoteNotifications()
             } catch {
                 print(error)
             }
         }
-        
-        application.registerForRemoteNotifications()
-        
         return true
     }
     
