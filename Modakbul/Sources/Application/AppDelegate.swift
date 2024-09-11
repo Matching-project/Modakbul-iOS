@@ -75,7 +75,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
             
             // TODO: - 알림 읽음 처리 API call 필요
             // TODO: - API Response에 따른 View Routing 필요
-//            RouterAdapter.shared.destionation = PushNotification.ShowingType.routes           
+//            RouterAdapter.shared.destionation = PushNotification.ShowingType.routes
         }
     }
 }

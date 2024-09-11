@@ -23,15 +23,15 @@ protocol ChatRepository {
 
 final class DefaultChatRepository {
     // MARK: - 소켓 통신은 ChatService, 소켓 통신을 제외한 통신은 NetworkService을 이용
-    private let chatService: ChatService
+//    private let chatService: ChatService
     private let networkService: NetworkService
 //    private let chattingStorage:
     
     init(
-        chatService: ChatService,
+//        chatService: ChatService,
         networkService: NetworkService
     ) {
-        self.chatService = chatService
+//        self.chatService = chatService
         self.networkService = networkService
     }
 }
@@ -67,6 +67,6 @@ extension DefaultChatRepository: ChatRepository {
     }
     
     func send(message: ChatMessage) async throws {
-        try await chatService.send(message: message)
+//        try await chatService.send(message: message)
     }
 }

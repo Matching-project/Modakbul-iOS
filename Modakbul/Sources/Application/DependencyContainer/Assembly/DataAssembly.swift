@@ -31,9 +31,9 @@ struct DataAssembly: Assembly {
         
         // ChatRepository
         container.register(for: ChatRepository.self) { resolver in
-            let chatService = resolver.resolve(ChatService.self)
+//            let chatService = resolver.resolve(ChatService.self)
             let networkService = resolver.resolve(NetworkService.self)
-            return DefaultChatRepository(chatService: chatService,
+            return DefaultChatRepository(//chatService: chatService,
                                          networkService: networkService)
         }
         
