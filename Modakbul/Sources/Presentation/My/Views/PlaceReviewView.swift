@@ -57,7 +57,8 @@ struct PlaceReviewView: View {
     private var searchBarSection: some View {
         VStack(alignment: .leading) {
             Text("카페명")
-                .font(.title.bold())
+                .font(.Modakbul.title)
+                .bold()
             
             HStack {
                 RoundedTextField("카페를 검색하세요.", text: $viewModel.searchingText)
@@ -75,10 +76,10 @@ struct PlaceReviewView: View {
                         ForEach(viewModel.suggestedResults, id: \.id) { result in
                             VStack {
                                 Text(result.title)
-                                    .font(.headline)
+                                    .font(.Modakbul.headline)
                                 
                                 Text(result.subtitle)
-                                    .font(.caption)
+                                    .font(.Modakbul.caption)
                             }
                             .contentShape(.rect)
                             .onTapGesture {
@@ -94,10 +95,10 @@ struct PlaceReviewView: View {
                         ForEach(viewModel.searchedLocations, id: \.id) { location in
                             VStack {
                                 Text(location.name)
-                                    .font(.headline)
+                                    .font(.Modakbul.headline)
                                 
                                 Text(location.address)
-                                    .font(.caption)
+                                    .font(.Modakbul.caption)
                             }
                             .contentShape(.rect)
                             .onTapGesture {
@@ -113,10 +114,11 @@ struct PlaceReviewView: View {
     @ViewBuilder private func placeInfo(_ place: Place) -> some View {
         VStack(alignment: .leading, spacing: 10) {
             Text(place.location.name)
-                .font(.title.bold())
+                .font(.Modakbul.title)
+                .bold()
             
             Text(place.location.address)
-                .font(.caption)
+                .font(.Modakbul.caption)
         }
     }
     
@@ -124,7 +126,8 @@ struct PlaceReviewView: View {
         VStack(alignment: .leading, spacing: 20) {
             VStack(alignment: .leading, spacing: 10) {
                 Text("콘센트")
-                    .font(.title2.bold())
+                    .font(.Modakbul.title2)
+                    .bold()
                 
                 HStack {
                     ForEach(viewModel.powerSocketStateSelection) { state in
@@ -152,7 +155,8 @@ struct PlaceReviewView: View {
             
             VStack(alignment: .leading, spacing: 10) {
                 Text("단체석 여부 (6인 이상)")
-                    .font(.title2.bold())
+                    .font(.Modakbul.title2)
+                    .bold()
                 
                 HStack {
                     ForEach(viewModel.groupSeatingStateSelection) { state in

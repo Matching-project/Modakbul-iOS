@@ -28,7 +28,7 @@ struct BlockedListView<Router: AppRouter>: View {
     @ViewBuilder private func content(_ condition: Bool) -> some View {
         if condition {
             Text("아직 차단한 사용자가 없어요.")
-                .font(.headline)
+                .font(.Modakbul.headline)
         } else {
             List {
                 ForEach(viewModel.blockedUsers, id: \.blockId) { (blockedId, user) in
@@ -48,10 +48,10 @@ struct BlockedListView<Router: AppRouter>: View {
             
             VStack(alignment: .leading, spacing: 10) {
                 Text(user.nickname)
-                    .font(.headline)
+                    .font(.Modakbul.headline)
                 
                 Text("\(user.categoriesOfInterest.first!.description) | \(user.job.description)")
-                    .font(.subheadline)
+                    .font(.Modakbul.subheadline)
                     .foregroundStyle(.accent)
             }
             .lineLimit(1)
@@ -62,7 +62,8 @@ struct BlockedListView<Router: AppRouter>: View {
                 viewModel.cancelBlock(userId: Int64(userId), blockId: blockedId)
             } label: {
                 Text("차단 해제")
-                    .font(.footnote.bold())
+                    .font(.Modakbul.footnote)
+                    .bold()
             }
             .buttonStyle(.capsuledInset)
         }

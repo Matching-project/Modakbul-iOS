@@ -122,7 +122,8 @@ struct PlaceInformationDetailView<Router: AppRouter>: View {
     @ViewBuilder private func header(_ title: String, _ date: String, _ user: User) -> some View {
         VStack(alignment: .leading, spacing: 20) {
             Text(title)
-                .font(.title2.bold())
+                .font(.Modakbul.title2)
+                .bold()
                 .lineLimit(1)
             
             HStack {
@@ -132,9 +133,9 @@ struct PlaceInformationDetailView<Router: AppRouter>: View {
                     Text("작성자")
                     Text(user.nickname)
                     Text("게시일: \(viewModel.creationDate)")
-                        .font(.caption)
+                        .font(.Modakbul.caption)
                 }
-                .font(.headline)
+                .font(.Modakbul.headline)
             }
         }
         .padding()
@@ -155,7 +156,8 @@ struct PlaceInformationDetailView<Router: AppRouter>: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .foregroundStyle(.accent)
         }
-        .font(.caption.bold())
+        .font(.Modakbul.caption)
+        .bold()
         .background(
             RoundedRectangle(cornerRadius: 14)
                 .stroke(.accent)

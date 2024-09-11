@@ -92,6 +92,7 @@ final class DefaultAppRouter: AppRouter {
     
     @ViewBuilder func view(to destination: Destination) -> some View {
         destination.view(with: self)
+            .environment(\.font, .Modakbul.callout)
             .environmentObject(self)
     }
     

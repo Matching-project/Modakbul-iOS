@@ -30,7 +30,7 @@ struct MyParticipationRequestListView<Router: AppRouter>: View {
     @ViewBuilder private func content(_ condition: Bool) -> some View {
         if condition {
             Text("아직 참여를 요청한 모임이 없어요.")
-                .font(.headline)
+                .font(.Modakbul.headline)
         } else {
             List {
                 ForEach(viewModel.matches, id: \.communityRecruitingContent.id) { match in
@@ -49,7 +49,7 @@ struct MyParticipationRequestListView<Router: AppRouter>: View {
         HStack {
             VStack(alignment: .leading, spacing: 10) {
                 Text(content.title)
-                    .font(.headline)
+                    .font(.Modakbul.headline)
                 
                 HStack(spacing: 10) {
                     Text(content.community.category.description)
@@ -60,7 +60,7 @@ struct MyParticipationRequestListView<Router: AppRouter>: View {
                     
                     Text("\(content.community.startTime)~\(content.community.endTime)")
                 }
-                .font(.caption)
+                .font(.Modakbul.caption)
             }
             .listRowSeparator(.hidden)
             .padding(.vertical, 4)
@@ -77,10 +77,12 @@ struct MyParticipationRequestListView<Router: AppRouter>: View {
                 switch state {
                 case .accepted:
                     Text("나가기")
-                        .font(.footnote.bold())
+                        .font(.Modakbul.footnote)
+                        .bold()
                 default:
                     Text("요청 취소")
-                        .font(.footnote.bold())
+                        .font(.Modakbul.footnote)
+                        .bold()
                 }
             }
             .buttonStyle(.capsuledInset)

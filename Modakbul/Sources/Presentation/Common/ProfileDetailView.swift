@@ -112,7 +112,7 @@ extension ProfileDetailView {
         var body: some View {
             HStack {
                 Text(title)
-                    .font(.title2)
+                    .font(.Modakbul.title2)
                     .bold()
                     .frame(maxWidth: 100, alignment: .leading)
                 

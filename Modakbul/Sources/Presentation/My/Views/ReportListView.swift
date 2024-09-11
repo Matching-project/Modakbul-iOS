@@ -28,7 +28,7 @@ struct ReportListView<Router: AppRouter>: View {
     @ViewBuilder private func content(_ condition: Bool) -> some View {
         if condition {
             Text("아직 신고한 사용자가 없어요.")
-                .font(.headline)
+                .font(.Modakbul.headline)
         } else {
             List {
                 ForEach(viewModel.reportedUsers, id: \.user.id) { (user, status) in
@@ -48,10 +48,10 @@ struct ReportListView<Router: AppRouter>: View {
             
             VStack(alignment: .leading, spacing: 10) {
                 Text(user.nickname)
-                    .font(.headline)
+                    .font(.Modakbul.headline)
                 
                 Text("\(user.categoriesOfInterest.first!.description) | \(user.job.description)")
-                    .font(.subheadline)
+                    .font(.Modakbul.subheadline)
                     .foregroundStyle(.accent)
             }
             .lineLimit(1)
@@ -65,7 +65,8 @@ struct ReportListView<Router: AppRouter>: View {
                 //
             } label: {
                 inquiryStatus(status)
-                    .font(.footnote.bold())
+                    .font(.Modakbul.footnote)
+                    .bold()
             }
             .buttonStyle(.capsuledInset)
             .disabled(true)

@@ -136,10 +136,10 @@ extension RegistrationView {
             spacing: 10
         ) {
             Text(vm.currentField.title)
-                .font(.title)
+                .font(.Modakbul.title)
                 .bold()
             Text(vm.currentField.subtitle)
-                .font(.headline)
+                .font(.Modakbul.headline)
                 .foregroundStyle(.gray)
         }
         .padding(.top, 50)

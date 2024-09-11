@@ -33,7 +33,7 @@ struct StrokedButton<Content: View, ClipShape: Shape>: View {
             action()
         } label: {
             content()
-                .font(.headline)
+                .font(.Modakbul.headline)
                 .padding(edge, length)
                 .background(.white)
                 .overlay(
@@ -72,7 +72,7 @@ struct StrokedFilledButton<Content: View, ClipShape: Shape>: View {
             action()
         } label: {
             content()
-                .font(.headline)
+                .font(.Modakbul.headline)
                 .padding(edge, length)
                 .foregroundStyle(.white)
                 .background(.accent)

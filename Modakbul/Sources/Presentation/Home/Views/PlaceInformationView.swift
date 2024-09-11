@@ -52,7 +52,7 @@ struct PlaceInformationView<Router: AppRouter>: View {
                 Spacer()
                 
                 Text("아직 모집 중인 모임이 없어요.")
-                    .font(.footnote)
+                    .font(.Modakbul.footnote)
             } else {
                 communityRecruitingContentListArea(displayMode)
             }
@@ -70,10 +70,11 @@ struct PlaceInformationView<Router: AppRouter>: View {
         VStack(alignment: .leading) {
             VStack(alignment: .leading, spacing: 4) {
                 Text(place.location.name)
-                    .font(.title3.bold())
+                    .font(.Modakbul.title3)
+                    .bold()
                 
                 Text(place.location.address)
-                    .font(.caption)
+                    .font(.Modakbul.caption)
             }
             
             HStack {
@@ -95,11 +96,11 @@ struct PlaceInformationView<Router: AppRouter>: View {
             }
             
             HStack {
-                CapsuleTag(place.powerSocketState.description, .caption)
-                CapsuleTag(place.groupSeatingState.description, .caption)
+                CapsuleTag(place.powerSocketState.description, .Modakbul.caption)
+                CapsuleTag(place.groupSeatingState.description, .Modakbul.caption)
             }
         }
-        .font(.caption)
+        .font(.Modakbul.caption)
     }
     
     private var communityRecruitingContentEditButton: some View {
@@ -159,7 +160,7 @@ extension PlaceInformationView {
         var body: some View {
             VStack(alignment: .leading, spacing: 10) {
                 Text(communityRecruitingContent.title)
-                    .font(.headline)
+                    .font(.Modakbul.headline)
                 
                 HStack {
                     HStack {
@@ -174,7 +175,7 @@ extension PlaceInformationView {
                     
                     Text(community.category.description)
                 }
-                .font(.subheadline)
+                .font(.Modakbul.subheadline)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding()

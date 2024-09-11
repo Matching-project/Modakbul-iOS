@@ -23,7 +23,7 @@ struct RequiredTermView<Router: AppRouter>: View {
                 Text("약관에 동의해주세요")
                     .padding(.top, 50)
                     .padding(.bottom, 10)
-                    .font(.title2)
+                    .font(.Modakbul.title2)
                     .fontWeight(.semibold)
                 
                 Toggle("모두 동의", isOn: Binding<Bool>(

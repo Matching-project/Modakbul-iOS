@@ -18,7 +18,7 @@ struct Badge: View {
     
     var body: some View {
         Text("\(count)")
-            .font(.subheadline)
+            .font(.Modakbul.subheadline)
             .padding(.horizontal, padding)
             .foregroundStyle(.white)
             .background {

@@ -47,7 +47,7 @@ struct ProfileEditView<Router: AppRouter>: View {
         LazyVStack(spacing: 10) {
             Text("닉네임 변경")
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .font(.title)
+                .font(.Modakbul.title)
                 .bold()
             
             NicknameTextField(nickname: $vm.nickname,
@@ -66,7 +66,7 @@ struct ProfileEditView<Router: AppRouter>: View {
         LazyVStack(spacing: 10) {
             Text("성별 표시")
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .font(.title)
+                .font(.Modakbul.title)
                 .bold()
             
             HStack {
@@ -88,7 +88,7 @@ struct ProfileEditView<Router: AppRouter>: View {
         LazyVStack(spacing: 20) {
             Text("직업 변경")
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .font(.title)
+                .font(.Modakbul.title)
                 .bold()
             
             SingleSelectionButton<Job, DefaultSingleSelectionButton>(selectedItem: $vm.job) { (item, selectedItem) in
@@ -101,7 +101,7 @@ struct ProfileEditView<Router: AppRouter>: View {
         LazyVStack(spacing: 20) {
             Text("카테고리 변경")
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .font(.title)
+                .font(.Modakbul.title)
                 .bold()
             
             MultipleSelectionButton<Category, DefaultMultipleSelectionButton>(selectedItems: $vm.categoriesOfInterest) { (item, selectedItem) in

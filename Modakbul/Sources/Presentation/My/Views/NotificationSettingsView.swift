@@ -39,7 +39,7 @@ extension NotificationSettingsView {
                 Text(title)
                 
                 Text(subtitle)
-                    .font(.footnote)
+                    .font(.Modakbul.footnote)
                     .foregroundStyle(.accent)
             }
             .toggleStyle(SwitchToggleStyle(tint: .accent))

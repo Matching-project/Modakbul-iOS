@@ -56,7 +56,7 @@ struct SelectionTab: View {
         } label: {
             VStack {
                 Text(selection.title)
-                    .font(.headline)
+                    .font(.Modakbul.headline)
                     .frame(maxWidth: .infinity)
                 
                 if selectedTab == selection.state {
@@ -71,7 +71,7 @@ struct SelectionTab: View {
     @ViewBuilder private func listCell(_ content: CommunityRecruitingContent) -> some View {
         VStack(alignment: .leading, spacing: 10) {
             Text(content.title)
-                .font(.headline)
+                .font(.Modakbul.headline)
             
             HStack(spacing: 10) {
                 Text(content.community.category.description)
@@ -82,7 +82,7 @@ struct SelectionTab: View {
                 
                 Text("\(content.community.startTime)~\(content.community.endTime)")
             }
-            .font(.caption)
+            .font(.Modakbul.caption)
         }
         .listRowSeparator(.hidden)
         .padding(.vertical, 4)

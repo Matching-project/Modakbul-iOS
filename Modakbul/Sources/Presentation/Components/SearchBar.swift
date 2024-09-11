@@ -40,7 +40,7 @@ struct SearchBar: View {
                 }
             }
         }
-        .font(.headline)
+        .font(.Modakbul.headline)
         .padding(10)
         .background(.ultraThinMaterial)
         .clipShape(Capsule())

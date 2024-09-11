@@ -42,7 +42,7 @@ struct OnboradingView: View {
             ForEach(index, id: \.self) { num in
                 VStack {
                     Text(titles[num])
-                        .font(.title)
+                        .font(.Modakbul.title)
                         .bold()
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(.top, 50)

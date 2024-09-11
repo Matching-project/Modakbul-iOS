@@ -82,10 +82,10 @@ extension ParticipationRequestListView {
                 
                 VStack(alignment: .leading, spacing: 10) {
                     Text(participatedUser.nickname)
-                        .font(.headline)
+                        .font(.Modakbul.headline)
                     
                     Text("\(selectMajorCategory().description) | \(participatedUser.job.description)")
-                        .font(.subheadline)
+                        .font(.Modakbul.subheadline)
                         .foregroundStyle(.accent)
                 }
                 .lineLimit(1)
@@ -96,7 +96,8 @@ extension ParticipationRequestListView {
                     // TODO: 채팅 기능 연결
                 } label: {
                     Text("채팅")
-                        .font(.footnote.bold())
+                        .font(.Modakbul.footnote)
+                        .bold()
                 }
                 .buttonStyle(.capsuledInset)
                 .layoutPriority(1)

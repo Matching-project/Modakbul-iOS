@@ -44,7 +44,7 @@ struct PlaceShowcaseView<Router: AppRouter>: View {
     @ViewBuilder private func content(_ condition: Bool) -> some View {
         if condition {
             Text("아직 방문한 카페가 없어요.")
-                .font(.headline)
+                .font(.Modakbul.headline)
         } else {
             List {
                 ForEach(viewModel.places, id: \.id) { place in
@@ -69,10 +69,10 @@ struct PlaceShowcaseView<Router: AppRouter>: View {
             
             VStack(alignment: .leading, spacing: 10) {
                 Text(place.location.name)
-                    .font(.headline)
+                    .font(.Modakbul.headline)
                 
                 Text(place.location.address)
-                    .font(.caption)
+                    .font(.Modakbul.caption)
                     .lineLimit(2)
             }
             
@@ -82,7 +82,8 @@ struct PlaceShowcaseView<Router: AppRouter>: View {
                 router.route(to: .placeReviewView(place: place))
             } label: {
                 Text("리뷰")
-                    .font(.footnote.bold())
+                    .font(.Modakbul.footnote)
+                    .bold()
             }
             .buttonStyle(.capsuledInset)
         }

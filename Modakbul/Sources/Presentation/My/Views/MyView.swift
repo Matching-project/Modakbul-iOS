@@ -53,14 +53,15 @@ extension MyView {
                         .bold()
                     
                     Text(vm.user.categoriesOfInterest.description + " · " + vm.user.job.description + " · " + vm.user.birth.toAge())
-                        .font(.subheadline)
+                        .font(.Modakbul.subheadline)
                     
                     HStack {
                         Button {
                             router.route(to: .profileEditView(user: vm.user))
                         } label: {
                             Text("프로필 수정")
-                                .font(.footnote.bold())
+                                .font(.Modakbul.footnote)
+                                .bold()
                         }
                         .buttonStyle(.capsuledInset)
                         
@@ -68,7 +69,8 @@ extension MyView {
                             showLogoutAlert()
                         } label: {
                             Text("로그아웃")
-                                .font(.footnote.bold())
+                                .font(.Modakbul.footnote)
+                                .bold()
                         }
                         .buttonStyle(.capsuledInset)
                     }

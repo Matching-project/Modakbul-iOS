@@ -13,7 +13,7 @@ struct NotificationIcon: View {
     var body: some View {
         if badge {
             Image(systemName: "bell")
-                .font(.headline)
+                .font(.Modakbul.headline)
                 .foregroundStyle(.accent)
                 .padding(5)
                 .overlay(alignment: .topTrailing) {
@@ -23,7 +23,7 @@ struct NotificationIcon: View {
                 }
         } else {
             Image(systemName: "bell")
-                .font(.headline)
+                .font(.Modakbul.headline)
                 .foregroundStyle(.accent)
         }
     }

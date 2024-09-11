@@ -135,7 +135,7 @@ extension NotificationView {
             .frame(maxWidth: .infinity, alignment: .leading)
             .overlay(alignment: .topTrailing) {
                 Text(notification.timestamp)
-                    .font(.caption)
+                    .font(.Modakbul.caption)
                     .bold()
             }
         }
@@ -143,7 +143,7 @@ extension NotificationView {
         private var subtitleView: some View {
             Text(notification.subtitle)
                 .foregroundColor(.accent)
-                .font(.caption)
+                .font(.Modakbul.caption)
         }
     }
 }

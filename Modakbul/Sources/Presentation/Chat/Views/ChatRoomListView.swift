@@ -38,10 +38,10 @@ extension ChatRoomListView {
                 
                 VStack(alignment: .leading, spacing: 10) {
                     Text(chatRoom.nickname)
-                        .font(.headline)
+                        .font(.Modakbul.headline)
                     
                     Text(chatRoom.lastMessage)
-                        .font(.subheadline)
+                        .font(.Modakbul.subheadline)
                         .foregroundStyle(.secondary)
                 }
                 
@@ -49,7 +49,7 @@ extension ChatRoomListView {
                 
                 VStack(alignment: .trailing, spacing: 10) {
                     Text(chatRoom.time.toString(by: .ahmm))
-                        .font(.subheadline)
+                        .font(.Modakbul.subheadline)
                     
                     Badge(count: chatRoom.unreadCount)
                 }
