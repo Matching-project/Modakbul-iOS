@@ -57,7 +57,7 @@ extension MyView {
                     
                     HStack {
                         Button {
-                            router.route(to: .profileEditView)
+                            router.route(to: .profileEditView(user: vm.user))
                         } label: {
                             Text("프로필 수정")
                                 .font(.footnote.bold())
