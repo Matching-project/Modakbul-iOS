@@ -65,6 +65,6 @@ final class LoginViewModel: ObservableObject {
     }
     
     func logout() {
-        
+        // TODO: API 나오면 연결할 것
     }
 }
