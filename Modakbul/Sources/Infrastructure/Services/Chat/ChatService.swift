@@ -14,7 +14,7 @@ protocol ChatService: SwiftStompDelegate {
     /// 소켓 연결 해제
     func disconnect()
     /// 소켓을 통해 특정 채팅방 구독
-    func subscribe(to chatRoomId: Int64, continuation: AsyncThrowingStream<ChatEntity, Error>.Continuation)
+    func subscribe(to chatRoomId: Int64, continuation: AsyncThrowingStream<ChatMessage, Error>.Continuation)
     /// 소켓을 통해 특정 채팅방 구독 해제
     func unsubscribe(from chatRoomId: Int64)
     /// 채널(채팅방)로 메세지 전송
@@ -40,7 +40,7 @@ final class DefaultChatService {
     private let encoder: JSONEncodable
     private let decoder: JSONDecodable
     
-    private var chatStreamContinuation: AsyncThrowingStream<ChatEntity, Error>.Continuation?
+    private var chatStreamContinuation: AsyncThrowingStream<ChatMessage, Error>.Continuation?
     
     init(
         encoder: JSONEncodable = JSONEncoder(),
@@ -91,7 +91,7 @@ extension DefaultChatService: ChatService {
         stomp?.disconnect()
     }
     
-    func subscribe(to chatRoomId: Int64, continuation: AsyncThrowingStream<ChatEntity, Error>.Continuation) {
+    func subscribe(to chatRoomId: Int64, continuation: AsyncThrowingStream<ChatMessage, Error>.Continuation) {
         chatStreamContinuation = continuation
         stomp?.subscribe(to: "/sub/public/\(chatRoomId)")
     }
@@ -117,12 +117,16 @@ extension DefaultChatService: SwiftStompDelegate {
     }
     
     func onMessageReceived(swiftStomp: SwiftStomp, message: Any?, messageId: String, destination: String, headers: [String : String]) {
-        guard let message = message as? ChatEntity else {
+        guard let data = message as? Data else {
             chatStreamContinuation?.yield(with: .failure(ChatServiceError.invalidMessageFormat))
             return
         }
         
-        chatStreamContinuation?.yield(message)
+        guard let entity = try? decoder.decode(ChatEntity.self, from: data) else {
+            chatStreamContinuation?.yield(with: .failure(ChatServiceError.generic(type: String(describing: data))))
+            return
+        }
+        chatStreamContinuation?.yield(entity.toDTO())
     }
     
     func onReceipt(swiftStomp: SwiftStomp, receiptId: String) {
