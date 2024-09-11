@@ -73,7 +73,7 @@ extension Endpoint {
 
 // MARK: TargetType Conformation
 extension Endpoint: TargetType {
-    var baseURL: URL { URL(string:"https://modakbul.com")! } // TODO: 도메인 호스트는 서버 배포 이후에 나올 예정
+    var baseURL: URL { URL(string:"https://13.209.130.215")! } // TODO: 도메인 호스트는 서버 배포 이후에 나올 예정
     
     var path: String {
         switch self {
