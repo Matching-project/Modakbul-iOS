@@ -6,11 +6,19 @@
 //
 
 import Foundation
+import SwiftStomp
 
-protocol ChatService {
-    func connect(endpoint: Requestable, _ continuation: AsyncThrowingStream<ChatMessage, Error>.Continuation) throws
-    func disconnect(_ closeCode: ChatServiceCloseCode?)
-    func send(message: ChatMessage) async throws
+protocol ChatService: SwiftStompDelegate {
+    /// 소켓 연결
+    func connect(token: String, on chatRoomId: Int64, opponentUserId: Int64, opponentUserNickname: String) throws
+    /// 소켓 연결 해제
+    func disconnect()
+    /// 소켓을 통해 특정 채팅방 구독
+    func subscribe(to chatRoomId: Int64, continuation: AsyncThrowingStream<ChatEntity, Error>.Continuation)
+    /// 소켓을 통해 특정 채팅방 구독 해제
+    func unsubscribe(from chatRoomId: Int64)
+    /// 채널(채팅방)로 메세지 전송
+    func send<T: Encodable>(message: T, to chatRoomId: Int64) async throws
 }
 
 enum ChatServiceCloseCode {
@@ -28,21 +36,22 @@ enum ChatServiceError: Error {
 }
 
 final class DefaultChatService {
-    private let socketManager: SocketManager
+    private var stomp: SwiftStomp?
     private let encoder: JSONEncodable
     private let decoder: JSONDecodable
     
-    private weak var socket: URLSessionWebSocketTask?
-    private var chatStreamContinuation: AsyncThrowingStream<ChatMessage, Error>.Continuation?
+    private var chatStreamContinuation: AsyncThrowingStream<ChatEntity, Error>.Continuation?
     
     init(
-        socketManager: SocketManager,
         encoder: JSONEncodable = JSONEncoder(),
         decoder: JSONDecodable = JSONDecoder()
     ) {
-        self.socketManager = socketManager
         self.encoder = encoder
         self.decoder = decoder
+    }
+    
+    deinit {
+        stomp?.disconnect(force: true)
     }
     
     private func resolve(_ reason: ChatServiceCloseCode?) -> URLSessionWebSocketTask.CloseCode {
@@ -52,64 +61,75 @@ final class DefaultChatService {
         }
     }
     
-//    private func decode<T: Decodable>(for type: T.Type, with data: Data) throws -> T {
-//        guard let decodedData = try? decoder.decode(type, from: data) else {
-//            throw ChatServiceError.generic(type: String(describing: T.self))
-//        }
-//        return decodedData
-//    }
-    
-    private func performReceivedResult(_ result: URLSessionWebSocketTask.Message,
-                                       _ continuation: AsyncThrowingStream<ChatMessage, Error>.Continuation) {
-//        do {
-//            switch result {
-//            case .data(let data):
-//                let message = try decode(for: MessageEntity.self, with: data)
-//                continuation.yield(message.toDTO())
-//            default:
-//                continuation.finish(throwing: ChatServiceError.invalidMessageFormat)
-//            }
-//        } catch {
-//            continuation.finish(throwing: error)
-//        }
+    private func decode<T: Decodable>(for type: T.Type, with data: Data) throws -> T {
+        guard let decodedData = try? decoder.decode(type, from: data) else {
+            throw ChatServiceError.generic(type: String(describing: T.self))
+        }
+        return decodedData
     }
 }
 
 // MARK: ChatService Conformation
 extension DefaultChatService: ChatService {
-    func connect(endpoint: any Requestable, _ continuation: AsyncThrowingStream<ChatMessage, Error>.Continuation) throws {
-        guard let url = endpoint.asURLComponents().url else { throw ChatServiceError.invalidURL }
-        let urlRequest = URLRequest(url: url)
-        socket = socketManager.webSocketTask(with: urlRequest)
+    func connect(token: String, on chatRoomId: Int64, opponentUserId: Int64, opponentUserNickname: String) throws {
+        // TODO: 서버 URL 배포 예정
+        guard let url = URL(string: "wss://13.209.130.215/") else { throw ChatServiceError.invalidURL }
+        let headers = [
+            "Authorization" : "Bearer \(token)",
+            "chatRoomId" : "\(chatRoomId)",
+            "userId" : "\(opponentUserId)",
+            "nickname" : "\(opponentUserNickname)"
+        ]
+        stomp = SwiftStomp(host: url, headers: headers)
+        stomp?.delegate = self
+        stomp?.connect()
+    }
+    
+    func disconnect() {
+        // Auto-Reconnect 옵션이 켜져 있을 경우, disconnect 시 자동으로 재연결 하기 때문에 수동으로 옵션을 꺼줄 것.
+        stomp?.autoReconnect = false
+        stomp?.disconnect()
+    }
+    
+    func subscribe(to chatRoomId: Int64, continuation: AsyncThrowingStream<ChatEntity, Error>.Continuation) {
         chatStreamContinuation = continuation
-        
-        Task {
-            while let socket = socket, socket.state == .running {
-                do {
-                    let result = try await socket.receive()
-                    performReceivedResult(result, continuation)
-                } catch {
-                    continuation.finish(throwing: error)
-                    break
-                }
-            }
-            
-            continuation.onTermination = { [weak self] _ in
-                self?.disconnect(nil)
-            }
-        }
+        stomp?.subscribe(to: "/sub/public/\(chatRoomId)")
     }
     
-    func disconnect(_ closeCode: ChatServiceCloseCode?) {
-        socket?.cancel(with: resolve(closeCode), reason: nil)
-        socket = nil
+    func unsubscribe(from chatRoomId: Int64) {
+        stomp?.unsubscribe(from: "/sub/public/\(chatRoomId)")
         chatStreamContinuation?.finish()
-        chatStreamContinuation = nil
     }
     
-    func send(message: ChatMessage) async throws {
-//        let entity: MessageEntity = .init(message)
-//        let data = try encoder.encode(entity)
-//        try await socket?.send(.data(data))
+    func send<T: Encodable>(message: T, to chatRoomId: Int64) async throws {
+        stomp?.send(body: message, to: "/pub/message")
+    }
+}
+
+// MARK: SwiftStompDelegate Conformation
+extension DefaultChatService: SwiftStompDelegate {
+    func onConnect(swiftStomp: SwiftStomp, connectType: StompConnectType) {
+        print("Chat Service Connected")
+    }
+    
+    func onDisconnect(swiftStomp: SwiftStomp, disconnectType: StompDisconnectType) {
+        print("Chat Service Disconnected")
+    }
+    
+    func onMessageReceived(swiftStomp: SwiftStomp, message: Any?, messageId: String, destination: String, headers: [String : String]) {
+        guard let message = message as? ChatEntity else {
+            chatStreamContinuation?.yield(with: .failure(ChatServiceError.invalidMessageFormat))
+            return
+        }
+        
+        chatStreamContinuation?.yield(message)
+    }
+    
+    func onReceipt(swiftStomp: SwiftStomp, receiptId: String) {
+        print(receiptId)
+    }
+    
+    func onError(swiftStomp: SwiftStomp, briefDescription: String, fullDescription: String?, receiptId: String?, type: StompErrorType) {
+        chatStreamContinuation?.finish(throwing: ChatServiceError.generic(type: briefDescription))
     }
 }
