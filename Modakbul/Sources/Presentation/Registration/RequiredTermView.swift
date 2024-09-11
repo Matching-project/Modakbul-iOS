@@ -16,13 +16,13 @@ struct RequiredTermView<Router: AppRouter>: View {
     let provider: AuthenticationProvider
     
     var body: some View {
-        VStack {
+        ScrollView {
             LazyVStack(alignment: .leading,
                        spacing: 10) {
                 // TODO: - 다기종 sheet 높이 점검 필요
                 Text("약관에 동의해주세요")
                     .padding(.top, 50)
-                    .padding(.bottom, 30)
+                    .padding(.bottom, 10)
                     .font(.title2)
                     .fontWeight(.semibold)
                 
