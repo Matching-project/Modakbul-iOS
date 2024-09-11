@@ -147,7 +147,7 @@ extension MyView {
                     // TODO: - 약관 및 정책 노션 링크 만들기
                     // button("약관 및 정책", destination: )
                     
-                    // TODO: - 탈퇴하기 뷰를 따로 추가할지 건의함
+                    // TODO: - 탈퇴하기 뷰를 따로 추가하기
 //                    button("탈퇴하기", destination: Route)
 //                    router.alert(for: .exitUser(nickname: user.nickname), actions: [
 //                        .cancelAction("남아있기") {},
