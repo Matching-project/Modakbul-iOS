@@ -7,49 +7,75 @@
 
 import Foundation
 
-//protocol ChatUseCase {
-//    typealias ChatRoomId = Int64
-//    
-//    func startChat(from: User, to: User, with communityRecruitingContent: CommunityRecruitingContent, _ continuation: AsyncThrowingStream<ChatMessage, Error>.Continuation) async throws -> ChatRoomConfiguration
-//    func stopChat(on chatRoomId: ChatRoomId, messages: [ChatMessage])
-//    func deleteChat(on chatRoomId: ChatRoomId)
-//    
-//    func send(message: ChatMessage) throws
-//}
-//
-//final class DefaultChatUseCase {
-//    private let chatRepository: ChatRepository
-//    
-//    init(chatRepository: ChatRepository) {
-//        self.chatRepository = chatRepository
-//    }
-//}
-//
-//// MARK: ChatUseCase Conformation
-//extension DefaultChatUseCase: ChatUseCase {
-//    func startChat(from: User, to: User, with communityRecruitingContent: CommunityRecruitingContent, _ continuation: AsyncThrowingStream<ChatMessage, Error>.Continuation) async throws -> ChatRoomConfiguration {
-//        let chatRoomId = try await chatRepository.createChatRoom(from: from, to: to, on: communityRecruitingContent.id)
-//        let chatHistory = await chatRepository.readChatHistory(on: chatRoomId)
-//        try chatRepository.openChatRoom(by: to, continuation)
-//        return ChatRoomConfiguration(id: chatRoomId, communityRecruitingContent: communityRecruitingContent, participants: [from, to])
-//    }
-//    
-//    func stopChat(on chatRoomId: ChatRoomId, messages: [ChatMessage]) {
-//        Task {
-//            await chatRepository.updateChatHistory(on: chatRoomId, with: messages)
-//            chatRepository.closeChatRoom()
-//        }
-//    }
-//    
-//    func deleteChat(on chatRoomId: ChatRoomId) {
-//        Task {
-//            await chatRepository.deleteChatHistory(on: chatRoomId)
-//        }
-//    }
-//    
-//    func send(message: ChatMessage) throws {
-//        Task {
-//            try await chatRepository.send(message: message)
-//        }
-//    }
-//}
+protocol ChatUseCase {
+    typealias ChatRoomId = Int64
+    typealias UserId = Int64
+    typealias CommunityRecruitingContentId = Int64
+    
+    /// 채팅 시작
+    func startChat(on chatRoomId: ChatRoomId, _ continuation: AsyncThrowingStream<ChatMessage, Error>.Continuation) async throws
+    
+    /// 채팅 종료
+    func stopChat(on chatRoomId: ChatRoomId, messages: [ChatMessage])
+    
+    /// 채팅방 목록 조회
+    func readChatRooms(userId: UserId) async throws -> [ChatRoomConfiguration]
+    
+    /// 채팅방 생성하기
+    func createChatRoom(userId: UserId, opponentUserId: UserId, with communityRecruitingContentId: CommunityRecruitingContentId) async throws -> ChatRoomId
+    
+    /// 채팅방 삭제하기
+    func deleteChat(userId: UserId, on chatRoomId: ChatRoomId) async throws
+    
+    /// 대화기록 불러오기
+    func readChatingHistory(userId: UserId, on chatRoomId: ChatRoomId, with communityRecruitingContentId: CommunityRecruitingContentId) async throws -> ChatHistory
+    
+    /// 채팅메세지 전송
+    func send(message: ChatMessage) throws
+    
+    /// 채팅방 신고하고 나가기
+    func reportAndExitChatRoom(userId: UserId, opponentUserId: UserId, chatRoomId: ChatRoomId, report: Report) async throws
+}
+
+final class DefaultChatUseCase {
+    private let chatRepository: ChatRepository
+    
+    init(chatRepository: ChatRepository) {
+        self.chatRepository = chatRepository
+    }
+}
+
+// MARK: ChatUseCase Conformation
+extension DefaultChatUseCase: ChatUseCase {
+    func startChat(on chatRoomId: ChatRoomId, _ continuation: AsyncThrowingStream<ChatMessage, any Error>.Continuation) async throws {
+        <#code#>
+    }
+    
+    func stopChat(on chatRoomId: ChatRoomId, messages: [ChatMessage]) {
+        <#code#>
+    }
+    
+    func readChatRooms(userId: UserId) async throws -> [ChatRoomConfiguration] {
+        try await chatRepository.readChatRooms(userId: userId)
+    }
+    
+    func createChatRoom(userId: UserId, opponentUserId: UserId, with communityRecruitingContentId: CommunityRecruitingContentId) async throws -> ChatRoomId {
+        try await chatRepository.createChatRoom(userId: userId, opponentUserId: opponentUserId, with: communityRecruitingContentId)
+    }
+    
+    func deleteChat(userId: UserId, on chatRoomId: ChatRoomId) async throws {
+        try await chatRepository.deleteChat(userId: userId, on: chatRoomId)
+    }
+    
+    func readChatingHistory(userId: UserId, on chatRoomId: ChatRoomId, with communityRecruitingContentId: CommunityRecruitingContentId) async throws -> ChatHistory {
+        try await chatRepository.readChatingHistory(userId: userId, on: chatRoomId, with: communityRecruitingContentId)
+    }
+    
+    func send(message: ChatMessage) throws {
+        <#code#>
+    }
+    
+    func reportAndExitChatRoom(userId: UserId, opponentUserId: UserId, chatRoomId: ChatRoomId, report: Report) async throws {
+        try await chatRepository.reportAndExitChatRoom(userId: userId, opponentUserId: opponentUserId, chatRoomId: chatRoomId, report: report)
+    }
+}
