@@ -26,4 +26,15 @@ struct ChatHistoryResponseEntity: Decodable, ResponseEntity {
             case category = "categoryName"
         }
     }
+    
+    func toDTO() -> ChatHistory {
+        let messages = zip(result.contents, result.sendTimes).map { ($0.0, $0.1.toDate(by: .serverDateTime1) ?? .now) }
+        
+        return .init(
+            placeName: result.placeName,
+            communityRecruitingContentTitle: result.communityRecruitingContentTitle,
+            category: result.category,
+            messages: messages
+        )
+    }
 }
