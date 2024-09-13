@@ -7,24 +7,22 @@
 
 import SwiftUI
 
-enum HomeViewFocus {
-    case searchBar
-    case localMap
-}
-
 struct SearchBar: View {
     @Binding var searchingText: String
     
+    private var isFocused: FocusState<Bool>.Binding
     private let placeholder: String
     private let iconName: String
     
     init(
         _ prompt: String,
         text: Binding<String>,
+        _ isFocused: FocusState<Bool>.Binding,
         iconName: String = "magnifyingglass"
     ) {
         self.placeholder = prompt
         self._searchingText = text
+        self.isFocused = isFocused
         self.iconName = iconName
     }
     
@@ -51,6 +49,7 @@ struct SearchBar: View {
         TextField(placeholder, text: $searchingText)
             .automaticFunctionDisabled()
             .padding(.horizontal, 4)
+            .focused(isFocused)
     }
     
     private var icon: some View {
@@ -61,6 +60,7 @@ struct SearchBar: View {
     private var removeButton: some View {
         Button {
             searchingText.removeAll()
+            isFocused.wrappedValue = false
         } label: {
             Text("취소")
         }
