@@ -50,6 +50,7 @@ struct MapArea<Router: AppRouter>: View {
             }
         }
         .ignoresSafeArea(edges: .top)
+        .ignoresSafeArea(.keyboard, edges: .bottom)
     }
     
     @ViewBuilder private func mapAnnotation(_ count: Int) -> some View {
