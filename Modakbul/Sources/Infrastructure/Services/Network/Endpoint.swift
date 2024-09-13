@@ -62,7 +62,7 @@ enum Endpoint {
     // MARK: - Notification Related
     case sendNotification(token: String, notification: NotificationSendingRequestEntity)// 알림 전송
     case fetchNotifications(token: String)                                              // 알림 목록 조회
-    case removeNotifications(token: String, notificationsIds: [Int64])                  // 알림 삭제 (단일, 선택, 전체)
+    case removeNotifications(token: String, notificationsIds: NotificationRemovingRequestEntity)                  // 알림 삭제 (단일, 선택, 전체)
     case readNotification(token: String, notificationId: Int64)                         // 알림 읽기
 }
 
@@ -192,16 +192,16 @@ extension Endpoint: TargetType {
     
     var task: Moya.Task {
         switch self {
-        case .login(_, let provider, _):
-            return .requestParameters(parameters: ["provider": "\(provider)"], encoding: URLEncoding.queryString)
         case .validateNicknameIntegrity(let nickname):
             return .requestParameters(parameters: ["nickname": "\(nickname)"], encoding: URLEncoding.queryString)
         case .register(let user, let image, _, let fcm):
             var formData = [MultipartFormData]()
 
             do {
-                let data = try encode(user)
-                formData.append(MultipartFormData(provider: .data(data), name: "user"))
+                let user = try encode(user)
+                formData.append(MultipartFormData(provider: .data(user), name: "user"))
+                let fcm = try encode(fcm)
+                formData.append(MultipartFormData(provider: .data(fcm), name: "fcm"))
             } catch {
                 print(error)
             }
@@ -212,7 +212,7 @@ extension Endpoint: TargetType {
                                                   fileName: "image",
                                                   mimeType: "image/jpeg"))
             }
-
+            
             return .uploadMultipart(formData)
         case .updateProfile(_, let user, let image):
             var formData = [MultipartFormData]()
@@ -234,11 +234,10 @@ extension Endpoint: TargetType {
 
             return .uploadMultipart(formData)
         case .reportOpponentUserProfile(_, _, let report):
-            return .requestJSONEncodable(report
-            )
-        case .readPlaces(name: let name, lat: let lat, lon: let lon):
+            return .requestJSONEncodable(report)
+        case .readPlaces(let name, let lat, let lon):
             return .requestParameters(parameters: ["name": "\(name)", "latitude": "\(lat)", "longitude": "\(lon)"], encoding: URLEncoding.queryString)
-        case .readPlacesByMatches(lat: let lat, lon: let lon):
+        case .readPlacesByMatches(let lat, let lon):
             return .requestParameters(parameters: ["latitude": "\(lat)", "longitude": "\(lon)"], encoding: URLEncoding.queryString)
         case .readPlacesByDistance(let lat, let lon):
             return .requestParameters(parameters: ["latitude": "\(lat)", "longitude": "\(lon)"], encoding: URLEncoding.queryString)
@@ -248,8 +247,6 @@ extension Endpoint: TargetType {
         case .updateBoard(_, let communityRecruitingContent):
             let communityRecruitingContent = try? encode(communityRecruitingContent)
             return .requestJSONEncodable(communityRecruitingContent)
-        case .requestMatch(_, let communityRecruitingContentId):
-            return .requestParameters(parameters: ["boardId": "\(communityRecruitingContentId)"], encoding: URLEncoding.queryString)
         case .createChatRoom(_, let configuration):
             return .requestJSONEncodable(configuration)
         case .reviewPlace(_, let review):
@@ -261,7 +258,7 @@ extension Endpoint: TargetType {
         case .sendNotification(_, let notification):
             return .requestJSONEncodable(notification)
         case .removeNotifications(_, let notificationsIds):
-            return .requestParameters(parameters: ["notificationIds": notificationsIds], encoding: JSONEncoding.default)
+            return .requestJSONEncodable(notificationsIds)
         default:
             return .requestPlain
         }
