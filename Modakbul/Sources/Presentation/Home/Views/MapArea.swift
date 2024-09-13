@@ -12,6 +12,7 @@ struct MapArea<Router: AppRouter>: View {
     @EnvironmentObject private var router: Router
     @ObservedObject private var viewModel: HomeViewModel
     @AppStorage(AppStorageKey.userId) private var userId: Int = Constants.loggedOutUserId
+    @FocusState private var isFocused: Bool
     
     init(_ viewModel: HomeViewModel) {
         self.viewModel = viewModel
@@ -44,7 +45,7 @@ struct MapArea<Router: AppRouter>: View {
                             router.route(to: .placeInformationView(place: place, displayMode: .full))
                         }
                 } label: {
-                    //
+                    Text(name)
                 }
             }
         }
@@ -72,7 +73,7 @@ struct MapArea<Router: AppRouter>: View {
     private var hoveringButtonsArea: some View {
         VStack {
             HStack {
-                SearchBar("카페 이름으로 검색", text: $viewModel.searchingText)
+                SearchBar("카페 이름으로 검색", text: $viewModel.searchingText, $isFocused)
                     .frame(alignment: .top)
                 
                 Button {
@@ -90,6 +91,29 @@ struct MapArea<Router: AppRouter>: View {
                             .padding(10)
                     }
                 }
+            }
+            
+            if viewModel.searchedPlaces.isEmpty == false {
+                ScrollView(.vertical) {
+                    LazyVStack(alignment: .leading) {
+                        ForEach(viewModel.searchedPlaces, id: \.id) { place in
+                            VStack(alignment: .leading) {
+                                Text(place.location.name)
+                                Text(place.location.address)
+                            }
+                            .padding()
+                            .contentShape(.rect)
+                            .onTapGesture {
+                                withAnimation(.bouncy) {
+                                    isFocused = false
+                                    viewModel.selectPlace(place)
+                                }
+                            }
+                        }
+                    }
+                }
+                .background(.ultraThinMaterial)
+                .clipShape(.rect(cornerRadius: 14))
             }
             
             Spacer()

@@ -111,7 +111,9 @@ extension Date {
         let formatter = DateFormat.cachedFormatter(dateFormat: dateFormat)
         return formatter.string(from: self)
     }
-    
+}
+
+extension String {
     func toDate(by dateFormat: DateFormat) -> Date? {
         dateFormat.formatter.date(from: dateFormat.rawValue)
     }

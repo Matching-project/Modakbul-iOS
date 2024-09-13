@@ -28,6 +28,10 @@ struct PresentationAssembly: Assembly {
             PlaceShowcaseViewModel(placeShowcaseAndReviewUseCase: resolver.resolve(PlaceShowcaseAndReviewUseCase.self))
         }
         
+        container.register(for: PlaceReviewViewModel.self) { resolver in
+            PlaceReviewViewModel(placeShowcaseAndReviewUseCase: resolver.resolve(PlaceShowcaseAndReviewUseCase.self))
+        }
+        
         container.register(for: ProfileEditViewModel.self) { resolver in
             ProfileEditViewModel(
                 userRegistrationUseCase: resolver.resolve(UserRegistrationUseCase.self),

@@ -8,9 +8,11 @@
 import Foundation
 
 struct ChatMessage: Identifiable {
-    let id: UUID = UUID()
+    let id = UUID()
+    let chatRoomId: Int64
     let senderId: Int64
-    let text: String
-    let timestamp: Date
-    let isRead: Bool
+    let senderNickname: String
+    let content: String
+    let sendTime: Date
+    let readCount: Int
 }

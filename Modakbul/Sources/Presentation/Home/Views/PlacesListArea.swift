@@ -11,6 +11,7 @@ struct PlacesListArea<Router: AppRouter>: View {
     @EnvironmentObject private var router: Router
     @ObservedObject private var viewModel: HomeViewModel
     @AppStorage(AppStorageKey.userId) private var userId: Int = Constants.loggedOutUserId
+    @FocusState private var isFocused: Bool
     
     init(_ viewModel: HomeViewModel) {
         self.viewModel = viewModel
@@ -30,7 +31,7 @@ struct PlacesListArea<Router: AppRouter>: View {
     private var listArea: some View {
         VStack {
             HStack {
-                SearchBar("카페 이름으로 검색", text: $viewModel.searchingText)
+                SearchBar("카페 이름으로 검색", text: $viewModel.searchingText, $isFocused)
                     .frame(alignment: .top)
                 
                 Button {
@@ -55,7 +56,6 @@ struct PlacesListArea<Router: AppRouter>: View {
                 router.view(to: .placeInformationView(place: place, displayMode: .summary))
                     .listRowSeparator(.hidden)
             }
-            .listStyle(.plain)
         }
     }
     

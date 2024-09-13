@@ -14,7 +14,7 @@ final class HomeViewModel: ObservableObject {
     @Published var cameraPosition: MapCameraPosition = .userLocation(fallback: .automatic)
     @Published var searchingText: String = String()
     @Published var places: [Place] = []
-    @Published var selectedPlace: Place?
+    @Published var searchedPlaces: [Place] = PreviewHelper.shared.places
     @Published var sortCriteria: PlaceSortCriteria = .distance
     @Published var unreadCount: Int = 0
     private var locationNeeded: Bool = true
@@ -24,6 +24,7 @@ final class HomeViewModel: ObservableObject {
     private let notificationUseCase: NotificationUseCase
     
     private let placesSubject = PassthroughSubject<[Place], Never>()
+    private let searchedPlacesSubject = PassthroughSubject<[Place], Never>()
     private let notificationsSubject = PassthroughSubject<[PushNotification], Never>()
     private var cancellables = Set<AnyCancellable>()
     
@@ -39,6 +40,13 @@ final class HomeViewModel: ObservableObject {
             .sink { [weak self] places in
                 self?.places = places
                 self?.cameraPosition = .automatic
+            }
+            .store(in: &cancellables)
+        
+        searchedPlacesSubject
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] places in
+                self?.searchedPlaces = places
             }
             .store(in: &cancellables)
         
@@ -94,11 +102,17 @@ extension HomeViewModel {
                 }
                 
                 let places = try await localMapUseCase.fetchPlaces(with: keyword, on: coordinate ?? center)
-                placesSubject.send(places)
+                searchedPlacesSubject.send(places)
             } catch {
                 print(error)
             }
         }
+    }
+    
+    func selectPlace(_ place: Place) {
+        searchingText = place.location.name
+        placesSubject.send([place])
+        searchedPlacesSubject.send([])
     }
 }
 
