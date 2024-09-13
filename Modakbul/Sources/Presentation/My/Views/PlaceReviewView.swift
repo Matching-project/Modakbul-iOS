@@ -184,12 +184,3 @@ struct PlaceReviewView: View {
         .padding()
     }
 }
-
-struct PlaceReviewView_Preview: PreviewProvider {
-    static var previews: some View {
-        Group {
-            router.view(to: .placeReviewView(place: previewHelper.places.first!))
-            router.view(to: .placeReviewView(place: nil))
-        }
-    }
-}
