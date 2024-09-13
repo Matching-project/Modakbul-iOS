@@ -10,10 +10,11 @@ import SwiftUI
 extension View {
     func roundedRectangleStyle(cornerRadius: CGFloat = 8,
                                lineWidth: CGFloat = 1,
-                               color: Color = .accentColor) -> some View {
+                               color: Color = .accentColor,
+                               vertical: CGFloat = 18) -> some View {
         self
             .padding(.horizontal)
-            .padding(.vertical, 18)
+            .padding(.vertical, vertical)
             .background(
                 RoundedRectangle(cornerRadius: cornerRadius)
                     .stroke(color, lineWidth: lineWidth)
