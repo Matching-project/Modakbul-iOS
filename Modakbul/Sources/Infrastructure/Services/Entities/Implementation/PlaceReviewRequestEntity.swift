@@ -7,7 +7,7 @@
 
 import Foundation
 
-/// 카페 제보 요청
+/// 카페 리뷰 요청
 struct PlaceReviewRequestEntity: Encodable {
     let powerSocketState: PowerSocketState
     let groupSeatingState: GroupSeatingState
