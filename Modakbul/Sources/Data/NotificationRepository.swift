@@ -67,12 +67,14 @@ extension DefaultNotificationRepository: NotificationRepository {
         let token = try tokenStorage.fetch(by: userId)
         
         do {
-            let endpoint = Endpoint.removeNotifications(token: token.accessToken, notificationsIds: notificationIds)
+            let entity = NotificationRemovingRequestEntity(notificationIds: notificationIds)
+            let endpoint = Endpoint.removeNotifications(token: token.accessToken, notificationsIds: entity)
             try await networkService.request(endpoint: endpoint, for: DefaultResponseEntity.self)
         } catch APIError.accessTokenExpired {
             let tokens = try await reissueTokens(key: userId, token.refreshToken)
             
-            let endpoint = Endpoint.removeNotifications(token: tokens.accessToken, notificationsIds: notificationIds)
+            let entity = NotificationRemovingRequestEntity(notificationIds: notificationIds)
+            let endpoint = Endpoint.removeNotifications(token: tokens.accessToken, notificationsIds: entity)
             try await networkService.request(endpoint: endpoint, for: DefaultResponseEntity.self)
         } catch {
             throw error
