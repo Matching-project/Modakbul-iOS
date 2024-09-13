@@ -30,7 +30,7 @@ struct PlaceReviewView: View {
             Spacer()
             
             FlatButton("등록하기") {
-                viewModel.submit(isNewPlace: place == nil)
+                viewModel.submit(on: place)
             }
             .disabled(viewModel.selectedLocation == nil)
         }
@@ -83,8 +83,7 @@ struct PlaceReviewView: View {
                             }
                             .contentShape(.rect)
                             .onTapGesture {
-                                viewModel.searchingText = result.title + result.subtitle
-                                viewModel.searchLocation()
+                                viewModel.selectSuggestion(result)
                             }
                         }
                     }
@@ -183,5 +182,14 @@ struct PlaceReviewView: View {
             .padding(.vertical)
         }
         .padding()
+    }
+}
+
+struct PlaceReviewView_Preview: PreviewProvider {
+    static var previews: some View {
+        Group {
+            router.view(to: .placeReviewView(place: previewHelper.places.first!))
+            router.view(to: .placeReviewView(place: nil))
+        }
     }
 }

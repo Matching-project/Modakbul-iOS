@@ -99,18 +99,30 @@ extension PlaceReviewViewModel {
         place = nil
     }
     
-    func submit(isNewPlace: Bool) {
+    func selectSuggestion(_ suggestedResult: SuggestedResult) {
+        searchingText = [suggestedResult.title, suggestedResult.subtitle].joined(separator: " ")
+        searchLocation()
+    }
+    
+    func submit(on place: Place?) {
+        let isNewPlace = place == nil
+        
         guard let location = selectedLocation else { return }
-        let place = Place(location: location,
-                          powerSocketState: powerSocketState,
-                          groupSeatingState: groupSeatingState)
+        
         
         Task {
             do {
                 if isNewPlace {
+                    let place = Place(location: location,
+                                      powerSocketState: powerSocketState,
+                                      groupSeatingState: groupSeatingState)
                     try await placeShowcaseAndReviewUseCase.suggestPlace(on: place)
                 } else {
-                    try await placeShowcaseAndReviewUseCase.reviewPlace(on: place)
+                    guard let place = place else { return }
+                    let reviewingPlace = Place(location: place.location,
+                                      powerSocketState: powerSocketState,
+                                      groupSeatingState: groupSeatingState)
+                    try await placeShowcaseAndReviewUseCase.reviewPlace(on: reviewingPlace)
                 }
             } catch {
                 print(error)
