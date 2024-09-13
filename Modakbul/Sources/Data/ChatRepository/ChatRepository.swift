@@ -33,7 +33,7 @@ final class DefaultChatRepository {
         networkService: NetworkService,
         tokenStorage: TokenStorage
     ) {
-//        self.chatService = chatService
+        self.chatService = chatService
         self.networkService = networkService
         self.tokenStorage = tokenStorage
     }
@@ -42,11 +42,11 @@ final class DefaultChatRepository {
 // MARK: ChatRepository Conformation
 extension DefaultChatRepository: ChatRepository {
     func startChat(on chatRoomId: ChatRoomId, _ continuation: AsyncThrowingStream<ChatMessage, any Error>.Continuation) async throws {
-        <#code#>
+        //
     }
     
     func stopChat(on chatRoomId: ChatRoomId, messages: [ChatMessage]) {
-        <#code#>
+        //
     }
     
     func readChatRooms(userId: UserId) async throws -> [ChatRoomConfiguration] {
@@ -122,7 +122,7 @@ extension DefaultChatRepository: ChatRepository {
     }
     
     func send(message: ChatMessage) throws {
-        <#code#>
+        //
     }
     
     func reportAndExitChatRoom(userId: UserId, opponentUserId: UserId, chatRoomId: ChatRoomId, report: Report) async throws {
