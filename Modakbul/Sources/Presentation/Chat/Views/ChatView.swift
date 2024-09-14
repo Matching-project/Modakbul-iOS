@@ -93,6 +93,26 @@ struct ChatView<Router: AppRouter>: View {
             // TODO: - 화면 나가기 전에 vm 초기화같은 작업이 필요한지?
             router.dismiss()
         }
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                // TODO: 기능 연결 필요
+                Menu {
+                    Button {
+                        
+                    } label: {
+                        Text("차단하기")
+                    }
+                    
+                    Button {
+                        
+                    } label: {
+                        Text("신고하기")
+                    }
+                } label: {
+                    Image(systemName: "ellipsis")
+                }
+            }
+        }
     }
 }
 
@@ -236,6 +256,8 @@ extension ChatView {
         
         var body: some View {
             HStack(alignment: .bottom) {
+                Spacer()
+                
                 VStack(alignment: .trailing, spacing: -3) {
                     Text(message.readCount == 0 ? "" : message.readCount.description)
                         .foregroundStyle(.accent)
@@ -246,13 +268,12 @@ extension ChatView {
                 
                 Text(message.content)
                     .padding(10)
-                    .foregroundStyle(.black)
+                    .foregroundStyle(.white)
                     .background(.accent)
                     .clipShape(.rect(cornerRadius: 10))
             }
             .frame(maxWidth: .infinity, alignment: .trailing)
             .listRowSeparator(.hidden)
-            .padding(.leading, 50)
         }
     }
     
@@ -297,10 +318,11 @@ extension ChatView {
                         }
                     }
                 }
+                
+                Spacer()
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .listRowSeparator(.hidden)
-            .padding(.trailing, 50)
         }
     }
     
@@ -327,12 +349,12 @@ extension ChatView {
                 } label: {
                     Image(systemName: "paperplane.circle.fill")
                         .resizable()
+                        .scaledToFit()
                         .frame(width: 45, height: 45)
                         .rotationEffect(.degrees(45))
                 }
             }
-            .padding(.horizontal, 20)
-            .padding(.bottom, 10)
+            .padding(10)
         }
     }
 }
