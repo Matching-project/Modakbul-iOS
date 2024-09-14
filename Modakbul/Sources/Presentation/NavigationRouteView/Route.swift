@@ -140,7 +140,7 @@ enum Route: Routable {
         case .chatView:         // MARK: - Chat
             ChatView<Router>(router.resolver.resolve(ChatViewModel.self))
         case .chatRoomListView:
-            ChatRoomListView()
+            ChatRoomListView<Router>()
         case .reportView(let opponentUserId, let isReported):
             ReportView<Router>(router.resolver.resolve(ReportViewModel.self), opponentUserId: opponentUserId, isReported: isReported)
         case .profileDetailView(let opponentUserId):// MARK: - Common
