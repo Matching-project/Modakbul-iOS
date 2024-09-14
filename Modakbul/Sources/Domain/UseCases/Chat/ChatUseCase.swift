@@ -48,11 +48,11 @@ final class DefaultChatUseCase {
 // MARK: ChatUseCase Conformation
 extension DefaultChatUseCase: ChatUseCase {
     func startChat(on chatRoomId: ChatRoomId, _ continuation: AsyncThrowingStream<ChatMessage, any Error>.Continuation) async throws {
-        <#code#>
+        //
     }
     
     func stopChat(on chatRoomId: ChatRoomId, messages: [ChatMessage]) {
-        <#code#>
+        //
     }
     
     func readChatRooms(userId: UserId) async throws -> [ChatRoomConfiguration] {
@@ -72,7 +72,7 @@ extension DefaultChatUseCase: ChatUseCase {
     }
     
     func send(message: ChatMessage) throws {
-        <#code#>
+        //
     }
     
     func reportAndExitChatRoom(userId: UserId, opponentUserId: UserId, chatRoomId: ChatRoomId, report: Report) async throws {
