@@ -10,7 +10,8 @@ import Moya
 
 enum Endpoint {
     // MARK: - User Related
-    case login(token: Data?, provider: String, fcm: String)                                             // 로그인
+    case kakaoLogin(entity: KakaoLoginRequestEntity, provider: AuthenticationProvider)                  // 카카오 로그인
+    case appleLogin(entity: AppleLoginRequestEntity, provider: AuthenticationProvider)                  // 애플 로그인
     case validateNicknameIntegrity(nickname: String)                                                    // 닉네임 무결성 확인
     case register(user: UserRegistrationRequestEntity, image: Data?, provider: String, fcm: String)     // 회원가입
     case logout(token: String)                                                                          // 로그아웃
@@ -80,8 +81,10 @@ extension Endpoint: TargetType {
     var path: String {
         switch self {
             // MARK: User Related
-        case .login(_, let provider, _):
-            return "/users/login/\(provider)"
+        case .kakaoLogin(_, let provider):
+            return "/users/login/\(provider.identifier)"
+        case .appleLogin(_, let provider):
+            return "/users/login/\(provider.identifier)"
         case .validateNicknameIntegrity:
             return "/users"
         case .register(_, _, let provider, _):
@@ -184,7 +187,7 @@ extension Endpoint: TargetType {
     var method: Moya.Method {
         switch self {
         case .validateNicknameIntegrity, .readMyProfile, .readOpponentUserProfile, .readMyBoards, .readMyMatches, .readMyRequestMatches, .readPlaces, .readPlacesByMatches, .readPlacesByDistance, .readPlacesForShowcaseAndReview, .readBoards, .readBoardForUpdate, .readBoardDetail, .readMatches, .readChatrooms, .readChatHistory, .completeBoard, .readBlockedUsers, .readReports, .fetchNotifications: return .get
-        case .login, .register, .reissueToken, .createBoard, .requestMatch, .createChatRoom, .block, .reviewPlace, .suggestPlace, .reportOpponentUserProfile, .reportAndExitChatRoom, .sendNotification: return .post
+        case .kakaoLogin, .appleLogin, .register, .reissueToken, .createBoard, .requestMatch, .createChatRoom, .block, .reviewPlace, .suggestPlace, .reportOpponentUserProfile, .reportAndExitChatRoom, .sendNotification: return .post
         case .logout, .deleteBoard, .unblock, .removeNotifications: return .delete
         case .updateProfile, .updateBoard, .acceptMatchRequest, .rejectMatchRequest, .exitMatch, .cancelMatchRequest, .exitChatRoom, .readNotification: return .patch
         }
@@ -192,6 +195,10 @@ extension Endpoint: TargetType {
     
     var task: Moya.Task {
         switch self {
+        case .kakaoLogin(let entity, _):
+            return .requestJSONEncodable(entity)
+        case .appleLogin(let entity, _):
+            return .requestJSONEncodable(entity)
         case .validateNicknameIntegrity(let nickname):
             return .requestParameters(parameters: ["nickname": "\(nickname)"], encoding: URLEncoding.queryString)
         case .register(let user, let image, _, let fcm):
@@ -267,9 +274,8 @@ extension Endpoint: TargetType {
     var headers: [String : String]? {
         switch self {
             // MARK: User Related
-        case .login(let token, _, _):
-            ["Content-type": "application/json",
-             "Authorization": "\(String(describing: token))"]
+        case .kakaoLogin, .appleLogin:
+            ["Content-type": "application/json"]
         case .register:
             ["Content-type": "application/json"]
         case .logout(let token):
@@ -359,7 +365,7 @@ extension Endpoint: TargetType {
     
     var authorizationType: AuthorizationType? {
         switch self {
-        case .login, .logout, .reissueToken, .updateProfile, .readMyProfile, .readMyBoards, .readMyMatches, .readMyRequestMatches, .block, .unblock, .readBlockedUsers, .readReports, .createBoard, .readBoardForUpdate, .updateBoard, .deleteBoard, .completeBoard, .readMatches, .requestMatch, .acceptMatchRequest, .rejectMatchRequest, .createChatRoom, .readChatrooms, .exitChatRoom, .cancelMatchRequest, .reportAndExitChatRoom, .reportOpponentUserProfile, .sendNotification, .fetchNotifications, .removeNotifications, .readNotification:
+        case .logout, .reissueToken, .updateProfile, .readMyProfile, .readMyBoards, .readMyMatches, .readMyRequestMatches, .block, .unblock, .readBlockedUsers, .readReports, .createBoard, .readBoardForUpdate, .updateBoard, .deleteBoard, .completeBoard, .readMatches, .requestMatch, .acceptMatchRequest, .rejectMatchRequest, .createChatRoom, .readChatrooms, .exitChatRoom, .cancelMatchRequest, .reportAndExitChatRoom, .reportOpponentUserProfile, .sendNotification, .fetchNotifications, .removeNotifications, .readNotification:
                 .bearer
         default: .none
         }

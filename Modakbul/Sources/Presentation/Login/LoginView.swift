@@ -12,6 +12,7 @@ struct LoginView<Router: AppRouter>: View {
     @Environment(\.colorScheme) private var scheme
     @EnvironmentObject private var router: Router
     @ObservedObject private var loginViewModel: LoginViewModel
+    @AppStorage(AppStorageKey.userId) private var userId: Int = Constants.loggedOutUserId
     
     @State private var isPresented: Bool = false
     
@@ -30,6 +31,10 @@ struct LoginView<Router: AppRouter>: View {
             }
         }
         .padding()
+        .onChange(of: loginViewModel.userId) {
+            guard let id = loginViewModel.userId else { return }
+            userId = Int(id)
+        }
     }
     
     private var appLogo: some View {
@@ -41,8 +46,8 @@ struct LoginView<Router: AppRouter>: View {
     private var signInWithKakaoButton: some View {
         SignInKakaoButton { result in
             switch result {
-            case .success(let token):
-                loginViewModel.loginWithKakaoTalk(token)
+            case .success(let email):
+                loginViewModel.loginWithKakaoTalk(email)
                 router.dismiss()
             case .failure(let error):
                 print(error)
