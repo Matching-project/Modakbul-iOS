@@ -8,8 +8,11 @@
 import Foundation
 
 protocol UserRegistrationUseCase {
-    /// 로그인
-    func login(_ token: Data, by provider: AuthenticationProvider, fcm: String) async throws -> Bool
+    /// 카카오로 로그인
+    func kakaoLogin(email: String, fcm: String) async throws -> Int64
+    
+    /// 애플로 로그인
+    func appleLogin(authorizationCode: Data, fcm: String) async throws -> Int64
     
     /// 로그아웃
     func logout(userId: Int64) async throws
@@ -37,9 +40,12 @@ final class DefaultUserRegistrationUseCase {
 
 // MARK: UserRegistrationUseCase Confirmation
 extension DefaultUserRegistrationUseCase: UserRegistrationUseCase {
-    func login(_ token: Data, by provider: AuthenticationProvider, fcm: String) async throws -> Bool {
-        let credential = UserCredential(authorizationCode: token, provider: provider)
-        return await socialLoginRepository.login(credential, fcm: fcm)
+    func kakaoLogin(email: String, fcm: String) async throws -> Int64 {
+        try await socialLoginRepository.kakaoLogin(email: email, fcm: fcm)
+    }
+    
+    func appleLogin(authorizationCode: Data, fcm: String) async throws -> Int64 {
+        try await socialLoginRepository.appleLogin(authorizationCode: authorizationCode, fcm: fcm)
     }
     
     func logout(userId: Int64) async throws {

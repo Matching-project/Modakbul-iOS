@@ -11,8 +11,11 @@ import KakaoSDKAuth
 import Combine
 
 final class LoginViewModel: ObservableObject {
+    @Published var userId: Int64?
+    
     private var fcmToken: String?
     
+    private let userIdSubject = PassthroughSubject<Int64, Never>()
     private var cancellables = Set<AnyCancellable>()
     
     private let userRegistrationUseCase: UserRegistrationUseCase
@@ -29,19 +32,24 @@ final class LoginViewModel: ObservableObject {
                 self?.fcmToken = fcmToken
             }
             .store(in: &cancellables)
+        
+        userIdSubject
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] userId in
+                self?.userId = userId
+            }
+            .store(in: &cancellables)
     }
     
-    func loginWithKakaoTalk(_ token: OAuthToken) {
+    func loginWithKakaoTalk(_ email: String) {
         guard let fcm = fcmToken else { return }
         
         Task {
             do {
-                let token = try JSONEncoder().encode(token)
-                let credential = UserCredential(authorizationCode: token, provider: .kakao)
-                // TODO: 로그인 이후 로직 처리
-                _ = try await userRegistrationUseCase.login(token, by: .kakao, fcm: fcm)
+                let userId = try await userRegistrationUseCase.kakaoLogin(email: email, fcm: fcm)
+                userIdSubject.send(userId)
             } catch {
-                
+                print(error)
             }
         }
     }
@@ -57,9 +65,9 @@ final class LoginViewModel: ObservableObject {
             
             do {
                 // TODO: 로그인 이후 로직 처리
-                _ = try await userRegistrationUseCase.login(authorizationCode, by: .apple, fcm: fcm)
+                _ = try await userRegistrationUseCase.appleLogin(authorizationCode: authorizationCode, fcm: fcm)
             } catch {
-                
+                print(error)
             }
         }
     }

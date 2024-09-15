@@ -9,7 +9,9 @@ import SwiftUI
 
 typealias Item = (id: UUID, image: URL?, nickname: String, lastMessage: String, time: Date, unreadCount: Int)
 
-struct ChatRoomListView: View {
+struct ChatRoomListView<Router: AppRouter>: View {
+    @EnvironmentObject private var router: Router
+    
     @State private var chatRooms: [Item] = [
         (UUID(), nil, "디자인 천재", "네 오늘 너무 유익했어요!", .now, 10),
         (UUID(), nil, "웹 개발 10년차", "좋아요!", .now, 1),
@@ -19,8 +21,13 @@ struct ChatRoomListView: View {
     var body: some View {
         List(chatRooms, id: \.id) { item in
             Cell(item)
+                .contentShape(.rect)
+                .onTapGesture {
+                    router.route(to: .chatView)
+                }
         }
         .listStyle(.plain)
+        .listRowSeparator(.hidden)
     }
 }
 
@@ -55,11 +62,5 @@ extension ChatRoomListView {
                 }
             }
         }
-    }
-}
-
-struct ChatRoomListView_Preview: PreviewProvider {
-    static var previews: some View {
-        ChatRoomListView()
     }
 }

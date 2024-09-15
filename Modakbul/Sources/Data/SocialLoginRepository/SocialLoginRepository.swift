@@ -8,7 +8,8 @@
 import Foundation
 
 protocol SocialLoginRepository: TokenRefreshable {
-    func login(_ credential: UserCredential, fcm: String) async -> Bool
+    func kakaoLogin(email: String, fcm: String) async throws -> Int64
+    func appleLogin(authorizationCode: Data, fcm: String) async throws -> Int64
     func logout() async
     
     func validateNicknameIntegrity(_ nickname: String) async throws -> NicknameIntegrityType
@@ -36,22 +37,38 @@ final class DefaultSocialLoginRepository {
 
 // MARK: SocialLoginRepository Conformation
 extension DefaultSocialLoginRepository: SocialLoginRepository {
-    func login(_ credential: UserCredential, fcm: String) async -> Bool {
-        do {
-            let endpoint = Endpoint.login(token: credential.authorizationCode, provider: credential.provider.identifier, fcm: fcm)
-            let response = try await networkService.request(endpoint: endpoint, for: UserRegistrationResponseEntity.self)
-            
-            guard let accessToken = response.accessToken,
-                  let refreshToken = response.refreshToken
-            else { return false }
-            
-            let tokens = TokensEntity(accessToken: accessToken, refreshToken: refreshToken)
-            try tokenStorage.store(tokens, by: response.body.result.userId)
-            return true
-        } catch {
-            print(error)
-            return false
+    func kakaoLogin(email: String, fcm: String) async throws -> Int64 {
+        let entity = KakaoLoginRequestEntity(email: email, fcm: fcm)
+        let endpoint = Endpoint.kakaoLogin(entity: entity, provider: .kakao)
+        let response = try await networkService.request(endpoint: endpoint, for: UserRegistrationResponseEntity.self)
+        let userId = response.body.toDTO()
+        
+        guard let accessToken = response.accessToken,
+              let refreshToken = response.refreshToken
+        else {
+            throw SocialLoginRepositoryError.authorizeFailed
         }
+        
+        let tokens = TokensEntity(accessToken: accessToken, refreshToken: refreshToken)
+        try tokenStorage.store(tokens, by: userId)
+        return userId
+    }
+    
+    func appleLogin(authorizationCode: Data, fcm: String) async throws -> Int64 {
+        let entity = AppleLoginRequestEntity(authorizationCode: authorizationCode, fcm: fcm)
+        let endpoint = Endpoint.appleLogin(entity: entity, provider: .apple)
+        let response = try await networkService.request(endpoint: endpoint, for: UserRegistrationResponseEntity.self)
+        let userId = response.body.toDTO()
+        
+        guard let accessToken = response.accessToken,
+              let refreshToken = response.refreshToken
+        else {
+            throw SocialLoginRepositoryError.authorizeFailed
+        }
+        
+        let tokens = TokensEntity(accessToken: accessToken, refreshToken: refreshToken)
+        try tokenStorage.store(tokens, by: userId)
+        return userId
     }
     
     func logout() async {
