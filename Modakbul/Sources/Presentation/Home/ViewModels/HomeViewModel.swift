@@ -14,12 +14,12 @@ final class HomeViewModel: ObservableObject {
     @Published var cameraPosition: MapCameraPosition = .userLocation(fallback: .automatic)
     @Published var cameraCenterCoordinate: CLLocationCoordinate2D = .init()
     @Published var searchingText: String = String()
-    @Published var places: [Place] = []
-    @Published var searchedPlaces: [Place] = PreviewHelper.shared.places
+    @Published var places: [Place] = PreviewHelper.shared.places
+    @Published var searchedPlaces: [Place] = []
     @Published var sortCriteria: PlaceSortCriteria = .distance
     @Published var unreadCount: Int = 0
     private var locationNeeded: Bool = true
-    private var currentCoordinate = CLLocationCoordinate2D()
+    private var currentUsersCoordinate = CLLocationCoordinate2D()
     
     private let localMapUseCase: LocalMapUseCase
     private let notificationUseCase: NotificationUseCase
@@ -74,7 +74,7 @@ final class HomeViewModel: ObservableObject {
                       text.isEmpty == false
                 else { return }
                 
-                Task { await self.findPlaces(by: text, on: self.currentCoordinate) }
+                Task { await self.findPlaces(by: text, on: self.currentUsersCoordinate) }
             }
             .store(in: &cancellables)
     }
@@ -92,7 +92,7 @@ extension HomeViewModel {
     @MainActor func updateLocationOnce() {
         Task {
             do {
-                currentCoordinate = try await localMapUseCase.updateCoordinate()
+                currentUsersCoordinate = try await localMapUseCase.updateCoordinate()
             } catch {
                 print(error)
             }

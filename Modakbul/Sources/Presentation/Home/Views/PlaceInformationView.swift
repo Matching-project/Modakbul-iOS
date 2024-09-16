@@ -30,36 +30,28 @@ struct PlaceInformationView<Router: AppRouter>: View {
         VStack {
             HStack {
                 if let url = place.imageURLs.first {
-                    AsyncImageView(url: url)
+                    AsyncImageView(url: url, minWidth: 100, minHeight: 100)
                 } else {
                     Image(colorScheme == .light ? .modakbulMainLight : .modakbulMainDark)
                         .resizable()
-                        .aspectRatio(1, contentMode: .fit)
-                        .containerRelativeFrame(.vertical, alignment: .center)
+                        .aspectRatio(1, contentMode: .fill)
+                        .frame(width: 100, height: 100)
                 }
                 
                 informationArea
-                    .layoutPriority(1)
-                
-                Spacer()
+                    .padding()
             }
-            .frame(maxWidth: .infinity)
             .overlay(alignment: .topTrailing) {
                 communityRecruitingContentEditButton
             }
             
             if viewModel.communityRecruitingContents.isEmpty {
-                Spacer()
-                
                 Text("아직 모집 중인 모임이 없어요.")
                     .font(.Modakbul.footnote)
             } else {
                 communityRecruitingContentListArea(displayMode)
             }
-            
-            Spacer()
         }
-        .padding()
         .task {
             viewModel.configureView(by: place)
             await viewModel.fetchCommunityRecruitingContents(with: place.id)
@@ -81,7 +73,7 @@ struct PlaceInformationView<Router: AppRouter>: View {
                 Text("운영시간 ")
                 
                 Menu {
-                    ForEach(place.openingHours, id: \.dayOfWeek) { openingHour in
+                    ForEach(place.openingHours.reversed(), id: \.dayOfWeek) { openingHour in
                         Button {
                             viewModel.selectedOpeningHourByDay = openingHour
                         } label: {
@@ -101,6 +93,7 @@ struct PlaceInformationView<Router: AppRouter>: View {
             }
         }
         .font(.Modakbul.caption)
+        .frame(maxWidth: .infinity)
     }
     
     private var communityRecruitingContentEditButton: some View {
@@ -202,7 +195,19 @@ extension PlaceInformationView {
 }
 
 struct PlaceInformationSheet_Preview: PreviewProvider {
+    static let listUp: Bool = true
+    
     static var previews: some View {
-        router.view(to: .placeInformationView(place: previewHelper.places.first!, displayMode: .full))
+        Group {
+            if listUp {
+                List(previewHelper.places, id: \.id) {
+                    router.view(to: .placeInformationView(place: $0, displayMode: .full))
+                        .listRowSeparator(.hidden)
+                }
+                .listStyle(.plain)
+            } else {
+                router.view(to: .placeInformationView(place: previewHelper.places.first!, displayMode: .summary))
+            }
+        }
     }
 }
