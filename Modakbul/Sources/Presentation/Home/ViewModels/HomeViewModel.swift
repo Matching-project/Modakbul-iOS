@@ -12,6 +12,7 @@ import Combine
 final class HomeViewModel: ObservableObject {
     @Published var isMapShowing: Bool = true
     @Published var cameraPosition: MapCameraPosition = .userLocation(fallback: .automatic)
+    @Published var cameraCenterCoordinate: CLLocationCoordinate2D = .init()
     @Published var searchingText: String = String()
     @Published var places: [Place] = []
     @Published var searchedPlaces: [Place] = PreviewHelper.shared.places
@@ -35,6 +36,14 @@ final class HomeViewModel: ObservableObject {
     }
     
     private func subscribe() {
+        $cameraCenterCoordinate
+            .debounce(for: .seconds(0.8), scheduler: DispatchQueue.main)
+            .sink { [weak self] center in
+                guard let self = self else { return }
+                Task { await self.findPlaces(by: nil, on: center) }
+            }
+            .store(in: &cancellables)
+        
         placesSubject
             .receive(on: DispatchQueue.main)
             .sink { [weak self] places in
@@ -93,15 +102,13 @@ extension HomeViewModel {
     @MainActor func findPlaces(by keyword: String? = nil, on coordinate: CLLocationCoordinate2D? = nil) {
         Task {
             do {
-                guard let center = cameraPosition.camera?.centerCoordinate else { return }
-                
                 guard let keyword = keyword else {
-                    let places = try await localMapUseCase.fetchPlaces(on: coordinate ?? center, by: sortCriteria)
+                    let places = try await localMapUseCase.fetchPlaces(on: coordinate ?? cameraCenterCoordinate, by: sortCriteria)
                     placesSubject.send(places)
                     return
                 }
                 
-                let places = try await localMapUseCase.fetchPlaces(with: keyword, on: coordinate ?? center)
+                let places = try await localMapUseCase.fetchPlaces(with: keyword, on: coordinate ?? cameraCenterCoordinate)
                 searchedPlacesSubject.send(places)
             } catch {
                 print(error)
