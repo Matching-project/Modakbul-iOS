@@ -14,6 +14,8 @@ struct MapArea<Router: AppRouter>: View {
     @AppStorage(AppStorageKey.userId) private var userId: Int = Constants.loggedOutUserId
     @FocusState private var isFocused: Bool
     
+//    @State private var mapCenter
+    
     init(_ viewModel: HomeViewModel) {
         self.viewModel = viewModel
     }
@@ -51,6 +53,9 @@ struct MapArea<Router: AppRouter>: View {
         }
         .ignoresSafeArea(edges: .top)
         .ignoresSafeArea(.keyboard, edges: .bottom)
+        .onMapCameraChange { context in
+            viewModel.cameraCenterCoordinate = context.camera.centerCoordinate
+        }
     }
     
     @ViewBuilder private func mapAnnotation(_ count: Int) -> some View {

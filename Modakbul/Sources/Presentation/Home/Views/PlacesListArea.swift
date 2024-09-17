@@ -32,7 +32,6 @@ struct PlacesListArea<Router: AppRouter>: View {
         VStack {
             HStack {
                 SearchBar("카페 이름으로 검색", text: $viewModel.searchingText, $isFocused)
-                    .frame(alignment: .top)
                 
                 Button {
                     if userId == Constants.loggedOutUserId {
@@ -50,12 +49,12 @@ struct PlacesListArea<Router: AppRouter>: View {
                     }
                 }
             }
-            .padding()
             
             List(viewModel.places, id: \.id) { place in
                 router.view(to: .placeInformationView(place: place, displayMode: .summary))
                     .listRowSeparator(.hidden)
             }
+            .listStyle(.plain)
         }
     }
     
