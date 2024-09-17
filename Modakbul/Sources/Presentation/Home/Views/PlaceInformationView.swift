@@ -84,7 +84,6 @@ struct PlaceInformationView<Router: AppRouter>: View {
                     Text(viewModel.openingHourText)
                     Image(systemName: "chevron.down")
                 }
-                .tint(colorScheme == .dark ? .white : .black)
             }
             
             HStack {
