@@ -10,20 +10,21 @@ import Moya
 
 enum Endpoint {
     // MARK: - User Related
-    case kakaoLogin(entity: KakaoLoginRequestEntity, provider: AuthenticationProvider)                  // 카카오 로그인
-    case appleLogin(entity: AppleLoginRequestEntity, provider: AuthenticationProvider)                  // 애플 로그인
-    case validateNicknameIntegrity(nickname: String)                                                    // 닉네임 무결성 확인
-    case register(user: UserRegistrationRequestEntity, image: Data?, provider: String, fcm: String)     // 회원가입
-    case logout(token: String)                                                                          // 로그아웃
-    case reissueToken(refreshToken: String)                                                             // 토큰 재발행
-    case updateProfile(token: String, user: UserProfileUpdateRequestEntity, image: Data?)               // 프로필 수정
-    case readMyProfile(token: String)                                                                   // 회원 정보 조회
-    case block(token: String, opponentUserId: Int64)                                                    // 사용자 차단
-    case unblock(token: String, blockId: Int64)                                                         // 사용자 차단 해제
-    case readBlockedUsers(token: String)                                                                // 차단한 사용자 목록 조회
-    case readReports(token: String)                                                                     // 신고 목록 조회
-    case readOpponentUserProfile(token: String, userId: Int64)                                          // 사용자(상대방) 프로필 조회
-    case reportOpponentUserProfile(token: String, userId: Int64, report: Report)                        // 사용자(상대방) 프로필 신고
+    case kakaoLogin(entity: KakaoLoginRequestEntity, provider: AuthenticationProvider)                                  // 카카오 로그인
+    case appleLogin(entity: AppleLoginRequestEntity, provider: AuthenticationProvider)                                  // 애플 로그인
+    case validateNicknameIntegrity(nickname: String)                                                                    // 닉네임 무결성 확인
+    case kakaoRegister(user: KakaoUserRegistrationRequestEntity, image: Data?, provider: AuthenticationProvider)        // 카카오로 회원가입
+    case appleRegister(user: AppleUserRegistrationRequestEntity, image: Data?, provider: AuthenticationProvider)        // 애플로 회원가입
+    case logout(token: String)                                                                                          // 로그아웃
+    case reissueToken(refreshToken: String)                                                                             // 토큰 재발행
+    case updateProfile(token: String, user: UserProfileUpdateRequestEntity, image: Data?)                               // 프로필 수정
+    case readMyProfile(token: String)                                                                                   // 회원 정보 조회
+    case block(token: String, opponentUserId: Int64)                                                                    // 사용자 차단
+    case unblock(token: String, blockId: Int64)                                                                         // 사용자 차단 해제
+    case readBlockedUsers(token: String)                                                                                // 차단한 사용자 목록 조회
+    case readReports(token: String)                                                                                     // 신고 목록 조회
+    case readOpponentUserProfile(token: String, userId: Int64)                                                          // 사용자(상대방) 프로필 조회
+    case reportOpponentUserProfile(token: String, userId: Int64, report: Report)                                        // 사용자(상대방) 프로필 신고
     
     // MARK: - Place Related
     case readPlaces(name: String, lat: Double, lon: Double)                                         // 카페 이름으로 검색
@@ -87,8 +88,10 @@ extension Endpoint: TargetType {
             return "/users/login/\(provider.identifier)"
         case .validateNicknameIntegrity:
             return "/users"
-        case .register(_, _, let provider, _):
-            return "/users/register/\(provider)"
+        case .kakaoRegister(_, _, let provider):
+            return "/users/register/\(provider.identifier)"
+        case .appleRegister(_, _, let provider):
+            return "/users/register/\(provider.identifier)"
         case .logout:
             return "/users/logout"
         case .reissueToken:
@@ -187,7 +190,7 @@ extension Endpoint: TargetType {
     var method: Moya.Method {
         switch self {
         case .validateNicknameIntegrity, .readMyProfile, .readOpponentUserProfile, .readMyBoards, .readMyMatches, .readMyRequestMatches, .readPlaces, .readPlacesByMatches, .readPlacesByDistance, .readPlacesForShowcaseAndReview, .readBoards, .readBoardForUpdate, .readBoardDetail, .readMatches, .readChatrooms, .readChatHistory, .completeBoard, .readBlockedUsers, .readReports, .fetchNotifications: return .get
-        case .kakaoLogin, .appleLogin, .register, .reissueToken, .createBoard, .requestMatch, .createChatRoom, .block, .reviewPlace, .suggestPlace, .reportOpponentUserProfile, .reportAndExitChatRoom, .sendNotification: return .post
+        case .kakaoLogin, .appleLogin, .kakaoRegister, .appleRegister, .reissueToken, .createBoard, .requestMatch, .createChatRoom, .block, .reviewPlace, .suggestPlace, .reportOpponentUserProfile, .reportAndExitChatRoom, .sendNotification: return .post
         case .logout, .deleteBoard, .unblock, .removeNotifications: return .delete
         case .updateProfile, .updateBoard, .acceptMatchRequest, .rejectMatchRequest, .exitMatch, .cancelMatchRequest, .exitChatRoom, .readNotification: return .patch
         }
@@ -201,42 +204,33 @@ extension Endpoint: TargetType {
             return .requestJSONEncodable(entity)
         case .validateNicknameIntegrity(let nickname):
             return .requestParameters(parameters: ["nickname": "\(nickname)"], encoding: URLEncoding.queryString)
-        case .register(let user, let image, _, let fcm):
+        case .kakaoRegister(let user, let image, _):
             var formData = [MultipartFormData]()
-
-            do {
-                let user = try encode(user)
-                formData.append(MultipartFormData(provider: .data(user), name: "user"))
-                let fcm = try encode(fcm)
-                formData.append(MultipartFormData(provider: .data(fcm), name: "fcm"))
-            } catch {
-                print(error)
+            
+            if let user = try? encode(user),
+               let image = image {
+                formData.append(.init(provider: .data(user), name: "user"))
+                formData.append(.init(provider: .data(image), name: "image", mimeType: "image/jpeg"))
             }
             
-            if let image = image {
-                formData.append(MultipartFormData(provider: .data(image),
-                                                  name: "\(image)",
-                                                  fileName: "image",
-                                                  mimeType: "image/jpeg"))
+            return .uploadMultipart(formData)
+        case .appleRegister(let user, let image, _):
+            var formData = [MultipartFormData]()
+            
+            if let user = try? encode(user),
+               let image = image {
+                formData.append(.init(provider: .data(user), name: "user"))
+                formData.append(.init(provider: .data(image), name: "image", mimeType: "image/jpeg"))
             }
             
             return .uploadMultipart(formData)
         case .updateProfile(_, let user, let image):
             var formData = [MultipartFormData]()
-
-            do {
-                let user = try encode(user)
-                
-                formData.append(MultipartFormData(provider: .data(user), name: "user"))
-            } catch {
-                print(error)
-            }
             
-            if let image = image {
-                formData.append(MultipartFormData(provider: .data(image),
-                                                  name: "\(image)",
-                                                  fileName: "image",
-                                                  mimeType: "image/jpeg"))
+            if let user = try? encode(user),
+               let image = image {
+                formData.append(.init(provider: .data(user), name: "user"))
+                formData.append(.init(provider: .data(image), name: "image", mimeType: "image/jpeg"))
             }
 
             return .uploadMultipart(formData)
@@ -276,8 +270,8 @@ extension Endpoint: TargetType {
             // MARK: User Related
         case .kakaoLogin, .appleLogin:
             ["Content-type": "application/json"]
-        case .register:
-            ["Content-type": "application/json"]
+        case .kakaoRegister, .appleRegister:
+            ["Content-Type": "multipart/form-data"]
         case .logout(let token):
             ["Authorization": "\(token)"]
         case .reissueToken(let refreshToken):

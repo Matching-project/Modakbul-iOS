@@ -12,6 +12,9 @@ enum DateFormat: String {
     /// 년.월.일
     case yyyyMMdd = "yyyy.MM.dd"
     
+    /// 년월일 (구분자 없음)
+    case yyyyMMddRaw
+    
     /// 한국어 년월일 (yyyy년 MM월 dd일)
     case yyyyMMddKorean = "yyyy년 MM월 dd일"
     

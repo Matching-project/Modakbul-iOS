@@ -14,7 +14,8 @@ protocol SocialLoginRepository: TokenRefreshable {
     
     func validateNicknameIntegrity(_ nickname: String) async throws -> NicknameIntegrityType
     
-    func register(_ user: User, encoded imageData: Data?, fcm: String, provider: AuthenticationProvider) async throws -> Int64
+    func kakaoRegister(_ user: User, encoded imageData: Data?, email: String, fcm: String, provider: AuthenticationProvider) async throws -> Int64
+    func appleRegister(_ user: User, encoded imageData: Data?, authorizationCode: Data, fcm: String, provider: AuthenticationProvider) async throws -> Int64
     func unregister(userId: Int64, provider: AuthenticationProvider) async throws
 }
 
@@ -81,14 +82,16 @@ extension DefaultSocialLoginRepository: SocialLoginRepository {
         return response.body.toDTO()
     }
     
-    func register(_ user: User, encoded imageData: Data?, fcm: String, provider: AuthenticationProvider) async throws -> Int64 {
-        let entity = UserRegistrationRequestEntity(name: user.name,
-                                                   nickname: user.nickname,
-                                                   birth: user.birth.toString(by: .yyyyMMdd),
-                                                   gender: user.gender,
-                                                   job: user.job,
-                                                   categories: user.categoriesOfInterest)
-        let endpoint = Endpoint.register(user: entity, image: imageData, provider: provider.identifier, fcm: fcm)
+    func kakaoRegister(_ user: User, encoded imageData: Data?, email: String, fcm: String, provider: AuthenticationProvider) async throws -> Int64 {
+        let entity = KakaoUserRegistrationRequestEntity(user, email: email, fcm: fcm)
+        let endpoint = Endpoint.kakaoRegister(user: entity, image: imageData, provider: provider)
+        let response = try await networkService.request(endpoint: endpoint, for: UserRegistrationResponseEntity.self)
+        return response.body.toDTO()
+    }
+    
+    func appleRegister(_ user: User, encoded imageData: Data?, authorizationCode: Data, fcm: String, provider: AuthenticationProvider) async throws -> Int64 {
+        let entity = AppleUserRegistrationRequestEntity(user, authorizationCode: authorizationCode, fcm: fcm)
+        let endpoint = Endpoint.appleRegister(user: entity, image: imageData, provider: provider)
         let response = try await networkService.request(endpoint: endpoint, for: UserRegistrationResponseEntity.self)
         return response.body.toDTO()
     }

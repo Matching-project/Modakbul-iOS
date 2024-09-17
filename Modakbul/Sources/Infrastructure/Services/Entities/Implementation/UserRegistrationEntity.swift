@@ -7,12 +7,46 @@
 
 import Foundation
 
-/// 회원가입 요청
-struct UserRegistrationRequestEntity: Encodable {
+/// 카카오로 회원가입 요청
+struct KakaoUserRegistrationRequestEntity: Encodable {
     let name, nickname, birth: String
     let gender: Gender
     let job: Job
     let categories: Set<Category>
+    let email: String
+    let fcm: String
+    
+    init(_ user: User, email: String, fcm: String) {
+        self.name = user.name
+        self.nickname = user.nickname
+        self.birth = user.birth.toString(by: .yyyyMMddRaw)
+        self.gender = user.gender
+        self.job = user.job
+        self.categories = user.categoriesOfInterest
+        self.email = email
+        self.fcm = fcm
+    }
+}
+
+/// 애플로 회원가입 요청
+struct AppleUserRegistrationRequestEntity: Encodable {
+    let name, nickname, birth: String
+    let gender: Gender
+    let job: Job
+    let categories: Set<Category>
+    let authorizationCode: Data
+    let fcm: String
+    
+    init(_ user: User, authorizationCode: Data, fcm: String) {
+        self.name = user.name
+        self.nickname = user.nickname
+        self.birth = user.birth.toString(by: .yyyyMMddRaw)
+        self.gender = user.gender
+        self.job = user.job
+        self.categories = user.categoriesOfInterest
+        self.authorizationCode = authorizationCode
+        self.fcm = fcm
+    }
 }
 
 /// 로그인, 회원가입 응답
