@@ -125,12 +125,12 @@ final class RegistrationViewModel: ObservableObject {
             }
         case .apple:
             Task {
-                do {
+//                do {
                     // TODO: 기능 연결 필요
-                    let userId = try await userRegistrationUseCase.appleRegister(user, encoded: image, authorizationCode: <#T##Data#>, fcm: <#T##String#>, provider: <#T##AuthenticationProvider#>)
-                } catch {
-                    print(error)
-                }
+//                    let userId = try await userRegistrationUseCase.appleRegister(user, encoded: image, authorizationCode: <#T##Data#>, fcm: <#T##String#>, provider: <#T##AuthenticationProvider#>)
+//                } catch {
+//                    print(error)
+//                }
             }
         }
     }
