@@ -113,12 +113,24 @@ final class RegistrationViewModel: ObservableObject {
         
         isWaiting.toggle()
         
-        Task {
-            do {
-                let userId = try await userRegistrationUseCase.register(user, encoded: image, provider: provider, fcm: fcm)
-                userIdSubject.send(userId)
-            } catch {
-                print(error)
+        switch provider {
+        case .kakao:
+            Task {
+                do {
+                    let userId = try await userRegistrationUseCase.kakaoRegister(user, encoded: image, email: email, fcm: fcm, provider: provider)
+                    userIdSubject.send(userId)
+                } catch {
+                    print(error)
+                }
+            }
+        case .apple:
+            Task {
+                do {
+                    // TODO: 기능 연결 필요
+                    let userId = try await userRegistrationUseCase.appleRegister(user, encoded: image, authorizationCode: <#T##Data#>, fcm: <#T##String#>, provider: <#T##AuthenticationProvider#>)
+                } catch {
+                    print(error)
+                }
             }
         }
     }
