@@ -39,11 +39,14 @@ struct PlaceInformationView<Router: AppRouter>: View {
                 }
                 
                 informationArea
-                    .padding()
+                
+                Spacer()
             }
             .overlay(alignment: .topTrailing) {
                 communityRecruitingContentEditButton
             }
+            
+            Spacer()
             
             if viewModel.communityRecruitingContents.isEmpty {
                 Text("아직 모집 중인 모임이 없어요.")
@@ -51,6 +54,8 @@ struct PlaceInformationView<Router: AppRouter>: View {
             } else {
                 communityRecruitingContentListArea(displayMode)
             }
+            
+            Spacer()
         }
         .task {
             viewModel.configureView(by: place)
@@ -68,12 +73,13 @@ struct PlaceInformationView<Router: AppRouter>: View {
                 Text(place.location.address)
                     .font(.Modakbul.caption)
             }
+            .padding(.top)
             
             HStack {
                 Text("운영시간 ")
                 
                 Menu {
-                    ForEach(place.openingHours.reversed(), id: \.dayOfWeek) { openingHour in
+                    ForEach(place.openingHours, id: \.dayOfWeek) { openingHour in
                         Button {
                             viewModel.selectedOpeningHourByDay = openingHour
                         } label: {
@@ -92,7 +98,6 @@ struct PlaceInformationView<Router: AppRouter>: View {
             }
         }
         .font(.Modakbul.caption)
-        .frame(maxWidth: .infinity)
     }
     
     private var communityRecruitingContentEditButton: some View {

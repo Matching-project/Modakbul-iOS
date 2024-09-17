@@ -56,7 +56,6 @@ struct PlacesListArea<Router: AppRouter>: View {
             }
             .listStyle(.plain)
         }
-        .padding()
     }
     
     private var hoveringButtonsArea: some View {
