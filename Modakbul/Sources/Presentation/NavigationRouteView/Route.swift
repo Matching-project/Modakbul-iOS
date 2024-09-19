@@ -32,8 +32,8 @@ enum Route: Routable {
     case routerView
     case contentView
     case loginView          // MARK: - Login
-    case requiredTermView(provider: AuthenticationProvider)   // MARK: - Registration
-    case registrationView(provider: AuthenticationProvider)
+    case requiredTermView(userCredential: UserCredential)    // MARK: - Registration
+    case registrationView(userCredential: UserCredential)
     case myView             // MARK: - My
     case profileEditView(user: User)
     case myCommunityRecruitingContentListView
@@ -97,10 +97,10 @@ enum Route: Routable {
             ContentView<Router>()
         case .loginView:        // MARK: - Login
             LoginView<Router>(loginViewModel: router.resolver.resolve(LoginViewModel.self))
-        case .requiredTermView(let provider): // MARK: - Registration
-            RequiredTermView<Router>(provider: provider)
-        case .registrationView(let provider):
-            RegistrationView<Router>(registrationViewModel: router.resolver.resolve(RegistrationViewModel.self), provider: provider)
+        case .requiredTermView(let userCredential): // MARK: - Registration
+            RequiredTermView<Router>(userCredential: userCredential)
+        case .registrationView(let userCredential):
+            RegistrationView<Router>(router.resolver.resolve(RegistrationViewModel.self), userCredential: userCredential)
         case .myView:           // MARK: - My
             MyView<Router>(router.resolver.resolve(MyViewModel.self))
         case .placeShowcaseView(let userId):

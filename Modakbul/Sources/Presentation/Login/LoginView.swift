@@ -49,6 +49,9 @@ struct LoginView<Router: AppRouter>: View {
             case .success(let email):
                 loginViewModel.loginWithKakaoTalk(email)
                 router.dismiss()
+                if userId == Constants.loggedOutUserId {
+                    router.route(to: .requiredTermView(userCredential: .init(provider: .kakao, email: email)))
+                }
             case .failure(let error):
                 print(error)
             }
@@ -63,7 +66,16 @@ struct LoginView<Router: AppRouter>: View {
         } onCompletion: { result in
             switch result {
             case .success(let auth):
-                loginViewModel.loginWithApple(auth.credential)
+                guard let appleIDCredential = auth.credential as? ASAuthorizationAppleIDCredential,
+                      let authorizationCode = appleIDCredential.authorizationCode else {
+                    return print("애플 아이디로 로그인만 지원함")
+                }
+                
+                loginViewModel.loginWithApple(authorizationCode)
+                router.dismiss()
+                if userId == Constants.loggedOutUserId {
+                    router.route(to: .requiredTermView(userCredential: .init(provider: .apple, authorizationCode: authorizationCode)))
+                }
             case .failure(let error):
                 print(error)
             }
