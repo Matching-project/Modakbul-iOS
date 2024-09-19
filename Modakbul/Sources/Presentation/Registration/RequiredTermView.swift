@@ -13,7 +13,11 @@ struct RequiredTermView<Router: AppRouter>: View {
     @State private var locationChecked: Bool = false
     @State private var privacyChecked: Bool = false
     
-    let provider: AuthenticationProvider
+    private let userCredential: UserCredential
+    
+    init(userCredential: UserCredential) {
+        self.userCredential = userCredential
+    }
     
     var body: some View {
         ScrollView {
@@ -55,8 +59,8 @@ struct RequiredTermView<Router: AppRouter>: View {
            .padding(.horizontal, 30)
             
             FlatButton("확인") {
-                router.route(to: .registrationView(provider: provider))
                 router.dismiss()
+                router.route(to: .registrationView(userCredential: userCredential))
             }
             .disabled(!allChecked)
             .padding(.horizontal, Constants.horizontal)

@@ -12,15 +12,13 @@ struct RegistrationView<Router: AppRouter>: View {
     @ObservedObject private var vm: RegistrationViewModel
     @AppStorage(AppStorageKey.userId) private var userId: Int = Constants.loggedOutUserId
     
-    private let provider: AuthenticationProvider
+    private let userCredential: UserCredential
     
-    init(
-        registrationViewModel: RegistrationViewModel,
-        provider: AuthenticationProvider
-    ) {
-        self.vm = registrationViewModel
-        self.provider = provider
+    init(_ vm: RegistrationViewModel, userCredential: UserCredential) {
+        self.vm = vm
+        self.userCredential = userCredential
     }
+    
     var body: some View {
         view()
             .padding(.horizontal, Constants.horizontal)
@@ -122,7 +120,7 @@ extension RegistrationView {
                     if vm.currentField != .image {
                         vm.proceedToNextField()
                     } else {
-                        vm.submit(provider)
+                        vm.submit(userCredential)
                     }
                 }
                 .disabled(!vm.isNextButtonEnabled || vm.isWaiting)

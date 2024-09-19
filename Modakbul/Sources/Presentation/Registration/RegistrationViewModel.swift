@@ -16,7 +16,6 @@ final class RegistrationViewModel: ObservableObject {
 
     // MARK: Data From User
     @Published var id: Int64?
-    @Published var email = ""
     @Published var name = ""
     @Published var nickname = ""
     @Published var birth: DateComponents = DateComponents(year: 2000, month: 1, day: 1)
@@ -100,7 +99,7 @@ final class RegistrationViewModel: ObservableObject {
     }
     
     @MainActor
-    func submit(_ provider: AuthenticationProvider) {
+    func submit(_ userCredential: UserCredential) {
         guard let fcm = fcm else { return }
         
         let user = User(name: name,
@@ -113,11 +112,15 @@ final class RegistrationViewModel: ObservableObject {
         
         isWaiting.toggle()
         
-        switch provider {
+        switch userCredential.provider {
         case .kakao:
             Task {
                 do {
-                    let userId = try await userRegistrationUseCase.kakaoRegister(user, encoded: image, email: email, fcm: fcm, provider: provider)
+                    let userId = try await userRegistrationUseCase.kakaoRegister(user,
+                                                                                 encoded: image,
+                                                                                 email: userCredential.email!,
+                                                                                 fcm: fcm,
+                                                                                 provider: userCredential.provider)
                     userIdSubject.send(userId)
                 } catch {
                     print(error)
@@ -125,18 +128,21 @@ final class RegistrationViewModel: ObservableObject {
             }
         case .apple:
             Task {
-//                do {
-                    // TODO: 기능 연결 필요
-//                    let userId = try await userRegistrationUseCase.appleRegister(user, encoded: image, authorizationCode: <#T##Data#>, fcm: <#T##String#>, provider: <#T##AuthenticationProvider#>)
-//                } catch {
-//                    print(error)
-//                }
+                do {
+                    let userId = try await userRegistrationUseCase.appleRegister(user,
+                                                                                 encoded: image,
+                                                                                 authorizationCode: userCredential.authorizationCode!,
+                                                                                 fcm: fcm,
+                                                                                 provider: userCredential.provider)
+                    
+                } catch {
+                    print(error)
+                }
             }
         }
     }
     
     func initialize() {
-        email = ""
         name = ""
         nickname = ""
         birth = DateComponents(year: 2000, month: 1, day: 1)
