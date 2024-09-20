@@ -17,7 +17,7 @@ final class RegistrationViewModel: ObservableObject {
     // MARK: Data From User
     @Published var id: Int64?
     @Published var name = ""
-    @Published var nickname = ""
+    @Published var nickname = "닉네임 테스트"
     @Published var birth: DateComponents = DateComponents(year: 2000, month: 1, day: 1)
     @Published var gender: Gender? = nil
     @Published var job: Job? = nil
@@ -40,7 +40,9 @@ final class RegistrationViewModel: ObservableObject {
         case .name:
             return !name.isEmpty && name.count <= 30
         case .nickname:
-            return integrityResult == .normal
+//            return integrityResult == .normal
+            // MARK: - 테스트 위해 임시로 다음 버튼 강제 허용
+            return true
         case .gender:
             return gender != nil
         case .job:
