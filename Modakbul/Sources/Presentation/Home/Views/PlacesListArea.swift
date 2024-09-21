@@ -49,6 +49,7 @@ struct PlacesListArea<Router: AppRouter>: View {
                     }
                 }
             }
+            .padding()
             
             List(viewModel.places, id: \.id) { place in
                 router.view(to: .placeInformationView(place: place, displayMode: .summary))
@@ -74,5 +75,11 @@ struct PlacesListArea<Router: AppRouter>: View {
             }
         }
         .padding()
+    }
+}
+
+struct PlaceListArea_Preview: PreviewProvider {
+    static var previews: some View {
+        router.view(to: .placesListArea)
     }
 }
