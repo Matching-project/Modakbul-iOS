@@ -154,5 +154,6 @@ final class RegistrationViewModel: ObservableObject {
         image = nil
         currentField = .name
         integrityResult = nil
+        isWaiting = false
     }
 }
