@@ -79,7 +79,6 @@ struct MapArea<Router: AppRouter>: View {
         VStack {
             HStack {
                 SearchBar("카페 이름으로 검색", text: $viewModel.searchingText, $isFocused)
-                    .frame(alignment: .top)
                 
                 Button {
                     if userId == Constants.loggedOutUserId {
