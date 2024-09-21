@@ -59,6 +59,7 @@ struct LoginView<Router: AppRouter>: View {
             }
         }
         .clipShape(RoundedRectangle(cornerRadius: 14))
+        .frame(height: 44)
     }
     
     private var signInWithAppleButton: some View {
