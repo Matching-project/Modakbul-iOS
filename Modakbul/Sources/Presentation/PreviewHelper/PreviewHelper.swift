@@ -52,6 +52,15 @@ final class PreviewHelper: ObservableObject {
                 address: "서울시 구로구 구로동 437-1",
                 coordinate: CLLocationCoordinate2D(latitude: 37.4953, longitude: 126.8882)
             ),
+            openingHours: [
+                OpeningHour(dayOfWeek: .mon, open: "09:00", close: "18:00", openingState: .closed),
+                OpeningHour(dayOfWeek: .tue, open: "09:00", close: "18:00", openingState: .opened),
+                OpeningHour(dayOfWeek: .wed, open: "09:00", close: "18:00", openingState: .closed),
+                OpeningHour(dayOfWeek: .thr, open: "09:00", close: "18:00", openingState: .opened),
+                OpeningHour(dayOfWeek: .fri, open: "09:00", close: "18:00", openingState: .opened),
+                OpeningHour(dayOfWeek: .sat, open: "10:00", close: "15:00", openingState: .opened),
+                OpeningHour(dayOfWeek: .sun, open: "10:00", close: "15:00", openingState: .closed)
+            ],
             powerSocketState: .moderate,
             noiseLevel: .moderate,
             groupSeatingState: .no,
@@ -64,6 +73,15 @@ final class PreviewHelper: ObservableObject {
                 address: "서울시 구로구 구로동 814",
                 coordinate: CLLocationCoordinate2D(latitude: 37.4958, longitude: 126.8874)
             ),
+            openingHours: [
+                OpeningHour(dayOfWeek: .mon, open: "09:00", close: "18:00", openingState: .closed),
+                OpeningHour(dayOfWeek: .tue, open: "09:00", close: "18:00", openingState: .opened),
+                OpeningHour(dayOfWeek: .wed, open: "09:00", close: "18:00", openingState: .closed),
+                OpeningHour(dayOfWeek: .thr, open: "09:00", close: "18:00", openingState: .opened),
+                OpeningHour(dayOfWeek: .fri, open: "09:00", close: "18:00", openingState: .opened),
+                OpeningHour(dayOfWeek: .sat, open: "10:00", close: "15:00", openingState: .opened),
+                OpeningHour(dayOfWeek: .sun, open: "10:00", close: "15:00", openingState: .closed)
+            ],
             powerSocketState: .few,
             noiseLevel: .noisy,
             groupSeatingState: .yes,

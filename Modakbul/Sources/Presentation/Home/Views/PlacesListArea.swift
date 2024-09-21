@@ -110,15 +110,28 @@ extension PlacesListArea {
     struct Cell: View {
         @EnvironmentObject private var router: Router
         @Environment(\.colorScheme) private var colorScheme
-        @State private var selectedOpeningHourOfDay: OpeningHour? {
-            didSet { displaySelectedOpeningHourText() }
-        }
-        @State private var openingHourText: String = String()
+        @State private var selectedOpeningHourOfDay: OpeningHour?
+        @State private var openingHourText: String
         
         private let place: Place
         
         init(_ place: Place) {
             self.place = place
+            let calendar = Calendar.current
+            let weekDay = calendar.component(.weekday, from: .now)
+            let dayOfWeek = DayOfWeek(weekDay)
+            let openingHour = place.openingHours.first(where: {$0.dayOfWeek == dayOfWeek})
+            self.selectedOpeningHourOfDay = openingHour
+            
+            if let openingHour = openingHour {
+                let dayOfWeek = openingHour.dayOfWeek.description
+                let open = openingHour.open
+                let close = openingHour.close
+                self.openingHourText = "\(dayOfWeek) \(open) - \(close)"
+                print(openingHourText)
+            } else {
+                self.openingHourText = "-"
+            }
         }
         
         var body: some View {
@@ -145,11 +158,20 @@ extension PlacesListArea {
                 
                 HStack(spacing: 20) {
                     Image(.marker)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
                     
                     Text("모임 \(place.meetingCount)개 진행 중")
+                        .font(.Modakbul.headline)
+                        .foregroundStyle(.accent)
                 }
+                .frame(height: 30)
                 
                 Spacer()
+            }
+            .onChange(of: selectedOpeningHourOfDay) {
+                guard let openingHour = selectedOpeningHourOfDay else { return }
+                openingHourText = displayOpeningHours(openingHour)
             }
         }
         
@@ -204,24 +226,11 @@ extension PlacesListArea {
             .shadow(color: .gray.opacity(0.3), radius: 4, y: 4)
         }
         
-        private func configureView(by place: Place) {
-            let calendar = Calendar.current
-            let weekDay = calendar.component(.weekday, from: .now)
-            let dayOfWeek = DayOfWeek(weekDay)
-            selectedOpeningHourOfDay = place.openingHours.first(where: {$0.dayOfWeek == dayOfWeek})
-        }
-        
         private func displayOpeningHours(_ openingHour: OpeningHour) -> String {
             let dayOfWeek = openingHour.dayOfWeek.description
             let open = openingHour.open
             let close = openingHour.close
             return "\(dayOfWeek) \(open) - \(close)"
-        }
-        
-        private func displaySelectedOpeningHourText() {
-            if let openingHour = selectedOpeningHourOfDay {
-                openingHourText = displayOpeningHours(openingHour)
-            }
         }
     }
 }
