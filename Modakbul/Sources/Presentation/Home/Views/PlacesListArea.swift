@@ -21,6 +21,8 @@ struct PlacesListArea<Router: AppRouter>: View {
         ZStack {
             VStack {
                 searchBarArea
+
+                sortCriteria
                 
                 ZStack {
                     listArea
@@ -86,12 +88,30 @@ struct PlacesListArea<Router: AppRouter>: View {
             }
         }
         .frame(maxWidth: .infinity, alignment: .trailing)
+        .padding()
+    }
+    
+    private var sortCriteria: some View {
+        Menu {
+            ForEach(PlaceSortCriteria.allCases) { sortCriteria in
+                Button {
+                    viewModel.sortCriteria = sortCriteria
+                } label: {
+                    Text(sortCriteria.description)
+                }
+            }
+        } label: {
+            Text(viewModel.sortCriteria.description)
+                .bold()
+            Image(systemName: "chevron.down")
+        }
+        .frame(maxWidth: .infinity, alignment: .trailing)
         .padding(.trailing)
     }
     
     private var placeList: some View {
         List(viewModel.places, id: \.id) { place in
-            router.view(to: .placeInformationView(place: place, displayMode: .summary))
+            router.view(to: .placeInformationView(place: place))
                 .listRowSeparator(.hidden)
         }
         .listStyle(.plain)
@@ -234,6 +254,7 @@ extension PlacesListArea {
             // MARK: - https://stackoverflow.com/q/56561064
             .buttonStyle(BorderlessButtonStyle())
             .shadow(color: .gray.opacity(0.3), radius: 4, y: 4)
+            .padding([.top, .trailing])
         }
         
         private func displayOpeningHours(_ openingHour: OpeningHour) -> String {
