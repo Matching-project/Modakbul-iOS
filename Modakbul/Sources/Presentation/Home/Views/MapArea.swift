@@ -14,8 +14,6 @@ struct MapArea<Router: AppRouter>: View {
     @AppStorage(AppStorageKey.userId) private var userId: Int = Constants.loggedOutUserId
     @FocusState private var isFocused: Bool
     
-//    @State private var mapCenter
-    
     init(_ viewModel: HomeViewModel) {
         self.viewModel = viewModel
     }
@@ -26,6 +24,7 @@ struct MapArea<Router: AppRouter>: View {
             
             hoveringButtonsArea
         }
+        .navigationBarHidden(true)
         .task {
             viewModel.updateLocationOnceIfNeeded()
             await viewModel.fetchUnreadNotificationCount(userId: userId)

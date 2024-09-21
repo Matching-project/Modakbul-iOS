@@ -38,7 +38,7 @@ struct LoginView<Router: AppRouter>: View {
     }
     
     private var appLogo: some View {
-        Image(systemName: "heart.fill")
+        Image(scheme == .dark ? .modakbulMainDark : .modakbulMainLight)
             .resizable()
             .scaledToFit()
     }
@@ -83,5 +83,11 @@ struct LoginView<Router: AppRouter>: View {
         .signInWithAppleButtonStyle(scheme == .dark ? .white : .black)
         .clipShape(RoundedRectangle(cornerRadius: 14))
         .frame(height: 44)
+    }
+}
+
+struct LoginView_Preview: PreviewProvider {
+    static var previews: some View {
+        router.view(to: .loginView)
     }
 }
