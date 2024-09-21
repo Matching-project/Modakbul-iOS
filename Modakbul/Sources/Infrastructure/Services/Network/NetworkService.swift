@@ -84,13 +84,17 @@ final class DefaultNetworkService {
     }
     
     private func decode<T: Decodable>(for type: T.Type, with data: Data?) throws -> T {
-        guard let data = data,
-              let decodedData = try? decoder.decode(type, from: data)
-        else {
-            throw NetworkServiceError.decodingError(type: String(describing: type))
-        }
+        guard let data = data else { throw NetworkServiceError.requestFailed }
         
-        return decodedData
+        do {
+            let decodedData = try decoder.decode(type, from: data)
+            return decodedData
+        } catch {
+            if let error = error as? DecodingError {
+                print(error)
+            }
+            throw error
+        }
     }
 }
 
