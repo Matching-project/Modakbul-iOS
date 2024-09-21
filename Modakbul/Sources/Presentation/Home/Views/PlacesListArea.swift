@@ -19,7 +19,36 @@ struct PlacesListArea<Router: AppRouter>: View {
     
     var body: some View {
         ZStack {
-            listArea
+            VStack {
+                searchBarArea
+                
+                ZStack {
+                    listArea
+                    
+                    if viewModel.searchedPlaces.isEmpty == false {
+                        ScrollView(.vertical) {
+                            LazyVStack(alignment: .leading) {
+                                ForEach(viewModel.searchedPlaces, id: \.id) { place in
+                                    VStack(alignment: .leading) {
+                                        Text(place.location.name)
+                                        Text(place.location.address)
+                                    }
+                                    .padding()
+                                    .contentShape(.rect)
+                                    .onTapGesture {
+                                        withAnimation(.bouncy) {
+                                            isFocused = false
+                                            viewModel.selectPlace(place)
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        .background(.ultraThinMaterial)
+                        .clipShape(.rect(cornerRadius: 14))
+                    }
+                }
+            }
             
             hoveringButtonsArea
         }
@@ -29,32 +58,32 @@ struct PlacesListArea<Router: AppRouter>: View {
     }
     
     private var listArea: some View {
-        VStack {
-            HStack {
-                SearchBar("카페 이름으로 검색", text: $viewModel.searchingText, $isFocused)
-                
-                Button {
-                    if userId == Constants.loggedOutUserId {
-                        router.route(to: .loginView)
-                    } else {
-                        router.route(to: .notificationView(userId: Int64(userId)))
-                    }
-                } label: {
-                    if viewModel.unreadCount > 0 {
-                        NotificationIcon(badge: true)
-                            .padding(5)
-                    } else {
-                        NotificationIcon(badge: false)
-                            .padding(10)
-                    }
+        List(viewModel.places, id: \.id) { place in
+            router.view(to: .placeInformationView(place: place, displayMode: .summary))
+                .listRowSeparator(.hidden)
+        }
+        .listStyle(.plain)
+    }
+    
+    private var searchBarArea: some View {
+        HStack {
+            SearchBar("카페 이름으로 검색", text: $viewModel.searchingText, $isFocused)
+            
+            Button {
+                if userId == Constants.loggedOutUserId {
+                    router.route(to: .loginView)
+                } else {
+                    router.route(to: .notificationView(userId: Int64(userId)))
+                }
+            } label: {
+                if viewModel.unreadCount > 0 {
+                    NotificationIcon(badge: true)
+                        .padding(5)
+                } else {
+                    NotificationIcon(badge: false)
+                        .padding(10)
                 }
             }
-            
-            List(viewModel.places, id: \.id) { place in
-                router.view(to: .placeInformationView(place: place, displayMode: .summary))
-                    .listRowSeparator(.hidden)
-            }
-            .listStyle(.plain)
         }
     }
     
