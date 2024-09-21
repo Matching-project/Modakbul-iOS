@@ -36,19 +36,20 @@ final class HomeViewModel: ObservableObject {
     }
     
     private func subscribe() {
-        $cameraCenterCoordinate
-            .debounce(for: .seconds(0.8), scheduler: DispatchQueue.main)
-            .sink { [weak self] center in
-                guard let self = self else { return }
-                Task { await self.findPlaces(by: nil, on: center) }
-            }
-            .store(in: &cancellables)
+        
+        // TODO: - 지도 화면 이동시 장소 새로고침 지원 해야 하나?
+//        $cameraCenterCoordinate
+//            .debounce(for: .seconds(0.8), scheduler: DispatchQueue.main)
+//            .sink { [weak self] center in
+//                guard let self = self else { return }
+//                Task { await self.findPlaces(by: nil, on: center) }
+//            }
+//            .store(in: &cancellables)
         
         placesSubject
             .receive(on: DispatchQueue.main)
             .sink { [weak self] places in
                 self?.places = places
-                self?.cameraPosition = .automatic
             }
             .store(in: &cancellables)
         
@@ -56,6 +57,7 @@ final class HomeViewModel: ObservableObject {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] places in
                 self?.searchedPlaces = places
+                self?.cameraPosition = .automatic
             }
             .store(in: &cancellables)
         
@@ -102,12 +104,14 @@ extension HomeViewModel {
     @MainActor func findPlaces(by keyword: String? = nil, on coordinate: CLLocationCoordinate2D? = nil) {
         Task {
             do {
+                // MARK: - 새로고침 버튼을 터치했을 때 장소를 불러옵니다.
                 guard let keyword = keyword else {
                     let places = try await localMapUseCase.fetchPlaces(on: coordinate ?? cameraCenterCoordinate, by: sortCriteria)
                     placesSubject.send(places)
                     return
                 }
                 
+                // MARK: - 검색어가 있을 때 장소를 불러옵니다.
                 let places = try await localMapUseCase.fetchPlaces(with: keyword, on: coordinate ?? cameraCenterCoordinate)
                 searchedPlacesSubject.send(places)
             } catch {
