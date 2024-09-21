@@ -43,7 +43,7 @@ struct MapArea<Router: AppRouter>: View {
                 Annotation(coordinate: coordinate) {
                     mapAnnotation(count)
                         .onTapGesture {
-                            router.route(to: .placeInformationView(place: place, displayMode: .full))
+                            router.route(to: .placeInformationView(place: place))
                         }
                 } label: {
                     Text(name)

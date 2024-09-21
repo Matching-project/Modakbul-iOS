@@ -19,7 +19,36 @@ struct PlacesListArea<Router: AppRouter>: View {
     
     var body: some View {
         ZStack {
-            listArea
+            VStack {
+                searchBarArea
+                
+                ZStack {
+                    listArea
+                    
+                    if viewModel.searchedPlaces.isEmpty == false {
+                        ScrollView(.vertical) {
+                            LazyVStack(alignment: .leading) {
+                                ForEach(viewModel.searchedPlaces, id: \.id) { place in
+                                    VStack(alignment: .leading) {
+                                        Text(place.location.name)
+                                        Text(place.location.address)
+                                    }
+                                    .padding()
+                                    .contentShape(.rect)
+                                    .onTapGesture {
+                                        withAnimation(.bouncy) {
+                                            isFocused = false
+                                            viewModel.selectPlace(place)
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        .background(.ultraThinMaterial)
+                        .clipShape(.rect(cornerRadius: 14))
+                    }
+                }
+            }
             
             hoveringButtonsArea
         }
@@ -29,16 +58,14 @@ struct PlacesListArea<Router: AppRouter>: View {
     }
     
     private var listArea: some View {
-        VStack {
-            searchBarWithNotificationIcon
-            
-            sortCriteria
-            
-            placeList
+        List(viewModel.places, id: \.id) { place in
+            Cell(place)
+                .listRowSeparator(.hidden)
         }
+        .listStyle(.plain)
     }
     
-    private var searchBarWithNotificationIcon: some View {
+    private var searchBarArea: some View {
         HStack {
             SearchBar("카페 이름으로 검색", text: $viewModel.searchingText, $isFocused)
             
@@ -57,23 +84,6 @@ struct PlacesListArea<Router: AppRouter>: View {
                         .padding(10)
                 }
             }
-        }
-            .padding()
-    }
-    
-    private var sortCriteria: some View {
-        Menu {
-            ForEach(PlaceSortCriteria.allCases) { sortCriteria in
-                Button {
-                    viewModel.sortCriteria = sortCriteria
-                } label: {
-                    Text(sortCriteria.description)
-                }
-            }
-        } label: {
-            Text(viewModel.sortCriteria.description)
-                .bold()
-            Image(systemName: "chevron.down")
         }
         .frame(maxWidth: .infinity, alignment: .trailing)
         .padding(.trailing)
@@ -106,8 +116,131 @@ struct PlacesListArea<Router: AppRouter>: View {
     }
 }
 
-struct PlaceListArea_Preview: PreviewProvider {
-    static var previews: some View {
-        router.view(to: .placesListArea)
+extension PlacesListArea {
+    struct Cell: View {
+        @EnvironmentObject private var router: Router
+        @Environment(\.colorScheme) private var colorScheme
+        @State private var selectedOpeningHourOfDay: OpeningHour?
+        @State private var openingHourText: String
+        
+        private let place: Place
+        
+        init(_ place: Place) {
+            self.place = place
+            let calendar = Calendar.current
+            let weekDay = calendar.component(.weekday, from: .now)
+            let dayOfWeek = DayOfWeek(weekDay)
+            let openingHour = place.openingHours.first(where: {$0.dayOfWeek == dayOfWeek})
+            self.selectedOpeningHourOfDay = openingHour
+            
+            if let openingHour = openingHour {
+                let dayOfWeek = openingHour.dayOfWeek.description
+                let open = openingHour.open
+                let close = openingHour.close
+                self.openingHourText = "\(dayOfWeek) \(open) - \(close)"
+                print(openingHourText)
+            } else {
+                self.openingHourText = "-"
+            }
+        }
+        
+        var body: some View {
+            VStack {
+                HStack {
+                    if let url = place.imageURLs.first {
+                        AsyncImageView(url: url, minWidth: 100, minHeight: 100)
+                    } else {
+                        Image(colorScheme == .light ? .modakbulMainLight : .modakbulMainDark)
+                            .resizable()
+                            .aspectRatio(1, contentMode: .fill)
+                            .frame(width: 100, height: 100)
+                    }
+                    
+                    informationArea
+                    
+                    Spacer()
+                }
+                .overlay(alignment: .topTrailing) {
+                    communityRecruitingContentEditButton
+                }
+                
+                Spacer()
+                
+                HStack(spacing: 20) {
+                    Image(.marker)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                    
+                    Text("모임 \(place.meetingCount)개 진행 중")
+                        .font(.Modakbul.headline)
+                        .foregroundStyle(.accent)
+                }
+                .frame(height: 30)
+                
+                Spacer()
+            }
+            .onChange(of: selectedOpeningHourOfDay) {
+                guard let openingHour = selectedOpeningHourOfDay else { return }
+                openingHourText = displayOpeningHours(openingHour)
+            }
+        }
+        
+        private var informationArea: some View {
+            VStack(alignment: .leading) {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(place.location.name)
+                        .font(.Modakbul.title3)
+                        .bold()
+                    
+                    Text(place.location.address)
+                        .font(.Modakbul.caption)
+                }
+                .padding(.top)
+                
+                HStack {
+                    Text("운영시간 ")
+                    
+                    Menu {
+                        ForEach(place.openingHours, id: \.dayOfWeek) { openingHour in
+                            Button {
+                                selectedOpeningHourOfDay = openingHour
+                            } label: {
+                                Text(displayOpeningHours(openingHour))
+                            }
+                        }
+                    } label: {
+                        Text(openingHourText)
+                        Image(systemName: "chevron.down")
+                    }
+                }
+                
+                HStack {
+                    CapsuleTag(place.powerSocketState.description, .Modakbul.caption)
+                    CapsuleTag(place.groupSeatingState.description, .Modakbul.caption)
+                }
+            }
+            .font(.Modakbul.caption)
+        }
+        
+        private var communityRecruitingContentEditButton: some View {
+            Button {
+                router.route(to: .placeInformationDetailMakingView(place: place, communityRecruitingContent: nil))
+            } label: {
+                Image(.photoUploadSelection)
+                    .resizable()
+                    .scaledToFit()
+            }
+            .frame(width: 30, height: 30)
+            // MARK: - https://stackoverflow.com/q/56561064
+            .buttonStyle(BorderlessButtonStyle())
+            .shadow(color: .gray.opacity(0.3), radius: 4, y: 4)
+        }
+        
+        private func displayOpeningHours(_ openingHour: OpeningHour) -> String {
+            let dayOfWeek = openingHour.dayOfWeek.description
+            let open = openingHour.open
+            let close = openingHour.close
+            return "\(dayOfWeek) \(open) - \(close)"
+        }
     }
 }

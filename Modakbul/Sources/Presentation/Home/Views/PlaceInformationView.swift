@@ -14,16 +14,13 @@ struct PlaceInformationView<Router: AppRouter>: View {
     @AppStorage(AppStorageKey.userId) private var userId: Int = Constants.loggedOutUserId
     
     private let place: Place
-    private let displayMode: DisplayMode
     
     init(
         _ viewModel: PlaceInformationViewModel,
-        place: Place,
-        displayMode: DisplayMode
+        place: Place
     ) {
         self.viewModel = viewModel
         self.place = place
-        self.displayMode = displayMode
     }
     
     var body: some View {
@@ -52,7 +49,7 @@ struct PlaceInformationView<Router: AppRouter>: View {
                 Text("아직 모집 중인 모임이 없어요.")
                     .font(.Modakbul.footnote)
             } else {
-                communityRecruitingContentListArea(displayMode)
+                communityRecruitingContentListArea
             }
             
             Spacer()
@@ -114,33 +111,24 @@ struct PlaceInformationView<Router: AppRouter>: View {
         .shadow(color: .gray.opacity(0.3), radius: 4, y: 4)
     }
     
-    @ViewBuilder private func communityRecruitingContentListArea(_ displayMode: DisplayMode) -> some View {
-        switch displayMode {
-        case .summary:
-            HStack(spacing: 20) {
-                Image(.marker)
-                
-                Text("모임 \(viewModel.communityRecruitingContents.count)개 진행 중")
-            }
-        case .full:
-            ScrollView {
-                LazyVStack {
-                    ForEach(viewModel.communityRecruitingContents, id: \.id) { communityRecruitingContent in
-                        Cell(communityRecruitingContent)
-                            .contentShape(.rect)
-                            .onTapGesture {
-                                router.dismiss()
-                                if userId == Constants.loggedOutUserId {
-                                    router.route(to: .loginView)
-                                } else {
-                                    router.route(to: .placeInformationDetailView(communityRecruitingContentId: communityRecruitingContent.id, userId: Int64(userId)))
-                                }
+    private var communityRecruitingContentListArea: some View {
+        ScrollView {
+            LazyVStack {
+                ForEach(viewModel.communityRecruitingContents, id: \.id) { communityRecruitingContent in
+                    Cell(communityRecruitingContent)
+                        .contentShape(.rect)
+                        .onTapGesture {
+                            router.dismiss()
+                            if userId == Constants.loggedOutUserId {
+                                router.route(to: .loginView)
+                            } else {
+                                router.route(to: .placeInformationDetailView(communityRecruitingContentId: communityRecruitingContent.id, userId: Int64(userId)))
                             }
-                    }
+                        }
                 }
             }
-            .padding(.top)
         }
+        .padding(.top)
     }
 }
 
@@ -180,38 +168,6 @@ extension PlaceInformationView {
                 RoundedRectangle(cornerRadius: 14)
                     .strokeBorder(.accent)
             )
-        }
-    }
-}
-
-extension PlaceInformationView {
-    enum DisplayMode {
-        /// 모집글 목록 축약 표시
-        ///
-        /// 진행 중인 모임의 개수만 표시합니다.
-        case summary
-        
-        /// 모집글 목록 전부 표시
-        ///
-        /// 모집글 목록을 모두 표시합니다.
-        case full
-    }
-}
-
-struct PlaceInformationSheet_Preview: PreviewProvider {
-    static let listUp: Bool = true
-    
-    static var previews: some View {
-        Group {
-            if listUp {
-                List(previewHelper.places, id: \.id) {
-                    router.view(to: .placeInformationView(place: $0, displayMode: .full))
-                        .listRowSeparator(.hidden)
-                }
-                .listStyle(.plain)
-            } else {
-                router.view(to: .placeInformationView(place: previewHelper.places.first!, displayMode: .summary))
-            }
         }
     }
 }
