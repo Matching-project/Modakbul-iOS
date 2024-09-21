@@ -55,6 +55,10 @@ struct PresentationAssembly: Assembly {
             BlockedListViewModel(userBusinessUseCase: resolver.resolve(UserBusinessUseCase.self))
         }
         
+        container.register(for: ReportListViewModel.self) { resolver in
+            ReportListViewModel(userBusinessUseCase: resolver.resolve(UserBusinessUseCase.self))
+        }
+        
         // MARK: - Home
         container.register(for: HomeViewModel.self) { resolver in
             HomeViewModel(localMapUseCase: resolver.resolve(LocalMapUseCase.self),
