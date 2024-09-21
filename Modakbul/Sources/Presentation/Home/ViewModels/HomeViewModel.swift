@@ -79,6 +79,12 @@ final class HomeViewModel: ObservableObject {
                 Task { await self.findPlaces(by: text, on: self.currentUsersCoordinate) }
             }
             .store(in: &cancellables)
+        
+        $sortCriteria
+            .sink { _ in
+                Task { await self.findPlaces( on: self.currentUsersCoordinate) }
+            }
+            .store(in: &cancellables)
     }
 }
 

@@ -30,33 +30,61 @@ struct PlacesListArea<Router: AppRouter>: View {
     
     private var listArea: some View {
         VStack {
-            HStack {
-                SearchBar("카페 이름으로 검색", text: $viewModel.searchingText, $isFocused)
-                
-                Button {
-                    if userId == Constants.loggedOutUserId {
-                        router.route(to: .loginView)
-                    } else {
-                        router.route(to: .notificationView(userId: Int64(userId)))
-                    }
-                } label: {
-                    if viewModel.unreadCount > 0 {
-                        NotificationIcon(badge: true)
-                            .padding(5)
-                    } else {
-                        NotificationIcon(badge: false)
-                            .padding(10)
-                    }
+            searchBarWithNotificationIcon
+            
+            sortCriteria
+            
+            placeList
+        }
+    }
+    
+    private var searchBarWithNotificationIcon: some View {
+        HStack {
+            SearchBar("카페 이름으로 검색", text: $viewModel.searchingText, $isFocused)
+            
+            Button {
+                if userId == Constants.loggedOutUserId {
+                    router.route(to: .loginView)
+                } else {
+                    router.route(to: .notificationView(userId: Int64(userId)))
+                }
+            } label: {
+                if viewModel.unreadCount > 0 {
+                    NotificationIcon(badge: true)
+                        .padding(5)
+                } else {
+                    NotificationIcon(badge: false)
+                        .padding(10)
                 }
             }
-            .padding()
-            
-            List(viewModel.places, id: \.id) { place in
-                router.view(to: .placeInformationView(place: place, displayMode: .summary))
-                    .listRowSeparator(.hidden)
-            }
-            .listStyle(.plain)
         }
+            .padding()
+    }
+    
+    private var sortCriteria: some View {
+        Menu {
+            ForEach(PlaceSortCriteria.allCases) { sortCriteria in
+                Button {
+                    viewModel.sortCriteria = sortCriteria
+                } label: {
+                    Text(sortCriteria.description)
+                }
+            }
+        } label: {
+            Text(viewModel.sortCriteria.description)
+                .bold()
+            Image(systemName: "chevron.down")
+        }
+        .frame(maxWidth: .infinity, alignment: .trailing)
+        .padding(.trailing)
+    }
+    
+    private var placeList: some View {
+        List(viewModel.places, id: \.id) { place in
+            router.view(to: .placeInformationView(place: place, displayMode: .summary))
+                .listRowSeparator(.hidden)
+        }
+        .listStyle(.plain)
     }
     
     private var hoveringButtonsArea: some View {

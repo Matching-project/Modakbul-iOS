@@ -8,14 +8,14 @@
 import Foundation
 
 /// 카페 정렬 기준
-enum PlaceSortCriteria: CustomStringConvertible {
+enum PlaceSortCriteria: Selectable {
     case distance
     case matchesCount
     
     var description: String {
         switch self {
-        case .distance: "거리 순"
-        case .matchesCount: "모임 많은 순"
+        case .distance: "거리순"
+        case .matchesCount: "모임 많은순"
         }
     }
 }
