@@ -54,13 +54,14 @@ struct UserRegistrationResponseEntity: ResponseEntity {
     let status: Bool
     let code: Int
     let message: String
-    let result: Result
+    let result: Result?
     
     struct Result: Decodable {
         let userId: Int64
     }
     
     func toDTO() -> Int64 {
-        result.userId
+        /// 요청 실패할 경우, 기본값인 `-1` 반환
+        result?.userId ?? Int64(Constants.loggedOutUserId)
     }
 }

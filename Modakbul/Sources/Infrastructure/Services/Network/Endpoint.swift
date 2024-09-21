@@ -208,7 +208,7 @@ extension Endpoint: TargetType {
             var formData = [MultipartFormData]()
             
             if let user = try? encode(user) {
-                formData.append(.init(provider: .data(user), name: "user", mimeType: "application/json"))
+                formData.append(.init(provider: .data(user), name: "user", fileName: "user.json", mimeType: "application/json"))
             }
             
             if let image = image {
@@ -220,7 +220,7 @@ extension Endpoint: TargetType {
             var formData = [MultipartFormData]()
             
             if let user = try? encode(user) {
-                formData.append(.init(provider: .data(user), name: "user", mimeType: "application/json"))
+                formData.append(.init(provider: .data(user), name: "user", fileName: "user.json", mimeType: "application/json"))
             }
             
             if let image = image {
@@ -232,7 +232,7 @@ extension Endpoint: TargetType {
             var formData = [MultipartFormData]()
             
             if let user = try? encode(user) {
-                formData.append(.init(provider: .data(user), name: "user"))
+                formData.append(.init(provider: .data(user), name: "user", fileName: "user.json", mimeType: "application/json"))
             }
             
             if let image = image {
@@ -277,7 +277,7 @@ extension Endpoint: TargetType {
         case .kakaoLogin, .appleLogin:
             ["Content-Type": "application/json"]
         case .kakaoRegister, .appleRegister:
-            ["Content-Type": "multipart/form-data"]
+            ["Content-Type": "multipart/form-data"] // <=======
         case .logout(let token):
             ["Authorization": "\(token)"]
         case .reissueToken(let refreshToken):
