@@ -65,7 +65,7 @@ extension DefaultPlacesRepository: PlacesRepository {
     }
     
     func readPlacesOrderedByMatchesCount(on coordinate: Coordinate) async throws -> [Place] {
-        let endpoint = Endpoint.readPlacesByDistance(lat: coordinate.latitude, lon: coordinate.longitude)
+        let endpoint = Endpoint.readPlacesByMatches(lat: coordinate.latitude, lon: coordinate.longitude)
         
         do {
             let response = try await networkService.request(endpoint: endpoint, for: PlacesSearchResponseEntity.self)
