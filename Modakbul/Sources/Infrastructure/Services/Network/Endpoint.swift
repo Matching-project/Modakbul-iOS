@@ -208,7 +208,7 @@ extension Endpoint: TargetType {
             var formData = [MultipartFormData]()
             
             if let user = try? encode(user) {
-                formData.append(.init(provider: .data(user), name: "user"))
+                formData.append(.init(provider: .data(user), name: "user", mimeType: "application/json"))
             }
             
             if let image = image {
@@ -220,7 +220,7 @@ extension Endpoint: TargetType {
             var formData = [MultipartFormData]()
             
             if let user = try? encode(user) {
-                formData.append(.init(provider: .data(user), name: "user"))
+                formData.append(.init(provider: .data(user), name: "user", mimeType: "application/json"))
             }
             
             if let image = image {
