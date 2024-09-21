@@ -37,6 +37,9 @@ enum APIError: Int, Error {
     case responseError = 3000
     case databaseError = 4001
     case serverError = 4002
+    
+    // MARK: Unknown
+    case unknownError = 9999
 }
 
 struct HTTPResponse<T: Decodable> {
@@ -72,8 +75,9 @@ final class DefaultNetworkService {
     }
     
     private func performAPIResponse<T: ResponseEntity>(_ response: T) throws -> T {
-        guard (2000..<4050).contains(response.code) else {
-            throw APIError(rawValue: response.code)!
+        guard (1000..<1410).contains(response.code) else {
+            let error = APIError(rawValue: response.code) ?? .unknownError
+            throw error
         }
         
         return response
