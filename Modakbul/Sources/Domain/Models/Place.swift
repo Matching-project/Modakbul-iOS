@@ -15,6 +15,7 @@ struct Place: Identifiable {
     let noiseLevel: NoiseLevel
     let groupSeatingState: GroupSeatingState
     let communityRecruitingContents: [CommunityRecruitingContent]
+    let meetingCount: Int
     let imageURLs: [URL?]
     
     init(
@@ -25,6 +26,7 @@ struct Place: Identifiable {
         noiseLevel: NoiseLevel = .moderate,
         groupSeatingState: GroupSeatingState = .unknown,
         communityRecruitingContents: [CommunityRecruitingContent] = [],
+        meetingCount: Int = 0,
         imageURLs: [URL?] = []
     ) {
         self.id = id
@@ -34,6 +36,7 @@ struct Place: Identifiable {
         self.noiseLevel = noiseLevel
         self.groupSeatingState = groupSeatingState
         self.communityRecruitingContents = communityRecruitingContents
+        self.meetingCount = meetingCount
         self.imageURLs = imageURLs
     }
 }
