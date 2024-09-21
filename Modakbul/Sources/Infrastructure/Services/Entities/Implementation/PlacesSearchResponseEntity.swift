@@ -35,9 +35,12 @@ struct PlacesSearchResponseEntity: ResponseEntity {
     
     func toDTO() -> [Place] {
         result.map {
-            .init(
+            let coordinate = CLLocationCoordinate2D(latitude: $0.location.latitude, longitude: $0.location.longitude)
+            let location = Location(name: $0.name, address: $0.location.address, coordinate: coordinate)
+        
+            return .init(
                 id: $0.id,
-                location: $0.location.toDTO(),
+                location: location,
                 openingHours: $0.openingHour,
                 powerSocketState: $0.powerSocketState,
                 groupSeatingState: $0.groupSeatingState,
@@ -52,10 +55,6 @@ struct PlacesSearchResponseEntity: ResponseEntity {
 struct LocationEntity: Codable {
     let latitude, longitude: Double
     let address: String
-    
-    func toDTO() -> Location {
-        .init(coordinate: .init(latitude: latitude, longitude: longitude))
-    }
     
     enum CodingKeys: String, CodingKey {
         case latitude, longitude
