@@ -17,20 +17,18 @@ struct PlacesSearchResponseEntity: ResponseEntity {
     
     struct Result: Decodable {
         let id: Int64
-        let imageURL: URL?
+        let imageURL: [URL]
         let name: String
         let meetingCount: Int
         let location: LocationEntity
         let openingHour: [OpeningHour]
         let powerSocketState: PowerSocketState
-        let noiseLevel: NoiseLevel
         let groupSeatingState: GroupSeatingState
         
         enum CodingKeys: String, CodingKey {
             case location, id, openingHour, meetingCount, name
             case imageURL = "image"
             case powerSocketState = "outlet"
-            case noiseLevel = "congestion"
             case groupSeatingState = "groupSeat"
         }
     }
@@ -42,10 +40,9 @@ struct PlacesSearchResponseEntity: ResponseEntity {
                 location: $0.location.toDTO(),
                 openingHours: $0.openingHour,
                 powerSocketState: $0.powerSocketState,
-                noiseLevel: $0.noiseLevel,
                 groupSeatingState: $0.groupSeatingState,
                 communityRecruitingContents: [],
-                imageURLs: [$0.imageURL]
+                imageURLs: $0.imageURL
             )
         }
     }
@@ -57,5 +54,10 @@ struct LocationEntity: Codable {
     
     func toDTO() -> Location {
         .init(coordinate: .init(latitude: latitude, longitude: longitude))
+    }
+    
+    enum CodingKeys: String, CodingKey {
+        case latitude, longitude
+        case address = "streetAddress"
     }
 }
