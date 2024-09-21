@@ -12,6 +12,7 @@ final class MyViewModel: ObservableObject {
     
     private let userRegistrationUseCase: UserRegistrationUseCase
     
+    // TODO: - User() 대신 userId에 따라 회원정보 불러오는 처리 필요
     init(user: User = User(),
          userRegistrationUseCase: UserRegistrationUseCase
     ) {
