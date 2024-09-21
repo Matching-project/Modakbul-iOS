@@ -8,6 +8,7 @@
 import Foundation
 
 final class MyViewModel: ObservableObject {
+    // TODO: 로그인 성공 이후 사용자 정보 업데이트 하는 추가 요청 필요
     @Published var user: User
     
     private let userRegistrationUseCase: UserRegistrationUseCase
