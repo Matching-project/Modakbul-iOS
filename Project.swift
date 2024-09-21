@@ -2,6 +2,10 @@ import ProjectDescription
 
 let project = Project(
     name: "Modakbul",
+    options: .options(
+       defaultKnownRegions: ["ko", "en"],
+       developmentRegion: "ko"
+     ),
     targets: [
         .target(
             name: "Modakbul",
