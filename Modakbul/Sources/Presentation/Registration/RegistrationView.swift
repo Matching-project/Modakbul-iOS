@@ -116,6 +116,7 @@ extension RegistrationView {
                 Spacer()
                 Spacer()
                 
+                // TODO: 닉네임 중복 확인 전에는 버튼 비활성화 할것
                 FlatButton(vm.isWaiting ? "처리 중" : vm.currentField.buttonLabel(image: vm.image)) {
                     if vm.currentField != .image {
                         vm.proceedToNextField()

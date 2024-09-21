@@ -49,6 +49,8 @@ struct LoginView<Router: AppRouter>: View {
             case .success(let email):
                 loginViewModel.loginWithKakaoTalk(email)
                 router.dismiss()
+                
+                // TODO: 로그인 후 id값이 -1이면 회원가입, 아니면 기가입자라서 그냥 로그인 로직으로 연계
                 if userId == Constants.loggedOutUserId {
                     router.route(to: .requiredTermView(userCredential: .init(provider: .kakao, email: email)))
                 }
@@ -73,6 +75,8 @@ struct LoginView<Router: AppRouter>: View {
                 
                 loginViewModel.loginWithApple(authorizationCode)
                 router.dismiss()
+                
+                // TODO: 로그인 후 id값이 -1이면 회원가입, 아니면 기가입자라서 그냥 로그인 로직으로 연계
                 if userId == Constants.loggedOutUserId {
                     router.route(to: .requiredTermView(userCredential: .init(provider: .apple, authorizationCode: authorizationCode)))
                 }
