@@ -94,7 +94,7 @@ struct PlaceInformationDetailMakingView<Router: AppRouter>: View {
                             }
                             
                             Text("-")
-                                .padding(.horizontal, -46)
+                                .padding(.leading, -25)
                             
                             ZStack(alignment: .leading) {
                                 Text(vm.endTime.toString(by: .HHmm))
@@ -104,7 +104,6 @@ struct PlaceInformationDetailMakingView<Router: AppRouter>: View {
                                             vm.endTime = newStartTime
                                         }
                                     }
-                                    .padding(.horizontal, -47)
                                 
                                 DatePicker(
                                     "",
@@ -112,13 +111,12 @@ struct PlaceInformationDetailMakingView<Router: AppRouter>: View {
                                     in: vm.after(vm.startTime),
                                     displayedComponents: [.hourAndMinute]
                                 )
-                                .padding(.horizontal, -27)
-                                .transformEffect(.init(scaleX: 1.8, y: 1))
                                 .labelsHidden()
                                 .opacity(0.02)
                             }
+                            .padding(.leading, -20)
                         }
-                        .padding(-9)
+                        .padding(-10)
                         .roundedRectangleStyle()
                     }
                     
@@ -158,5 +156,11 @@ struct PlaceInformationDetailMakingView<Router: AppRouter>: View {
             
             content()
         }
+    }
+}
+
+struct PlaceInformationDetailMakingView_Preview: PreviewProvider {
+    static var previews: some View {
+        router.view(to: .placeInformationDetailMakingView(place: Place(location: Location()), communityRecruitingContent: nil))
     }
 }

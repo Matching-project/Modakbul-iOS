@@ -42,6 +42,7 @@ struct PlacesSearchResponseEntity: ResponseEntity {
                 powerSocketState: $0.powerSocketState,
                 groupSeatingState: $0.groupSeatingState,
                 communityRecruitingContents: [],
+                meetingCount: $0.meetingCount,
                 imageURLs: $0.imageURL
             )
         }
