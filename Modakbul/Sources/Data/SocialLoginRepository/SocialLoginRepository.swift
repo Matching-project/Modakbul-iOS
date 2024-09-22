@@ -86,14 +86,36 @@ extension DefaultSocialLoginRepository: SocialLoginRepository {
         let entity = KakaoUserRegistrationRequestEntity(user, email: email, fcm: fcm)
         let endpoint = Endpoint.kakaoRegister(user: entity, image: imageData, provider: provider)
         let response = try await networkService.request(endpoint: endpoint, for: UserRegistrationResponseEntity.self)
-        return response.body.toDTO()
+        let userId = response.body.toDTO()
+        
+        guard let accessToken = response.accessToken,
+              let refreshToken = response.refreshToken
+        else {
+            throw SocialLoginRepositoryError.authorizeFailed
+        }
+        
+        let tokens = TokensEntity(accessToken: accessToken, refreshToken: refreshToken)
+        try tokenStorage.store(tokens, by: userId)
+        
+        return userId
     }
     
     func appleRegister(_ user: User, encoded imageData: Data?, authorizationCode: Data, fcm: String, provider: AuthenticationProvider) async throws -> Int64 {
         let entity = AppleUserRegistrationRequestEntity(user, authorizationCode: authorizationCode, fcm: fcm)
         let endpoint = Endpoint.appleRegister(user: entity, image: imageData, provider: provider)
         let response = try await networkService.request(endpoint: endpoint, for: UserRegistrationResponseEntity.self)
-        return response.body.toDTO()
+        let userId = response.body.toDTO()
+        
+        guard let accessToken = response.accessToken,
+              let refreshToken = response.refreshToken
+        else {
+            throw SocialLoginRepositoryError.authorizeFailed
+        }
+        
+        let tokens = TokensEntity(accessToken: accessToken, refreshToken: refreshToken)
+        try tokenStorage.store(tokens, by: userId)
+        
+        return userId
     }
     
     // TODO: 회원탈퇴 WIP
