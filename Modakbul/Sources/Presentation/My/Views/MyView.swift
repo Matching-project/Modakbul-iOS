@@ -81,11 +81,6 @@ extension MyView {
             .onAppear {
                 vm.readMyProfile(Int64(userId))
             }
-            .onChange(of: vm.isLoggedOut) {
-                if vm.isLoggedOut {
-                    userId = Constants.loggedOutUserId
-                }
-            }
         }
         
         private func showLogoutAlert() -> Void {
