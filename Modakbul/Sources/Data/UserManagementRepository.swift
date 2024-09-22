@@ -21,6 +21,7 @@ protocol UserManagementRepository: TokenRefreshable {
 final class DefaultUserManagementRepository {
     let tokenStorage: TokenStorage
     let networkService: NetworkService
+    private var user: User?
     
     init(
         tokenStorage: TokenStorage,
@@ -34,18 +35,27 @@ final class DefaultUserManagementRepository {
 // MARK: UserManagementRepository Conformation
 extension DefaultUserManagementRepository: UserManagementRepository {
     func readMyProfile(userId: Int64) async throws -> User {
+        // MARK: - A user 로그인 후, B user 로그인 한 경우 대비
+        if let user = user, user.id == userId {
+            return user
+        }
+        
         let token = try tokenStorage.fetch(by: userId)
         
         do {
             let endpoint = Endpoint.readMyProfile(token: token.accessToken)
             let response = try await networkService.request(endpoint: endpoint, for: UserProfileResponseEntity.self)
-            return response.body.toDTO()
+            let user = response.body.toDTO()
+            self.user = user
+            return user
         } catch APIError.accessTokenExpired {
             let tokens = try await reissueTokens(userId: userId, token.refreshToken)
             
             let endpoint = Endpoint.readMyProfile(token: tokens.accessToken)
             let response = try await networkService.request(endpoint: endpoint, for: UserProfileResponseEntity.self)
-            return response.body.toDTO()
+            let user = response.body.toDTO()
+            self.user = user
+            return user
         } catch {
             throw error
         }
@@ -61,11 +71,13 @@ extension DefaultUserManagementRepository: UserManagementRepository {
         do {
             let endpoint = Endpoint.updateProfile(token: token.accessToken, user: entity, image: image)
             try await networkService.request(endpoint: endpoint, for: DefaultResponseEntity.self)
+            self.user = user
         } catch APIError.accessTokenExpired {
             let tokens = try await reissueTokens(userId: user.id, token.refreshToken)
             
             let endpoint = Endpoint.updateProfile(token: tokens.accessToken, user: entity, image: image)
             try await networkService.request(endpoint: endpoint, for: DefaultResponseEntity.self)
+            self.user = user
         } catch {
             throw error
         }
