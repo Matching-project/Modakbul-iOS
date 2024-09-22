@@ -100,7 +100,5 @@ extension AppDelegate: MessagingDelegate {
             object: nil,
             userInfo: dataDict
         )
-        // TODO: 서버로 FCM 토큰 전송 필요
-        // Note: This callback is fired at each app startup and whenever a new token is generated.
     }
 }
