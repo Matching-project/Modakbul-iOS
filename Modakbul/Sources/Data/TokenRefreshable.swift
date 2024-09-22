@@ -13,7 +13,7 @@ protocol TokenRefreshable {
 }
 
 extension TokenRefreshable {
-    func reissueTokens(key: Int64, _ refreshToken: String) async throws -> TokensEntity {
+    func reissueTokens(userId: Int64, _ refreshToken: String) async throws -> TokensEntity {
         do {
             let endpoint = Endpoint.reissueToken(refreshToken: refreshToken)
             let response = try await networkService.request(endpoint: endpoint, for: DefaultResponseEntity.self)
@@ -21,10 +21,10 @@ extension TokenRefreshable {
             guard let accessToken = response.accessToken else { throw APIError.responseError }
             
             let tokens = TokensEntity(accessToken: accessToken, refreshToken: refreshToken)
-            try tokenStorage.store(tokens, by: key)
+            try tokenStorage.store(tokens, by: userId)
             return tokens
         } catch APIError.refreshTokenExpired {
-            try tokenStorage.delete(by: key)
+            try tokenStorage.delete(by: userId)
             throw APIError.refreshTokenExpired
         } catch {
             throw APIError.responseError

@@ -36,7 +36,7 @@ extension DefaultNotificationRepository: NotificationRepository {
             let endpoint = Endpoint.sendNotification(token: token.accessToken, notification: entity)
             try await networkService.request(endpoint: endpoint, for: DefaultResponseEntity.self)
         } catch APIError.accessTokenExpired {
-            let tokens = try await reissueTokens(key: userId, token.refreshToken)
+            let tokens = try await reissueTokens(userId: userId, token.refreshToken)
             
             let endpoint = Endpoint.sendNotification(token: tokens.accessToken, notification: entity)
             try await networkService.request(endpoint: endpoint, for: DefaultResponseEntity.self)
@@ -53,7 +53,7 @@ extension DefaultNotificationRepository: NotificationRepository {
             let response = try await networkService.request(endpoint: endpoint, for: NotificationResponseEntity.self)
             return response.body.toDTO()
         } catch APIError.accessTokenExpired {
-            let tokens = try await reissueTokens(key: userId, token.refreshToken)
+            let tokens = try await reissueTokens(userId: userId, token.refreshToken)
             
             let endpoint = Endpoint.fetchNotifications(token: tokens.accessToken)
             let response = try await networkService.request(endpoint: endpoint, for: NotificationResponseEntity.self)
@@ -71,7 +71,7 @@ extension DefaultNotificationRepository: NotificationRepository {
             let endpoint = Endpoint.removeNotifications(token: token.accessToken, notificationsIds: entity)
             try await networkService.request(endpoint: endpoint, for: DefaultResponseEntity.self)
         } catch APIError.accessTokenExpired {
-            let tokens = try await reissueTokens(key: userId, token.refreshToken)
+            let tokens = try await reissueTokens(userId: userId, token.refreshToken)
             
             let entity = NotificationRemovingRequestEntity(notificationIds: notificationIds)
             let endpoint = Endpoint.removeNotifications(token: tokens.accessToken, notificationsIds: entity)
@@ -88,7 +88,7 @@ extension DefaultNotificationRepository: NotificationRepository {
             let endpoint = Endpoint.readNotification(token: token.accessToken, notificationId: notificationId)
             try await networkService.request(endpoint: endpoint, for: DefaultResponseEntity.self)
         } catch APIError.accessTokenExpired {
-            let tokens = try await reissueTokens(key: userId, token.refreshToken)
+            let tokens = try await reissueTokens(userId: userId, token.refreshToken)
             
             let endpoint = Endpoint.readNotification(token: tokens.accessToken, notificationId: notificationId)
             try await networkService.request(endpoint: endpoint, for: DefaultResponseEntity.self)

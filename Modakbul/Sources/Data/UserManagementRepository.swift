@@ -41,7 +41,7 @@ extension DefaultUserManagementRepository: UserManagementRepository {
             let response = try await networkService.request(endpoint: endpoint, for: UserProfileResponseEntity.self)
             return response.body.toDTO()
         } catch APIError.accessTokenExpired {
-            let tokens = try await reissueTokens(key: userId, token.refreshToken)
+            let tokens = try await reissueTokens(userId: userId, token.refreshToken)
             
             let endpoint = Endpoint.readMyProfile(token: tokens.accessToken)
             let response = try await networkService.request(endpoint: endpoint, for: UserProfileResponseEntity.self)
@@ -62,7 +62,7 @@ extension DefaultUserManagementRepository: UserManagementRepository {
             let endpoint = Endpoint.updateProfile(token: token.accessToken, user: entity, image: image)
             try await networkService.request(endpoint: endpoint, for: DefaultResponseEntity.self)
         } catch APIError.accessTokenExpired {
-            let tokens = try await reissueTokens(key: user.id, token.refreshToken)
+            let tokens = try await reissueTokens(userId: user.id, token.refreshToken)
             
             let endpoint = Endpoint.updateProfile(token: tokens.accessToken, user: entity, image: image)
             try await networkService.request(endpoint: endpoint, for: DefaultResponseEntity.self)
@@ -78,7 +78,7 @@ extension DefaultUserManagementRepository: UserManagementRepository {
             let endpoint = Endpoint.reportOpponentUserProfile(token: token.accessToken, userId: opponentUserId, report: report)
             try await networkService.request(endpoint: endpoint, for: DefaultResponseEntity.self)
         } catch APIError.accessTokenExpired {
-            let tokens = try await reissueTokens(key: userId, token.refreshToken)
+            let tokens = try await reissueTokens(userId: userId, token.refreshToken)
             
             let endpoint = Endpoint.reportOpponentUserProfile(token: tokens.accessToken, userId: opponentUserId, report: report)
             try await networkService.request(endpoint: endpoint, for: DefaultResponseEntity.self)
@@ -95,7 +95,7 @@ extension DefaultUserManagementRepository: UserManagementRepository {
             let response = try await networkService.request(endpoint: endpoint, for: ReportsResponseEntity.self)
             return response.body.toDTO()
         } catch APIError.accessTokenExpired {
-            let tokens = try await reissueTokens(key: userId, token.refreshToken)
+            let tokens = try await reissueTokens(userId: userId, token.refreshToken)
             
             let endpoint = Endpoint.readReports(token: tokens.accessToken)
             let response = try await networkService.request(endpoint: endpoint, for: ReportsResponseEntity.self)
@@ -112,7 +112,7 @@ extension DefaultUserManagementRepository: UserManagementRepository {
             let endpoint = Endpoint.block(token: token.accessToken, opponentUserId: opponentUserId)
             try await networkService.request(endpoint: endpoint, for: DefaultResponseEntity.self)
         } catch APIError.accessTokenExpired {
-            let tokens = try await reissueTokens(key: userId, token.refreshToken)
+            let tokens = try await reissueTokens(userId: userId, token.refreshToken)
             
             let endpoint = Endpoint.block(token: tokens.accessToken, opponentUserId: opponentUserId)
             try await networkService.request(endpoint: endpoint, for: DefaultResponseEntity.self)
@@ -129,7 +129,7 @@ extension DefaultUserManagementRepository: UserManagementRepository {
             let response = try await networkService.request(endpoint: endpoint, for: BlockedUsersResponseEntity.self)
             return response.body.toDTO()
         } catch APIError.accessTokenExpired {
-            let tokens = try await reissueTokens(key: userId, token.refreshToken)
+            let tokens = try await reissueTokens(userId: userId, token.refreshToken)
             
             let endpoint = Endpoint.readBlockedUsers(token: tokens.accessToken)
             let response = try await networkService.request(endpoint: endpoint, for: BlockedUsersResponseEntity.self)
@@ -146,7 +146,7 @@ extension DefaultUserManagementRepository: UserManagementRepository {
             let endpoint = Endpoint.unblock(token: token.accessToken, blockId: blockId)
             try await networkService.request(endpoint: endpoint, for: DefaultResponseEntity.self)
         } catch APIError.accessTokenExpired {
-            let tokens = try await reissueTokens(key: userId, token.refreshToken)
+            let tokens = try await reissueTokens(userId: userId, token.refreshToken)
             
             let endpoint = Endpoint.unblock(token: tokens.accessToken, blockId: blockId)
             try await networkService.request(endpoint: endpoint, for: DefaultResponseEntity.self)
@@ -163,7 +163,7 @@ extension DefaultUserManagementRepository: UserManagementRepository {
             let response = try await networkService.request(endpoint: endpoint, for: UserProfileResponseEntity.self)
             return response.body.toDTO()
         } catch APIError.accessTokenExpired {
-            let tokens = try await reissueTokens(key: userId, token.refreshToken)
+            let tokens = try await reissueTokens(userId: userId, token.refreshToken)
             
             let endpoint = Endpoint.readOpponentUserProfile(token: tokens.accessToken, userId: opponentUserId)
             let response = try await networkService.request(endpoint: endpoint, for: UserProfileResponseEntity.self)
