@@ -78,6 +78,9 @@ extension MyView {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.leading, 20)
             }
+            .onAppear {
+                vm.readMyProfile(Int64(userId))
+            }
         }
         
         private func showLogoutAlert() -> Void {
