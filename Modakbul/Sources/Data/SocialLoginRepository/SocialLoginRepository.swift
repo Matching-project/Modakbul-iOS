@@ -73,7 +73,7 @@ extension DefaultSocialLoginRepository: SocialLoginRepository {
     }
     
     func logout() async {
-        
+        // TODO: 로그아웃 기능 연결할 것
     }
     
     func validateNicknameIntegrity(_ nickname: String) async throws -> NicknameIntegrityType {
