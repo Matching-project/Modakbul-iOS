@@ -24,7 +24,9 @@ extension TokenRefreshable {
             try tokenStorage.store(tokens, by: userId)
             return tokens
         } catch APIError.refreshTokenExpired {
+            // MARK: 액세스, 리프레시 토큰 둘다 만료 시 재로그인 하도록 처리
             try tokenStorage.delete(by: userId)
+            UserDefaults.standard.setValue(Constants.loggedOutUserId, forKey: AppStorageKey.userId)
             throw APIError.refreshTokenExpired
         } catch {
             throw APIError.responseError
