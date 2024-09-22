@@ -132,7 +132,7 @@ extension DefaultPlacesRepository: PlacesRepository {
             let response = try await networkService.request(endpoint: endpoint, for: RelatedPlaceListSearchResponseEntity.self)
             return response.body.toDTO()
         } catch APIError.accessTokenExpired {
-            let tokens = try await reissueTokens(key: userId, token.refreshToken)
+            let tokens = try await reissueTokens(userId: userId, token.refreshToken)
             
             let endpoint = Endpoint.readPlacesForShowcaseAndReview(token: tokens.accessToken)
             let response = try await networkService.request(endpoint: endpoint, for: RelatedPlaceListSearchResponseEntity.self)
