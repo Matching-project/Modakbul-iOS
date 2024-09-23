@@ -57,7 +57,7 @@ extension DefaultChatRepository: ChatRepository {
             let response = try await networkService.request(endpoint: endpoint, for: ChatRoomListResponseEntity.self)
             return response.body.toDTO()
         } catch APIError.accessTokenExpired {
-            let tokens = try await reissueTokens(key: userId, token.refreshToken)
+            let tokens = try await reissueTokens(userId: userId, token.refreshToken)
             
             let endpoint = Endpoint.readChatrooms(token: tokens.accessToken)
             let response = try await networkService.request(endpoint: endpoint, for: ChatRoomListResponseEntity.self)
@@ -76,7 +76,7 @@ extension DefaultChatRepository: ChatRepository {
             let response = try await networkService.request(endpoint: endpoint, for: ChatRoomConfigurationResponseEntity.self)
             return response.body.toDTO()
         } catch APIError.accessTokenExpired {
-            let tokens = try await reissueTokens(key: userId, token.refreshToken)
+            let tokens = try await reissueTokens(userId: userId, token.refreshToken)
             
             let entity = ChatRoomConfigurationRequestEntity(communityRecruitingContentId: communityRecruitingContentId, opponentUserId: opponentUserId)
             let endpoint = Endpoint.createChatRoom(token: tokens.accessToken, configuration: entity)
@@ -94,7 +94,7 @@ extension DefaultChatRepository: ChatRepository {
             let endpoint = Endpoint.exitChatRoom(token: token.accessToken, chatRoomId: chatRoomId)
             try await networkService.request(endpoint: endpoint, for: DefaultResponseEntity.self)
         } catch APIError.accessTokenExpired {
-            let tokens = try await reissueTokens(key: userId, token.refreshToken)
+            let tokens = try await reissueTokens(userId: userId, token.refreshToken)
             
             let endpoint = Endpoint.exitChatRoom(token: tokens.accessToken, chatRoomId: chatRoomId)
             try await networkService.request(endpoint: endpoint, for: DefaultResponseEntity.self)
@@ -111,7 +111,7 @@ extension DefaultChatRepository: ChatRepository {
             let response = try await networkService.request(endpoint: endpoint, for: ChatHistoryResponseEntity.self)
             return response.body.toDTO()
         } catch APIError.accessTokenExpired {
-            let tokens = try await reissueTokens(key: userId, token.refreshToken)
+            let tokens = try await reissueTokens(userId: userId, token.refreshToken)
             
             let endpoint = Endpoint.readChatHistory(token: tokens.accessToken, chatRoomId: chatRoomId, communityRecruitingContentId: communityRecruitingContentId)
             let response = try await networkService.request(endpoint: endpoint, for: ChatHistoryResponseEntity.self)
@@ -132,7 +132,7 @@ extension DefaultChatRepository: ChatRepository {
             let endpoint = Endpoint.reportAndExitChatRoom(token: token.accessToken, chatRoomId: chatRoomId, userId: opponentUserId, report: report)
             try await networkService.request(endpoint: endpoint, for: DefaultResponseEntity.self)
         } catch APIError.accessTokenExpired {
-            let tokens = try await reissueTokens(key: userId, token.refreshToken)
+            let tokens = try await reissueTokens(userId: userId, token.refreshToken)
             
             let endpoint = Endpoint.reportAndExitChatRoom(token: tokens.accessToken, chatRoomId: chatRoomId, userId: opponentUserId, report: report)
             try await networkService.request(endpoint: endpoint, for: DefaultResponseEntity.self)

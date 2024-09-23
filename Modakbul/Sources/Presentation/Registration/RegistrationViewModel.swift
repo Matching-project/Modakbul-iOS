@@ -136,7 +136,7 @@ final class RegistrationViewModel: ObservableObject {
                                                                                  authorizationCode: userCredential.authorizationCode!,
                                                                                  fcm: fcm,
                                                                                  provider: userCredential.provider)
-                    
+                    userIdSubject.send(userId)
                 } catch {
                     print(error)
                 }

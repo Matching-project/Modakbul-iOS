@@ -41,7 +41,7 @@ extension DefaultCommunityRepository: CommunityRepository {
             let endpoint = Endpoint.createBoard(token: token.accessToken, placeId: placeId, communityRecruitingContent: entity)
             try await networkService.request(endpoint: endpoint, for: DefaultResponseEntity.self)
         } catch APIError.accessTokenExpired {
-            let tokens = try await reissueTokens(key: userId, token.refreshToken)
+            let tokens = try await reissueTokens(userId: userId, token.refreshToken)
             
             let entity = CommunityRecruitingContentEntity(content)
             let endpoint = Endpoint.createBoard(token: tokens.accessToken, placeId: placeId, communityRecruitingContent: entity)
@@ -65,7 +65,7 @@ extension DefaultCommunityRepository: CommunityRepository {
             let response = try await networkService.request(endpoint: endpoint, for: CommunityRecruitingContentSearchResponseEntity.self)
             return response.body.toDTO()
         } catch APIError.accessTokenExpired {
-            let tokens = try await reissueTokens(key: userId, token.refreshToken)
+            let tokens = try await reissueTokens(userId: userId, token.refreshToken)
             
             let endpoint = Endpoint.readBoardForUpdate(token: tokens.accessToken, communityRecruitingContentId: communityRecruitingContentId)
             let response = try await networkService.request(endpoint: endpoint, for: CommunityRecruitingContentSearchResponseEntity.self)
@@ -83,7 +83,7 @@ extension DefaultCommunityRepository: CommunityRepository {
             let endpoint = Endpoint.updateBoard(token: token.accessToken, communityRecruitingContent: entity)
             try await networkService.request(endpoint: endpoint, for: DefaultResponseEntity.self)
         } catch APIError.accessTokenExpired {
-            let tokens = try await reissueTokens(key: userId, token.refreshToken)
+            let tokens = try await reissueTokens(userId: userId, token.refreshToken)
             
             let entity = CommunityRecruitingContentEntity(content)
             let endpoint = Endpoint.updateBoard(token: tokens.accessToken, communityRecruitingContent: entity)
@@ -101,7 +101,7 @@ extension DefaultCommunityRepository: CommunityRepository {
             let endpoint = Endpoint.deleteBoard(token: token.accessToken, communityRecruitingContent: entity)
             try await networkService.request(endpoint: endpoint, for: DefaultResponseEntity.self)
         } catch APIError.accessTokenExpired {
-            let tokens = try await reissueTokens(key: userId, token.refreshToken)
+            let tokens = try await reissueTokens(userId: userId, token.refreshToken)
             
             let entity = CommunityRecruitingContentEntity(content)
             let endpoint = Endpoint.deleteBoard(token: tokens.accessToken, communityRecruitingContent: entity)
@@ -124,7 +124,7 @@ extension DefaultCommunityRepository: CommunityRepository {
             let endpoint = Endpoint.completeBoard(token: token.accessToken, communityRecruitingContentId: communityRecruitingContentId)
             try await networkService.request(endpoint: endpoint, for: DefaultResponseEntity.self)
         } catch APIError.accessTokenExpired {
-            let tokens = try await reissueTokens(key: userId, token.refreshToken)
+            let tokens = try await reissueTokens(userId: userId, token.refreshToken)
             
             let endpoint = Endpoint.completeBoard(token: tokens.accessToken, communityRecruitingContentId: communityRecruitingContentId)
             try await networkService.request(endpoint: endpoint, for: DefaultResponseEntity.self)
@@ -141,7 +141,7 @@ extension DefaultCommunityRepository: CommunityRepository {
             let response = try await networkService.request(endpoint: endpoint, for: RelatedCommunityRecruitingContentListResponseEntity.self)
             return response.body.toDTO()
         } catch APIError.accessTokenExpired {
-            let tokens = try await reissueTokens(key: userId, token.refreshToken)
+            let tokens = try await reissueTokens(userId: userId, token.refreshToken)
             
             let endpoint = Endpoint.readMyBoards(token: tokens.accessToken)
             let response = try await networkService.request(endpoint: endpoint, for: RelatedCommunityRecruitingContentListResponseEntity.self)
