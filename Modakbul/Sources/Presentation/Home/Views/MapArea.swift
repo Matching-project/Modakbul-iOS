@@ -14,6 +14,8 @@ struct MapArea<Router: AppRouter>: View {
     @AppStorage(AppStorageKey.userId) private var userId: Int = Constants.loggedOutUserId
     @FocusState private var isFocused: Bool
     
+    @State private var region: MKCoordinateRegion = .init()
+    
     init(_ viewModel: HomeViewModel) {
         self.viewModel = viewModel
     }
@@ -54,24 +56,35 @@ struct MapArea<Router: AppRouter>: View {
         .ignoresSafeArea(.keyboard, edges: .bottom)
         .onMapCameraChange { context in
             viewModel.cameraCenterCoordinate = context.camera.centerCoordinate
+            region = context.region
         }
     }
     
+    private func calculateMarkerSize(_ count: Int, region: MKCoordinateRegion) -> CGFloat {
+        let baseSize: CGFloat = 4.0
+        
+        let longitudeSpan = region.span.longitudeDelta
+        let latitudeSpan = region.span.latitudeDelta
+        let averageSpan = (longitudeSpan + latitudeSpan) / 2.0
+        let zoomLevel = 1 / averageSpan
+        
+        let size = baseSize + CGFloat(count) * 2.0
+        let zoomAdjustedSize = size * CGFloat(zoomLevel * 5)
+        
+        return max(4, min(20, zoomAdjustedSize))
+    }
+    
     @ViewBuilder private func mapAnnotation(_ count: Int) -> some View {
-        switch count {
-        case 0:
+        let size = calculateMarkerSize(count, region: region)
+        
+        if count == 0 {
             Image(systemName: "circle.fill")
-                .tint(.accentColor)
-                .frame(width: 20, height: 20)
-        case 1:
+                .resizable()
+                .frame(width: size, height: size)
+        } else {
             Image(.marker)
-                .frame(width: 20, height: 20)
-        case 2:
-            Image(.marker)
-                .frame(width: 20, height: 20)
-        default:
-            Image(.marker)
-                .frame(width: 20, height: 20)
+                .resizable()
+                .frame(width: size, height: size)
         }
     }
     
