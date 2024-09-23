@@ -30,10 +30,14 @@ struct ProfileEditView<Router: AppRouter>: View {
                 job
                 categoriesOfInterest
             }
-            .padding(.horizontal, Constants.horizontal)
         }
-        .onAppear {
-            vm.user = user
+        // TODO: 간격 예쁘게 꾸며주기
+        .padding(.horizontal, Constants.horizontal)
+        .task {
+            await vm.configureView(user.id)
+        }
+        .onDisappear {
+            vm.initialize()
         }
         
         FlatButton("저장") {
