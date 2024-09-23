@@ -38,7 +38,7 @@ struct MapArea<Router: AppRouter>: View {
             ForEach(viewModel.places, id: \.id) { place in
                 let name = place.location.name
                 let coordinate = place.location.coordinate
-                let count = place.communityRecruitingContents.count
+                let count = place.meetingCount
                 
                 Annotation(coordinate: coordinate) {
                     mapAnnotation(count)
@@ -65,13 +65,13 @@ struct MapArea<Router: AppRouter>: View {
                 .frame(width: 20, height: 20)
         case 1:
             Image(.marker)
-                .frame(width: 30, height: 30)
+                .frame(width: 20, height: 20)
         case 2:
             Image(.marker)
-                .frame(width: 60, height: 60)
+                .frame(width: 20, height: 20)
         default:
             Image(.marker)
-                .frame(width: 80, height: 80)
+                .frame(width: 20, height: 20)
         }
     }
     
