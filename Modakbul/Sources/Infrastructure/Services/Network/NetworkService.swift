@@ -51,7 +51,7 @@ struct HTTPResponse<T: Decodable> {
     }
     
     var refreshToken: String? {
-        headers?["Authorization_refresh"]
+        headers?["authorization_refresh"]
     }
 }
 
