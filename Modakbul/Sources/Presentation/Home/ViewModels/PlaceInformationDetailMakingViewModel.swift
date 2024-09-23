@@ -38,7 +38,7 @@ final class PlaceInformationDetailMakingViewModel: ObservableObject {
         let community = Community(routine: .daily,
                                   category: category,
                                   participantsLimit: peopleCount,
-                                  meetingDate: date.toString(by: .yyyyMMdd),
+                                  meetingDate: date.toString(by: .yyyyMMddHyphen),
                                   startTime: startTime.toString(by: .HHmm),
                                   endTime: endTime.toString(by: .HHmm))
         

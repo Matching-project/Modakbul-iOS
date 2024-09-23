@@ -12,6 +12,9 @@ enum DateFormat: String {
     /// 년.월.일
     case yyyyMMdd = "yyyy.MM.dd"
     
+    /// 년-월-일
+    case yyyyMMddHyphen = "yyyy-MM-dd"
+    
     /// 년월일 (구분자 없음)
     case yyyyMMddRaw
     

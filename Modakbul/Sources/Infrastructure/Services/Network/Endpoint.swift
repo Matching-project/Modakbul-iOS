@@ -249,10 +249,8 @@ extension Endpoint: TargetType {
         case .readPlacesByDistance(let lat, let lon):
             return .requestParameters(parameters: ["latitude": "\(lat)", "longitude": "\(lon)"], encoding: URLEncoding.queryString)
         case .createBoard(_, _, let communityRecruitingContent):
-            let communityRecruitingContent = try? encode(communityRecruitingContent)
             return .requestJSONEncodable(communityRecruitingContent)
         case .updateBoard(_, let communityRecruitingContent):
-            let communityRecruitingContent = try? encode(communityRecruitingContent)
             return .requestJSONEncodable(communityRecruitingContent)
         case .createChatRoom(_, let configuration):
             return .requestJSONEncodable(configuration)
