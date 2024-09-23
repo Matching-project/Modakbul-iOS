@@ -12,6 +12,9 @@ import Combine
 
 final class LoginViewModel: ObservableObject {
     @Published var userId: Int64?
+    @Published var selectedProvider: AuthenticationProvider?
+    @Published var email: String?
+    @Published var authorizationCode: Data?
     
     private var fcmToken: String?
     
@@ -41,8 +44,12 @@ final class LoginViewModel: ObservableObject {
             .store(in: &cancellables)
     }
     
-    func loginWithKakaoTalk(_ email: String) {
-        guard let fcm = fcmToken else { return }
+    func loginWithKakaoTalk(_ email: String?) {
+        guard let fcm = fcmToken,
+              let email = email
+        else { return }
+        
+        self.email = email
         
         Task {
             do {
@@ -54,8 +61,12 @@ final class LoginViewModel: ObservableObject {
         }
     }
     
-    func loginWithApple(_ authorizationCode: Data) {
-        guard let fcm = fcmToken else { return }
+    func loginWithApple(_ authorizationCode: Data?) {
+        guard let fcm = fcmToken,
+              let authorizationCode = authorizationCode
+        else { return }
+        
+        self.authorizationCode = authorizationCode
         
         Task {
             do {
