@@ -47,11 +47,11 @@ struct HTTPResponse<T: Decodable> {
     let body: T
     
     var accessToken: String? {
-        headers?["Authorization"]
+        headers?["Authorization"]?.replacingOccurrences(of: "Bearer ", with: "")
     }
     
     var refreshToken: String? {
-        headers?["authorization_refresh"]
+        headers?["authorization_refresh"]?.replacingOccurrences(of: "Bearer ", with: "")
     }
 }
 
