@@ -27,6 +27,7 @@ final class ProfileEditViewModel: ObservableObject {
     // MARK: - For Binding
     @Published var integrityResult: NicknameIntegrityType?
     
+    let userSubject = PassthroughSubject<User, Never>()
     private let nicknameIntegritySubject = PassthroughSubject<NicknameIntegrityType, Never>()
     private var cancellables = Set<AnyCancellable>()
 
@@ -40,6 +41,16 @@ final class ProfileEditViewModel: ObservableObject {
     }
     
     private func subscribe() {
+        userSubject
+            .sink { [weak self] user in
+                // TODO: 기존 이미지 넣어주기
+                self?.nickname = user.nickname
+                self?.isGenderVisible = user.isGenderVisible
+                self?.job = user.job
+                self?.categoriesOfInterest = user.categoriesOfInterest
+            }
+            .store(in: &cancellables)
+        
         nicknameIntegritySubject
             .receive(on: DispatchQueue.main)
             .sink { [weak self] result in
@@ -54,6 +65,18 @@ final class ProfileEditViewModel: ObservableObject {
                 self?.integrityResult = nil
             }
             .store(in: &cancellables)
+    }
+}
+
+// MARK: Interfaces
+extension ProfileEditViewModel {
+    func configureView(_ userId: Int64) async {
+        do {
+            let user = try await userBusinessUseCase.readMyProfile(userId: userId)
+            userSubject.send(user)
+        } catch {
+            print(error)
+        }
     }
     
     func isPassedNicknameRule() -> Bool {
@@ -80,5 +103,15 @@ final class ProfileEditViewModel: ObservableObject {
                 print(error)
             }
         }
+    }
+    
+    func initialize() {
+        user = User()
+        image = nil
+        nickname.removeAll()
+        isGenderVisible = true
+        job = nil
+        categoriesOfInterest = []
+        integrityResult = nil
     }
 }
