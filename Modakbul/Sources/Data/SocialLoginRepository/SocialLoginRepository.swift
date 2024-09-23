@@ -78,11 +78,12 @@ extension DefaultSocialLoginRepository: SocialLoginRepository {
         do {
             let endpoint = Endpoint.logout(token: token.accessToken)
             try await networkService.request(endpoint: endpoint, for: DefaultResponseEntity.self)
+            UserDefaults.standard.setValue(Constants.loggedOutUserId, forKey: AppStorageKey.userId)
         } catch APIError.accessTokenExpired {
             let tokens = try await reissueTokens(userId: userId, token.refreshToken)
-            
             let endpoint = Endpoint.logout(token: tokens.accessToken)
             try await networkService.request(endpoint: endpoint, for: DefaultResponseEntity.self)
+            UserDefaults.standard.setValue(Constants.loggedOutUserId, forKey: AppStorageKey.userId)
         } catch {
             throw error
         }
