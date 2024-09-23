@@ -42,6 +42,7 @@ final class ProfileEditViewModel: ObservableObject {
     
     private func subscribe() {
         userSubject
+            .receive(on: DispatchQueue.main)
             .sink { [weak self] user in
                 // TODO: 기존 이미지 넣어주기
                 self?.nickname = user.nickname
