@@ -10,7 +10,7 @@ import Foundation
 protocol SocialLoginRepository: TokenRefreshable {
     func kakaoLogin(email: String, fcm: String) async throws -> Int64
     func appleLogin(authorizationCode: Data, fcm: String) async throws -> Int64
-    func logout() async
+    func logout(userId: Int64) async throws
     
     func validateNicknameIntegrity(_ nickname: String) async throws -> NicknameIntegrityType
     
@@ -72,8 +72,20 @@ extension DefaultSocialLoginRepository: SocialLoginRepository {
         return userId
     }
     
-    func logout() async {
-        // TODO: - 로그아웃 기능 연결 필요
+    func logout(userId: Int64) async throws {
+        let token = try tokenStorage.fetch(by: userId)
+        
+        do {
+            let endpoint = Endpoint.logout(token: token.accessToken)
+            try await networkService.request(endpoint: endpoint, for: DefaultResponseEntity.self)
+        } catch APIError.accessTokenExpired {
+            let tokens = try await reissueTokens(userId: userId, token.refreshToken)
+            
+            let endpoint = Endpoint.logout(token: tokens.accessToken)
+            try await networkService.request(endpoint: endpoint, for: DefaultResponseEntity.self)
+        } catch {
+            throw error
+        }
     }
     
     func validateNicknameIntegrity(_ nickname: String) async throws -> NicknameIntegrityType {

@@ -52,7 +52,7 @@ extension DefaultUserRegistrationUseCase: UserRegistrationUseCase {
     }
     
     func logout(userId: Int64) async throws {
-        //
+        try await socialLoginRepository.logout(userId: userId)
     }
     
     func validateInLocal(_ nickname: String) -> Bool {
