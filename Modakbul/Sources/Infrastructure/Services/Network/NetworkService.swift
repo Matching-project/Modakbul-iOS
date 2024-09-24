@@ -27,6 +27,7 @@ enum APIError: Int, Error {
     case invalidDataValue = 2002
     
     // MARK: User
+    case userNotExist = 2004
     case accessDenied = 2011
     
     // MARK: Token
