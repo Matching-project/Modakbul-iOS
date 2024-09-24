@@ -12,7 +12,7 @@ struct CommunityRecruitingContentListResponseEntity: ResponseEntity {
     let status: Bool
     let code: Int
     let message: String
-    let result: Result
+    let result: Result?
     
     struct Result: Decodable {
         let communityRecruitingContents: [CommunityRecruitingContent]
@@ -23,10 +23,14 @@ struct CommunityRecruitingContentListResponseEntity: ResponseEntity {
             let title, meetingDate, startTime, endTime: String
             let category: Category
         }
+        
+        enum CodingKeys: String, CodingKey {
+            case communityRecruitingContents = "boards"
+        }
     }
     
     func toDTO() -> [CommunityRecruitingContent] {
-        result.communityRecruitingContents.map {
+        result?.communityRecruitingContents.map {
             let community = Community(
                 routine: .daily,
                 category: $0.category,
@@ -44,6 +48,6 @@ struct CommunityRecruitingContentListResponseEntity: ResponseEntity {
                 writer: .init(id: $0.writerId),
                 community: community
             )
-        }
+        } ?? []
     }
 }

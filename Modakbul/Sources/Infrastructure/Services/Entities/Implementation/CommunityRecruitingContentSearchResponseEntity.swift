@@ -57,10 +57,15 @@ struct CommunityRecruitingContentSearchDetailResponseEntity: ResponseEntity {
         }
         
         struct CommunityRecruitingContentDetail: Decodable {
-            let id: Int64
+            let id: Int64?
             let title, content, createdDate, createdTime, meetingDate, startTime, endTime: String
             let category: Category
             let recruitCount, currentCount: Int
+            
+            enum CodingKeys: String, CodingKey {
+                case id, title, content, createdDate, createdTime, meetingDate, startTime, endTime, recruitCount, currentCount
+                case category = "categoryName"
+            }
         }
     }
     
@@ -82,7 +87,7 @@ struct CommunityRecruitingContentSearchDetailResponseEntity: ResponseEntity {
         )
         
         return .init(
-            id: result.communityRecruitingContentDetail.id,
+            id: result.communityRecruitingContentDetail.id ?? Int64(Constants.loggedOutUserId),
             title: result.communityRecruitingContentDetail.title,
             content: result.communityRecruitingContentDetail.content,
             writtenDate: result.communityRecruitingContentDetail.createdDate,
