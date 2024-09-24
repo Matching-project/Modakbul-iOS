@@ -62,6 +62,10 @@ struct PresentationAssembly: Assembly {
             ReportListViewModel(userBusinessUseCase: resolver.resolve(UserBusinessUseCase.self))
         }
         
+        container.register(for: WithdrawalViewModel.self) { resolver in
+            WithdrawalViewModel(userRegistrationUseCase: resolver.resolve(UserRegistrationUseCase.self))
+        }
+        
         // MARK: - Home
         container.register(for: HomeViewModel.self) { resolver in
             HomeViewModel(localMapUseCase: resolver.resolve(LocalMapUseCase.self),
