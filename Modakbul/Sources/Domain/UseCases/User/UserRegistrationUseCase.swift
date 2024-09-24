@@ -8,11 +8,9 @@
 import Foundation
 
 protocol UserRegistrationUseCase {
-    /// 카카오로 로그인
-    func kakaoLogin(email: String, fcm: String) async throws -> Int64
-    
-    /// 애플로 로그인
-    func appleLogin(authorizationCode: Data, fcm: String) async throws -> Int64
+    /// 로그인
+    /// - OAuth(카카오, 애플)를 통한 로그인을 지원합니다.
+    func login(_ userCredential: UserCredential) async throws -> Int64
     
     /// 로그아웃
     func logout(userId: Int64) async throws
@@ -23,11 +21,9 @@ protocol UserRegistrationUseCase {
     /// 서버와 통신해 비속어 필터링을 하여 중복되지 않고 유효한 닉네임인지 검사
     func validateWithServer(_ nickname: String) async throws -> NicknameIntegrityType
     
-    /// 카카오로 회원가입
-    func kakaoRegister(_ user: User, encoded imageData: Data?, email: String, fcm: String, provider: AuthenticationProvider) async throws -> Int64
-    
-    /// 애플로 회원가입
-    func appleRegister(_ user: User, encoded imageData: Data?, authorizationCode: Data, fcm: String, provider: AuthenticationProvider) async throws -> Int64
+    /// 회원가입
+    /// - OAuth(카카오, 애플)를 통한 회원가입을 지원합니다.
+    func register(_ user: User, encoded imageData: Data?, _ userCredential: UserCredential)  async throws -> Int64
     
     /// 회원탈퇴
     func unregister(userId: Int64, provider: AuthenticationProvider) async throws
@@ -43,12 +39,13 @@ final class DefaultUserRegistrationUseCase {
 
 // MARK: UserRegistrationUseCase Confirmation
 extension DefaultUserRegistrationUseCase: UserRegistrationUseCase {
-    func kakaoLogin(email: String, fcm: String) async throws -> Int64 {
-        try await socialLoginRepository.kakaoLogin(email: email, fcm: fcm)
-    }
-    
-    func appleLogin(authorizationCode: Data, fcm: String) async throws -> Int64 {
-        try await socialLoginRepository.appleLogin(authorizationCode: authorizationCode, fcm: fcm)
+    func login(_ userCredential: UserCredential) async throws -> Int64 {
+        switch userCredential.provider {
+        case .apple:
+            try await socialLoginRepository.appleLogin(userCredential)
+        case .kakao:
+            try await socialLoginRepository.kakaoLogin(userCredential)
+        }
     }
     
     func logout(userId: Int64) async throws {
@@ -73,13 +70,14 @@ extension DefaultUserRegistrationUseCase: UserRegistrationUseCase {
     func validateWithServer(_ nickname: String) async throws -> NicknameIntegrityType {
         try await socialLoginRepository.validateNicknameIntegrity(nickname)
     }
-    
-    func kakaoRegister(_ user: User, encoded imageData: Data?, email: String, fcm: String, provider: AuthenticationProvider) async throws -> Int64 {
-        try await socialLoginRepository.kakaoRegister(user, encoded: imageData, email: email, fcm: fcm, provider: provider)
-    }
-    
-    func appleRegister(_ user: User, encoded imageData: Data?, authorizationCode: Data, fcm: String, provider: AuthenticationProvider) async throws -> Int64 {
-        try await socialLoginRepository.appleRegister(user, encoded: imageData, authorizationCode: authorizationCode, fcm: fcm, provider: provider)
+        
+    func register(_ user: User, encoded imageData: Data?, _ userCredential: UserCredential) async throws -> Int64 {
+        switch userCredential.provider {
+        case .apple:
+            try await socialLoginRepository.appleRegister(user, encoded: imageData, userCredential)
+        case .kakao:
+            try await socialLoginRepository.kakaoRegister(user, encoded: imageData, userCredential)
+        }
     }
     
     func unregister(userId: Int64, provider: AuthenticationProvider) async throws {

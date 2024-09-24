@@ -44,7 +44,7 @@ final class LoginViewModel: ObservableObject {
             .store(in: &cancellables)
     }
     
-    func loginWithKakaoTalk(_ email: String?) {
+    func kakaoLogin(_ email: String?) {
         guard let fcm = fcmToken,
               let email = email
         else { return }
@@ -53,7 +53,7 @@ final class LoginViewModel: ObservableObject {
         
         Task {
             do {
-                let userId = try await userRegistrationUseCase.kakaoLogin(email: email, fcm: fcm)
+                let userId = try await userRegistrationUseCase.login(.init(provider: .kakao, fcm: fcm, email: email))
                 userIdSubject.send(userId)
             } catch {
                 print(error)
@@ -61,7 +61,7 @@ final class LoginViewModel: ObservableObject {
         }
     }
     
-    func loginWithApple(_ authorizationCode: Data?) {
+    func appleLogin(_ authorizationCode: Data?) {
         guard let fcm = fcmToken,
               let authorizationCode = authorizationCode
         else { return }
@@ -70,7 +70,7 @@ final class LoginViewModel: ObservableObject {
         
         Task {
             do {
-                let userId = try await userRegistrationUseCase.appleLogin(authorizationCode: authorizationCode, fcm: fcm)
+                let userId = try await userRegistrationUseCase.login(.init(provider: .apple, fcm: fcm, email: email))
                 userIdSubject.send(userId)
             } catch {
                 print(error)

@@ -11,14 +11,17 @@ import Foundation
 /// - Warning: `email` 또는 `authorizationCode`는 필수적으로 존재해야 합니다.
 struct UserCredential {
     let provider: AuthenticationProvider
+    let fcm: String?
     let email: String?
     let authorizationCode: Data?
     
     init(provider: AuthenticationProvider,
+         fcm: String? = nil,
          email: String? = nil,
          authorizationCode: Data? = nil
     ) {
         self.provider = provider
+        self.fcm = fcm
         self.email = email
         self.authorizationCode = authorizationCode
     }

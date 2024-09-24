@@ -118,11 +118,7 @@ final class RegistrationViewModel: ObservableObject {
         case .kakao:
             Task {
                 do {
-                    let userId = try await userRegistrationUseCase.kakaoRegister(user,
-                                                                                 encoded: image,
-                                                                                 email: userCredential.email!,
-                                                                                 fcm: fcm,
-                                                                                 provider: userCredential.provider)
+                    let userId = try await userRegistrationUseCase.register(user, encoded: image, userCredential)
                     userIdSubject.send(userId)
                 } catch {
                     print(error)
@@ -131,11 +127,7 @@ final class RegistrationViewModel: ObservableObject {
         case .apple:
             Task {
                 do {
-                    let userId = try await userRegistrationUseCase.appleRegister(user,
-                                                                                 encoded: image,
-                                                                                 authorizationCode: userCredential.authorizationCode!,
-                                                                                 fcm: fcm,
-                                                                                 provider: userCredential.provider)
+                    let userId = try await userRegistrationUseCase.register(user, encoded: image, userCredential)
                     userIdSubject.send(userId)
                 } catch {
                     print(error)
