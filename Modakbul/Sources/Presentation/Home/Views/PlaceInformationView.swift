@@ -45,18 +45,18 @@ struct PlaceInformationView<Router: AppRouter>: View {
             
             Spacer()
             
-            if viewModel.communityRecruitingContents.isEmpty {
-                Text("아직 모집 중인 모임이 없어요.")
-                    .font(.Modakbul.footnote)
-            } else {
-                communityRecruitingContentListArea
-            }
+            communityRecruitingContentListArea(viewModel.communityRecruitingContents.isEmpty)
             
             Spacer()
         }
         .task {
             viewModel.configureView(by: place)
-            await viewModel.fetchCommunityRecruitingContents(with: place.id)
+            if userId == Constants.loggedOutUserId {
+                // TODO: 비로그인 상태일 시 로그인 화면 이동할 것인지, 아니면 모집글 목록 그냥 비워둔 채로 카페 정보만 표시할 것인지 결정
+                // 일단 후자로 구현
+            } else {
+                await viewModel.fetchCommunityRecruitingContents(userId: Int64(userId), with: place.id)
+            }
         }
     }
     
@@ -112,24 +112,29 @@ struct PlaceInformationView<Router: AppRouter>: View {
         .shadow(color: .gray.opacity(0.3), radius: 4, y: 4)
     }
     
-    private var communityRecruitingContentListArea: some View {
-        ScrollView {
-            LazyVStack {
-                ForEach(viewModel.communityRecruitingContents, id: \.id) { communityRecruitingContent in
-                    Cell(communityRecruitingContent)
-                        .contentShape(.rect)
-                        .onTapGesture {
-                            router.dismiss()
-                            if userId == Constants.loggedOutUserId {
-                                router.route(to: .loginView)
-                            } else {
-                                router.route(to: .placeInformationDetailView(communityRecruitingContentId: communityRecruitingContent.id, userId: Int64(userId)))
+    @ViewBuilder private func communityRecruitingContentListArea(_ condition: Bool) -> some View {
+        if condition {
+            Text("아직 모집 중인 모임이 없어요.")
+                .font(.Modakbul.footnote)
+        } else {
+            ScrollView {
+                LazyVStack {
+                    ForEach(viewModel.communityRecruitingContents, id: \.id) { communityRecruitingContent in
+                        Cell(communityRecruitingContent)
+                            .contentShape(.rect)
+                            .onTapGesture {
+                                router.dismiss()
+                                if userId == Constants.loggedOutUserId {
+                                    router.route(to: .loginView)
+                                } else {
+                                    router.route(to: .placeInformationDetailView(communityRecruitingContentId: communityRecruitingContent.id, userId: Int64(userId)))
+                                }
                             }
-                        }
+                    }
                 }
             }
+            .padding(.top)
         }
-        .padding(.top)
     }
 }
 
