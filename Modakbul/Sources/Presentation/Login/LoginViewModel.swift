@@ -57,7 +57,7 @@ final class LoginViewModel: ObservableObject {
                 let userId = try await userRegistrationUseCase.login(.init(provider: .kakao, fcm: fcm, email: email))
                 userIdSubject.send(userId)
             } catch {
-                userIdSubject.send(-1)
+                userIdSubject.send(Int64(Constants.loggedOutUserId))
             }
         }
     }
@@ -75,7 +75,7 @@ final class LoginViewModel: ObservableObject {
                 let userId = try await userRegistrationUseCase.login(.init(provider: .apple, fcm: fcm, email: email))
                 userIdSubject.send(userId)
             } catch {
-                userIdSubject.send(-1)
+                userIdSubject.send(Int64(Constants.loggedOutUserId))
             }
         }
     }
