@@ -275,7 +275,7 @@ extension Endpoint: TargetType {
         case .kakaoLogin, .appleLogin:
             ["Content-Type": "application/json"]
         case .kakaoRegister, .appleRegister:
-            ["Content-Type": "multipart/form-data"] // <=======
+            ["Content-Type": "multipart/form-data"]
         case .logout(let token):
             ["Authorization": "\(token)"]
         case .reissueToken(let refreshToken):

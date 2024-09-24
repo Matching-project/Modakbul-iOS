@@ -70,6 +70,7 @@ struct CommunityRecruitingContentSearchDetailResponseEntity: ResponseEntity {
             nickname: result.user.nickname,
             imageURL: result.user.imageURL
         )
+        
         let community = Community(
             routine: .daily,
             category: result.communityRecruitingContentDetail.category,
