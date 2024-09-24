@@ -109,13 +109,13 @@ struct PlacesListArea<Router: AppRouter>: View {
         .padding(.trailing)
     }
     
-    private var placeList: some View {
-        List(viewModel.places, id: \.id) { place in
-            router.view(to: .placeInformationView(place: place))
-                .listRowSeparator(.hidden)
-        }
-        .listStyle(.plain)
-    }
+//    private var placeList: some View {
+//        List(viewModel.places, id: \.id) { place in
+//            router.view(to: .placeInformationView(place: place))
+//                .listRowSeparator(.hidden)
+//        }
+//        .listStyle(.plain)
+//    }
     
     private var hoveringButtonsArea: some View {
         VStack {
@@ -180,9 +180,6 @@ extension PlacesListArea {
                     
                     Spacer()
                 }
-                .overlay(alignment: .topTrailing) {
-                    communityRecruitingContentEditButton
-                }
                 
                 Spacer()
                 
@@ -199,6 +196,10 @@ extension PlacesListArea {
                 
                 Spacer()
             }
+            .overlay(alignment: .topTrailing) {
+                communityRecruitingContentEditButton
+                    .padding(.top, 20)
+            }
             .onChange(of: selectedOpeningHourOfDay) {
                 guard let openingHour = selectedOpeningHourOfDay else { return }
                 openingHourText = displayOpeningHours(openingHour)
@@ -214,6 +215,7 @@ extension PlacesListArea {
                     
                     Text(place.location.address)
                         .font(.Modakbul.caption)
+                        .padding(.trailing, 50)
                 }
                 .padding(.top)
                 
@@ -254,7 +256,6 @@ extension PlacesListArea {
             // MARK: - https://stackoverflow.com/q/56561064
             .buttonStyle(BorderlessButtonStyle())
             .shadow(color: .gray.opacity(0.3), radius: 4, y: 4)
-            .padding([.top, .trailing])
         }
         
         private func displayOpeningHours(_ openingHour: OpeningHour) -> String {
