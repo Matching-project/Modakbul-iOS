@@ -27,12 +27,12 @@ enum Endpoint {
     case reportOpponentUserProfile(token: String, userId: Int64, report: Report)                                        // 사용자(상대방) 프로필 신고
     
     // MARK: - Place Related
-    case readPlaces(name: String, lat: Double, lon: Double)                                         // 카페 이름으로 검색
-    case readPlacesByMatches(lat: Double, lon: Double)                                              // 카페 모임순 목록 조회
-    case readPlacesByDistance(lat: Double, lon: Double)                                             // 카페 거리순 목록 조회
-    case readPlacesForShowcaseAndReview(token: String)                                              // 카페 제보 및 리뷰 목록 조회
-    case reviewPlace(placeId: Int64, review: ReviewPlaceRequestEntity)                              // 카페 리뷰
-    case suggestPlace(suggest: SuggestPlaceRequestEntity)                                           // 카페 제보
+    case readPlaces(name: String, lat: Double, lon: Double)                                                             // 카페 이름으로 검색
+    case readPlacesByMatches(lat: Double, lon: Double)                                                                  // 카페 모임순 목록 조회
+    case readPlacesByDistance(lat: Double, lon: Double)                                                                 // 카페 거리순 목록 조회
+    case readPlacesForShowcaseAndReview(token: String)                                                                  // 카페 제보 및 리뷰 목록 조회
+    case reviewPlace(placeId: Int64, review: ReviewPlaceRequestEntity)                                                  // 카페 리뷰
+    case suggestPlace(suggest: SuggestPlaceRequestEntity)                                                               // 카페 제보
     
     // MARK: - Board Related
     case createBoard(token: String, placeId: Int64, communityRecruitingContent: CommunityRecruitingContentEntity)  // 모집글 작성
@@ -45,14 +45,14 @@ enum Endpoint {
     case readMyBoards(token: String)       // 나의 모집글 목록 조회
     
     // MARK: - Match Related
-    case readMatches(token: String, communityRecruitingContentId: Int64)   // 모임 참여 요청 목록 조회
-    case requestMatch(token: String, communityRecruitingContentId: Int64)  // 모임 참여 요청
-    case acceptMatchRequest(token: String, matchingId: Int64)              // 모임 참여 요청에 대한 수락
-    case rejectMatchRequest(token: String, matchingId: Int64)              // 모임 참여 요청에 대한 거절
-    case exitMatch(token: String, matchingId: Int64)                       // 모임 나가기
-    case cancelMatchRequest(token: String, matchingId: Int64)              // 모임 참여 요청 취소
-    case readMyMatches(token: String)                                      // 참여 모임 내역 조회
-    case readMyRequestMatches(token: String)                               // 나의 참여 요청 목록 조회
+    case readMatches(token: String, communityRecruitingContentId: Int64)                                                // 모임 참여 요청 목록 조회
+    case requestMatch(token: String, communityRecruitingContentId: Int64)                                               // 모임 참여 요청
+    case acceptMatchRequest(token: String, matchingId: Int64)                                                           // 모임 참여 요청에 대한 수락
+    case rejectMatchRequest(token: String, matchingId: Int64)                                                           // 모임 참여 요청에 대한 거절
+    case exitMatch(token: String, matchingId: Int64)                                                                    // 모임 나가기
+    case cancelMatchRequest(token: String, matchingId: Int64)                                                           // 모임 참여 요청 취소
+    case readMyMatches(token: String)                                                                                   // 참여 모임 내역 조회
+    case readMyRequestMatches(token: String)                                                                            // 나의 참여 요청 목록 조회
     
     // MARK: - Chat Related
     case createChatRoom(token: String, configuration: ChatRoomConfigurationRequestEntity) // 채팅방 생성
@@ -281,7 +281,7 @@ extension Endpoint: TargetType {
         case .kakaoLogin, .appleLogin:
             ["Content-Type": "application/json"]
         case .kakaoRegister, .appleRegister:
-            ["Content-Type": "multipart/form-data"] // <=======
+            ["Content-Type": "multipart/form-data"]
         case .logout(let token):
             ["Authorization": "Bearer \(token)"]
         case .reissueToken(let refreshToken):

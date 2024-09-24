@@ -41,6 +41,7 @@ struct PlaceInformationView<Router: AppRouter>: View {
             }
             .overlay(alignment: .topTrailing) {
                 communityRecruitingContentEditButton
+                    .padding([.top, .trailing], 20)
             }
             
             Spacer()
@@ -69,6 +70,7 @@ struct PlaceInformationView<Router: AppRouter>: View {
                 
                 Text(place.location.address)
                     .font(.Modakbul.caption)
+                    .padding(.trailing, 50)
             }
             .padding(.top)
             
@@ -175,5 +177,11 @@ extension PlaceInformationView {
                     .strokeBorder(.accent)
             )
         }
+    }
+}
+
+struct PlaceInformationView_Preview: PreviewProvider {
+    static var previews: some View {
+        router.view(to: .placeInformationView(place: Place(location: Location())))
     }
 }

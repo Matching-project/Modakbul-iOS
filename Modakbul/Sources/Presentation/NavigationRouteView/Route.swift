@@ -44,6 +44,7 @@ enum Route: Routable {
     case placeShowcaseView(userId: Int64)
     case placeReviewView(place: Place?)
     case notificationSettingsView
+    case unregisterView(user: User)
     case homeView           // MARK: - Home
     case mapArea
     case placesListArea
@@ -74,6 +75,7 @@ enum Route: Routable {
         case .blockedListView: return .push
         case .reportListView: return .push
         case .notificationSettingsView: return .push
+        case .unregisterView: return .push
         case .homeView: return .push                                // MARK: - Home
         case .mapArea: return .push
         case .placesListArea: return .push
@@ -121,6 +123,8 @@ enum Route: Routable {
             ReportListView<Router>(router.resolver.resolve(ReportListViewModel.self))
         case .notificationSettingsView:
             NotificationSettingsView<Router>()
+        case .unregisterView(let user):
+            UnregisterView<Router>(router.resolver.resolve(WithdrawalViewModel.self), user: user)
         case .homeView:         // MARK: - Home
             HomeView<Router>(router.resolver.resolve(HomeViewModel.self))
         case .mapArea:
