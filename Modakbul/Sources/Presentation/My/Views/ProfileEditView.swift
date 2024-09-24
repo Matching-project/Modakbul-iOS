@@ -22,29 +22,31 @@ struct ProfileEditView<Router: AppRouter>: View {
     }
     
     var body: some View {
-        ScrollView {
-            LazyVStack(spacing: 40) {
-                PhotosUploaderView(image: $vm.image, url: vm.user.imageURL)
-                nickname
-                gender
-                job
-                categoriesOfInterest
+        VStack {
+            ScrollView {
+                LazyVStack(spacing: 40) {
+                    PhotosUploaderView(image: $vm.image, url: vm.user.imageURL)
+                    nickname
+                    gender
+                    job
+                    categoriesOfInterest
+                }
+                .padding(.horizontal, Constants.horizontal)
+                .padding(.vertical, Constants.vertical)
             }
+            .task {
+                await vm.configureView(user.id)
+            }
+            .onDisappear {
+                vm.initialize()
+            }
+            
+            FlatButton("저장") {
+                vm.submit()
+                router.dismiss()
+            }
+            .padding(.horizontal, Constants.horizontal)
         }
-        // TODO: 간격 예쁘게 꾸며주기
-        .padding(.horizontal, Constants.horizontal)
-        .task {
-            await vm.configureView(user.id)
-        }
-        .onDisappear {
-            vm.initialize()
-        }
-        
-        FlatButton("저장") {
-            vm.submit()
-            router.dismiss()
-        }
-        .padding(.horizontal, Constants.horizontal)
     }
     
     private var nickname: some View {
@@ -112,5 +114,11 @@ struct ProfileEditView<Router: AppRouter>: View {
                 DefaultMultipleSelectionButton(item: item, selectedItems: selectedItem)
             }
         }
+    }
+}
+
+struct ProfileEditView_Preview: PreviewProvider {
+    static var previews: some View {
+        router.view(to: .profileEditView(user: User()))
     }
 }
