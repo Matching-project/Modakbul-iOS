@@ -36,7 +36,7 @@ enum Endpoint {
     
     // MARK: - Board Related
     case createBoard(token: String, placeId: Int64, communityRecruitingContent: CommunityRecruitingContentEntity)       // 모집글 작성
-    case readBoards(token: String, placeId: Int64)                                                                      // 카페 모집글 목록 조회
+    case readBoards(placeId: Int64)                                                                                     // 카페 모집글 목록 조회
     case readBoardForUpdate(token: String, communityRecruitingContentId: Int64)                                         // 모집글 수정 정보 조회
     case updateBoard(token: String, communityRecruitingContent: CommunityRecruitingContentEntity)                       // 모집글 수정
     case deleteBoard(token: String, communityRecruitingContent: CommunityRecruitingContentEntity)                       // 모집글 삭제
