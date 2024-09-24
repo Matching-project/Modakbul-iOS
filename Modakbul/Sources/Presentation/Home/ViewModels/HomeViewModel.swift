@@ -14,7 +14,7 @@ final class HomeViewModel: ObservableObject {
     @Published var cameraPosition: MapCameraPosition = .userLocation(fallback: .automatic)
     @Published var cameraCenterCoordinate: CLLocationCoordinate2D = .init()
     @Published var searchingText: String = String()
-    @Published var places: [Place] = PreviewHelper.shared.places
+    @Published var places: [Place] = []
     @Published var searchedPlaces: [Place] = []
     @Published var sortCriteria: PlaceSortCriteria = .distance
     @Published var unreadCount: Int = 0
