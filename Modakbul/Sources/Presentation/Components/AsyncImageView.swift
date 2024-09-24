@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct AsyncImageView: View {
+    @Environment(\.colorScheme) private var colorScheme
+    
     private let url: URL?
     private let contentMode: ContentMode
     private let minWidth: CGFloat
@@ -57,10 +59,10 @@ struct AsyncImageView: View {
                 image
                     .resizable()
             case .failure:
-                Image(.modakbulMainDark)
+                Image(colorScheme == .dark ? .modakbulMainDark : .modakbulMainLight)
                     .resizable()
             @unknown default:
-                Image(.modakbulMainDark)
+                Image(colorScheme == .dark ? .modakbulMainDark : .modakbulMainLight)
                     .resizable()
             }
         }

@@ -13,7 +13,7 @@ final class PlaceInformationViewModel: ObservableObject {
         didSet { displaySelectedOpeningHourText() }
     }
     @Published var openingHourText: String = String()
-    @Published var communityRecruitingContents: [CommunityRecruitingContent] = []
+    @Published var communityRecruitingContents: [CommunityRecruitingContent] = [] // 로그인 상태에서만 Fetch
     
     private let communityRecruitingContentSubject = PassthroughSubject<[CommunityRecruitingContent], Never>()
     private var cancellables = Set<AnyCancellable>()
@@ -57,9 +57,9 @@ extension PlaceInformationViewModel {
         return "\(dayOfWeek) \(open) - \(close)"
     }
     
-    func fetchCommunityRecruitingContents(with placeId: Int64) async {
+    func fetchCommunityRecruitingContents(userId: Int64, with placeId: Int64) async {
         do {
-            let contents = try await communityUseCase.readCommunityRecruitingContents(placeId: placeId)
+            let contents = try await communityUseCase.readCommunityRecruitingContents(userId: userId, placeId: placeId)
             communityRecruitingContentSubject.send(contents)
         } catch {
             print(error)

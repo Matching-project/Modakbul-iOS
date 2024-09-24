@@ -28,22 +28,31 @@ struct LoginView<Router: AppRouter>: View {
                 signInWithKakaoButton
                 
                 signInWithAppleButton
+                
+                Button {
+                    router.dismiss()
+                } label: {
+                    Text("뒤로 가기")
+                        .font(.Modakbul.callout)
+                }
             }
         }
         .padding()
-        .onChange(of: loginViewModel.userId) {
-            guard let id = loginViewModel.userId else { return }
-            userId = Int(id)
+        .onReceive(loginViewModel.$userId) { userId in
+            guard let id = userId else { return }
+            self.userId = Int(id)
             
-            router.dismiss()
-            
-            switch loginViewModel.selectedProvider {
-            case .apple:
-                router.route(to: .requiredTermView(userCredential: .init(provider: .apple, authorizationCode: loginViewModel.authorizationCode)))
-            case .kakao:
-                router.route(to: .requiredTermView(userCredential: .init(provider: .kakao, email: loginViewModel.email)))
-            case .none:
-                break
+            if id == Constants.loggedOutUserId {
+                router.dismiss()
+                
+                switch loginViewModel.selectedProvider {
+                case .apple:
+                    router.route(to: .requiredTermView(userCredential: .init(provider: .apple, authorizationCode: loginViewModel.authorizationCode)))
+                case .kakao:
+                    router.route(to: .requiredTermView(userCredential: .init(provider: .kakao, email: loginViewModel.email)))
+                case .none:
+                    break
+                }
             }
         }
     }

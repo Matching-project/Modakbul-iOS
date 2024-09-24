@@ -50,13 +50,14 @@ final class LoginViewModel: ObservableObject {
         else { return }
         
         self.email = email
+        self.selectedProvider = .kakao
         
         Task {
             do {
                 let userId = try await userRegistrationUseCase.login(.init(provider: .kakao, fcm: fcm, email: email))
                 userIdSubject.send(userId)
             } catch {
-                print(error)
+                userIdSubject.send(-1)
             }
         }
     }
@@ -67,13 +68,14 @@ final class LoginViewModel: ObservableObject {
         else { return }
         
         self.authorizationCode = authorizationCode
+        self.selectedProvider = .apple
         
         Task {
             do {
                 let userId = try await userRegistrationUseCase.login(.init(provider: .apple, fcm: fcm, email: email))
                 userIdSubject.send(userId)
             } catch {
-                print(error)
+                userIdSubject.send(-1)
             }
         }
     }

@@ -35,14 +35,14 @@ enum Endpoint {
     case suggestPlace(suggest: SuggestPlaceRequestEntity)                                                               // 카페 제보
     
     // MARK: - Board Related
-    case createBoard(token: String, placeId: Int64, communityRecruitingContent: CommunityRecruitingContentEntity)       // 모집글 작성
-    case readBoards(placeId: Int64)                                                                                     // 카페 모집글 목록 조회
-    case readBoardForUpdate(token: String, communityRecruitingContentId: Int64)                                         // 모집글 수정 정보 조회
-    case updateBoard(token: String, communityRecruitingContent: CommunityRecruitingContentEntity)                       // 모집글 수정
-    case deleteBoard(token: String, communityRecruitingContent: CommunityRecruitingContentEntity)                       // 모집글 삭제
-    case readBoardDetail(communityRecruitingContentId: Int64)                                                           // 모집글 상세 조회
-    case completeBoard(token: String, communityRecruitingContentId: Int64)                                              // 모집글 모집 종료
-    case readMyBoards(token: String)                                                                                    // 나의 모집글 목록 조회
+    case createBoard(token: String, placeId: Int64, communityRecruitingContent: CommunityRecruitingContentEntity)  // 모집글 작성
+    case readBoards(token: String, placeId: Int64)        // 카페 모집글 목록 조회
+    case readBoardForUpdate(token: String, communityRecruitingContentId: Int64)            // 모집글 수정 정보 조회
+    case updateBoard(token: String, communityRecruitingContent: CommunityRecruitingContentEntity)                   // 모집글 수정
+    case deleteBoard(token: String, communityRecruitingContent: CommunityRecruitingContentEntity)                   // 모집글 삭제
+    case readBoardDetail(communityRecruitingContentId: Int64)                                                       // 모집글 상세 조회
+    case completeBoard(token: String, communityRecruitingContentId: Int64)                                          // 모집글 모집 종료
+    case readMyBoards(token: String)       // 나의 모집글 목록 조회
     
     // MARK: - Match Related
     case readMatches(token: String, communityRecruitingContentId: Int64)                                                // 모임 참여 요청 목록 조회
@@ -134,7 +134,7 @@ extension Endpoint: TargetType {
             return "/users/cafes/information"
             
             // MARK: Board Related
-        case .readBoards(let placeId):
+        case .readBoards(_, let placeId):
             return "/cafes/\(placeId)/boards"
         case .createBoard(_, let placeId, _):
             return "/cafes/\(placeId)/boards"
@@ -213,6 +213,8 @@ extension Endpoint: TargetType {
             
             if let image = image {
                 formData.append(.init(provider: .data(image), name: "image", fileName: "image.jpeg", mimeType: "image/jpeg"))
+            } else {
+                formData.append(.init(provider: .data(Data()), name: "image", fileName: "image.jpeg", mimeType: "image/jpeg"))
             }
             
             return .uploadMultipart(formData)
@@ -225,6 +227,8 @@ extension Endpoint: TargetType {
             
             if let image = image {
                 formData.append(.init(provider: .data(image), name: "image", fileName: "image.jpeg", mimeType: "image/jpeg"))
+            } else {
+                formData.append(.init(provider: .data(Data()), name: "image", fileName: "image.jpeg", mimeType: "image/jpeg"))
             }
             
             return .uploadMultipart(formData)
@@ -237,6 +241,8 @@ extension Endpoint: TargetType {
             
             if let image = image {
                 formData.append(.init(provider: .data(image), name: "image", fileName: "image.jpeg", mimeType: "image/jpeg"))
+            } else {
+                formData.append(.init(provider: .data(Data()), name: "image", fileName: "image.jpeg", mimeType: "image/jpeg"))
             }
 
             return .uploadMultipart(formData)
@@ -277,82 +283,84 @@ extension Endpoint: TargetType {
         case .kakaoRegister, .appleRegister:
             ["Content-Type": "multipart/form-data"]
         case .logout(let token):
-            ["Authorization": "\(token)"]
+            ["Authorization": "Bearer \(token)"]
         case .reissueToken(let refreshToken):
             ["Authorization": "\(refreshToken)"]
         case .updateProfile(let token, _, _):
             ["Content-Type": "application/json",
-             "Authorization": "\(token)"]
+             "Authorization": "Bearer \(token)"]
         case .readMyProfile(let token):
-            ["Authorization": "\(token)"]
+             ["Authorization": "Bearer \(token)"]
         case .block(let token, _):
-            ["Authorization": "\(token)"]
+            ["Authorization": "Bearer \(token)"]
         case .unblock(let token, _):
-            ["Authorization": "\(token)"]
+            ["Authorization": "Bearer \(token)"]
         case .readBlockedUsers(let token):
-            ["Authorization": "\(token)"]
+            ["Authorization": "Bearer \(token)"]
         case .readReports(let token):
-            ["Authorization": "\(token)"]
+            ["Authorization": "Bearer \(token)"]
         case .readOpponentUserProfile(let token, _):
-            ["Authorization": "\(token)"]
+            ["Authorization": "Bearer \(token)"]
             
             // MARK: Place Related
         case .readPlacesForShowcaseAndReview(let token):
-            ["Authorization": "\(token)"]
+            ["Authorization": "Bearer \(token)"]
             
             // MARK: Board Related
+        case .readBoards(let token, _):
+            ["Authorization": "Bearer \(token)"]
         case .readMyBoards(let token):
-            ["Authorization": "\(token)"]
+            ["Authorization": "Bearer \(token)"]
         case .createBoard(let token, _, _):
             ["Content-Type": "application/json",
-             "Authorization": "\(token)"]
+             "Authorization": "Bearer \(token)"]
         case .readBoardForUpdate(let token, _):
             ["Authorization": "\(token)"]
         case .updateBoard(let token, _):
             ["Content-Type": "application/json",
-             "Authorization": "\(token)"]
+             "Authorization": "Bearer \(token)"]
         case .deleteBoard(let token, _):
-            ["Authorization": "\(token)"]
+            ["Authorization": "Bearer \(token)"]
         case .completeBoard(let token, _):
-            ["Authorization": "\(token)"]
+            ["Authorization": "Bearer \(token)"]
             
             // MARK: Match Related
         case .readMyMatches(let token):
-            ["Authorization": "\(token)"]
+            ["Authorization": "Bearer \(token)"]
         case .readMyRequestMatches(let token):
-            ["Authorization": "\(token)"]
+            ["Authorization": "Bearer \(token)"]
         case .readMatches(let token, _):
-            ["Authorization": "\(token)"]
+            ["Authorization": "Bearer \(token)"]
         case .requestMatch(let token, _):
-            ["Authorization": "\(token)"]
+            ["Authorization": "Bearer \(token)"]
         case .acceptMatchRequest(let token, _):
-            ["Authorization": "\(token)"]
+            ["Authorization": "Bearer \(token)"]
         case .rejectMatchRequest(let token, _):
-            ["Authorization": "\(token)"]
+            ["Authorization": "Bearer \(token)"]
         case .cancelMatchRequest(let token, _):
-            ["Authorization": "\(token)"]
+            ["Authorization": "Bearer \(token)"]
             
             // MARK: Chat Related
         case .createChatRoom(let token, _):
-            ["Authorization": "\(token)"]
+            ["Authorization": "Bearer \(token)"]
         case .readChatrooms(let token):
             ["Authorization": "\(token)"]
         case .exitChatRoom(let token, _):
-            ["Authorization": "\(token)"]
+            ["Authorization": "Bearer \(token)"]
         case .readChatHistory(let token, _, _):
-            ["Authorization": "\(token)"]
+            ["Authorization": "Bearer \(token)"]
         case .reportAndExitChatRoom(let token, _, _, _):
-            ["Authorization": "\(token)"]
+            ["Authorization": "Bearer \(token)"]
             
             // MARK: Notification Related
         case .sendNotification(let token, _):
-            ["Authorization": "\(token)"]
+            ["Authorization": "Bearer \(token)"]
         case .fetchNotifications(let token):
-            ["Authorization": "\(token)"]
+            ["Authorization": "Bearer \(token)"]
         case .removeNotifications(let token, _):
-            ["Authorization": "\(token)"]
+            ["Authorization": "Bearer \(token)"]
         case .readNotification(let token, _):
-            ["Authorization": "\(token)"]
+            ["Authorization": "Bearer \(token)"]
         default: nil
         }
     }
@@ -363,7 +371,7 @@ extension Endpoint: TargetType {
     
     var authorizationType: AuthorizationType? {
         switch self {
-        case .logout, .reissueToken, .updateProfile, .readMyProfile, .readMyBoards, .readMyMatches, .readMyRequestMatches, .block, .unblock, .readBlockedUsers, .readReports, .createBoard, .readBoardForUpdate, .updateBoard, .deleteBoard, .completeBoard, .readMatches, .requestMatch, .acceptMatchRequest, .rejectMatchRequest, .createChatRoom, .readChatrooms, .exitChatRoom, .cancelMatchRequest, .reportAndExitChatRoom, .reportOpponentUserProfile, .sendNotification, .fetchNotifications, .removeNotifications, .readNotification:
+        case .logout, .reissueToken, .updateProfile, .readMyProfile, .readMyBoards, .readMyMatches, .readMyRequestMatches, .block, .unblock, .readBlockedUsers, .readReports, .readBoards, .createBoard, .readBoardForUpdate, .updateBoard, .deleteBoard, .completeBoard, .readMatches, .requestMatch, .acceptMatchRequest, .rejectMatchRequest, .createChatRoom, .readChatrooms, .exitChatRoom, .cancelMatchRequest, .reportAndExitChatRoom, .reportOpponentUserProfile, .sendNotification, .fetchNotifications, .removeNotifications, .readNotification:
                 .bearer
         default: .none
         }

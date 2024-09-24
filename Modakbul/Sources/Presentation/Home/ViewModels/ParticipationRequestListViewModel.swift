@@ -55,7 +55,7 @@ extension ParticipationRequestListViewModel {
             let requests = try await matchingUseCase.readMatches(userId: userId, with: communityRecruitingContentId)
             participationRequestsSubject.send(requests)
         } catch {
-            participationRequests = []
+            participationRequestsSubject.send([])
         }
     }
     

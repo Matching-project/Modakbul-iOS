@@ -33,7 +33,7 @@ struct PlaceInformationDetailView<Router: AppRouter>: View {
     }
     
     @ViewBuilder private func content(_ communityRecruitingContent: CommunityRecruitingContent?) -> some View {
-        if let communityRecruitingContent = communityRecruitingContent {
+        if let _ = communityRecruitingContent {
             VStack {
                 GeometryReader { proxy in
                     ScrollView(.vertical) {

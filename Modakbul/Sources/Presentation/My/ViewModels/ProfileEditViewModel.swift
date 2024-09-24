@@ -45,6 +45,7 @@ final class ProfileEditViewModel: ObservableObject {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] user in
                 // TODO: 기존 이미지 넣어주기
+                self?.user = user
                 self?.nickname = user.nickname
                 self?.isGenderVisible = user.isGenderVisible
                 self?.job = user.job
@@ -97,6 +98,14 @@ extension ProfileEditViewModel {
     }
     
     func submit() {
+        let user = User(
+            id: user.id,
+            nickname: nickname,
+            job: job ?? .other,
+            categoriesOfInterest: categoriesOfInterest,
+            isGenderVisible: isGenderVisible
+        )
+        
         Task {
             do {
                 try await userBusinessUseCase.updateProfile(user: user, image: image)
