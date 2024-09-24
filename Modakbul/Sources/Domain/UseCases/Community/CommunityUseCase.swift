@@ -12,7 +12,7 @@ protocol CommunityUseCase {
     func createCommunityRecruitingContent(userId: Int64, placeId: Int64, _ content: CommunityRecruitingContent) async throws
     
     /// 모집글 목록 조회
-    func readCommunityRecruitingContents(placeId: Int64) async throws -> [CommunityRecruitingContent]
+    func readCommunityRecruitingContents(userId: Int64, placeId: Int64) async throws -> [CommunityRecruitingContent]
     
     /// 모집글 조회
     func readCommunityRecruitingContent(userId: Int64, with communityRecruitingContentId: Int64) async throws -> CommunityRecruitingContent
@@ -47,8 +47,8 @@ extension DefaultCommunityUseCase: CommunityUseCase {
         try await communityRepository.createCommunityRecruitingContent(userId: userId, placeId: placeId, content)
     }
     
-    func readCommunityRecruitingContents(placeId: Int64) async throws -> [CommunityRecruitingContent] {
-        try await communityRepository.readCommunityRecruitingContents(placeId: placeId)
+    func readCommunityRecruitingContents(userId: Int64, placeId: Int64) async throws -> [CommunityRecruitingContent] {
+        try await communityRepository.readCommunityRecruitingContents(userId: userId, placeId: placeId)
     }
     
     func readCommunityRecruitingContent(userId: Int64, with communityRecruitingContentId: Int64) async throws -> CommunityRecruitingContent {

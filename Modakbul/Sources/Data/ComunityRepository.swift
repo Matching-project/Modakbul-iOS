@@ -9,7 +9,7 @@ import Foundation
 
 protocol CommunityRepository: TokenRefreshable {
     func createCommunityRecruitingContent(userId: Int64, placeId: Int64, _ content: CommunityRecruitingContent) async throws
-    func readCommunityRecruitingContents(placeId: Int64) async throws -> [CommunityRecruitingContent]
+    func readCommunityRecruitingContents(userId: Int64, placeId: Int64) async throws -> [CommunityRecruitingContent]
     func readCommunityRecruitingContent(userId: Int64, with communityRecruitingContentId: Int64) async throws -> CommunityRecruitingContent
     func updateCommunityRecruitingContent(userId: Int64, _ content: CommunityRecruitingContent) async throws
     func deleteCommunityRecruitingContent(userId: Int64, _ content: CommunityRecruitingContent) async throws
@@ -51,10 +51,22 @@ extension DefaultCommunityRepository: CommunityRepository {
         }
     }
     
-    func readCommunityRecruitingContents(placeId: Int64) async throws -> [CommunityRecruitingContent] {
-        let endpoint = Endpoint.readBoards(placeId: placeId)
-        let response = try await networkService.request(endpoint: endpoint, for: CommunityRecruitingContentListResponseEntity.self)
-        return response.body.toDTO()
+    func readCommunityRecruitingContents(userId: Int64, placeId: Int64) async throws -> [CommunityRecruitingContent] {
+        let token = try tokenStorage.fetch(by: userId)
+        
+        do {
+            let endpoint = Endpoint.readBoards(token: token.accessToken, placeId: placeId)
+            let response = try await networkService.request(endpoint: endpoint, for: CommunityRecruitingContentListResponseEntity.self)
+            return response.body.toDTO()
+        } catch APIError.accessTokenExpired {
+            let tokens = try await reissueTokens(userId: userId, token.refreshToken)
+            
+            let endpoint = Endpoint.readBoards(token: tokens.accessToken, placeId: placeId)
+            let response = try await networkService.request(endpoint: endpoint, for: CommunityRecruitingContentListResponseEntity.self)
+            return response.body.toDTO()
+        } catch {
+            throw error
+        }
     }
     
     func readCommunityRecruitingContent(userId: Int64, with communityRecruitingContentId: Int64) async throws -> CommunityRecruitingContent {
