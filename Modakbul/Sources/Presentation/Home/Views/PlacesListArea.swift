@@ -73,7 +73,14 @@ struct PlacesListArea<Router: AppRouter>: View {
             
             Button {
                 if userId == Constants.loggedOutUserId {
-                    router.route(to: .loginView)
+                    router.alert(for: .login, actions: [
+                        .cancelAction("취소") {
+                            router.dismiss()
+                        },
+                        .defaultAction("로그인") {
+                            router.route(to: .loginView)
+                        }
+                    ])
                 } else {
                     router.route(to: .notificationView(userId: Int64(userId)))
                 }
