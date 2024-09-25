@@ -17,7 +17,7 @@ struct LoginView<Router: AppRouter>: View {
     
     @State private var isPresented: Bool = false
     
-    init(loginViewModel: LoginViewModel) {
+    init(_ loginViewModel: LoginViewModel) {
         self.loginViewModel = loginViewModel
     }
     

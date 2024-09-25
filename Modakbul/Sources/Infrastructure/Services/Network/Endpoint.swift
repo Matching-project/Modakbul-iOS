@@ -13,8 +13,8 @@ enum Endpoint {
     case kakaoLogin(entity: KakaoLoginRequestEntity, provider: AuthenticationProvider)                                  // 카카오 로그인
     case appleLogin(entity: AppleLoginRequestEntity, provider: AuthenticationProvider)                                  // 애플 로그인
     case validateNicknameIntegrity(nickname: String)                                                                    // 닉네임 무결성 확인
-    case kakaoRegister(user: KakaoUserRegistrationRequestEntity, image: Data?, provider: AuthenticationProvider)        // 카카오로 회원가입
-    case appleRegister(user: AppleUserRegistrationRequestEntity, image: Data?, provider: AuthenticationProvider)        // 애플로 회원가입
+    case kakaoRegister(user: KakaoUserRegistrationRequestEntity, image: Data?, provider: AuthenticationProvider)        // 카카오 회원가입
+    case appleRegister(user: AppleUserRegistrationRequestEntity, image: Data?, provider: AuthenticationProvider)        // 애플 회원가입
     case unregister(token: String, provider: AuthenticationProvider)                                                    // 회원탈퇴
     case logout(token: String)                                                                                          // 로그아웃
     case reissueToken(refreshToken: String)                                                                             // 토큰 재발행
@@ -295,7 +295,7 @@ extension Endpoint: TargetType {
             ["Content-Type": "application/json",
              "Authorization": "Bearer \(token)"]
         case .readMyProfile(let token):
-             ["Authorization": "Bearer \(token)"]
+            ["Authorization": "Bearer \(token)"]
         case .block(let token, _):
             ["Authorization": "Bearer \(token)"]
         case .unblock(let token, _):

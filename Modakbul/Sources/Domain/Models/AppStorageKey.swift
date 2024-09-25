@@ -11,8 +11,11 @@ import Foundation
  AppStorage의 키로 사용되는 항목들 입니다.
  */
 struct AppStorageKey {
+    /// 최초 로그인 여부를 의미합니다.
     static let isFirstLaunch: String = "isFirstLaunch"
+    /// 최근 로그인한 아이디를 의미합니다.
     static let userId: String = "userId"
+    /// 최근 로그인한 OAuth를 의미합니다.
     static let provider: String = "provider"
     
     /// 알림 설정 값입니다.
