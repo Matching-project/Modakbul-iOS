@@ -27,7 +27,13 @@ struct PlaceInformationView<Router: AppRouter>: View {
         VStack {
             HStack {
                 if let url = place.imageURLs.first {
-                    AsyncImageView(url: url, minWidth: 100, minHeight: 100)
+                    AsyncImageView(
+                        url: url,
+                        contentMode: .fill,
+                        maxWidth: 100,
+                        maxHeight: 100,
+                        clipShape: .rect(cornerRadius: 8)
+                    )
                 } else {
                     Image(colorScheme == .light ? .modakbulMainLight : .modakbulMainDark)
                         .resizable()
@@ -50,6 +56,7 @@ struct PlaceInformationView<Router: AppRouter>: View {
             
             Spacer()
         }
+        .padding()
         .task {
             viewModel.configureView(by: place)
             if userId == Constants.loggedOutUserId {

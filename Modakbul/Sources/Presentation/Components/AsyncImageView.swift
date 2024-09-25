@@ -7,47 +7,52 @@
 
 import SwiftUI
 
-struct AsyncImageView: View {
+struct AsyncImageView<ClipShape: Shape>: View {
     @Environment(\.colorScheme) private var colorScheme
     
     private let url: URL?
     private let contentMode: ContentMode
-    private let minWidth: CGFloat
-    private let minHeight: CGFloat
+    private let maxWidth: CGFloat
+    private let maxHeight: CGFloat
+    private let clipShape: ClipShape
     
     init(url: URL?,
          contentMode: ContentMode = .fit,
-         minWidth: CGFloat = 64,
-         minHeight: CGFloat = 64
+         maxWidth: CGFloat = 64,
+         maxHeight: CGFloat = 64,
+         clipShape: ClipShape = .rect
     ) {
         self.url = url
         self.contentMode = contentMode
-        self.minWidth = minWidth
-        self.minHeight = minHeight
+        self.maxWidth = maxWidth
+        self.maxHeight = maxHeight
+        self.clipShape = clipShape
     }
     
     init(imageData: Data,
          contentMode: ContentMode = .fit,
-         minWidth: CGFloat = 64,
-         minHeight: CGFloat = 64
+         maxWidth: CGFloat = 64,
+         maxHeight: CGFloat = 64,
+         clipShape: ClipShape = .rect
     ) {
         self.init(url: URL(dataRepresentation: imageData, relativeTo: nil),
                   contentMode: contentMode,
-                  minWidth: minWidth,
-                  minHeight: minHeight
-        )
+                  maxWidth: maxWidth,
+                  maxHeight: maxHeight,
+                  clipShape: clipShape)
     }
     
     init(urlString: String,
          contentMode: ContentMode = .fit,
-         minWidth: CGFloat = 64,
-         minHeight: CGFloat = 64
+         maxWidth: CGFloat = 64,
+         maxHeight: CGFloat = 64,
+         clipShape: ClipShape = .rect
     ) {
         self.init(url: URL(string: urlString),
                   contentMode: contentMode,
-                  minWidth: minWidth,
-                  minHeight: minHeight
-        )
+                  maxWidth: maxWidth,
+                  maxHeight: maxHeight,
+                  clipShape: clipShape)
     }
     
     var body: some View {
@@ -67,6 +72,8 @@ struct AsyncImageView: View {
             }
         }
         .aspectRatio(contentMode: contentMode)
-        .frame(minWidth: minWidth, minHeight: minHeight)
+        .frame(maxWidth: maxWidth, maxHeight: maxHeight)
+        .clipShape(clipShape)
+        .clipped()
     }
 }

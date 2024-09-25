@@ -44,9 +44,13 @@ extension MyView {
         
         var body: some View {
             HStack {
-                AsyncImageView(url: vm.user.imageURL)
-                    .clipShape(.circle)
-                    .frame(maxHeight: 128)
+                AsyncImageView(
+                    url: vm.user.imageURL,
+                    contentMode: .fill,
+                    maxWidth: 128,
+                    maxHeight: 128,
+                    clipShape: .circle
+                )
                 
                 VStack(alignment: .leading) {
                     // MARK: - 한글 닉네임 10자까지 가능(iPhone 15 Pro)
