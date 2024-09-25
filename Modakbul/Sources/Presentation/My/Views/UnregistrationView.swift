@@ -50,6 +50,7 @@ struct UnregistrationView<Router: AppRouter>: View {
         }
         .padding(.horizontal, Constants.horizontal)
         .padding(.vertical, Constants.vertical)
+        // TODO: - SocialLoginRepository.unregister() 에서 처리해주는 로직 구상
         .onChange(of: vm.provider) { _, provider in
             self.provider = provider
         }
