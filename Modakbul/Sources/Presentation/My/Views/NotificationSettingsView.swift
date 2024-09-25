@@ -25,6 +25,7 @@ struct NotificationSettingsView<Router: AppRouter>: View {
             Spacer()
         }
         .padding(.horizontal, Constants.horizontal)
+        .navigationTitle("알림 설정")
     }
 }
 
