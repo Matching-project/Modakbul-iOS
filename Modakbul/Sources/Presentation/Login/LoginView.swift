@@ -13,6 +13,7 @@ struct LoginView<Router: AppRouter>: View {
     @EnvironmentObject private var router: Router
     @ObservedObject private var loginViewModel: LoginViewModel
     @AppStorage(AppStorageKey.userId) private var userId: Int = Constants.loggedOutUserId
+    @AppStorage(AppStorageKey.provider) private var provider: AuthenticationProvider?
     
     @State private var isPresented: Bool = false
     
@@ -68,6 +69,7 @@ struct LoginView<Router: AppRouter>: View {
             switch result {
             case .success(let email):
                 loginViewModel.kakaoLogin(email)
+                provider = .kakao
             case .failure(let error):
                 print(error)
             }
@@ -89,6 +91,7 @@ struct LoginView<Router: AppRouter>: View {
                 }
                 
                 loginViewModel.appleLogin(authorizationCode)
+                provider = .apple
             case .failure(let error):
                 print(error)
             }

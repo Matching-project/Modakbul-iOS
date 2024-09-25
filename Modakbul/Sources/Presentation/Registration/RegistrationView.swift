@@ -11,6 +11,7 @@ struct RegistrationView<Router: AppRouter>: View {
     @EnvironmentObject private var router: Router
     @ObservedObject private var vm: RegistrationViewModel
     @AppStorage(AppStorageKey.userId) private var userId: Int = Constants.loggedOutUserId
+    @AppStorage(AppStorageKey.provider) private var provider: AuthenticationProvider?
     
     private let userCredential: UserCredential
     
@@ -122,6 +123,7 @@ extension RegistrationView {
                         vm.proceedToNextField()
                     } else {
                         vm.submit(userCredential)
+                        provider = userCredential.provider
                     }
                 }
                 .disabled(!vm.isNextButtonEnabled || vm.isWaiting)
