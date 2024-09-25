@@ -64,7 +64,7 @@ final class PlaceInformationDetailViewModel: ObservableObject {
                 self?.recruitingCount = "\(community.participantsCount)/\(community.participantsLimit)"
                 let meetingDateComponents = community.meetingDate.split(separator: "-")
                 self?.meetingDate = "\(meetingDateComponents[1])월 \(meetingDateComponents[2])일"
-                self?.meetingTime = "\(community.startTime)~\(community.endTime)"
+                self?.meetingTime = "\(community.startTime.prefix(5))~\n\(community.endTime.prefix(5))"
                 if let creationDateComponents = content.writtenDate?.split(separator: "-") {
                     self?.creationDate = creationDateComponents.joined(separator: ". ")
                 }

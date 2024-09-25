@@ -113,6 +113,7 @@ struct PlaceInformationDetailView<Router: AppRouter>: View {
                         dimension.height + 30
                     }
             }
+            .ignoresSafeArea(edges: .top)
         } else {
             ContentUnavailableView("미리보기 사진이 없어요.", image: "questionmark", description: Text("이 장소의 사진을 제보해주세요!"))
                 .frame(width: size.width, height: size.height / 3)
@@ -127,7 +128,7 @@ struct PlaceInformationDetailView<Router: AppRouter>: View {
                 .lineLimit(1)
             
             HStack {
-                AsyncImageView(url: user.imageURL)
+                AsyncImageView(url: user.imageURL, contentMode: .fill, clipShape: .circle)
                 
                 VStack(alignment: .leading) {
                     Text("작성자")
@@ -156,7 +157,7 @@ struct PlaceInformationDetailView<Router: AppRouter>: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .foregroundStyle(.accent)
         }
-        .font(.Modakbul.caption)
+        .font(.Modakbul.caption2)
         .bold()
         .background(
             RoundedRectangle(cornerRadius: 14)
