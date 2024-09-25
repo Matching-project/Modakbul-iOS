@@ -42,9 +42,13 @@ struct ReportListView<Router: AppRouter>: View {
     
     @ViewBuilder private func listCell(_ user: User, _ status: InquiryStatusType) -> some View {
         HStack {
-            AsyncImageView(url: user.imageURL)
-                .frame(maxWidth: 64, maxHeight: 64)
-                .clipShape(.circle)
+            AsyncImageView(
+                url: user.imageURL,
+                contentMode: .fill,
+                maxWidth: 64,
+                maxHeight: 64,
+                clipShape: .circle
+            )
             
             VStack(alignment: .leading, spacing: 10) {
                 Text(user.nickname)

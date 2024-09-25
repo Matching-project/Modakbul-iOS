@@ -76,9 +76,13 @@ extension ParticipationRequestListView {
         
         var body: some View {
             HStack {
-                AsyncImageView(url: participatedUser.imageURL)
-                    .frame(maxWidth: 64, maxHeight: 64)
-                    .clipShape(.circle)
+                AsyncImageView(
+                    url: participatedUser.imageURL,
+                    contentMode: .fill,
+                    maxWidth: 64,
+                    maxHeight: 64,
+                    clipShape: .circle
+                )
                 
                 VStack(alignment: .leading, spacing: 10) {
                     Text(participatedUser.nickname)

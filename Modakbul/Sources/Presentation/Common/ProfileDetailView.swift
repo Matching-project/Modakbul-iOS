@@ -21,9 +21,13 @@ struct ProfileDetailView<Router: AppRouter>: View {
     
     var body: some View {
         VStack {
-            AsyncImageView(url: vm.user.imageURL, contentMode: .fill)
-                .frame(width: 200, height: 200)
-                .clipShape(.circle)
+            AsyncImageView(
+                url: vm.user.imageURL,
+                contentMode: .fill,
+                maxWidth: 200,
+                maxHeight: 200,
+                clipShape: .circle
+            )
                 .padding(.bottom, 40)
             
             Cell(title: "닉네임", content: vm.user.nickname)
