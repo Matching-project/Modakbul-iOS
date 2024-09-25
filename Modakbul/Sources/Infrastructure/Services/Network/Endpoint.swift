@@ -40,7 +40,7 @@ enum Endpoint {
     case readBoards(token: String, placeId: Int64)        // 카페 모집글 목록 조회
     case readBoardForUpdate(token: String, communityRecruitingContentId: Int64)            // 모집글 수정 정보 조회
     case updateBoard(token: String, communityRecruitingContent: CommunityRecruitingContentEntity)                   // 모집글 수정
-    case deleteBoard(token: String, communityRecruitingContent: CommunityRecruitingContentEntity)                   // 모집글 삭제
+    case deleteBoard(token: String, communityRecruitingContentId: Int64)                                            // 모집글 삭제
     case readBoardDetail(communityRecruitingContentId: Int64)                                                       // 모집글 상세 조회
     case completeBoard(token: String, communityRecruitingContentId: Int64)                                          // 모집글 모집 종료
     case readMyBoards(token: String)       // 나의 모집글 목록 조회
@@ -145,8 +145,8 @@ extension Endpoint: TargetType {
             return "/boards/\(communityRecruitingContentId)"
         case .updateBoard(_, let communityRecruitingContent):
             return "/boards/\(communityRecruitingContent.id)"
-        case .deleteBoard(_, let communityRecruitingContent):
-            return "/boards/\(communityRecruitingContent.id)"
+        case .deleteBoard(_, let communityRecruitingContentId):
+            return "/boards/\(communityRecruitingContentId)"
         case .readBoardDetail(let communityRecruitingContentId):
             return "/cafes/boards/\(communityRecruitingContentId)"
         case .completeBoard(_, let communityRecruitingContentId):

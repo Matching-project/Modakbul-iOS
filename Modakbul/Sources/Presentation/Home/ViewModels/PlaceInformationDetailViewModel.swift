@@ -12,6 +12,7 @@ final class PlaceInformationDetailViewModel: ObservableObject {
     @Published var communityRecruitingContent: CommunityRecruitingContent?
     @Published var role: UserRole = .nonParticipant
     @Published var matchState: MatchState = .cancel
+    @Published var isDeleted: Bool = false
     
     // MARK: Presenting Data
     @Published var category: String = String()
@@ -26,6 +27,7 @@ final class PlaceInformationDetailViewModel: ObservableObject {
     private var matchingId: Int64 = Int64(Constants.loggedOutUserId)
     private var userId: Int64 = Int64(Constants.loggedOutUserId)
     
+    private let isDeletedSubject = PassthroughSubject<Bool, Never>()
     private let communityRecruitingContentSubject = PassthroughSubject<CommunityRecruitingContent, Never>()
     private let userRoleSubject = PassthroughSubject<(role: UserRole, matchingId: Int64?, state: MatchState), Never>()
     private var cancellables = Set<AnyCancellable>()
@@ -53,6 +55,14 @@ final class PlaceInformationDetailViewModel: ObservableObject {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] content in
                 self?.communityRecruitingContent = content
+                self?.isDeleted = false
+            }
+            .store(in: &cancellables)
+        
+        isDeletedSubject
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] result in
+                self?.isDeleted = result
             }
             .store(in: &cancellables)
         
@@ -118,10 +128,25 @@ extension PlaceInformationDetailViewModel {
         }
     }
     
+    func deleteCommunityRecruitingContent(userId: Int64) {
+        guard let id = communityRecruitingContent?.id else { return }
+        
+        Task {
+            do {
+                try await communityUseCase.deleteCommunityRecruitingContent(userId: userId, id)
+                isDeletedSubject.send(true)
+            } catch {
+                isDeletedSubject.send(false)
+                print(error)
+            }
+        }
+    }
+    
     func exitCommunity() {
         Task {
             do {
                 try await matchingUseCase.exitMatch(userId: userId, with: matchingId)
+                userRoleSubject.send((role: UserRole.nonParticipant, matchingId: nil, state: MatchState.exit))
             } catch {
                 print(error)
             }
@@ -134,6 +159,7 @@ extension PlaceInformationDetailViewModel {
         Task {
             do {
                 try await matchingUseCase.requestMatch(userId: userId, with: id)
+                userRoleSubject.send((role: UserRole.nonParticipant, matchingId: nil, state: MatchState.pending))
             } catch {
                 print(error)
             }

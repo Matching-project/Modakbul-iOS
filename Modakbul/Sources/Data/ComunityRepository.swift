@@ -12,7 +12,7 @@ protocol CommunityRepository: TokenRefreshable {
     func readCommunityRecruitingContents(userId: Int64, placeId: Int64) async throws -> [CommunityRecruitingContent]
     func readCommunityRecruitingContent(userId: Int64, with communityRecruitingContentId: Int64) async throws -> CommunityRecruitingContent
     func updateCommunityRecruitingContent(userId: Int64, _ content: CommunityRecruitingContent) async throws
-    func deleteCommunityRecruitingContent(userId: Int64, _ content: CommunityRecruitingContent) async throws
+    func deleteCommunityRecruitingContent(userId: Int64, _ communityRecruitingContentId: Int64) async throws
     func readCommunityRecruitingContentDetail(with communityRecruitingContentId: Int64) async throws -> CommunityRecruitingContent
     func completeCommunityRecruiting(userId: Int64, with communityRecruitingContentId: Int64) async throws
     func readMyCommunityRecruitingContents(userId: Int64) async throws -> [CommunityRecruitingContent]
@@ -105,18 +105,16 @@ extension DefaultCommunityRepository: CommunityRepository {
         }
     }
     
-    func deleteCommunityRecruitingContent(userId: Int64, _ content: CommunityRecruitingContent) async throws {
+    func deleteCommunityRecruitingContent(userId: Int64, _ communityRecruitingContentId: Int64) async throws {
         let token = try tokenStorage.fetch(by: userId)
         
         do {
-            let entity = CommunityRecruitingContentEntity(content)
-            let endpoint = Endpoint.deleteBoard(token: token.accessToken, communityRecruitingContent: entity)
+            let endpoint = Endpoint.deleteBoard(token: token.accessToken, communityRecruitingContentId: communityRecruitingContentId)
             try await networkService.request(endpoint: endpoint, for: DefaultResponseEntity.self)
         } catch APIError.accessTokenExpired {
             let tokens = try await reissueTokens(userId: userId, token.refreshToken)
             
-            let entity = CommunityRecruitingContentEntity(content)
-            let endpoint = Endpoint.deleteBoard(token: tokens.accessToken, communityRecruitingContent: entity)
+            let endpoint = Endpoint.deleteBoard(token: tokens.accessToken, communityRecruitingContentId: communityRecruitingContentId)
             try await networkService.request(endpoint: endpoint, for: DefaultResponseEntity.self)
         } catch {
             throw error

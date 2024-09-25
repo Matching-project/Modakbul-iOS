@@ -21,7 +21,7 @@ protocol CommunityUseCase {
     func updateCommunityRecruitingContent(userId: Int64, _ content: CommunityRecruitingContent) async throws
     
     /// 모집글 삭제
-    func deleteCommunityRecruitingContent(userId: Int64, _ content: CommunityRecruitingContent) async throws
+    func deleteCommunityRecruitingContent(userId: Int64, _ communityRecruitingContentId: Int64) async throws
     
     /// 모집글 상세 정보 조회
     func readCommunityRecruitingContentDetail(with communityRecruitingContentId: Int64) async throws -> CommunityRecruitingContent
@@ -59,8 +59,8 @@ extension DefaultCommunityUseCase: CommunityUseCase {
         try await communityRepository.updateCommunityRecruitingContent(userId: userId, content)
     }
     
-    func deleteCommunityRecruitingContent(userId: Int64, _ content: CommunityRecruitingContent) async throws {
-        try await communityRepository.deleteCommunityRecruitingContent(userId: userId, content)
+    func deleteCommunityRecruitingContent(userId: Int64, _ communityRecruitingContentId: Int64) async throws {
+        try await communityRepository.deleteCommunityRecruitingContent(userId: userId, communityRecruitingContentId)
     }
     
     func readCommunityRecruitingContentDetail(with communityRecruitingContentId: Int64) async throws -> CommunityRecruitingContent {

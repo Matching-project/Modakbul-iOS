@@ -12,15 +12,18 @@ struct PlaceInformationDetailView<Router: AppRouter>: View {
     @ObservedObject private var viewModel: PlaceInformationDetailViewModel
     @State private var index: Int = 0
     
+    private let place: Place
     private let communityRecruitingContentId: Int64
     private let userId: Int64
     
     init(
         _ viewModel: PlaceInformationDetailViewModel,
+        place: Place,
         communityRecruitingContentId: Int64,
         userId: Int64
     ) {
         self.viewModel = viewModel
+        self.place = place
         self.communityRecruitingContentId = communityRecruitingContentId
         self.userId = userId
     }
@@ -29,6 +32,12 @@ struct PlaceInformationDetailView<Router: AppRouter>: View {
         content(viewModel.communityRecruitingContent)
             .task {
                 await viewModel.configureView(communityRecruitingContentId, userId)
+            }
+            .onChange(of: viewModel.isDeleted, initial: false) { oldValue, newValue in
+                // 모집글 삭제 처리 완료 되었으면 dismiss
+                if oldValue == false, newValue == true {
+                    router.dismiss()
+                }
             }
     }
     
@@ -57,6 +66,27 @@ struct PlaceInformationDetailView<Router: AppRouter>: View {
                 
                 controls()
                     .padding()
+            }
+            .toolbar {
+                if viewModel.role == .exponent {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Menu {
+                            Button {
+                                router.route(to: .placeInformationDetailMakingView(place: place, communityRecruitingContent: viewModel.communityRecruitingContent))
+                            } label: {
+                                Text("모집글 수정하기")
+                            }
+                            
+                            Button {
+                                viewModel.deleteCommunityRecruitingContent(userId: userId)
+                            } label: {
+                                Text("모집글 삭제하기")
+                            }
+                        } label: {
+                            Image(systemName: "ellipsis")
+                        }
+                    }
+                }
             }
         } else {
             ContentUnavailableView("내용을 불러오는 중 입니다.", image: "Marker")
