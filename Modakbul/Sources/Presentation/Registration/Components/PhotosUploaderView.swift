@@ -47,7 +47,7 @@ struct PhotosUploaderView: View {
                         ImageView(uiImage)
                             .getPhoto(selectedPhoto: $selectedPhoto, image: $image)
                     } else {
-                        ImageView(colorScheme == .dark ? .modakbulMainLight: .modakbulMainDark)
+                        ImageView(.modakbulMainReverse)
                             .getPhoto(selectedPhoto: $selectedPhoto, image: $image)
                     }
                 }

@@ -61,7 +61,7 @@ struct PlaceShowcaseView<Router: AppRouter>: View {
             if let url = place.imageURLs.first {
                 AsyncImageView(url: url)
             } else {
-                Image(.modakbulMainLight)
+                Image(.modakbulMainReverse)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(maxWidth: 64, maxHeight: 64)

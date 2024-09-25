@@ -9,7 +9,6 @@ import SwiftUI
 
 struct PlaceInformationView<Router: AppRouter>: View {
     @EnvironmentObject private var router: Router
-    @Environment(\.colorScheme) private var colorScheme
     @ObservedObject private var viewModel: PlaceInformationViewModel
     @AppStorage(AppStorageKey.userId) private var userId: Int = Constants.loggedOutUserId
     
@@ -35,7 +34,7 @@ struct PlaceInformationView<Router: AppRouter>: View {
                         clipShape: .rect(cornerRadius: 8)
                     )
                 } else {
-                    Image(colorScheme == .light ? .modakbulMainLight : .modakbulMainDark)
+                    Image(.modakbulMain)
                         .resizable()
                         .aspectRatio(1, contentMode: .fill)
                         .frame(width: 100, height: 100)

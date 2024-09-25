@@ -7,9 +7,7 @@
 
 import SwiftUI
 
-struct AsyncImageView<ClipShape: Shape>: View {
-    @Environment(\.colorScheme) private var colorScheme
-    
+struct AsyncImageView<ClipShape: Shape>: View {   
     private let url: URL?
     private let contentMode: ContentMode
     private let maxWidth: CGFloat
@@ -64,10 +62,10 @@ struct AsyncImageView<ClipShape: Shape>: View {
                 image
                     .resizable()
             case .failure:
-                Image(colorScheme == .dark ? .modakbulMainDark : .modakbulMainLight)
+                Image(.modakbulMain)
                     .resizable()
             @unknown default:
-                Image(colorScheme == .dark ? .modakbulMainDark : .modakbulMainLight)
+                Image(.modakbulMain)
                     .resizable()
             }
         }

@@ -105,7 +105,7 @@ extension MyView {
         
         var body: some View {
             HStack {
-                Image(.modakbulMainDark)
+                Image(.modakbulMainReverse)
                     .resizable()
                     .scaledToFit()
                     .frame(maxHeight: 80)

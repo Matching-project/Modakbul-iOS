@@ -146,7 +146,6 @@ struct PlacesListArea<Router: AppRouter>: View {
 extension PlacesListArea {
     struct Cell: View {
         @EnvironmentObject private var router: Router
-        @Environment(\.colorScheme) private var colorScheme
         @State private var selectedOpeningHourOfDay: OpeningHour?
         @State private var openingHourText: String
         
@@ -177,7 +176,7 @@ extension PlacesListArea {
                     if let url = place.imageURLs.first {
                         AsyncImageView(url: url, contentMode: .fill, maxWidth: 100, maxHeight: 100, clipShape: .rect(cornerRadius: 8))
                     } else {
-                        Image(colorScheme == .light ? .modakbulMainLight : .modakbulMainDark)
+                        Image(.modakbulMain)
                             .resizable()
                             .aspectRatio(1, contentMode: .fill)
                             .frame(width: 100, height: 100)

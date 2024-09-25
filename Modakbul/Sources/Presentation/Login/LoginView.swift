@@ -42,7 +42,7 @@ struct LoginView<Router: AppRouter>: View {
     }
     
     private var appLogo: some View {
-        Image(scheme == .dark ? .modakbulMainDark : .modakbulMainLight)
+        Image(.modakbulMain)
             .resizable()
             .scaledToFit()
     }
