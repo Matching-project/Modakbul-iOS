@@ -24,8 +24,6 @@ enum AlertType {
     case login
     /// 로그아웃 알림입니다.
     case logout
-    /// 회원탈퇴 알림입니다.
-    case exitUser(nickname: String)
     
     func alert(_ actions: [ConfirmationAction]) -> ConfirmationContent {
         switch self {
@@ -45,8 +43,6 @@ enum AlertType {
             Alert(message: "로그인이 필요한 서비스입니다.\n로그인하시겠어요?", actions: actions)
         case .logout:
             Alert(message: "정말 로그아웃하시겠어요?", actions: actions)
-        case .exitUser(let nickname):
-            Alert(title: "잠깐만요!", message: "더 유익한 모임이 \(nickname)님을 기다리고 있어요. 정말 떠나시겠어요?", actions: actions)
         }
     }
 }

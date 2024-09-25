@@ -15,6 +15,7 @@ enum Endpoint {
     case validateNicknameIntegrity(nickname: String)                                                                    // 닉네임 무결성 확인
     case kakaoRegister(user: KakaoUserRegistrationRequestEntity, image: Data?, provider: AuthenticationProvider)        // 카카오로 회원가입
     case appleRegister(user: AppleUserRegistrationRequestEntity, image: Data?, provider: AuthenticationProvider)        // 애플로 회원가입
+    case unregister(token: String, provider: AuthenticationProvider)                                                    // 회원탈퇴
     case logout(token: String)                                                                                          // 로그아웃
     case reissueToken(refreshToken: String)                                                                             // 토큰 재발행
     case updateProfile(token: String, user: UserProfileUpdateRequestEntity, image: Data?)                               // 프로필 수정
@@ -92,6 +93,8 @@ extension Endpoint: TargetType {
             return "/users/register/\(provider.identifier)"
         case .appleRegister(_, _, let provider):
             return "/users/register/\(provider.identifier)"
+        case .unregister(_, let provider):
+            return "/users/\(provider.identifier)"
         case .logout:
             return "/users/logout"
         case .reissueToken:
@@ -191,7 +194,7 @@ extension Endpoint: TargetType {
         switch self {
         case .validateNicknameIntegrity, .readMyProfile, .readOpponentUserProfile, .readMyBoards, .readMyMatches, .readMyRequestMatches, .readPlaces, .readPlacesByMatches, .readPlacesByDistance, .readPlacesForShowcaseAndReview, .readBoards, .readBoardForUpdate, .readBoardDetail, .readMatches, .readChatrooms, .readChatHistory, .completeBoard, .readBlockedUsers, .readReports, .fetchNotifications: return .get
         case .kakaoLogin, .appleLogin, .kakaoRegister, .appleRegister, .reissueToken, .createBoard, .requestMatch, .createChatRoom, .block, .reviewPlace, .suggestPlace, .reportOpponentUserProfile, .reportAndExitChatRoom, .sendNotification: return .post
-        case .logout, .deleteBoard, .unblock, .removeNotifications: return .delete
+        case .logout, .unregister, .deleteBoard, .unblock, .removeNotifications: return .delete
         case .updateProfile, .updateBoard, .acceptMatchRequest, .rejectMatchRequest, .exitMatch, .cancelMatchRequest, .exitChatRoom, .readNotification: return .patch
         }
     }
@@ -282,6 +285,8 @@ extension Endpoint: TargetType {
             ["Content-Type": "application/json"]
         case .kakaoRegister, .appleRegister:
             ["Content-Type": "multipart/form-data"]
+        case .unregister(let token, _):
+            ["Authorization": "Bearer \(token)"]
         case .logout(let token):
             ["Authorization": "Bearer \(token)"]
         case .reissueToken(let refreshToken):
@@ -371,7 +376,7 @@ extension Endpoint: TargetType {
     
     var authorizationType: AuthorizationType? {
         switch self {
-        case .logout, .reissueToken, .updateProfile, .readMyProfile, .readMyBoards, .readMyMatches, .readMyRequestMatches, .block, .unblock, .readBlockedUsers, .readReports, .readBoards, .createBoard, .readBoardForUpdate, .updateBoard, .deleteBoard, .completeBoard, .readMatches, .requestMatch, .acceptMatchRequest, .rejectMatchRequest, .createChatRoom, .readChatrooms, .exitChatRoom, .cancelMatchRequest, .reportAndExitChatRoom, .reportOpponentUserProfile, .sendNotification, .fetchNotifications, .removeNotifications, .readNotification:
+        case .logout, .unregister, .reissueToken, .updateProfile, .readMyProfile, .readMyBoards, .readMyMatches, .readMyRequestMatches, .block, .unblock, .readBlockedUsers, .readReports, .readBoards, .createBoard, .readBoardForUpdate, .updateBoard, .deleteBoard, .completeBoard, .readMatches, .requestMatch, .acceptMatchRequest, .rejectMatchRequest, .createChatRoom, .readChatrooms, .exitChatRoom, .cancelMatchRequest, .reportAndExitChatRoom, .reportOpponentUserProfile, .sendNotification, .fetchNotifications, .removeNotifications, .readNotification:
                 .bearer
         default: .none
         }

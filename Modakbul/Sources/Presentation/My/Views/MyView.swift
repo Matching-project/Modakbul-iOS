@@ -11,6 +11,7 @@ struct MyView<Router: AppRouter>: View {
     @EnvironmentObject private var router: Router
     @ObservedObject private var vm: MyViewModel
     @AppStorage(AppStorageKey.userId) private var userId: Int = Constants.loggedOutUserId
+    @AppStorage(AppStorageKey.provider) private var provider: AuthenticationProvider?
     
     init(_ myViewModel: MyViewModel) {
         self.vm = myViewModel
@@ -25,6 +26,7 @@ struct MyView<Router: AppRouter>: View {
                     .padding(.bottom, -10)
             }
             
+            Text(provider?.identifier ?? "NO")
             Cell(for: $vm.user)
         }
         .padding(.horizontal, Constants.horizontal)
@@ -150,14 +152,7 @@ extension MyView {
                     // TODO: - 약관 및 정책 노션 링크 만들기
                     // button("약관 및 정책", destination: )
                     
-                    // TODO: - 탈퇴하기 뷰를 따로 추가하기
-//                    button("탈퇴하기", destination: Route)
-//                    router.alert(for: .exitUser(nickname: user.nickname), actions: [
-//                        .cancelAction("남아있기") {},
-//                        .defaultAction("그래도 탈퇴하기") {
-//                            // TODO: - 탈퇴 처리
-//                        }
-//                    ])
+                    button("탈퇴하기", destination: .unregistrationView(user: user))
                     
                     Text("문의처: modakbul@gmail.com")
                 }

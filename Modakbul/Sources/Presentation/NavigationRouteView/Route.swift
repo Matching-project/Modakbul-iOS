@@ -44,7 +44,7 @@ enum Route: Routable {
     case placeShowcaseView(userId: Int64)
     case placeReviewView(place: Place?)
     case notificationSettingsView
-    case unregisterView(user: User)
+    case unregistrationView(user: User)
     case homeView           // MARK: - Home
     case mapArea
     case placesListArea
@@ -75,7 +75,7 @@ enum Route: Routable {
         case .blockedListView: return .push
         case .reportListView: return .push
         case .notificationSettingsView: return .push
-        case .unregisterView: return .push
+        case .unregistrationView: return .push
         case .homeView: return .push                                // MARK: - Home
         case .mapArea: return .push
         case .placesListArea: return .push
@@ -98,7 +98,7 @@ enum Route: Routable {
         case .contentView:
             ContentView<Router>()
         case .loginView:        // MARK: - Login
-            LoginView<Router>(loginViewModel: router.resolver.resolve(LoginViewModel.self))
+            LoginView<Router>(router.resolver.resolve(LoginViewModel.self))
         case .requiredTermView(let userCredential): // MARK: - Registration
             RequiredTermView<Router>(userCredential: userCredential)
         case .registrationView(let userCredential):
@@ -123,8 +123,8 @@ enum Route: Routable {
             ReportListView<Router>(router.resolver.resolve(ReportListViewModel.self))
         case .notificationSettingsView:
             NotificationSettingsView<Router>()
-        case .unregisterView(let user):
-            UnregisterView<Router>(router.resolver.resolve(WithdrawalViewModel.self), user: user)
+        case .unregistrationView(let user):
+            UnregistrationView<Router>(router.resolver.resolve(UnregistrationViewModel.self), user: user)
         case .homeView:         // MARK: - Home
             HomeView<Router>(router.resolver.resolve(HomeViewModel.self))
         case .mapArea:

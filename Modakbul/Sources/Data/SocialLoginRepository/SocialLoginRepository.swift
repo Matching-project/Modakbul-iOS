@@ -131,16 +131,20 @@ extension DefaultSocialLoginRepository: SocialLoginRepository {
         return userId
     }
     
-    // TODO: 회원탈퇴 WIP
     func unregister(userId: Int64, provider: AuthenticationProvider) async throws {
-//        let token = try tokenStorage.fetch(by: userId)
-//
-//        do {
-//            let endpoint = Endpoint
-//        } catch APIError.accessTokenExpired {
-//
-//        } catch {
-//            throw error
-//        }
+        let token = try tokenStorage.fetch(by: userId)
+        
+        do {
+            let endpoint = Endpoint.unregister(token: token.accessToken, provider: provider)
+            try await networkService.request(endpoint: endpoint, for: DefaultResponseEntity.self)
+            UserDefaults.standard.setValue(Constants.loggedOutUserId, forKey: AppStorageKey.userId)
+        } catch APIError.accessTokenExpired {
+            let tokens = try await reissueTokens(userId: userId, token.refreshToken)
+            let endpoint = Endpoint.logout(token: tokens.accessToken)
+            try await networkService.request(endpoint: endpoint, for: DefaultResponseEntity.self)
+            UserDefaults.standard.setValue(Constants.loggedOutUserId, forKey: AppStorageKey.userId)
+        } catch {
+            throw error
+        }
     }
 }

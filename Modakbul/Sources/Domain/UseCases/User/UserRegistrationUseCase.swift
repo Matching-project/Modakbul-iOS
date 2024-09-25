@@ -81,6 +81,6 @@ extension DefaultUserRegistrationUseCase: UserRegistrationUseCase {
     }
     
     func unregister(userId: Int64, provider: AuthenticationProvider) async throws {
-        //
+        try await socialLoginRepository.unregister(userId: userId, provider: provider)
     }
 }
