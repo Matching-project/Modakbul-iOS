@@ -216,8 +216,6 @@ extension Endpoint: TargetType {
             
             if let image = image {
                 formData.append(.init(provider: .data(image), name: "image", fileName: "image.jpeg", mimeType: "image/jpeg"))
-            } else {
-                formData.append(.init(provider: .data(Data()), name: "image", fileName: "image.jpeg", mimeType: "image/jpeg"))
             }
             
             return .uploadMultipart(formData)
@@ -230,8 +228,6 @@ extension Endpoint: TargetType {
             
             if let image = image {
                 formData.append(.init(provider: .data(image), name: "image", fileName: "image.jpeg", mimeType: "image/jpeg"))
-            } else {
-                formData.append(.init(provider: .data(Data()), name: "image", fileName: "image.jpeg", mimeType: "image/jpeg"))
             }
             
             return .uploadMultipart(formData)
@@ -244,8 +240,6 @@ extension Endpoint: TargetType {
             
             if let image = image {
                 formData.append(.init(provider: .data(image), name: "image", fileName: "image.jpeg", mimeType: "image/jpeg"))
-            } else {
-                formData.append(.init(provider: .data(Data()), name: "image", fileName: "image.jpeg", mimeType: "image/jpeg"))
             }
 
             return .uploadMultipart(formData)
