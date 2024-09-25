@@ -94,7 +94,7 @@ extension Endpoint: TargetType {
         case .appleRegister(_, _, let provider):
             return "/users/register/\(provider.identifier)"
         case .unregister(_, let provider):
-            return "/users/\(provider.identifier)"
+            return "/users/withdrawal/\(provider.identifier)"
         case .logout:
             return "/users/logout"
         case .reissueToken:
