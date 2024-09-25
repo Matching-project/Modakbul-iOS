@@ -10,7 +10,6 @@ import Combine
 
 final class RegistrationViewModel: ObservableObject {
     private let userRegistrationUseCase: UserRegistrationUseCase
-    private let fcmManager = FcmManager.instance
     private let allFields: [RegisterField] = RegisterField.allCases
     private var fieldIndex: Int = 0
 
@@ -73,12 +72,6 @@ final class RegistrationViewModel: ObservableObject {
                 self?.integrityResult = result
             }
             .store(in: &cancellables)
-        
-        fcmManager.$fcmToken
-            .sink { [weak self] fcmToken in
-                self?.fcm = fcmToken
-            }
-            .store(in: &cancellables)
     }
     
     // MARK: - Public Methods
@@ -102,8 +95,6 @@ final class RegistrationViewModel: ObservableObject {
     
     @MainActor
     func submit(_ userCredential: UserCredential) {
-        guard let fcm = fcm else { return }
-        
         let user = User(name: name,
                         nickname: nickname,
                         gender: gender ?? .unknown,

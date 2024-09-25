@@ -12,9 +12,7 @@ import Combine
 
 final class LoginViewModel: ObservableObject {
     @Published var userId: Int64?
-    @Published var selectedProvider: AuthenticationProvider?
-    @Published var email: String?
-    @Published var authorizationCode: Data?
+    private(set) var userCredential: UserCredential?
     
     private var fcmToken: String?
     
@@ -44,17 +42,13 @@ final class LoginViewModel: ObservableObject {
             .store(in: &cancellables)
     }
     
-    func kakaoLogin(_ email: String?) {
-        guard let fcm = fcmToken,
-              let email = email
-        else { return }
-        
-        self.email = email
-        self.selectedProvider = .kakao
+    private func login(provider: AuthenticationProvider, email: String? = nil, authorizationCode: Data? = nil) {
+        guard let fcm = fcmToken else { return }
         
         Task {
             do {
-                let userId = try await userRegistrationUseCase.login(.init(provider: .kakao, fcm: fcm, email: email))
+                userCredential = UserCredential(provider: provider, fcm: fcm, email: email, authorizationCode: authorizationCode)
+                let userId = try await userRegistrationUseCase.login(userCredential!)
                 userIdSubject.send(userId)
             } catch {
                 userIdSubject.send(Int64(Constants.loggedOutUserId))
@@ -62,22 +56,16 @@ final class LoginViewModel: ObservableObject {
         }
     }
     
+    func kakaoLogin(_ email: String?) {
+        guard let email = email else { return }
+        
+        login(provider: .kakao, email: email)
+    }
+    
     func appleLogin(_ authorizationCode: Data?) {
-        guard let fcm = fcmToken,
-              let authorizationCode = authorizationCode
-        else { return }
+        guard let authorizationCode = authorizationCode else { return }
         
-        self.authorizationCode = authorizationCode
-        self.selectedProvider = .apple
-        
-        Task {
-            do {
-                let userId = try await userRegistrationUseCase.login(.init(provider: .apple, fcm: fcm, email: email))
-                userIdSubject.send(userId)
-            } catch {
-                userIdSubject.send(Int64(Constants.loggedOutUserId))
-            }
-        }
+        login(provider: .apple, authorizationCode: authorizationCode)
     }
     
     func logout() {

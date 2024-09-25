@@ -27,7 +27,6 @@ struct LoginView<Router: AppRouter>: View {
             
             VStack {
                 signInWithKakaoButton
-                
                 signInWithAppleButton
                 
                 Button {
@@ -39,23 +38,7 @@ struct LoginView<Router: AppRouter>: View {
             }
         }
         .padding()
-        .onReceive(loginViewModel.$userId) { userId in
-            guard let id = userId else { return }
-            self.userId = Int(id)
-            
-            if id == Constants.loggedOutUserId {
-                router.dismiss()
-                
-                switch loginViewModel.selectedProvider {
-                case .apple:
-                    router.route(to: .requiredTermView(userCredential: .init(provider: .apple, authorizationCode: loginViewModel.authorizationCode)))
-                case .kakao:
-                    router.route(to: .requiredTermView(userCredential: .init(provider: .kakao, email: loginViewModel.email)))
-                case .none:
-                    break
-                }
-            }
-        }
+        .onReceive(loginViewModel.$userId, perform: handleUserIdUpdate)
     }
     
     private var appLogo: some View {
@@ -69,7 +52,7 @@ struct LoginView<Router: AppRouter>: View {
             switch result {
             case .success(let email):
                 loginViewModel.kakaoLogin(email)
-                provider = .kakao
+                router.dismiss()
             case .failure(let error):
                 print(error)
             }
@@ -91,7 +74,7 @@ struct LoginView<Router: AppRouter>: View {
                 }
                 
                 loginViewModel.appleLogin(authorizationCode)
-                provider = .apple
+                router.dismiss()
             case .failure(let error):
                 print(error)
             }
@@ -100,6 +83,19 @@ struct LoginView<Router: AppRouter>: View {
         .clipShape(RoundedRectangle(cornerRadius: 14))
         .frame(height: 44)
     }
+    
+    private func handleUserIdUpdate(_ userId: Int64?) {
+          guard let userId = userId,
+                let userCredential = loginViewModel.userCredential else { return }
+    
+        // 로그인 버튼을 터치했을 때에만 약관동의 뷰로 이동되어야 합니다.
+          if userId == Constants.loggedOutUserId {
+              router.route(to: .requiredTermView(userCredential: userCredential))
+          } else {
+              self.userId = Int(userId)
+              self.provider = userCredential.provider
+          }
+      }
 }
 
 struct LoginView_Preview: PreviewProvider {
