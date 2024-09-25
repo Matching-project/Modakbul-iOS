@@ -26,7 +26,6 @@ struct MyView<Router: AppRouter>: View {
                     .padding(.bottom, -10)
             }
             
-            Text(provider?.identifier ?? "NO")
             Cell(for: $vm.user)
         }
         .padding(.horizontal, Constants.horizontal)

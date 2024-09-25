@@ -27,9 +27,7 @@ struct UnregistrationView<Router: AppRouter>: View {
             Text("잠깐만요!")
                 .font(.Modakbul.title)
                 .bold()
-            
-            Text(provider?.identifier ?? "NO")
-            
+                        
             Text("더 유익한 모임이 \(user.nickname)님을 기다리고 있어요. 정말 떠나시겠어요?")
                 .font(.Modakbul.headline)
                 .foregroundStyle(.gray)
