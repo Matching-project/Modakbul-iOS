@@ -87,8 +87,7 @@ struct PushNotification: Identifiable {
         self.title = title
         self.titlePostfix = type.titlePostfix
         self.subtitle = subtitle + type.subtitlePostfix
-        // TODO: - 초/분/시간 전 표시하기
-        self.timestamp = timestamp
+        self.timestamp = timestamp.toDate(by: .serverDateTime2)?.toDateComponent() ?? "방금 전"
         self.type = type
         self.isRead = isRead
     }
