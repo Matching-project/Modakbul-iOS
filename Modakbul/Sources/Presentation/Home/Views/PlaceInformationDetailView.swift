@@ -157,7 +157,7 @@ struct PlaceInformationDetailView<Router: AppRouter>: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .foregroundStyle(.accent)
         }
-        .font(.Modakbul.caption)
+        .font(.Modakbul.caption2)
         .bold()
         .background(
             RoundedRectangle(cornerRadius: 14)
