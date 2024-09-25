@@ -67,8 +67,4 @@ final class LoginViewModel: ObservableObject {
         
         login(provider: .apple, authorizationCode: authorizationCode)
     }
-    
-    func logout() {
-        // TODO: API 나오면 연결할 것
-    }
 }
