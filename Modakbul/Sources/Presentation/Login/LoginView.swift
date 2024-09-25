@@ -67,7 +67,7 @@ struct LoginView<Router: AppRouter>: View {
         SignInKakaoButton { result in
             switch result {
             case .success(let email):
-                loginViewModel.loginWithKakaoTalk(email)
+                loginViewModel.kakaoLogin(email)
             case .failure(let error):
                 print(error)
             }
@@ -88,7 +88,7 @@ struct LoginView<Router: AppRouter>: View {
                     return print("애플 아이디로 로그인만 지원함")
                 }
                 
-                loginViewModel.loginWithApple(authorizationCode)
+                loginViewModel.appleLogin(authorizationCode)
             case .failure(let error):
                 print(error)
             }
