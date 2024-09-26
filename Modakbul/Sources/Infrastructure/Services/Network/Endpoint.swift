@@ -192,10 +192,14 @@ extension Endpoint: TargetType {
     
     var method: Moya.Method {
         switch self {
-        case .validateNicknameIntegrity, .readMyProfile, .readOpponentUserProfile, .readMyBoards, .readMyMatches, .readMyRequestMatches, .readPlaces, .readPlacesByMatches, .readPlacesByDistance, .readPlacesForShowcaseAndReview, .readBoards, .readBoardForUpdate, .readBoardDetail, .readMatches, .readChatrooms, .readChatHistory, .completeBoard, .readBlockedUsers, .readReports, .fetchNotifications: return .get
-        case .kakaoLogin, .appleLogin, .kakaoRegister, .appleRegister, .reissueToken, .createBoard, .requestMatch, .createChatRoom, .block, .reviewPlace, .suggestPlace, .reportOpponentUserProfile, .reportAndExitChatRoom, .sendNotification: return .post
-        case .logout, .unregister, .deleteBoard, .unblock, .removeNotifications: return .delete
-        case .updateProfile, .updateBoard, .acceptMatchRequest, .rejectMatchRequest, .exitMatch, .cancelMatchRequest, .exitChatRoom, .readNotification: return .patch
+        case .validateNicknameIntegrity, .readMyProfile, .readOpponentUserProfile, .readMyBoards, .readMyMatches, .readMyRequestMatches, .readPlaces, .readPlacesByMatches, .readPlacesByDistance, .readPlacesForShowcaseAndReview, .readBoards, .readBoardForUpdate, .readBoardDetail, .readMatches, .readChatrooms, .readChatHistory, .readBlockedUsers, .readReports, .fetchNotifications:
+            return .get
+        case .kakaoLogin, .appleLogin, .kakaoRegister, .appleRegister, .reissueToken, .createBoard, .requestMatch, .createChatRoom, .block, .reviewPlace, .suggestPlace, .reportOpponentUserProfile, .reportAndExitChatRoom, .sendNotification:
+            return .post
+        case .logout, .unregister, .deleteBoard, .unblock, .removeNotifications:
+            return .delete
+        case .updateProfile, .updateBoard, .completeBoard, .acceptMatchRequest, .rejectMatchRequest, .exitMatch, .cancelMatchRequest, .exitChatRoom, .readNotification:
+            return .patch
         }
     }
     
