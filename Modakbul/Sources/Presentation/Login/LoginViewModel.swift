@@ -12,11 +12,12 @@ import Combine
 
 final class LoginViewModel: ObservableObject {
     @Published var userId: Int64?
-    private(set) var userCredential: UserCredential?
+    @Published var userCredential: UserCredential?
     
     private var fcmToken: String?
     
     private let userIdSubject = PassthroughSubject<Int64, Never>()
+    private let userCredentialSubject = PassthroughSubject<UserCredential?, Never>()
     private var cancellables = Set<AnyCancellable>()
     
     private let userRegistrationUseCase: UserRegistrationUseCase
@@ -40,6 +41,13 @@ final class LoginViewModel: ObservableObject {
                 self?.userId = userId
             }
             .store(in: &cancellables)
+        
+        userCredentialSubject
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] credential in
+                self?.userCredential = credential
+            }
+            .store(in: &cancellables)
     }
     
     private func login(provider: AuthenticationProvider, email: String? = nil, authorizationCode: Data? = nil) {
@@ -47,11 +55,13 @@ final class LoginViewModel: ObservableObject {
         
         Task {
             do {
-                userCredential = UserCredential(provider: provider, fcm: fcm, email: email, authorizationCode: authorizationCode)
-                let userId = try await userRegistrationUseCase.login(userCredential!)
+                let userCredential = UserCredential(provider: provider, fcm: fcm, email: email, authorizationCode: authorizationCode)
+                let userId = try await userRegistrationUseCase.login(userCredential)
                 userIdSubject.send(userId)
+                userCredentialSubject.send(userCredential)
             } catch {
                 userIdSubject.send(Int64(Constants.loggedOutUserId))
+                userCredentialSubject.send(nil)
             }
         }
     }
