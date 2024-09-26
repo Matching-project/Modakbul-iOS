@@ -11,6 +11,7 @@ import SwiftUI
 struct UnregistrationView<Router: AppRouter>: View {
     @EnvironmentObject private var router: Router
     @ObservedObject private var vm: UnregistrationViewModel
+    @AppStorage(AppStorageKey.userId) private var userId: Int = Constants.loggedOutUserId
     @AppStorage(AppStorageKey.provider) private var provider: AuthenticationProvider?
     
     private let user: User
@@ -39,9 +40,7 @@ struct UnregistrationView<Router: AppRouter>: View {
             }
             
             Button {
-                if let provider = provider {
-                vm.unregister(for: user.id, as: provider)
-                }
+                vm.unregister(for: user.id)
             } label: {
                 Text("그래도 탈퇴하기")
                     .font(.Modakbul.footnote)
@@ -53,6 +52,11 @@ struct UnregistrationView<Router: AppRouter>: View {
         // TODO: - SocialLoginRepository.unregister() 에서 처리해주는 로직 구상
         .onChange(of: vm.provider) { _, provider in
             self.provider = provider
+            self.userId = Constants.loggedOutUserId
+            router.popToRoot()
+        }
+        .onAppear {
+            vm.provider = provider
         }
     }
 }

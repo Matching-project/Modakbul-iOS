@@ -11,6 +11,7 @@ import Combine
 final class UnregistrationViewModel: ObservableObject {
     @Published var provider: AuthenticationProvider?
     
+    private let providerSubject = PassthroughSubject<AuthenticationProvider?, Never>()
     private var cancellables = Set<AnyCancellable>()
     
     private let userRegistrationUseCase: UserRegistrationUseCase
@@ -21,7 +22,7 @@ final class UnregistrationViewModel: ObservableObject {
     }
     
     private func subscribe() {
-        $provider
+        providerSubject
             .receive(on: DispatchQueue.main)
             .sink { [weak self] provider in
                 self?.provider = provider
@@ -30,11 +31,13 @@ final class UnregistrationViewModel: ObservableObject {
     }
     
     @MainActor
-    func unregister(for userId: Int64, as provider: AuthenticationProvider) {
+    func unregister(for userId: Int64) {
+        guard let provider = provider else { return }
+        
         Task {
             do {
                 try await userRegistrationUseCase.unregister(userId: userId, provider: provider)
-                self.provider = nil
+                providerSubject.send(nil)
             } catch {
                 print(error)
             }
