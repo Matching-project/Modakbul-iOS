@@ -66,7 +66,7 @@ struct MyParticipationRequestListView<Router: AppRouter>: View {
             .padding(.vertical, 4)
             .contentShape(.rect)
             .onTapGesture {
-                router.route(to: .placeInformationDetailView(communityRecruitingContentId: content.id, userId: Int64(userId)))
+//                router.route(to: .placeInformationDetailView(communityRecruitingContentId: content.id, userId: Int64(userId)))
             }
             
             Spacer()
