@@ -33,8 +33,14 @@ struct PlaceInformationDetailView<Router: AppRouter>: View {
             .task {
                 await viewModel.configureView(communityRecruitingContentId, userId)
             }
-            .onChange(of: viewModel.isDeleted, initial: false) { oldValue, newValue in
+            .onChange(of: viewModel.isDeleted) { oldValue, newValue in
                 // 모집글 삭제 처리 완료 되었으면 dismiss
+                if oldValue == false, newValue == true {
+                    router.dismiss()
+                }
+            }
+            .onChange(of: viewModel.isCompleted) { oldValue, newValue in
+                // 모집글 모집 종료 처리 완료 되었으면 dismiss
                 if oldValue == false, newValue == true {
                     router.dismiss()
                 }

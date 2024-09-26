@@ -13,6 +13,7 @@ final class PlaceInformationDetailViewModel: ObservableObject {
     @Published var role: UserRole = .nonParticipant
     @Published var matchState: MatchState = .cancel
     @Published var isDeleted: Bool = false
+    @Published var isCompleted: Bool = false
     
     // MARK: Presenting Data
     @Published var category: String = String()
@@ -28,6 +29,7 @@ final class PlaceInformationDetailViewModel: ObservableObject {
     private var userId: Int64 = Int64(Constants.loggedOutUserId)
     
     private let isDeletedSubject = PassthroughSubject<Bool, Never>()
+    private let isCompletedSubject = PassthroughSubject<Bool, Never>()
     private let communityRecruitingContentSubject = PassthroughSubject<CommunityRecruitingContent, Never>()
     private let userRoleSubject = PassthroughSubject<(role: UserRole, matchingId: Int64?, state: MatchState), Never>()
     private var cancellables = Set<AnyCancellable>()
@@ -56,6 +58,7 @@ final class PlaceInformationDetailViewModel: ObservableObject {
             .sink { [weak self] content in
                 self?.communityRecruitingContent = content
                 self?.isDeleted = false
+                self?.isCompleted = false
             }
             .store(in: &cancellables)
         
@@ -65,6 +68,14 @@ final class PlaceInformationDetailViewModel: ObservableObject {
                 self?.isDeleted = result
             }
             .store(in: &cancellables)
+        
+        isCompletedSubject
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] result in
+                self?.isCompleted = result
+            }
+            .store(in: &cancellables)
+
         
         $communityRecruitingContent
             .sink { [weak self] content in
@@ -122,7 +133,9 @@ extension PlaceInformationDetailViewModel {
         Task {
             do {
                 try await communityUseCase.completeCommunityRecruiting(userId: userId, with: id)
+                isCompletedSubject.send(true)
             } catch {
+                isCompletedSubject.send(false)
                 print(error)
             }
         }
