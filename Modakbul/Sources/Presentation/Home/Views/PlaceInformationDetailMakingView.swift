@@ -145,6 +145,7 @@ struct PlaceInformationDetailMakingView<Router: AppRouter>: View {
         }
         .onAppear {
             vm.place = place
+            vm.configureView(communityRecruitingContent)
         }
     }
     

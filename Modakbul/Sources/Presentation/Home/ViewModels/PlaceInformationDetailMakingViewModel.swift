@@ -60,6 +60,17 @@ final class PlaceInformationDetailMakingViewModel: ObservableObject {
         }
     }
     
+    func configureView(_ communityRecruitingContent: CommunityRecruitingContent?) {
+        self.category = communityRecruitingContent?.community.category ?? .interview
+        self.peopleCount = communityRecruitingContent?.community.participantsCount ?? 1
+        // TODO: 이거 모집글 수정일 경우 구현 필요
+        self.date = .now
+        self.startTime = .now.unitizeToTenMinutes()
+        self.endTime = .now.unitizeToTenMinutes()
+        self.title = communityRecruitingContent?.title ?? String()
+        self.content = communityRecruitingContent?.content ?? String()
+    }
+    
     func initialize() {
         id = Int64(Constants.loggedOutUserId)
         place = nil
