@@ -135,7 +135,7 @@ struct PlaceInformationView<Router: AppRouter>: View {
                                 if userId == Constants.loggedOutUserId {
                                     router.route(to: .loginView)
                                 } else {
-                                    router.route(to: .placeInformationDetailView(communityRecruitingContentId: communityRecruitingContent.id, userId: Int64(userId)))
+                                    router.route(to: .placeInformationDetailView(place: place, communityRecruitingContentId: communityRecruitingContent.id, userId: Int64(userId)))
                                 }
                             }
                     }
@@ -183,11 +183,5 @@ extension PlaceInformationView {
                     .strokeBorder(.accent)
             )
         }
-    }
-}
-
-struct PlaceInformationView_Preview: PreviewProvider {
-    static var previews: some View {
-        router.view(to: .placeInformationView(place: Place(location: Location())))
     }
 }
