@@ -57,7 +57,8 @@ enum Route: Routable {
     case chatRoomListView
     case reportView(opponentUserId: Int64, isReported: Binding<Bool>)
     case profileDetailView(opponentUserId: Int64)  // MARK: - Common
-    
+    case networkContentUnavailableView
+
     var presentingType: PresentingType {
         switch self {
         case .routerView: return .push
@@ -88,6 +89,7 @@ enum Route: Routable {
         case .chatRoomListView: return .push
         case .reportView: return .push
         case .profileDetailView: return .push                       // MARK: - Common
+        case .networkContentUnavailableView: return .fullScreenCover
         }
     }
     
@@ -149,6 +151,8 @@ enum Route: Routable {
             ReportView<Router>(router.resolver.resolve(ReportViewModel.self), opponentUserId: opponentUserId, isReported: isReported)
         case .profileDetailView(let opponentUserId):// MARK: - Common
             ProfileDetailView<Router>(router.resolver.resolve(ProfileDetailViewModel.self), opponentUserId: opponentUserId)
+        case .networkContentUnavailableView:
+            NetworkContentUnavailableView<Router>()
         }
     }
 }

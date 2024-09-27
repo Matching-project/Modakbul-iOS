@@ -17,7 +17,7 @@ enum PageType {
         case .chattings:
             Label("채팅", systemImage: "bubble")
         case .settings:
-            Label("My", systemImage: "person")
+            Label("마이페이지", systemImage: "person")
         }
     }
     
