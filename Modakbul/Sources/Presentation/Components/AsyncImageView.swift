@@ -71,6 +71,7 @@ struct AsyncImageView<ClipShape: Shape>: View {
         }
         .aspectRatio(contentMode: contentMode)
         .frame(maxWidth: maxWidth, maxHeight: maxHeight)
+        .frame(minWidth: 64, minHeight: 64)
         .clipShape(clipShape)
         .clipped()
     }

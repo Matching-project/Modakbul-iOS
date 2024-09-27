@@ -47,8 +47,8 @@ extension MyView {
                 AsyncImageView(
                     url: vm.user.imageURL,
                     contentMode: .fill,
-                    maxWidth: 128,
-                    maxHeight: 128,
+                    maxWidth: 100,
+                    maxHeight: 100,
                     clipShape: .circle
                 )
                 
@@ -82,6 +82,7 @@ extension MyView {
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.leading, 20)
+                .layoutPriority(1)
             }
             .onAppear {
                 vm.readMyProfile(Int64(userId))
