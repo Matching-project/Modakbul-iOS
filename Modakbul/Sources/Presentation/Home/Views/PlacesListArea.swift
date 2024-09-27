@@ -116,14 +116,6 @@ struct PlacesListArea<Router: AppRouter>: View {
         .padding(.trailing)
     }
     
-//    private var placeList: some View {
-//        List(viewModel.places, id: \.id) { place in
-//            router.view(to: .placeInformationView(place: place))
-//                .listRowSeparator(.hidden)
-//        }
-//        .listStyle(.plain)
-//    }
-    
     private var hoveringButtonsArea: some View {
         VStack {
             Spacer()
