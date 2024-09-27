@@ -19,6 +19,7 @@ struct OnboradingView: View {
     private let titles = ["같이 공부하고, 같이 취미를\n즐기고 싶은 당신에게.",
                           "카페별로 진행 중인 모임에 참여해요!",
                           "모임에서 당신의 모닥불을 지펴봐요!"]
+    // TODO: - 다크모드시 이미지 대응 안됨
     private let images = ["Onboarding 1", "Onboarding 2", "Onboarding 3"]
 
 
