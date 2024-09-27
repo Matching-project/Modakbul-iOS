@@ -74,7 +74,7 @@ struct PlaceReviewView: View {
                 ScrollView(.vertical) {
                     LazyVStack(alignment: .leading, spacing: 10) {
                         ForEach(viewModel.suggestedResults, id: \.id) { result in
-                            VStack {
+                            VStack(alignment: .leading) {
                                 Text(result.title)
                                     .font(.Modakbul.headline)
                                 
@@ -92,7 +92,7 @@ struct PlaceReviewView: View {
                 ScrollView(.vertical) {
                     LazyVStack(alignment: .leading, spacing: 10) {
                         ForEach(viewModel.searchedLocations, id: \.id) { location in
-                            VStack {
+                            VStack(alignment: .leading) {
                                 Text(location.name)
                                     .font(.Modakbul.headline)
                                 
