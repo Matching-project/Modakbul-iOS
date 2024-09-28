@@ -9,11 +9,11 @@ import Foundation
 import Combine
 
 final class MyCommunityRecruitingContentListViewModel: ObservableObject {
-    @Published var communityRecruitingContents: [CommunityRecruitingContent] = []
+    @Published var relationships: [CommunityRelationship] = []
     @Published var selectedTab: ActiveState = .continue
     let selection: [(ActiveState, String)] = [(.continue, "모집중"), (.completed, "모집완료")]
     
-    private let communityRecruitingContentsSubject = PassthroughSubject<[CommunityRecruitingContent], Never>()
+    private let relationshipsSubject = PassthroughSubject<[CommunityRelationship], Never>()
     private var cancellables = Set<AnyCancellable>()
     
     private let communityUseCase: CommunityUseCase
@@ -24,10 +24,10 @@ final class MyCommunityRecruitingContentListViewModel: ObservableObject {
     }
     
     private func subscribe() {
-        communityRecruitingContentsSubject
+        relationshipsSubject
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] contents in
-                self?.communityRecruitingContents = contents
+            .sink { [weak self] relationships in
+                self?.relationships = relationships
             }
             .store(in: &cancellables)
     }
@@ -37,8 +37,8 @@ final class MyCommunityRecruitingContentListViewModel: ObservableObject {
 extension MyCommunityRecruitingContentListViewModel {
     func configureView(userId: Int64) async {
         do {
-            let communityRecruitingContents = try await communityUseCase.readMyCommunityRecruitingContents(userId: userId)
-            communityRecruitingContentsSubject.send(communityRecruitingContents)
+            let relationships = try await communityUseCase.readMyCommunityRecruitingContents(userId: userId)
+            relationshipsSubject.send(relationships)
         } catch {
             print(error)
         }

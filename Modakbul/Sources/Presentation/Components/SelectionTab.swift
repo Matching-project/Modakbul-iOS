@@ -14,17 +14,17 @@ struct SelectionTab: View {
     @Binding var selectedTab: ActiveState
     @Namespace private var namespace
     
-    private let items: [CommunityRecruitingContent]
+    private let items: [CommunityRelationship]
     private let selection: [(state: ActiveState, title: String)]
-    private let filteringOption: (CommunityRecruitingContent) -> Bool
-    private let onSelectCell: (CommunityRecruitingContent) -> Void
+    private let filteringOption: (CommunityRelationship) -> Bool
+    private let onSelectCell: (CommunityRelationship) -> Void
     
     init(
         selectedTab: Binding<ActiveState>,
         _ selection: [(state: ActiveState, title: String)],
-        _ items: [CommunityRecruitingContent],
-        _ filteringOption: @escaping (CommunityRecruitingContent) -> Bool,
-        onSelectCell: @escaping (CommunityRecruitingContent) -> Void
+        _ items: [CommunityRelationship],
+        _ filteringOption: @escaping (CommunityRelationship) -> Bool,
+        onSelectCell: @escaping (CommunityRelationship) -> Void
     ) {
         self._selectedTab = selectedTab
         self.selection = selection
@@ -41,10 +41,11 @@ struct SelectionTab: View {
                 }
             }
             
-            List(items.filter(filteringOption), id: \.id) { content in
-                listCell(content)
+            List(items.filter(filteringOption), id: \.communityRecruitingContent.id) { relationship in
+                listCell(relationship)
             }
             .listStyle(.plain)
+            
         }
     }
     
@@ -68,7 +69,9 @@ struct SelectionTab: View {
         }
     }
     
-    @ViewBuilder private func listCell(_ content: CommunityRecruitingContent) -> some View {
+    @ViewBuilder private func listCell(_ relationship: CommunityRelationship) -> some View {
+        let content = relationship.communityRecruitingContent
+        
         VStack(alignment: .leading, spacing: 10) {
             Text(content.title)
                 .font(.Modakbul.headline)
@@ -88,7 +91,7 @@ struct SelectionTab: View {
         .padding(.vertical, 4)
         .contentShape(.rect)
         .onTapGesture {
-            onSelectCell(content)
+            onSelectCell(relationship)
         }
     }
 }

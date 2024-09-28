@@ -15,7 +15,7 @@ protocol CommunityRepository: TokenRefreshable {
     func deleteCommunityRecruitingContent(userId: Int64, _ communityRecruitingContentId: Int64) async throws
     func readCommunityRecruitingContentDetail(with communityRecruitingContentId: Int64) async throws -> CommunityRecruitingContent
     func completeCommunityRecruiting(userId: Int64, with communityRecruitingContentId: Int64) async throws
-    func readMyCommunityRecruitingContents(userId: Int64) async throws -> [CommunityRecruitingContent]
+    func readMyCommunityRecruitingContents(userId: Int64) async throws -> [CommunityRelationship]
 }
 
 final class DefaultCommunityRepository {
@@ -143,7 +143,7 @@ extension DefaultCommunityRepository: CommunityRepository {
         }
     }
     
-    func readMyCommunityRecruitingContents(userId: Int64) async throws -> [CommunityRecruitingContent] {
+    func readMyCommunityRecruitingContents(userId: Int64) async throws -> [CommunityRelationship] {
         let token = try tokenStorage.fetch(by: userId)
         
         do {

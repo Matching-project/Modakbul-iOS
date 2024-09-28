@@ -22,15 +22,19 @@ struct RelatedCommunityRecruitingContentListResponseEntity: ResponseEntity {
         let recruitCount, currentCount: Int
         let meetingDate: String
         let activeState: ActiveState
+        let placeId: Int64
+        let locationName: String
         
         enum CodingKeys: String, CodingKey {
             case title, startTime, endTime, dayOfWeek, category, recruitCount, currentCount, meetingDate
             case id = "boardId"
             case activeState = "boardStatus"
+            case placeId = "cafeId"
+            case locationName = "cafeName"
         }
     }
     
-    func toDTO() -> [CommunityRecruitingContent] {
+    func toDTO() -> [CommunityRelationship] {
         result.map {
             let community = Community(
                 routine: .daily,
@@ -42,13 +46,15 @@ struct RelatedCommunityRecruitingContentListResponseEntity: ResponseEntity {
                 endTime: $0.endTime
             )
             
-            return .init(
+            let communityRecruitingContent: CommunityRecruitingContent = .init(
                 id: $0.id,
                 title: $0.title,
                 content: String(),
                 community: community,
                 activeState: $0.activeState
             )
+            
+            return .init(placeId: $0.placeId, locationName: $0.locationName, communityRecruitingContent: communityRecruitingContent)
         }
     }
 }

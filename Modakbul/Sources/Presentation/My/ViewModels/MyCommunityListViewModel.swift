@@ -9,11 +9,11 @@ import Foundation
 import Combine
 
 final class MyCommunityListViewModel: ObservableObject {
-    @Published var communityRecruitingContents: [CommunityRecruitingContent] = []
+    @Published var relationships: [CommunityRelationship] = []
     @Published var selectedTab: ActiveState = .continue
     let selection: [(ActiveState, String)] = [(.continue, "예정된 모임"), (.completed, "지난 모임")]
     
-    private let communityRecruitingContentsSubject = PassthroughSubject<[CommunityRecruitingContent], Never>()
+    private let relationshipsSubject = PassthroughSubject<[CommunityRelationship], Never>()
     private var cancellables = Set<AnyCancellable>()
     
     private let matchingUseCase: MatchingUseCase
@@ -24,10 +24,10 @@ final class MyCommunityListViewModel: ObservableObject {
     }
     
     private func subscribe() {
-        communityRecruitingContentsSubject
+        relationshipsSubject
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] contents in
-                self?.communityRecruitingContents = contents
+            .sink { [weak self] relationships in
+                self?.relationships = relationships
             }
             .store(in: &cancellables)
     }
@@ -37,8 +37,8 @@ final class MyCommunityListViewModel: ObservableObject {
 extension MyCommunityListViewModel {
     func configureView(userId: Int64) async {
         do {
-            let communityRecruitingContents = try await matchingUseCase.readMyMatches(userId: userId)
-            communityRecruitingContentsSubject.send(communityRecruitingContents)
+            let relationships = try await matchingUseCase.readMyMatches(userId: userId)
+            relationshipsSubject.send(relationships)
         } catch {
             print(error)
         }

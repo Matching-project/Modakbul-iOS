@@ -244,7 +244,7 @@ extension PlacesListArea {
         
         private var communityRecruitingContentEditButton: some View {
             Button {
-                router.route(to: .placeInformationDetailMakingView(place: place, communityRecruitingContent: nil))
+                router.route(to: .placeInformationDetailMakingView(placeId: place.id, locationName: place.location.name, communityRecruitingContent: nil))
             } label: {
                 Image(.photoUploadSelection)
                     .resizable()

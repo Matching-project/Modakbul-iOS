@@ -24,6 +24,8 @@ struct RelatedParticipationRequestListResponseEntity: ResponseEntity {
         let dayOfWeek: DayOfWeek
         let activeState: ActiveState
         let matchState: MatchState
+        let placeId: Int64
+        let locationName: String
         
         enum CodingKeys: String, CodingKey {
             case title, startTime, endTime, recruitCount, currentCount, meetingDate, dayOfWeek
@@ -32,10 +34,12 @@ struct RelatedParticipationRequestListResponseEntity: ResponseEntity {
             case matchingId = "matchId"
             case activeState = "boardStatus"
             case matchState = "matchStatus"
+            case placeId = "cafeId"
+            case locationName = "cafeName"
         }
     }
     
-    func toDTO() -> [(communityRecruitingContent: CommunityRecruitingContent, matchingId: Int64, matchState: MatchState)] {
+    func toDTO() -> [(relationship: CommunityRelationship, matchingId: Int64, matchState: MatchState)] {
         result.map {
             let community = Community(
                 routine: .daily,
@@ -55,7 +59,13 @@ struct RelatedParticipationRequestListResponseEntity: ResponseEntity {
                 activeState: $0.activeState
             )
             
-            return (communityRecruitingContent, $0.matchingId, $0.matchState)
+            let relationship: CommunityRelationship = .init(
+                placeId: $0.placeId,
+                locationName: $0.locationName,
+                communityRecruitingContent: communityRecruitingContent
+            )
+            
+            return (relationship: relationship, matchingId: $0.matchingId, matchState: $0.matchState)
         }
     }
 }

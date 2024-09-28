@@ -10,10 +10,15 @@ import SwiftUI
 struct MyCommunityListView<Router: AppRouter>: View {
     @EnvironmentObject private var router: Router
     @ObservedObject private var viewModel: MyCommunityListViewModel
-    @AppStorage(AppStorageKey.userId) private var userId: Int = Constants.loggedOutUserId
     
-    init(_ viewModel: MyCommunityListViewModel) {
+    private let userId: Int64
+    
+    init(
+        _ viewModel: MyCommunityListViewModel,
+        userId: Int64
+    ) {
         self.viewModel = viewModel
+        self.userId = userId
     }
     
     var body: some View {
@@ -21,10 +26,10 @@ struct MyCommunityListView<Router: AppRouter>: View {
             SelectionTab(
                 selectedTab: $viewModel.selectedTab,
                 viewModel.selection,
-                viewModel.communityRecruitingContents) { content in
-                    content.activeState == viewModel.selectedTab
-                } onSelectCell: { content in
-//                    router.route(to: .placeInformationDetailView(communityRecruitingContentId: content.id, userId: Int64(userId)))
+                viewModel.relationships) { relationship in
+                    relationship.communityRecruitingContent.activeState == viewModel.selectedTab
+                } onSelectCell: { relationship in
+                    router.route(to: .placeInformationDetailView(placeId: relationship.placeId, locationName: relationship.locationName, communityRecruitingContentId: relationship.communityRecruitingContent.id, userId: userId))
                 }
         }
         .padding()

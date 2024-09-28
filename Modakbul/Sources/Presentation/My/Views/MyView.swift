@@ -138,8 +138,8 @@ extension MyView {
         var body: some View {
             List {
                 Section("이용정보") {
-                    button("나의 모집글", destination: .myCommunityRecruitingContentListView)
-                    button("참여 모임 내역", destination: .myCommunityListView)
+                    button("나의 모집글", destination: .myCommunityRecruitingContentListView(userId: Int64(userId)))
+                    button("참여 모임 내역", destination: .myCommunityListView(userId: Int64(userId)))
                     button("나의 참여 요청", destination: .myParticipationRequestListView(userId: Int64(userId)))
                     button("카페 제보/리뷰", destination: .placeShowcaseView(userId: Int64(userId)))
                 }

@@ -14,8 +14,8 @@ protocol MatchingRepository: TokenRefreshable {
     func rejectMatchRequest(userId: Int64, with matchingId: Int64) async throws
     func exitMatch(userId: Int64, with matchingId: Int64) async throws
     func cancelMatchRequest(userId: Int64, with matchingId: Int64) async throws
-    func readMyMatches(userId: Int64) async throws -> [CommunityRecruitingContent]
-    func readMyRequestMatches(userId: Int64) async throws -> [(communityRecruitingContent: CommunityRecruitingContent, matchingId: Int64, matchState: MatchState)]
+    func readMyMatches(userId: Int64) async throws -> [CommunityRelationship]
+    func readMyRequestMatches(userId: Int64) async throws -> [(relationship: CommunityRelationship, matchingId: Int64, matchState: MatchState)]
 }
 
 final class DefaultMatchingRepository {
@@ -131,25 +131,25 @@ extension DefaultMatchingRepository: MatchingRepository {
         }
     }
     
-    func readMyMatches(userId: Int64) async throws -> [CommunityRecruitingContent] {
+    func readMyMatches(userId: Int64) async throws -> [CommunityRelationship] {
         let token = try tokenStorage.fetch(by: userId)
         
         do {
             let endpoint = Endpoint.readMyMatches(token: token.accessToken)
-            let response = try await networkService.request(endpoint: endpoint, for: RelatedCommunityRecruitingContentListResponseEntity.self)
+            let response = try await networkService.request(endpoint: endpoint, for: RelatedCommunityListResponseEntity.self)
             return response.body.toDTO()
         } catch APIError.accessTokenExpired {
             let tokens = try await reissueTokens(userId: userId, token.refreshToken)
             
             let endpoint = Endpoint.readMyMatches(token: tokens.accessToken)
-            let response = try await networkService.request(endpoint: endpoint, for: RelatedCommunityRecruitingContentListResponseEntity.self)
+            let response = try await networkService.request(endpoint: endpoint, for: RelatedCommunityListResponseEntity.self)
             return response.body.toDTO()
         } catch {
             throw error
         }
     }
     
-    func readMyRequestMatches(userId: Int64) async throws -> [(communityRecruitingContent: CommunityRecruitingContent, matchingId: Int64, matchState: MatchState)] {
+    func readMyRequestMatches(userId: Int64) async throws -> [(relationship: CommunityRelationship, matchingId: Int64, matchState: MatchState)] {
         let token = try tokenStorage.fetch(by: userId)
         
         do {
