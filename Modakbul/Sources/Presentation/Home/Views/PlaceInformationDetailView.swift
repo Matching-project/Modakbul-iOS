@@ -68,6 +68,8 @@ struct PlaceInformationDetailView<Router: AppRouter>: View {
                         .padding(.horizontal)
                         
                         Text(viewModel.content)
+                            .containerRelativeFrame(.horizontal, alignment: .leading)
+                            .multilineTextAlignment(.leading)
                             .padding()
                     }
                     .scrollIndicators(.hidden)
