@@ -8,17 +8,17 @@
 import SwiftUI
 
 struct RouterView<Router: AppRouter>: View {
-    @StateObject private var router: Router
-    private let root: Router.Destination
-    private let networkChecker: NetworkChecker
+    @EnvironmentObject private var networkChecker: NetworkChecker
+    @ObservedObject private var router: Router
     
-    init(router: Router,
-         root: Router.Destination,
-         networkChecker: NetworkChecker = NetworkChecker.shared
+    private let root: Router.Destination
+    
+    init(
+        router: Router,
+        root: Router.Destination
     ) {
-        self._router = StateObject(wrappedValue: router)
+        self._router = ObservedObject(initialValue: router)
         self.root = root
-        self.networkChecker = networkChecker
     }
     
     var body: some View {
@@ -36,12 +36,12 @@ struct RouterView<Router: AppRouter>: View {
                 }
                 .alert(isPresented: $router.isAlertPresented, router.confirmationContent)
                 .confirmationDialog(isPresented: $router.isConfirmationDialogPresented, router.confirmationContent)
-                .onReceive(networkChecker.$isConnected) { isConnected in
-                    if isConnected {
-                        router.dismiss()
-                    } else {
-                        router.route(to: .networkContentUnavailableView)
-                    }
+                .onChange(of: networkChecker.isConnected) { before, after in
+                    // 인터넷 off -> on
+                    if before == false, after == true { router.dismiss() }
+                    
+                    // 인터넷 on -> off
+                    if before == true, after == false { router.route(to: .networkContentUnavailableView) }
                 }
         }
     }
