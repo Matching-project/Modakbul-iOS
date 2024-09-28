@@ -30,7 +30,7 @@ protocol CommunityUseCase {
     func completeCommunityRecruiting(userId: Int64, with communityRecruitingContentId: Int64) async throws
     
     /// 사용자와 관련된 모집글 목록 조회
-    func readMyCommunityRecruitingContents(userId: Int64) async throws -> [CommunityRecruitingContent]
+    func readMyCommunityRecruitingContents(userId: Int64) async throws -> [CommunityRelationship]
 }
 
 final class DefaultCommunityUseCase {
@@ -71,7 +71,7 @@ extension DefaultCommunityUseCase: CommunityUseCase {
         try await communityRepository.completeCommunityRecruiting(userId: userId, with: communityRecruitingContentId)
     }
     
-    func readMyCommunityRecruitingContents(userId: Int64) async throws -> [CommunityRecruitingContent] {
+    func readMyCommunityRecruitingContents(userId: Int64) async throws -> [CommunityRelationship] {
         try await communityRepository.readMyCommunityRecruitingContents(userId: userId)
     }
 }

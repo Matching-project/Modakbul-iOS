@@ -12,18 +12,21 @@ struct PlaceInformationDetailView<Router: AppRouter>: View {
     @ObservedObject private var viewModel: PlaceInformationDetailViewModel
     @State private var index: Int = 0
     
-    private let place: Place
+    private let placeId: Int64
+    private let locationName: String
     private let communityRecruitingContentId: Int64
     private let userId: Int64
     
     init(
         _ viewModel: PlaceInformationDetailViewModel,
-        place: Place,
+        placeId: Int64,
+        locationName: String,
         communityRecruitingContentId: Int64,
         userId: Int64
     ) {
         self.viewModel = viewModel
-        self.place = place
+        self.placeId = placeId
+        self.locationName = locationName
         self.communityRecruitingContentId = communityRecruitingContentId
         self.userId = userId
     }
@@ -78,7 +81,7 @@ struct PlaceInformationDetailView<Router: AppRouter>: View {
                     ToolbarItem(placement: .topBarTrailing) {
                         Menu {
                             Button {
-                                router.route(to: .placeInformationDetailMakingView(place: place, communityRecruitingContent: viewModel.communityRecruitingContent))
+                                router.route(to: .placeInformationDetailMakingView(placeId: placeId, locationName: locationName, communityRecruitingContent: viewModel.communityRecruitingContent))
                             } label: {
                                 Text("모집글 수정하기")
                             }

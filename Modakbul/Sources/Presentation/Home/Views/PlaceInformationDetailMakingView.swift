@@ -14,16 +14,19 @@ struct PlaceInformationDetailMakingView<Router: AppRouter>: View {
     @AppStorage(AppStorageKey.userId) private var userId: Int = Constants.loggedOutUserId
     
     private let labelWidth: CGFloat = 80
-    private let place: Place
+    private let placeId: Int64
+    private let locationName: String
     private let communityRecruitingContent: CommunityRecruitingContent?
     
     init(
         _ vm: PlaceInformationDetailMakingViewModel,
-        place: Place,
+        placeId: Int64,
+        locationName: String,
         communityRecruitingContent: CommunityRecruitingContent?
     ) {
         self.vm = vm
-        self.place = place
+        self.placeId = placeId
+        self.locationName = locationName
         self.communityRecruitingContent = communityRecruitingContent
         UIDatePicker.appearance().minuteInterval = 10
     }
@@ -41,7 +44,7 @@ struct PlaceInformationDetailMakingView<Router: AppRouter>: View {
                                         .opacity(0.1)
                                 }
 
-                            Text(vm.place?.location.name ?? "")
+                            Text(vm.locationName ?? "")
                                 .padding()
                         }
                     }
@@ -144,7 +147,8 @@ struct PlaceInformationDetailMakingView<Router: AppRouter>: View {
             router.dismiss()
         }
         .onAppear {
-            vm.place = place
+            vm.placeId = placeId
+            vm.locationName = locationName
             vm.configureView(communityRecruitingContent)
         }
     }
@@ -157,11 +161,5 @@ struct PlaceInformationDetailMakingView<Router: AppRouter>: View {
             
             content()
         }
-    }
-}
-
-struct PlaceInformationDetailMakingView_Preview: PreviewProvider {
-    static var previews: some View {
-        router.view(to: .placeInformationDetailMakingView(place: Place(location: Location()), communityRecruitingContent: nil))
     }
 }

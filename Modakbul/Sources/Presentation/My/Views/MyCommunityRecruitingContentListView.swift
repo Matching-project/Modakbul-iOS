@@ -10,10 +10,15 @@ import SwiftUI
 struct MyCommunityRecruitingContentListView<Router: AppRouter>: View {
     @EnvironmentObject private var router: Router
     @ObservedObject private var viewModel: MyCommunityRecruitingContentListViewModel
-    @AppStorage(AppStorageKey.userId) private var userId: Int = Constants.loggedOutUserId
     
-    init(_ viewModel: MyCommunityRecruitingContentListViewModel) {
+    private let userId: Int64
+    
+    init(
+        _ viewModel: MyCommunityRecruitingContentListViewModel,
+        userId: Int64
+    ) {
         self.viewModel = viewModel
+        self.userId = userId
     }
     
     var body: some View {
@@ -21,17 +26,17 @@ struct MyCommunityRecruitingContentListView<Router: AppRouter>: View {
             SelectionTab(
                 selectedTab: $viewModel.selectedTab,
                 viewModel.selection,
-                viewModel.communityRecruitingContents) { content in
-                    content.activeState == viewModel.selectedTab
-                } onSelectCell: { content in
-//                    router.route(to: .placeInformationDetailView(communityRecruitingContentId: content.id, userId: Int64(userId)))
+                viewModel.relationships) { relationship in
+                    relationship.communityRecruitingContent.activeState == viewModel.selectedTab
+                } onSelectCell: { relationship in
+                    router.route(to: .placeInformationDetailView(placeId: relationship.placeId, locationName: relationship.locationName, communityRecruitingContentId: relationship.communityRecruitingContent.id, userId: userId))
                 }
         }
         .padding()
         .navigationTitle("나의 모집글")
         .navigationBarTitleDisplayMode(.inline)
         .task {
-            await viewModel.configureView(userId: Int64(userId))
+            await viewModel.configureView(userId: userId)
         }
     }
 }

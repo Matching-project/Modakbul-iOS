@@ -1,57 +1,53 @@
 //
-//  RelatedParticipationRequestListResponseEntity.swift
+//  RelatedCommunityListResponseEntity.swift
 //  Modakbul
 //
-//  Created by Swain Yun on 8/13/24.
+//  Created by Swain Yun on 9/28/24.
 //
 
-import Foundation
 
-/// 사용자가 작성했던 참여 요청 목록 응답
-/// - Important: 정확히는 참여 요청을 작성했던 모임에 대한 정보를 받습니다.
-struct RelatedParticipationRequestListResponseEntity: ResponseEntity {
+/// 참여 모임 내역 조회 응답
+struct RelatedCommunityListResponseEntity: Decodable, ResponseEntity {
     let status: Bool
     let code: Int
     let message: String
     let result: [Result]
     
     struct Result: Decodable {
-        let title, startTime, endTime: String
-        let communityRecruitingContentId, matchingId: Int64
+        let communityRecruitingContentId: Int64
+        let title: String
         let category: Category
-        let recruitCount, currentCount: Int
         let meetingDate: String
-        let dayOfWeek: DayOfWeek
+        let startTime: String
+        let endTime: String
         let activeState: ActiveState
-        let matchState: MatchState
         let placeId: Int64
         let locationName: String
+        let address: String
         
         enum CodingKeys: String, CodingKey {
-            case title, startTime, endTime, recruitCount, currentCount, meetingDate, dayOfWeek
+            case title, meetingDate, startTime, endTime
             case communityRecruitingContentId = "boardId"
             case category = "categoryName"
-            case matchingId = "matchId"
             case activeState = "boardStatus"
-            case matchState = "matchStatus"
             case placeId = "cafeId"
             case locationName = "cafeName"
+            case address = "roadName"
         }
     }
     
-    func toDTO() -> [(relationship: CommunityRelationship, matchingId: Int64, matchState: MatchState)] {
+    func toDTO() -> [CommunityRelationship] {
         result.map {
             let community = Community(
                 routine: .daily,
                 category: $0.category,
-                participantsCount: $0.currentCount,
-                participantsLimit: $0.recruitCount,
+                participantsLimit: 0,
                 meetingDate: $0.meetingDate,
                 startTime: $0.startTime,
                 endTime: $0.endTime
             )
             
-            let communityRecruitingContent: CommunityRecruitingContent = .init(
+            let communityRecruitingContent = CommunityRecruitingContent(
                 id: $0.communityRecruitingContentId,
                 title: $0.title,
                 content: String(),
@@ -59,13 +55,11 @@ struct RelatedParticipationRequestListResponseEntity: ResponseEntity {
                 activeState: $0.activeState
             )
             
-            let relationship: CommunityRelationship = .init(
+            return .init(
                 placeId: $0.placeId,
                 locationName: $0.locationName,
                 communityRecruitingContent: communityRecruitingContent
             )
-            
-            return (relationship: relationship, matchingId: $0.matchingId, matchState: $0.matchState)
         }
     }
 }

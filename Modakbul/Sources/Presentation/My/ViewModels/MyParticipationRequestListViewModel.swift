@@ -8,13 +8,11 @@
 import Foundation
 import Combine
 
-typealias Matches = [(communityRecruitingContent: CommunityRecruitingContent, matchingId: Int64, matchState: MatchState)]
-
 final class MyParticipationRequestListViewModel: ObservableObject {
-    @Published var matches: Matches = []
+    @Published var requests: [(relationship: CommunityRelationship, matchingId: Int64, matchState: MatchState)] = []
     
-    private let matchesSubject = PassthroughSubject<Matches, Never>()
-    private let matchingPerformSubject = PassthroughSubject<Int64, Never>()
+    private let requestsSubject = PassthroughSubject<[(relationship: CommunityRelationship, matchingId: Int64, matchState: MatchState)], Never>()
+    private let requestPerformSubject = PassthroughSubject<Int64, Never>()
     private var cancellables = Set<AnyCancellable>()
     
     private let matchingUseCase: MatchingUseCase
@@ -24,17 +22,17 @@ final class MyParticipationRequestListViewModel: ObservableObject {
     }
     
     private func subscribe() {
-        matchesSubject
+        requestsSubject
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] matches in
-                self?.matches = matches
+            .sink { [weak self] requests in
+                self?.requests = requests
             }
             .store(in: &cancellables)
         
-        matchingPerformSubject
+        requestPerformSubject
             .receive(on: DispatchQueue.main)
             .sink { [weak self] matchingId in
-                if let index = self?.matches.firstIndex(where: { $0.matchingId == matchingId }) { self?.matches.remove(at: index) }
+                if let index = self?.requests.firstIndex(where: { $0.matchingId == matchingId }) { self?.requests.remove(at: index) }
             }
             .store(in: &cancellables)
     }
@@ -44,8 +42,8 @@ final class MyParticipationRequestListViewModel: ObservableObject {
 extension MyParticipationRequestListViewModel {
     func configureView(userId: Int64) async {
         do {
-            let matches = try await matchingUseCase.readMyRequestMatches(userId: userId)
-            matchesSubject.send(matches)
+            let requests = try await matchingUseCase.readMyRequestMatches(userId: userId)
+            requestsSubject.send(requests)
         } catch {
             print(error)
         }
@@ -55,7 +53,7 @@ extension MyParticipationRequestListViewModel {
         Task {
             do {
                 try await matchingUseCase.cancelMatchRequest(userId: userId, with: matchingId)
-                matchingPerformSubject.send(matchingId)
+                requestPerformSubject.send(matchingId)
             } catch {
                 print(error)
             }
@@ -66,7 +64,7 @@ extension MyParticipationRequestListViewModel {
         Task {
             do {
                 try await matchingUseCase.exitMatch(userId: userId, with: matchingId)
-                matchingPerformSubject.send(matchingId)
+                requestPerformSubject.send(matchingId)
             } catch {
                 print(error)
             }

@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-fileprivate typealias Match = (communityRecruitingContent: CommunityRecruitingContent, matchingId: Int64, matchState: MatchState)
+fileprivate typealias MatchRequest = (relationship: CommunityRelationship, matchingId: Int64, matchState: MatchState)
 
 struct MyParticipationRequestListView<Router: AppRouter>: View {
     @EnvironmentObject private var router: Router
@@ -24,7 +24,7 @@ struct MyParticipationRequestListView<Router: AppRouter>: View {
     }
     
     var body: some View {
-        content(viewModel.matches.isEmpty)
+        content(viewModel.requests.isEmpty)
             .navigationTitle("나의 참여 요청 목록")
             .navigationBarTitleDisplayMode(.inline)
             .task {
@@ -38,18 +38,20 @@ struct MyParticipationRequestListView<Router: AppRouter>: View {
                 .font(.Modakbul.headline)
         } else {
             List {
-                ForEach(viewModel.matches, id: \.communityRecruitingContent.id) { match in
-                    listCell(match)
+                ForEach(viewModel.requests, id: \.relationship.communityRecruitingContent.id) { request in
+                    listCell(request)
                 }
             }
             .listStyle(.plain)
         }
     }
     
-    @ViewBuilder private func listCell(_ match: Match) -> some View {
+    @ViewBuilder private func listCell(_ match: MatchRequest) -> some View {
+        let placeId = match.relationship.placeId
+        let locationName = match.relationship.locationName
         let state = match.matchState
         let matchingId = match.matchingId
-        let content = match.communityRecruitingContent
+        let content = match.relationship.communityRecruitingContent
         
         HStack {
             VStack(alignment: .leading, spacing: 10) {
@@ -71,7 +73,7 @@ struct MyParticipationRequestListView<Router: AppRouter>: View {
             .padding(.vertical, 4)
             .contentShape(.rect)
             .onTapGesture {
-//                router.route(to: .placeInformationDetailView(communityRecruitingContentId: content.id, userId: Int64(userId)))
+                router.route(to: .placeInformationDetailView(placeId: placeId, locationName: locationName, communityRecruitingContentId: content.id, userId: userId))
             }
             
             Spacer()
