@@ -6,6 +6,8 @@ struct ModakbulApp: App {
                                                            DataAssembly(),
                                                            DomainAssembly(),
                                                            PresentationAssembly())
+    @StateObject private var networkChecker = NetworkChecker.shared
+    @Environment(\.scenePhase) private var scenePhase
     @AppStorage(AppStorageKey.isFirstLaunch) private var isFirstLaunch: Bool = true
     @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
     
@@ -15,6 +17,15 @@ struct ModakbulApp: App {
                 OnboradingView($isFirstLaunch)
             } else {
                 router.view(to: .routerView)
+                    .onChange(of: scenePhase) {
+                        switch scenePhase {
+                        case .active:
+                            networkChecker.startMonitoring()
+                        default:
+                            networkChecker.stopMonitoring()
+                        }
+                    }
+                    .environmentObject(networkChecker)
             }
         }
     }
