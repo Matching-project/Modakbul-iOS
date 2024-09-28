@@ -38,7 +38,7 @@ enum Route: Routable {
     case profileEditView(user: User)
     case myCommunityRecruitingContentListView
     case myCommunityListView
-    case myParticipationRequestListView
+    case myParticipationRequestListView(userId: Int64)
     case blockedListView
     case reportListView
     case placeShowcaseView(userId: Int64)
@@ -117,8 +117,8 @@ enum Route: Routable {
             MyCommunityRecruitingContentListView<Router>(router.resolver.resolve(MyCommunityRecruitingContentListViewModel.self))
         case .myCommunityListView:
             MyCommunityListView<Router>(router.resolver.resolve(MyCommunityListViewModel.self))
-        case .myParticipationRequestListView:
-            MyParticipationRequestListView<Router>(router.resolver.resolve(MyParticipationRequestListViewModel.self))
+        case .myParticipationRequestListView(let userId):
+            MyParticipationRequestListView<Router>(router.resolver.resolve(MyParticipationRequestListViewModel.self), userId: userId)
         case .blockedListView:
             BlockedListView<Router>(router.resolver.resolve(BlockedListViewModel.self))
         case .reportListView:

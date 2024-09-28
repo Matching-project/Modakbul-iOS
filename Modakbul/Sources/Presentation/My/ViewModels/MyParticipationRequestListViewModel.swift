@@ -14,6 +14,7 @@ final class MyParticipationRequestListViewModel: ObservableObject {
     @Published var matches: Matches = []
     
     private let matchesSubject = PassthroughSubject<Matches, Never>()
+    private let matchingPerformSubject = PassthroughSubject<Int64, Never>()
     private var cancellables = Set<AnyCancellable>()
     
     private let matchingUseCase: MatchingUseCase
@@ -27,6 +28,13 @@ final class MyParticipationRequestListViewModel: ObservableObject {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] matches in
                 self?.matches = matches
+            }
+            .store(in: &cancellables)
+        
+        matchingPerformSubject
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] matchingId in
+                if let index = self?.matches.firstIndex(where: { $0.matchingId == matchingId }) { self?.matches.remove(at: index) }
             }
             .store(in: &cancellables)
     }
@@ -43,13 +51,22 @@ extension MyParticipationRequestListViewModel {
         }
     }
     
-    func cancelParticipationRequest(userId: Int64, with communityRecruitingContentId: Int64) {
+    func cancelParticipationRequest(userId: Int64, with matchingId: Int64) {
         Task {
             do {
-                try await matchingUseCase.cancelMatchRequest(userId: userId, with: communityRecruitingContentId)
-                if let index = matches.firstIndex(where: {$0.communityRecruitingContent.id == communityRecruitingContentId}) {
-                    matches.remove(at: index)
-                }
+                try await matchingUseCase.cancelMatchRequest(userId: userId, with: matchingId)
+                matchingPerformSubject.send(matchingId)
+            } catch {
+                print(error)
+            }
+        }
+    }
+    
+    func exitMatch(userId: Int64, with matchingId: Int64) {
+        Task {
+            do {
+                try await matchingUseCase.exitMatch(userId: userId, with: matchingId)
+                matchingPerformSubject.send(matchingId)
             } catch {
                 print(error)
             }
