@@ -17,7 +17,7 @@ struct RelatedCommunityRecruitingContentListResponseEntity: ResponseEntity {
     struct Result: Decodable {
         let id: Int64
         let title, startTime, endTime: String
-        let dayOfWeek: DayOfWeek
+        let dayOfWeek: DayOfWeek?
         let category: Category
         let recruitCount, currentCount: Int
         let meetingDate: String
@@ -26,7 +26,8 @@ struct RelatedCommunityRecruitingContentListResponseEntity: ResponseEntity {
         let locationName: String
         
         enum CodingKeys: String, CodingKey {
-            case title, startTime, endTime, dayOfWeek, category, recruitCount, currentCount, meetingDate
+            case title, startTime, endTime, dayOfWeek, recruitCount, currentCount, meetingDate
+            case category = "categoryName"
             case id = "boardId"
             case activeState = "boardStatus"
             case placeId = "cafeId"

@@ -21,7 +21,7 @@ struct RelatedParticipationRequestListResponseEntity: ResponseEntity {
         let category: Category
         let recruitCount, currentCount: Int
         let meetingDate: String
-        let dayOfWeek: DayOfWeek
+        let dayOfWeek: DayOfWeek?
         let activeState: ActiveState
         let matchState: MatchState
         let placeId: Int64

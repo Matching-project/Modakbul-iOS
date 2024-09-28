@@ -35,7 +35,7 @@ struct CommunityRecruitingContentSearchDetailResponseEntity: ResponseEntity {
     let result: Result
     
     struct Result: Decodable {
-        let imageURLs: [String]
+        let imageURLs: [URL?]
         let user: User
         let communityRecruitingContentDetail: CommunityRecruitingContentDetail
         
@@ -57,7 +57,7 @@ struct CommunityRecruitingContentSearchDetailResponseEntity: ResponseEntity {
         }
         
         struct CommunityRecruitingContentDetail: Decodable {
-            let id: Int64?
+            let id: Int64
             let title, content, createdDate, createdTime, meetingDate, startTime, endTime: String
             let category: Category
             let recruitCount, currentCount: Int
@@ -88,7 +88,8 @@ struct CommunityRecruitingContentSearchDetailResponseEntity: ResponseEntity {
         )
         
         return .init(
-            id: result.communityRecruitingContentDetail.id ?? Int64(Constants.loggedOutUserId),
+            id: result.communityRecruitingContentDetail.id,
+            placeImageURLs: result.imageURLs,
             title: result.communityRecruitingContentDetail.title,
             content: result.communityRecruitingContentDetail.content,
             writtenDate: result.communityRecruitingContentDetail.createdDate,
