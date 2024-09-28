@@ -108,7 +108,7 @@ struct PlaceInformationView<Router: AppRouter>: View {
     private var communityRecruitingContentEditButton: some View {
         Button {
             router.dismiss()
-            router.route(to: .placeInformationDetailMakingView(place: place, communityRecruitingContent: nil))
+            router.route(to: .placeInformationDetailMakingView(placeId: place.id, locationName: place.location.name, communityRecruitingContent: nil))
         } label: {
             Image(.photoUploadSelection)
                 .resizable()
@@ -135,7 +135,7 @@ struct PlaceInformationView<Router: AppRouter>: View {
                                 if userId == Constants.loggedOutUserId {
                                     router.route(to: .loginView)
                                 } else {
-                                    router.route(to: .placeInformationDetailView(place: place, communityRecruitingContentId: communityRecruitingContent.id, userId: Int64(userId)))
+                                    router.route(to: .placeInformationDetailView(placeId: place.id, locationName: place.location.name, communityRecruitingContentId: communityRecruitingContent.id, userId: Int64(userId)))
                                 }
                             }
                     }

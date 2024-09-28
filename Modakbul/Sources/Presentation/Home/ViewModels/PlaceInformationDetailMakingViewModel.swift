@@ -8,7 +8,8 @@
 import Foundation
 
 final class PlaceInformationDetailMakingViewModel: ObservableObject {
-    @Published var place: Place?
+    @Published var placeId: Int64?
+    @Published var locationName: String?
     @Published var category: Category = .interview
     @Published var peopleCount: Int = 1
     @Published var date: Date = .now
@@ -33,7 +34,7 @@ final class PlaceInformationDetailMakingViewModel: ObservableObject {
         _ communityRecruitingContentId: Int64? = nil,
         userId: Int64
     ) {
-        guard let place = place else { return }
+        guard let placeId = placeId else { return }
         
         let community = Community(routine: .daily,
                                   category: category,
@@ -53,7 +54,7 @@ final class PlaceInformationDetailMakingViewModel: ObservableObject {
         
         Task {
             do {
-                try await communityUseCase.createCommunityRecruitingContent(userId: userId, placeId: place.id, communityRecruitingContent)
+                try await communityUseCase.createCommunityRecruitingContent(userId: userId, placeId: placeId, communityRecruitingContent)
             } catch {
                 print(error)
             }
@@ -73,7 +74,7 @@ final class PlaceInformationDetailMakingViewModel: ObservableObject {
     
     func initialize() {
         id = Int64(Constants.loggedOutUserId)
-        place = nil
+        placeId = nil
         category = .interview
         peopleCount = 1
         date = .now
