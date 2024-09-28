@@ -19,7 +19,7 @@ struct ModakbulApp: App {
                 router.view(to: .routerView)
                     .onChange(of: scenePhase) {
                         switch scenePhase {
-                        case .active:
+                        case .active, .inactive:
                             networkChecker.startMonitoring()
                         default:
                             networkChecker.stopMonitoring()

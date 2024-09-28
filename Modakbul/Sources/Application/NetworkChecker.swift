@@ -57,6 +57,10 @@ extension NetworkChecker {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] result in
                 self?.isConnected = result
+                
+                if let isConnected = self?.isConnected {
+                    print(isConnected ? "네트워크 연결됨" : "네트워크 연결 오류")
+                }
             }
             .store(in: &cancellables)
     }
@@ -64,12 +68,6 @@ extension NetworkChecker {
     private func updateConnectionStatus(path: NWPath) {
         connectionSubject.send(path.status == .satisfied)
         getConnectionType(path)
-        
-        if isConnected {
-            print("네트워크 연결됨")
-        } else {
-            print("네트워크 연결 오류")
-        }
     }
     
     private func getConnectionType(_ path: NWPath) {
