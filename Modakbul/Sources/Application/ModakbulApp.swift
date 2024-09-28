@@ -11,7 +11,7 @@ struct ModakbulApp: App {
     
     var body: some Scene {
         WindowGroup {
-            if isFirstLaunch == true {
+            if isFirstLaunch {
                 OnboradingView($isFirstLaunch)
             } else {
                 router.view(to: .routerView)
