@@ -29,17 +29,11 @@ final class NetworkChecker: ObservableObject {
     private init() { monitor = NWPathMonitor() }
     
     func startMonitoring() {
-        if isMonitoring {
-            return
-        } else {
-            isMonitoring = true
-        }
+        guard isMonitoring == false else { return }
         
         monitor.start(queue: queue)
         monitor.pathUpdateHandler = { [weak self] path in
-            Task {
-                await self?.updateConnectionStatus(path: path)
-            }
+            self?.updateConnectionStatus(path: path)
         }
     }
     
@@ -51,7 +45,6 @@ final class NetworkChecker: ObservableObject {
 
 // MARK: - Private Methods
 extension NetworkChecker {
-    @MainActor
     private func updateConnectionStatus(path: NWPath) {
         isConnected = path.status == .satisfied
         getConnectionType(path)
