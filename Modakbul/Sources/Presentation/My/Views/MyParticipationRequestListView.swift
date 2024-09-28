@@ -12,10 +12,15 @@ fileprivate typealias Match = (communityRecruitingContent: CommunityRecruitingCo
 struct MyParticipationRequestListView<Router: AppRouter>: View {
     @EnvironmentObject private var router: Router
     @ObservedObject private var viewModel: MyParticipationRequestListViewModel
-    @AppStorage(AppStorageKey.userId) private var userId: Int = Constants.loggedOutUserId 
     
-    init(_ viewModel: MyParticipationRequestListViewModel) {
+    private let userId: Int64
+    
+    init(
+        _ viewModel: MyParticipationRequestListViewModel,
+        userId: Int64
+    ) {
         self.viewModel = viewModel
+        self.userId = userId
     }
     
     var body: some View {
@@ -23,7 +28,7 @@ struct MyParticipationRequestListView<Router: AppRouter>: View {
             .navigationTitle("나의 참여 요청 목록")
             .navigationBarTitleDisplayMode(.inline)
             .task {
-                await viewModel.configureView(userId: Int64(userId))
+                await viewModel.configureView(userId: userId)
             }
     }
     
@@ -71,21 +76,26 @@ struct MyParticipationRequestListView<Router: AppRouter>: View {
             
             Spacer()
             
-            Button {
-                viewModel.cancelParticipationRequest(userId: Int64(userId), with: content.id)
-            } label: {
-                switch state {
-                case .accepted:
+            switch state {
+            case .accepted:
+                Button {
+                    viewModel.exitMatch(userId: userId, with: matchingId)
+                } label: {
                     Text("나가기")
                         .font(.Modakbul.footnote)
                         .bold()
-                default:
+                }
+                .buttonStyle(.capsuledInset)
+            default:
+                Button {
+                    viewModel.cancelParticipationRequest(userId: userId, with: matchingId)
+                } label: {
                     Text("요청 취소")
                         .font(.Modakbul.footnote)
                         .bold()
                 }
+                .buttonStyle(.capsuledInset)
             }
-            .buttonStyle(.capsuledInset)
         }
     }
 }
