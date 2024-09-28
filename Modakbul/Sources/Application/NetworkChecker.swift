@@ -7,6 +7,7 @@
 
 import Foundation
 import Network
+import Combine
 
 final class NetworkChecker: ObservableObject {
     // MARK: - Nested Type
@@ -21,12 +22,18 @@ final class NetworkChecker: ObservableObject {
     
     static let shared = NetworkChecker()
     
+    private let connectionSubject = PassthroughSubject<Bool, Never>()
+    private var cancellables = Set<AnyCancellable>()
+    
     private let queue = DispatchQueue.global()
     private let monitor: NWPathMonitor
     private var connectionType: ConnectionType = .unknown
     private var isMonitoring: Bool = false
     
-    private init() { monitor = NWPathMonitor() }
+    private init() {
+        monitor = NWPathMonitor()
+        subscribe()
+    }
     
     func startMonitoring() {
         guard isMonitoring == false else { return }
@@ -45,8 +52,17 @@ final class NetworkChecker: ObservableObject {
 
 // MARK: - Private Methods
 extension NetworkChecker {
+    private func subscribe() {
+        connectionSubject
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] result in
+                self?.isConnected = result
+            }
+            .store(in: &cancellables)
+    }
+    
     private func updateConnectionStatus(path: NWPath) {
-        isConnected = path.status == .satisfied
+        connectionSubject.send(path.status == .satisfied)
         getConnectionType(path)
         
         if isConnected {
