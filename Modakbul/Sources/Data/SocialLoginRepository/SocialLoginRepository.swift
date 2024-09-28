@@ -79,11 +79,13 @@ extension DefaultSocialLoginRepository: SocialLoginRepository {
             let endpoint = Endpoint.logout(token: token.accessToken)
             try await networkService.request(endpoint: endpoint, for: DefaultResponseEntity.self)
             UserDefaults.standard.setValue(Constants.loggedOutUserId, forKey: AppStorageKey.userId)
+            try tokenStorage.delete(by: userId)
         } catch APIError.accessTokenExpired {
             let tokens = try await reissueTokens(userId: userId, token.refreshToken)
             let endpoint = Endpoint.logout(token: tokens.accessToken)
             try await networkService.request(endpoint: endpoint, for: DefaultResponseEntity.self)
             UserDefaults.standard.setValue(Constants.loggedOutUserId, forKey: AppStorageKey.userId)
+            try tokenStorage.delete(by: userId)
         } catch {
             throw error
         }
@@ -138,11 +140,13 @@ extension DefaultSocialLoginRepository: SocialLoginRepository {
             let endpoint = Endpoint.unregister(token: token.accessToken, provider: provider)
             try await networkService.request(endpoint: endpoint, for: DefaultResponseEntity.self)
             UserDefaults.standard.setValue(Constants.loggedOutUserId, forKey: AppStorageKey.userId)
+            try tokenStorage.delete(by: userId)
         } catch APIError.accessTokenExpired {
             let tokens = try await reissueTokens(userId: userId, token.refreshToken)
             let endpoint = Endpoint.logout(token: tokens.accessToken)
             try await networkService.request(endpoint: endpoint, for: DefaultResponseEntity.self)
             UserDefaults.standard.setValue(Constants.loggedOutUserId, forKey: AppStorageKey.userId)
+            try tokenStorage.delete(by: userId)
         } catch {
             throw error
         }
