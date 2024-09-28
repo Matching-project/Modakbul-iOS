@@ -58,9 +58,9 @@ extension NetworkChecker {
             .sink { [weak self] result in
                 self?.isConnected = result
                 
-                if let isConnected = self?.isConnected {
-                    print(isConnected ? "네트워크 연결됨" : "네트워크 연결 오류")
-                }
+                #if DEBUG
+                print(result ? "네트워크 연결됨" : "네트워크 연결 오류")
+                #endif
             }
             .store(in: &cancellables)
     }
