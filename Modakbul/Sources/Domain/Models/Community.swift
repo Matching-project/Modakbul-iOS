@@ -74,7 +74,10 @@ struct CommunityRecruitingContent {
 
 /// 모임의 성격을 나타냅니다.
 enum Routine: String, Codable {
+    /// 일일모임
     case daily = "ONE"
+    
+    /// 정기모임
     case regular = "REGULAR"
 }
 
