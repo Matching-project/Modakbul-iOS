@@ -11,8 +11,6 @@ struct PlaceInformationDetailView<Router: AppRouter>: View {
     @EnvironmentObject private var router: Router
     @ObservedObject private var viewModel: PlaceInformationDetailViewModel
     
-    @State private var content = PreviewHelper.shared.communityRecruitingContents.first
-    
     private let placeId: Int64
     private let locationName: String
     private let communityRecruitingContentId: Int64
@@ -33,64 +31,78 @@ struct PlaceInformationDetailView<Router: AppRouter>: View {
     }
     
     var body: some View {
-        VStack {
-            if viewModel.communityRecruitingContent == nil {
-                VStack {
-                    ContentUnavailableView("내용을 불러오는 중 입니다.", image: "Marker")
+        buildView(viewModel.communityRecruitingContent == nil)
+            .task {
+                await viewModel.configureView(communityRecruitingContentId, userId)
+            }
+            .onChange(of: viewModel.isDeleted) { oldValue, newValue in
+                // 모집글 삭제 처리 완료 되었으면 dismiss
+                if oldValue == false, newValue == true {
+                    router.dismiss()
                 }
-            } else {
-                ScrollView(.vertical) {
-                    LazyVStack {
-                        ImageCaroselArea(viewModel.imageURLs)
-                        
-                        HeaderArea(viewModel.title, viewModel.creationDate, viewModel.writer)
-                        
-                        TagArea(viewModel.category, viewModel.recruitingCount, viewModel.meetingDate, viewModel.meetingTime)
-                        
-                        ContentArea(viewModel.content)
+            }
+            .onChange(of: viewModel.isCompleted) { oldValue, newValue in
+                // 모집글 모집 종료 처리 완료 되었으면 dismiss
+                if oldValue == false, newValue == true {
+                    router.dismiss()
+                }
+            }
+    }
+    
+    @ViewBuilder private func buildView(_ isContentEmpty: Bool) -> some View {
+        if isContentEmpty {
+            VStack {
+                ContentUnavailableView("내용을 불러오는 중 입니다.", image: "Marker")
+                Button {
+                    viewModel.communityRecruitingContent = PreviewHelper.shared.communityRecruitingContents.first
+                } label: {
+                    Text("슛")
+                }
+            }
+        } else {
+            VStack {
+                GeometryReader { proxy in
+                    let size = proxy.size
+                    
+                    ScrollView(.vertical) {
+                        LazyVStack {
+                            ImageCaroselArea(size, viewModel.imageURLs)
+                            
+                            HeaderArea(viewModel.title, viewModel.creationDate, viewModel.writer)
+                            
+                            TagArea(viewModel.category, viewModel.recruitingCount, viewModel.meetingDate, viewModel.meetingTime)
+                            
+                            ContentArea(viewModel.content)
+                        }
                     }
+                    .scrollIndicators(.hidden)
                 }
-                .scrollIndicators(.hidden)
                 
                 controls()
                     .padding()
             }
-        }
-        .toolbar {
-            if viewModel.role == .exponent {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Menu {
-                        Button {
-                            router.route(to: .placeInformationDetailMakingView(placeId: placeId, locationName: locationName, communityRecruitingContent: viewModel.communityRecruitingContent))
+            .toolbar {
+                if viewModel.role == .exponent {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Menu {
+                            Button {
+                                router.route(to: .placeInformationDetailMakingView(placeId: placeId, locationName: locationName, communityRecruitingContent: viewModel.communityRecruitingContent))
+                            } label: {
+                                Text("모집글 수정하기")
+                            }
+                            
+                            Button {
+                                viewModel.deleteCommunityRecruitingContent(userId: userId)
+                            } label: {
+                                Text("모집글 삭제하기")
+                            }
                         } label: {
-                            Text("모집글 수정하기")
+                            Image(systemName: "ellipsis")
                         }
-                        
-                        Button {
-                            viewModel.deleteCommunityRecruitingContent(userId: userId)
-                        } label: {
-                            Text("모집글 삭제하기")
-                        }
-                    } label: {
-                        Image(systemName: "ellipsis")
                     }
                 }
             }
-        }
-        .task {
-            await viewModel.configureView(communityRecruitingContentId, userId)
-        }
-        .onChange(of: viewModel.isDeleted) { oldValue, newValue in
-            // 모집글 삭제 처리 완료 되었으면 dismiss
-            if oldValue == false, newValue == true {
-                router.dismiss()
-            }
-        }
-        .onChange(of: viewModel.isCompleted) { oldValue, newValue in
-            // 모집글 모집 종료 처리 완료 되었으면 dismiss
-            if oldValue == false, newValue == true {
-                router.dismiss()
-            }
+            .ignoresSafeArea(edges: .top)
         }
     }
     
@@ -133,37 +145,43 @@ struct PlaceInformationDetailView<Router: AppRouter>: View {
 extension PlaceInformationDetailView {
     private struct ImageCaroselArea: View {
         @State private var index: Int = 0
+        
+        let size: CGSize
         let imageURLs: [URL?]
         
-        init(_ imageURLs: [URL?]) {
+        init(
+            _ size: CGSize,
+            _ imageURLs: [URL?]
+        ) {
+            self.size = size
             self.imageURLs = imageURLs
         }
         
         var body: some View {
-            TabView(selection: $index) {
-                GeometryReader { proxy in
+            buildView(imageURLs.isEmpty)
+                .containerRelativeFrame(.vertical) { value, axis in
+                    value / 3
+                }
+        }
+        
+        @ViewBuilder private func buildView(_ isImageURLsEmpty: Bool) -> some View {
+            if isImageURLsEmpty {
+                ContentUnavailableView("미리보기 사진이 없어요.", image: "questionmark", description: Text("이 장소의 사진을 제보해주세요!"))
+            } else {
+                TabView(selection: $index) {
                     ForEach(0..<imageURLs.count, id: \.self) { index in
-                        AsyncImageView(url: imageURLs[index], maxWidth: proxy.size.width, maxHeight: proxy.size.height)
+                        AsyncImageView(url: imageURLs[index], maxWidth: size.width, maxHeight: size.height)
                     }
                 }
-            }
-            .tabViewStyle(.page(indexDisplayMode: .never))
-            .overlay(alignment: .bottom) {
-                CustomPageControl(currentPageIndex: $index, pageCountLimit: imageURLs.count)
-                    .alignmentGuide(.bottom) { dimension in
-                        dimension.height + 30
-                    }
-            }
-            .overlay {
-                if imageURLs.isEmpty {
-                    ContentUnavailableView("미리보기 사진이 없어요.", image: "questionmark", description: Text("이 장소의 사진을 제보해주세요!"))
+                .tabViewStyle(.page(indexDisplayMode: .never))
+                .overlay(alignment: .bottom) {
+                    CustomPageControl(currentPageIndex: $index, pageCountLimit: imageURLs.count)
+                        .alignmentGuide(.bottom) { dimension in
+                            dimension.height + 15
+                        }
                 }
+                .background(.ultraThinMaterial)
             }
-            .background(.ultraThinMaterial)
-            .containerRelativeFrame(.vertical) { value, axis in
-                value / 3
-            }
-            .ignoresSafeArea(.container, edges: .top)
         }
     }
     
