@@ -16,6 +16,7 @@ final class PlaceInformationDetailViewModel: ObservableObject {
     @Published var isCompleted: Bool = false
     
     // MARK: Presenting Data
+    @Published var imageURLs: [URL?] = []
     @Published var category: String = String()
     @Published var recruitingCount: String = String()
     @Published var meetingDate: String = String()
@@ -80,6 +81,7 @@ final class PlaceInformationDetailViewModel: ObservableObject {
         $communityRecruitingContent
             .sink { [weak self] content in
                 guard let content = content else { return }
+                self?.imageURLs = content.placeImageURLs
                 let community = content.community
                 self?.category = community.category.description
                 self?.recruitingCount = "\(community.participantsCount)/\(community.participantsLimit)"
