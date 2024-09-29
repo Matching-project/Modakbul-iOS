@@ -55,56 +55,44 @@ struct PlaceReviewView: View {
     }
     
     private var searchBarSection: some View {
-        VStack(alignment: .leading) {
-            Text("카페명")
-                .font(.Modakbul.title)
-                .bold()
-            
-            HStack {
-                RoundedTextField("카페를 검색하세요.", text: $viewModel.searchingText)
+        ZStack {
+            VStack(alignment: .leading) {
+                Text("카페명")
+                    .font(.Modakbul.title)
+                    .bold()
                 
-                RoundedButton {
-                    viewModel.searchLocation()
-                } label: {
-                    Text("검색")
+                HStack {
+                    RoundedTextField("카페를 검색하세요.", text: $viewModel.searchingText)
+                    
+                    RoundedButton {
+                        viewModel.searchLocation()
+                    } label: {
+                        Text("검색")
+                    }
                 }
-            }
-            
-            if viewModel.suggestedResults.isEmpty == false {
-                ScrollView(.vertical) {
-                    LazyVStack(alignment: .leading, spacing: 10) {
-                        ForEach(viewModel.suggestedResults, id: \.id) { result in
-                            VStack(alignment: .leading) {
-                                Text(result.title)
-                                    .font(.Modakbul.headline)
-                                
-                                Text(result.subtitle)
-                                    .font(.Modakbul.caption)
-                            }
-                            .contentShape(.rect)
-                            .onTapGesture {
-                                viewModel.selectSuggestion(result)
+                
+                if viewModel.suggestedResults.isEmpty == false {
+                    ScrollView(.vertical) {
+                        LazyVStack(alignment: .leading, spacing: 10) {
+                            ForEach(viewModel.suggestedResults, id: \.id) { result in
+                                VStack(alignment: .leading) {
+                                    Text(result.title)
+                                        .font(.Modakbul.headline)
+                                    
+                                    Text(result.subtitle)
+                                        .font(.Modakbul.caption)
+                                }
+                                .contentShape(.rect)
+                                .onTapGesture {
+                                    viewModel.selectSuggestion(result)
+                                }
                             }
                         }
                     }
-                }
-            } else {
-                ScrollView(.vertical) {
-                    LazyVStack(alignment: .leading, spacing: 10) {
-                        ForEach(viewModel.searchedLocations, id: \.id) { location in
-                            VStack(alignment: .leading) {
-                                Text(location.name)
-                                    .font(.Modakbul.headline)
-                                
-                                Text(location.address)
-                                    .font(.Modakbul.caption)
-                            }
-                            .contentShape(.rect)
-                            .onTapGesture {
-                                viewModel.selectedLocation = location
-                            }
-                        }
-                    }
+                    .background(
+                        RoundedRectangle(cornerRadius: 8)
+                            .fill(.ultraThinMaterial)
+                    )
                 }
             }
         }
