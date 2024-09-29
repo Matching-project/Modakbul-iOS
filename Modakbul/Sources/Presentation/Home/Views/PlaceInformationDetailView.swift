@@ -34,21 +34,27 @@ struct PlaceInformationDetailView<Router: AppRouter>: View {
     
     var body: some View {
         VStack {
-            ScrollView(.vertical) {
-                LazyVStack {
-                    ImageCaroselArea(viewModel.imageURLs)
-                    
-                    HeaderArea(viewModel.title, viewModel.creationDate, viewModel.writer)
-                    
-                    TagArea(viewModel.category, viewModel.recruitingCount, viewModel.meetingDate, viewModel.meetingTime)
-                    
-                    ContentArea(viewModel.content)
+            if viewModel.communityRecruitingContent == nil {
+                VStack {
+                    ContentUnavailableView("내용을 불러오는 중 입니다.", image: "Marker")
                 }
+            } else {
+                ScrollView(.vertical) {
+                    LazyVStack {
+                        ImageCaroselArea(viewModel.imageURLs)
+                        
+                        HeaderArea(viewModel.title, viewModel.creationDate, viewModel.writer)
+                        
+                        TagArea(viewModel.category, viewModel.recruitingCount, viewModel.meetingDate, viewModel.meetingTime)
+                        
+                        ContentArea(viewModel.content)
+                    }
+                }
+                .scrollIndicators(.hidden)
+                
+                controls()
+                    .padding()
             }
-            .scrollIndicators(.hidden)
-            
-            controls()
-                .padding()
         }
         .toolbar {
             if viewModel.role == .exponent {
@@ -69,11 +75,6 @@ struct PlaceInformationDetailView<Router: AppRouter>: View {
                         Image(systemName: "ellipsis")
                     }
                 }
-            }
-        }
-        .overlay {
-            if viewModel.communityRecruitingContent == nil {
-                ContentUnavailableView("내용을 불러오는 중 입니다.", image: "Marker")
             }
         }
         .task {
