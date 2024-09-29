@@ -53,17 +53,18 @@ final class LoginViewModel: ObservableObject {
     private func login(provider: AuthenticationProvider, email: String? = nil, authorizationCode: Data? = nil) {
         guard let fcm = fcmToken else { return }
         
+        let userCredential = UserCredential(provider: provider, fcm: fcm, email: email, authorizationCode: authorizationCode)
+        
         Task {
             do {
-                let userCredential = UserCredential(provider: provider, fcm: fcm, email: email, authorizationCode: authorizationCode)
                 let userId = try await userRegistrationUseCase.login(userCredential)
                 userIdSubject.send(userId)
-                userCredentialSubject.send(userCredential)
             } catch {
                 userIdSubject.send(Int64(Constants.loggedOutUserId))
-                userCredentialSubject.send(nil)
             }
         }
+        
+        userCredentialSubject.send(userCredential)
     }
     
     func kakaoLogin(_ email: String?) {
