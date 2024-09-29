@@ -14,7 +14,6 @@ final class PlaceReviewViewModel: ObservableObject {
     @Published var place: Place? = nil
     @Published var searchingText: String = String()
     @Published var selectedLocation: Location?
-    @Published var searchedLocations: [Location] = []
     @Published var suggestedResults: [SuggestedResult] = []
     
     let groupSeatingStateSelection: [GroupSeatingState] = [.yes, .no]
@@ -44,7 +43,7 @@ final class PlaceReviewViewModel: ObservableObject {
         locationsSubject
             .receive(on: DispatchQueue.main)
             .sink { [weak self] locations in
-                self?.searchedLocations = locations
+                self?.selectedLocation = locations.first
             }
             .store(in: &cancellables)
         
@@ -90,7 +89,7 @@ extension PlaceReviewViewModel {
     func stopSuggestion() {
         placeShowcaseAndReviewUseCase.stopSuggestion()
         searchingText.removeAll()
-        searchedLocations = []
+        selectedLocation = nil
         suggestedResults = []
         updateSuggestedResultsTask?.cancel()
         updateSuggestedResultsTask = nil
@@ -108,7 +107,6 @@ extension PlaceReviewViewModel {
         let isNewPlace = place == nil
         
         guard let location = selectedLocation else { return }
-        
         
         Task {
             do {
