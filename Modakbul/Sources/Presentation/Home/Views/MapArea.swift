@@ -29,7 +29,10 @@ struct MapArea<Router: AppRouter>: View {
         .navigationBarHidden(true)
         .task {
             viewModel.updateLocationOnceIfNeeded()
-            await viewModel.fetchUnreadNotificationCount(userId: userId)
+            
+            if userId != Constants.loggedOutUserId {
+                await viewModel.fetchUnreadNotificationCount(userId: userId)
+            }
         }
     }
     
@@ -57,6 +60,7 @@ struct MapArea<Router: AppRouter>: View {
         .onMapCameraChange { context in
             viewModel.cameraCenterCoordinate = context.camera.centerCoordinate
             region = context.region
+            isFocused = false
         }
     }
     
