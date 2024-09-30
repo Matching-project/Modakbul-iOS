@@ -59,7 +59,7 @@ struct PlaceShowcaseView<Router: AppRouter>: View {
     @ViewBuilder private func listCell(_ place: Place) -> some View {
         HStack {
             if let url = place.imageURLs.first {
-                AsyncImageView(url: url)
+                AsyncImageView(url: url, contentMode: .fill, clipShape: .rect(cornerRadius: 8))
             } else {
                 Image(.modakbulMainReverse)
                     .resizable()
