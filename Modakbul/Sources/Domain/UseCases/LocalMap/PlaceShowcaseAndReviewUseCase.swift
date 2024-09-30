@@ -61,10 +61,10 @@ extension DefaultPlaceShowcaseAndReviewUseCase: PlaceShowcaseAndReviewUseCase {
     }
     
     func reviewPlace(userId: Int64, on place: Place) async throws {
-        try await placesRepository.reviewPlace(on: place)
+        try await placesRepository.reviewPlace(userId: userId, on: place)
     }
     
     func suggestPlace(userId: Int64, on place: Place) async throws {
-        try await placesRepository.suggestPlace(on: place)
+        try await placesRepository.suggestPlace(userId: userId, on: place)
     }
 }

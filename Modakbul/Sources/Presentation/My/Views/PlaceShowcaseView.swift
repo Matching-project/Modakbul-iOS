@@ -30,7 +30,7 @@ struct PlaceShowcaseView<Router: AppRouter>: View {
             Spacer()
             
             FlatButton("다른 카페 제보하기") {
-                router.route(to: .placeReviewView(place: nil))
+                router.route(to: .placeReviewView(place: nil, userId: userId))
             }
         }
         .padding()
@@ -79,7 +79,7 @@ struct PlaceShowcaseView<Router: AppRouter>: View {
             Spacer()
             
             Button {
-                router.route(to: .placeReviewView(place: place))
+                router.route(to: .placeReviewView(place: place, userId: userId))
             } label: {
                 Text("리뷰")
                     .font(.Modakbul.footnote)

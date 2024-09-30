@@ -42,7 +42,7 @@ enum Route: Routable {
     case blockedListView
     case reportListView
     case placeShowcaseView(userId: Int64)
-    case placeReviewView(place: Place?)
+    case placeReviewView(place: Place?, userId: Int64)
     case notificationSettingsView
     case unregistrationView(user: User)
     case homeView           // MARK: - Home
@@ -109,8 +109,8 @@ enum Route: Routable {
             MyView<Router>(router.resolver.resolve(MyViewModel.self))
         case .placeShowcaseView(let userId):
             PlaceShowcaseView<Router>(router.resolver.resolve(PlaceShowcaseViewModel.self), userId: userId)
-        case .placeReviewView(let place):
-            PlaceReviewView<Router>(router.resolver.resolve(PlaceReviewViewModel.self), place: place)
+        case .placeReviewView(let place, let userId):
+            PlaceReviewView<Router>(router.resolver.resolve(PlaceReviewViewModel.self), place: place, userId: userId)
         case .profileEditView(let user):
             ProfileEditView<Router>(profileEditViewModel: router.resolver.resolve(ProfileEditViewModel.self), user: user)
         case .myCommunityRecruitingContentListView(let userId):
