@@ -9,9 +9,9 @@ import Foundation
 import Combine
 
 final class MyParticipationRequestListViewModel: ObservableObject {
-    @Published var requests: [(relationship: CommunityRelationship, matchingId: Int64, matchState: MatchState)] = []
+    @Published var requests: [MatchRequest] = []
     
-    private let requestsSubject = PassthroughSubject<[(relationship: CommunityRelationship, matchingId: Int64, matchState: MatchState)], Never>()
+    private let requestsSubject = PassthroughSubject<[MatchRequest], Never>()
     private let requestPerformSubject = PassthroughSubject<Int64, Never>()
     private var cancellables = Set<AnyCancellable>()
     
@@ -19,6 +19,7 @@ final class MyParticipationRequestListViewModel: ObservableObject {
     
     init(matchingUseCase: MatchingUseCase) {
         self.matchingUseCase = matchingUseCase
+        subscribe()
     }
     
     private func subscribe() {
@@ -45,6 +46,7 @@ extension MyParticipationRequestListViewModel {
             let requests = try await matchingUseCase.readMyRequestMatches(userId: userId)
             requestsSubject.send(requests)
         } catch {
+            requestsSubject.send([])
             print(error)
         }
     }
