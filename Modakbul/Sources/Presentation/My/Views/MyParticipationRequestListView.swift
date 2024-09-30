@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-fileprivate typealias MatchRequest = (relationship: CommunityRelationship, matchingId: Int64, matchState: MatchState)
+typealias MatchRequest = (relationship: CommunityRelationship, matchingId: Int64, matchState: MatchState)
 
 struct MyParticipationRequestListView<Router: AppRouter>: View {
     @EnvironmentObject private var router: Router
@@ -24,7 +24,7 @@ struct MyParticipationRequestListView<Router: AppRouter>: View {
     }
     
     var body: some View {
-        content(viewModel.requests.isEmpty)
+        buildView(viewModel.requests.isEmpty)
             .navigationTitle("나의 참여 요청 목록")
             .navigationBarTitleDisplayMode(.inline)
             .task {
@@ -32,10 +32,12 @@ struct MyParticipationRequestListView<Router: AppRouter>: View {
             }
     }
     
-    @ViewBuilder private func content(_ condition: Bool) -> some View {
-        if condition {
-            Text("아직 참여를 요청한 모임이 없어요.")
-                .font(.Modakbul.headline)
+    @ViewBuilder private func buildView(_ isRequestsEmpty: Bool) -> some View {
+        if isRequestsEmpty {
+            VStack {
+                Text("아직 참여를 요청한 모임이 없어요.")
+                    .font(.Modakbul.headline)
+            }
         } else {
             List {
                 ForEach(viewModel.requests, id: \.relationship.communityRecruitingContent.id) { request in
@@ -65,7 +67,7 @@ struct MyParticipationRequestListView<Router: AppRouter>: View {
                     
                     Text(content.community.meetingDate)
                     
-                    Text("\(content.community.startTime)~\(content.community.endTime)")
+                    Text("\(content.community.startTime.prefix(5))~\(content.community.endTime.prefix(5))")
                 }
                 .font(.Modakbul.caption)
             }
