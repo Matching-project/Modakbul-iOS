@@ -22,18 +22,19 @@ struct ProfileDetailView<Router: AppRouter>: View {
     var body: some View {
         VStack {
             AsyncImageView(
-                url: vm.user.imageURL,
+                url: vm.presentedUser?.imageURL,
                 contentMode: .fill,
                 maxWidth: 200,
                 maxHeight: 200,
                 clipShape: .circle
             )
-                .padding(.bottom, 40)
             
-            Cell(title: "닉네임", content: vm.user.nickname)
-            Cell(title: "성별", content: vm.user.gender.description)
-            Cell(title: "직업", content: vm.user.job.description)
-            Cell(title: "카테고리", content: vm.user.categoriesOfInterest.description)
+            Spacer()
+            
+            Cell(title: "닉네임", content: vm.presentedUser?.nickname ?? "-")
+            Cell(title: "성별", content: vm.presentedUser?.gender.description ?? "-")
+            Cell(title: "직업", content: vm.presentedUser?.job.description ?? "-")
+            Cell(title: "카테고리", content: vm.presentedUser?.categoriesOfInterest.description ?? "-")
             
             Spacer()
         }
@@ -66,7 +67,7 @@ struct ProfileDetailView<Router: AppRouter>: View {
     
     private var unBlockButton: some View {
         Button {
-            vm.block(userId: Int64(userId), opponentUserId: opponentUserId)
+            vm.unblock(userId: Int64(userId), blockId: opponentUserId)
         } label: {
             Text("차단해제")
         }
@@ -77,7 +78,7 @@ struct ProfileDetailView<Router: AppRouter>: View {
             router.alert(for: .blockUserConfirmation, actions: [
                 .cancelAction("취소") {},
                 .destructiveAction("차단") {
-                    vm.unblock(userId: Int64(userId), blockId: opponentUserId)
+                    vm.block(userId: Int64(userId), opponentUserId: opponentUserId)
                 },
             ])
         } label: {
@@ -124,14 +125,6 @@ extension ProfileDetailView {
                     .foregroundStyle(.accent)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-        }
-    }
-}
-
-struct ProfileDetailView_Preview: PreviewProvider {
-    static var previews: some View {
-        NavigationStack {
-            router.view(to: .profileDetailView(opponentUserId: -1))
         }
     }
 }

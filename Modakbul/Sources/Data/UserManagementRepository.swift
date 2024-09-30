@@ -172,13 +172,13 @@ extension DefaultUserManagementRepository: UserManagementRepository {
         
         do {
             let endpoint = Endpoint.readOpponentUserProfile(token: token.accessToken, userId: opponentUserId)
-            let response = try await networkService.request(endpoint: endpoint, for: UserProfileResponseEntity.self)
+            let response = try await networkService.request(endpoint: endpoint, for: OpponentUserProfileResponseEntity.self)
             return response.body.toDTO()
         } catch APIError.accessTokenExpired {
             let tokens = try await reissueTokens(userId: userId, token.refreshToken)
             
             let endpoint = Endpoint.readOpponentUserProfile(token: tokens.accessToken, userId: opponentUserId)
-            let response = try await networkService.request(endpoint: endpoint, for: UserProfileResponseEntity.self)
+            let response = try await networkService.request(endpoint: endpoint, for: OpponentUserProfileResponseEntity.self)
             return response.body.toDTO()
         } catch {
             throw error
