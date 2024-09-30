@@ -32,8 +32,8 @@ enum Endpoint {
     case readPlacesByMatches(lat: Double, lon: Double)                                                                  // 카페 모임순 목록 조회
     case readPlacesByDistance(lat: Double, lon: Double)                                                                 // 카페 거리순 목록 조회
     case readPlacesForShowcaseAndReview(token: String)                                                                  // 카페 제보 및 리뷰 목록 조회
-    case reviewPlace(placeId: Int64, review: ReviewPlaceRequestEntity)                                                  // 카페 리뷰
-    case suggestPlace(suggest: SuggestPlaceRequestEntity)                                                               // 카페 제보
+    case reviewPlace(token: String, placeId: Int64, review: ReviewPlaceRequestEntity)                                   // 카페 리뷰
+    case suggestPlace(token: String, suggest: SuggestPlaceRequestEntity)                                                // 카페 제보
     
     // MARK: - Board Related
     case createBoard(token: String, placeId: Int64, communityRecruitingContent: CommunityRecruitingContentEntity)  // 모집글 작성
@@ -131,7 +131,7 @@ extension Endpoint: TargetType {
             return "/cafes/distance"
         case .readPlacesForShowcaseAndReview:
             return "users/cafes"
-        case .reviewPlace(let placeId, _):
+        case .reviewPlace(_, let placeId, _):
             return "/users/cafes/\(placeId)/reviews"
         case .suggestPlace:
             return "/users/cafes/information"
@@ -261,9 +261,9 @@ extension Endpoint: TargetType {
             return .requestJSONEncodable(communityRecruitingContent)
         case .createChatRoom(_, let configuration):
             return .requestJSONEncodable(configuration)
-        case .reviewPlace(_, let review):
+        case .reviewPlace(_, _, let review):
             return .requestJSONEncodable(review)
-        case .suggestPlace(let suggest):
+        case .suggestPlace(_, let suggest):
             return .requestJSONEncodable(suggest)
         case .reportAndExitChatRoom(_, _, _, let report):
             return .requestJSONEncodable(report)
@@ -307,6 +307,10 @@ extension Endpoint: TargetType {
             
             // MARK: Place Related
         case .readPlacesForShowcaseAndReview(let token):
+            ["Authorization": "Bearer \(token)"]
+        case .reviewPlace(let token, _, _):
+            ["Authorization": "Bearer \(token)"]
+        case .suggestPlace(let token, _):
             ["Authorization": "Bearer \(token)"]
             
             // MARK: Board Related
@@ -376,7 +380,7 @@ extension Endpoint: TargetType {
     
     var authorizationType: AuthorizationType? {
         switch self {
-        case .logout, .unregister, .reissueToken, .updateProfile, .readMyProfile, .readMyBoards, .readMyMatches, .readMyRequestMatches, .block, .unblock, .readBlockedUsers, .readReports, .readBoards, .createBoard, .readBoardForUpdate, .updateBoard, .deleteBoard, .completeBoard, .readMatches, .requestMatch, .acceptMatchRequest, .exitMatch, .rejectMatchRequest, .createChatRoom, .readChatrooms, .exitChatRoom, .cancelMatchRequest, .reportAndExitChatRoom, .reportOpponentUserProfile, .sendNotification, .fetchNotifications, .removeNotifications, .readNotification:
+        case .logout, .unregister, .reissueToken, .updateProfile, .readMyProfile, .readMyBoards, .readMyMatches, .readMyRequestMatches, .block, .unblock, .readBlockedUsers, .readReports, .readBoards, .createBoard, .readBoardForUpdate, .updateBoard, .deleteBoard, .completeBoard, .readMatches, .requestMatch, .acceptMatchRequest, .exitMatch, .rejectMatchRequest, .createChatRoom, .readChatrooms, .exitChatRoom, .cancelMatchRequest, .reportAndExitChatRoom, .reportOpponentUserProfile, .sendNotification, .fetchNotifications, .removeNotifications, .readNotification, .reviewPlace, .suggestPlace:
                 .bearer
         default: .none
         }

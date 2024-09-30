@@ -21,8 +21,8 @@ protocol PlacesRepository: TokenRefreshable {
     func provideSuggestions(by keyword: String)
     
     func readPlacesForShowcaseAndReview(userId: Int64) async throws -> [Place]
-    func reviewPlace(on place: Place) async throws
-    func suggestPlace(on place: Place) async throws
+    func reviewPlace(userId: Int64, on place: Place) async throws
+    func suggestPlace(userId: Int64, on place: Place) async throws
 }
 
 enum PlacesRepositoryError: Error {
@@ -142,15 +142,39 @@ extension DefaultPlacesRepository: PlacesRepository {
         }
     }
     
-    func reviewPlace(on place: Place) async throws {
-        let entity = ReviewPlaceRequestEntity(powerSocketState: place.powerSocketState, groupSeatingState: place.groupSeatingState)
-        let endpoint = Endpoint.reviewPlace(placeId: place.id, review: entity)
-        try await networkService.request(endpoint: endpoint, for: DefaultResponseEntity.self)
+    func reviewPlace(userId: Int64, on place: Place) async throws {
+        let token = try tokenStorage.fetch(by: userId)
+        
+        do {
+            let entity = ReviewPlaceRequestEntity(powerSocketState: place.powerSocketState, groupSeatingState: place.groupSeatingState)
+            let endpoint = Endpoint.reviewPlace(token: token.accessToken, placeId: place.id, review: entity)
+            try await networkService.request(endpoint: endpoint, for: DefaultResponseEntity.self)
+        } catch APIError.accessTokenExpired {
+            let tokens = try await reissueTokens(userId: userId, token.refreshToken)
+            
+            let entity = ReviewPlaceRequestEntity(powerSocketState: place.powerSocketState, groupSeatingState: place.groupSeatingState)
+            let endpoint = Endpoint.reviewPlace(token: tokens.accessToken, placeId: place.id, review: entity)
+            try await networkService.request(endpoint: endpoint, for: DefaultResponseEntity.self)
+        } catch {
+            throw error
+        }
     }
     
-    func suggestPlace(on place: Place) async throws {
-        let entity = SuggestPlaceRequestEntity(place: place)
-        let endpoint = Endpoint.suggestPlace(suggest: entity)
-        try await networkService.request(endpoint: endpoint, for: DefaultResponseEntity.self)
+    func suggestPlace(userId: Int64, on place: Place) async throws {
+        let token = try tokenStorage.fetch(by: userId)
+        
+        do {
+            let entity = SuggestPlaceRequestEntity(place: place)
+            let endpoint = Endpoint.suggestPlace(token: token.accessToken, suggest: entity)
+            try await networkService.request(endpoint: endpoint, for: DefaultResponseEntity.self)
+        } catch APIError.accessTokenExpired {
+            let tokens = try await reissueTokens(userId: userId, token.refreshToken)
+            
+            let entity = SuggestPlaceRequestEntity(place: place)
+            let endpoint = Endpoint.suggestPlace(token: tokens.accessToken, suggest: entity)
+            try await networkService.request(endpoint: endpoint, for: DefaultResponseEntity.self)
+        } catch {
+            throw error
+        }
     }
 }

@@ -110,7 +110,7 @@ enum Route: Routable {
         case .placeShowcaseView(let userId):
             PlaceShowcaseView<Router>(router.resolver.resolve(PlaceShowcaseViewModel.self), userId: userId)
         case .placeReviewView(let place):
-            PlaceReviewView(router.resolver.resolve(PlaceReviewViewModel.self), place: place)
+            PlaceReviewView<Router>(router.resolver.resolve(PlaceReviewViewModel.self), place: place)
         case .profileEditView(let user):
             ProfileEditView<Router>(profileEditViewModel: router.resolver.resolve(ProfileEditViewModel.self), user: user)
         case .myCommunityRecruitingContentListView(let userId):

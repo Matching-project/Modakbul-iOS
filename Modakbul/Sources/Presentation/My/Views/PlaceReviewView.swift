@@ -12,13 +12,16 @@ struct PlaceReviewView<Router: AppRouter>: View {
     @ObservedObject private var viewModel: PlaceReviewViewModel
     
     private let place: Place?
+    private let userId: Int64
     
     init(
         _ viewModel: PlaceReviewViewModel,
-        place: Place?
+        place: Place?,
+        userId: Int64
     ) {
         self.viewModel = viewModel
         self.place = place
+        self.userId = userId
     }
     
     var body: some View {
@@ -31,7 +34,7 @@ struct PlaceReviewView<Router: AppRouter>: View {
             Spacer()
             
             FlatButton("등록하기") {
-                viewModel.submit(on: place)
+                viewModel.submit(userId: userId, on: place)
             }
             .disabled(viewModel.isSubmitButtonDisabled)
         }

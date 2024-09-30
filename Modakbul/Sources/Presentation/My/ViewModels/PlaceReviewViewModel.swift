@@ -116,24 +116,23 @@ extension PlaceReviewViewModel {
         searchLocation()
     }
     
-    func submit(on place: Place?) {
+    func submit(userId: Int64, on place: Place?) {
         let isNewPlace = place == nil
-        
-        guard let location = selectedLocation else { return }
         
         Task {
             do {
                 if isNewPlace {
+                    guard let location = selectedLocation else { return }
                     let place = Place(location: location,
                                       powerSocketState: powerSocketState,
                                       groupSeatingState: groupSeatingState)
-                    try await placeShowcaseAndReviewUseCase.suggestPlace(on: place)
+                    try await placeShowcaseAndReviewUseCase.suggestPlace(userId: userId, on: place)
                 } else {
                     guard let place = place else { return }
                     let reviewingPlace = Place(location: place.location,
                                       powerSocketState: powerSocketState,
                                       groupSeatingState: groupSeatingState)
-                    try await placeShowcaseAndReviewUseCase.reviewPlace(on: reviewingPlace)
+                    try await placeShowcaseAndReviewUseCase.reviewPlace(userId: userId, on: reviewingPlace)
                 }
             } catch {
                 print(error)
