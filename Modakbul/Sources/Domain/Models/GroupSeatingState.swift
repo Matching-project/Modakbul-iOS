@@ -8,10 +8,10 @@
 import Foundation
 
 /// 단체석 여부는 6인석 이상을 기준으로 합니다.
-enum GroupSeatingState: String, Selectable, Codable {
-    case yes = "AVAILABLE"
-    case no = "UNAVAILABLE"
-    case unknown = "UNKNOWN"
+enum GroupSeatingState: Selectable, Codable {
+    case yes
+    case no
+    case unknown
     
     var description: String {
         switch self {
@@ -25,5 +25,11 @@ enum GroupSeatingState: String, Selectable, Codable {
         case .yes: "있음"
         case .no, .unknown: "없음"
         }
+    }
+    
+    enum CodingKeys: String, CodingKey {
+        case yes = "AVAILABLE"
+        case no = "UNAVAILABLE"
+        case unknown = "UNKNOWN"
     }
 }

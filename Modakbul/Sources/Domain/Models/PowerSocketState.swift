@@ -7,10 +7,10 @@
 
 import Foundation
 
-enum PowerSocketState: String, Selectable, Codable {
-    case plenty = "MANY"
-    case moderate = "SEVERAL"
-    case few = "FEW"
+enum PowerSocketState: Selectable, Codable {
+    case plenty
+    case moderate
+    case few
     
     var description: String {
         switch self {
@@ -26,5 +26,11 @@ enum PowerSocketState: String, Selectable, Codable {
         case .moderate: "보통"
         case .few: "적음"
         }
+    }
+    
+    enum CodingKeys: String, CodingKey {
+        case plenty = "MANY"
+        case moderate = "SEVERAL"
+        case few = "FEW"
     }
 }
