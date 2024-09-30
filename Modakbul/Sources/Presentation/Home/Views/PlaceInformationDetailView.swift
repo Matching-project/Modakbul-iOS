@@ -47,6 +47,9 @@ struct PlaceInformationDetailView<Router: AppRouter>: View {
                     router.dismiss()
                 }
             }
+            .navigationModifier {
+                router.dismiss()
+            }
     }
     
     @ViewBuilder private func buildView(_ isContentEmpty: Bool) -> some View {
@@ -69,6 +72,7 @@ struct PlaceInformationDetailView<Router: AppRouter>: View {
                             ImageCaroselArea(size, viewModel.imageURLs)
                             
                             HeaderArea(viewModel.title, viewModel.creationDate, viewModel.writer)
+                                .environmentObject(router)
                             
                             TagArea(viewModel.category, viewModel.recruitingCount, viewModel.meetingDate, viewModel.meetingTime)
                             
@@ -186,6 +190,7 @@ extension PlaceInformationDetailView {
     }
     
     private struct HeaderArea: View {
+        @EnvironmentObject private var router: Router
         let title: String
         let date: String
         let user: User
@@ -217,6 +222,10 @@ extension PlaceInformationDetailView {
                         Text("게시일: \(date)")
                             .font(.Modakbul.caption)
                     }
+                }
+                .contentShape(.rect)
+                .onTapGesture {
+                    router.route(to: .profileDetailView(opponentUserId: user.id))
                 }
             }
             .padding()
