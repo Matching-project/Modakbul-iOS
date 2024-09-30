@@ -7,7 +7,8 @@
 
 import SwiftUI
 
-struct PlaceReviewView: View {
+struct PlaceReviewView<Router: AppRouter>: View {
+    @EnvironmentObject private var router: Router
     @ObservedObject private var viewModel: PlaceReviewViewModel
     
     private let place: Place?
@@ -32,10 +33,12 @@ struct PlaceReviewView: View {
             FlatButton("등록하기") {
                 viewModel.submit(on: place)
             }
-            .disabled(viewModel.selectedLocation == nil)
+            .disabled(viewModel.isSubmitButtonDisabled)
         }
         .padding()
-        .navigationTitle(viewModel.place == nil ? "카페 제보" : "카페 리뷰")
+        .navigationModifier(title: viewModel.place == nil ? "카페 제보" : "카페 리뷰") {
+            router.dismiss()
+        }
         .navigationBarTitleDisplayMode(.inline)
         .onAppear {
             viewModel.place = place

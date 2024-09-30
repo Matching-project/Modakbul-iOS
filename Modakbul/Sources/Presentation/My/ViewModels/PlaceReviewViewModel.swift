@@ -15,6 +15,7 @@ final class PlaceReviewViewModel: ObservableObject {
     @Published var searchingText: String = String()
     @Published var selectedLocation: Location?
     @Published var suggestedResults: [SuggestedResult] = []
+    @Published var isSubmitButtonDisabled: Bool = true
     
     let groupSeatingStateSelection: [GroupSeatingState] = [.yes, .no]
     let powerSocketStateSelection: [PowerSocketState] = PowerSocketState.allCases
@@ -51,6 +52,18 @@ final class PlaceReviewViewModel: ObservableObject {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] results in
                 self?.suggestedResults = results
+            }
+            .store(in: &cancellables)
+        
+        $place
+            .sink { [weak self] place in
+                self?.isSubmitButtonDisabled = place == nil
+            }
+            .store(in: &cancellables)
+        
+        $selectedLocation
+            .sink { [weak self] location in
+                self?.isSubmitButtonDisabled = location == nil
             }
             .store(in: &cancellables)
     }
