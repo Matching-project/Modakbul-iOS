@@ -342,6 +342,8 @@ extension Endpoint: TargetType {
             ["Authorization": "Bearer \(token)"]
         case .cancelMatchRequest(let token, _):
             ["Authorization": "Bearer \(token)"]
+        case .exitMatch(let token, _):
+            ["Authorization": "Bearer \(token)"]
             
             // MARK: Chat Related
         case .createChatRoom(let token, _):
@@ -374,7 +376,7 @@ extension Endpoint: TargetType {
     
     var authorizationType: AuthorizationType? {
         switch self {
-        case .logout, .unregister, .reissueToken, .updateProfile, .readMyProfile, .readMyBoards, .readMyMatches, .readMyRequestMatches, .block, .unblock, .readBlockedUsers, .readReports, .readBoards, .createBoard, .readBoardForUpdate, .updateBoard, .deleteBoard, .completeBoard, .readMatches, .requestMatch, .acceptMatchRequest, .rejectMatchRequest, .createChatRoom, .readChatrooms, .exitChatRoom, .cancelMatchRequest, .reportAndExitChatRoom, .reportOpponentUserProfile, .sendNotification, .fetchNotifications, .removeNotifications, .readNotification:
+        case .logout, .unregister, .reissueToken, .updateProfile, .readMyProfile, .readMyBoards, .readMyMatches, .readMyRequestMatches, .block, .unblock, .readBlockedUsers, .readReports, .readBoards, .createBoard, .readBoardForUpdate, .updateBoard, .deleteBoard, .completeBoard, .readMatches, .requestMatch, .acceptMatchRequest, .exitMatch, .rejectMatchRequest, .createChatRoom, .readChatrooms, .exitChatRoom, .cancelMatchRequest, .reportAndExitChatRoom, .reportOpponentUserProfile, .sendNotification, .fetchNotifications, .removeNotifications, .readNotification:
                 .bearer
         default: .none
         }
