@@ -81,13 +81,21 @@ struct MyParticipationRequestListView<Router: AppRouter>: View {
             Spacer()
             
             switch state {
+            case .rejected:
+                Button {
+                    //
+                } label: {
+                    Text("거절됨")
+                        .font(.Modakbul.footnote.bold())
+                }
+                .buttonStyle(.capsuledInset)
+                .disabled(true)
             case .accepted:
                 Button {
                     viewModel.exitMatch(userId: userId, with: matchingId)
                 } label: {
                     Text("나가기")
-                        .font(.Modakbul.footnote)
-                        .bold()
+                        .font(.Modakbul.footnote.bold())
                 }
                 .buttonStyle(.capsuledInset)
             default:
@@ -95,8 +103,7 @@ struct MyParticipationRequestListView<Router: AppRouter>: View {
                     viewModel.cancelParticipationRequest(userId: userId, with: matchingId)
                 } label: {
                     Text("요청 취소")
-                        .font(.Modakbul.footnote)
-                        .bold()
+                        .font(.Modakbul.footnote.bold())
                 }
                 .buttonStyle(.capsuledInset)
             }
