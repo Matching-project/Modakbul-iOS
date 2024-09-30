@@ -129,9 +129,10 @@ extension PlaceReviewViewModel {
                     try await placeShowcaseAndReviewUseCase.suggestPlace(userId: userId, on: place)
                 } else {
                     guard let place = place else { return }
-                    let reviewingPlace = Place(location: place.location,
-                                      powerSocketState: powerSocketState,
-                                      groupSeatingState: groupSeatingState)
+                    let reviewingPlace = Place(id: place.id,
+                                               location: place.location,
+                                               powerSocketState: powerSocketState,
+                                               groupSeatingState: groupSeatingState)
                     try await placeShowcaseAndReviewUseCase.reviewPlace(userId: userId, on: reviewingPlace)
                 }
             } catch {
