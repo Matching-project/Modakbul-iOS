@@ -26,19 +26,24 @@ struct PlaceReviewView<Router: AppRouter>: View {
     
     var body: some View {
         VStack(alignment: .leading) {
-            header(viewModel.place)
-                .padding()
-            
-            statesArea
-            
-            Spacer()
+            ScrollView(.vertical) {
+                header(place)
+                    .padding()
+                
+                StatesArea(viewModel: viewModel)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.horizontal)
+            }
+            .scrollDismissesKeyboard(.immediately)
+            .scrollIndicators(.hidden)
             
             FlatButton("등록하기") {
                 viewModel.submit(userId: userId, on: place)
             }
             .disabled(viewModel.isSubmitButtonDisabled)
+            .padding()
+            .safeAreaPadding(.bottom, 10)
         }
-        .padding()
         .navigationModifier(title: viewModel.place == nil ? "카페 제보" : "카페 리뷰") {
             router.dismiss()
         }
@@ -54,18 +59,39 @@ struct PlaceReviewView<Router: AppRouter>: View {
     
     @ViewBuilder private func header(_ place: Place?) -> some View {
         if let place = place {
-            placeInfo(place)
+            PlaceInfo(place)
         } else {
-            searchBarSection
+            SearchBarArea(viewModel: viewModel)
+        }
+    }
+}
+
+extension PlaceReviewView {
+    private struct PlaceInfo: View {
+        private let place: Place
+        
+        init(_ place: Place) {
+            self.place = place
+        }
+        
+        var body: some View {
+            VStack(alignment: .leading, spacing: 10) {
+                Text(place.location.name)
+                    .font(.Modakbul.title.bold())
+                
+                Text(place.location.address)
+                    .font(.Modakbul.caption)
+            }
         }
     }
     
-    private var searchBarSection: some View {
-        ZStack {
+    private struct SearchBarArea: View {
+        @ObservedObject var viewModel: PlaceReviewViewModel
+        
+        var body: some View {
             VStack(alignment: .leading) {
                 Text("카페명")
-                    .font(.Modakbul.title)
-                    .bold()
+                    .font(.Modakbul.title.bold())
                 
                 HStack {
                     RoundedTextField("카페를 검색하세요.", text: $viewModel.searchingText)
@@ -88,6 +114,7 @@ struct PlaceReviewView<Router: AppRouter>: View {
                                     Text(result.subtitle)
                                         .font(.Modakbul.caption)
                                 }
+                                .padding()
                                 .contentShape(.rect)
                                 .onTapGesture {
                                     viewModel.selectSuggestion(result)
@@ -95,6 +122,7 @@ struct PlaceReviewView<Router: AppRouter>: View {
                             }
                         }
                     }
+                    .scrollDismissesKeyboard(.interactively)
                     .background(
                         RoundedRectangle(cornerRadius: 8)
                             .fill(.ultraThinMaterial)
@@ -104,77 +132,76 @@ struct PlaceReviewView<Router: AppRouter>: View {
         }
     }
     
-    @ViewBuilder private func placeInfo(_ place: Place) -> some View {
-        VStack(alignment: .leading, spacing: 10) {
-            Text(place.location.name)
-                .font(.Modakbul.title)
-                .bold()
-            
-            Text(place.location.address)
-                .font(.Modakbul.caption)
+    private struct StatesArea: View {
+        @ObservedObject var viewModel: PlaceReviewViewModel
+        
+        var body: some View {
+            VStack(alignment: .leading, spacing: 20) {
+                VStack(alignment: .leading, spacing: 10) {
+                    Text("콘센트")
+                        .font(.Modakbul.title2.bold())
+                    
+                    HStack {
+                        ForEach(viewModel.powerSocketStateSelection) { state in
+                            if state == viewModel.powerSocketState {
+                                StrokedFilledButton(.capsule, .all, 14) {
+                                    Text(state.shortDescription)
+                                } action: {
+                                    //
+                                }
+                                .padding(.horizontal, 4)
+                            } else {
+                                StrokedButton(.capsule, .all, 14) {
+                                    Text(state.shortDescription)
+                                } action: {
+                                    withAnimation(.easeInOut) {
+                                        viewModel.powerSocketState = state
+                                    }
+                                }
+                                .padding(.horizontal, 4)
+                            }
+                        }
+                    }
+                }
+                .padding(.vertical)
+                
+                VStack(alignment: .leading, spacing: 10) {
+                    Text("단체석 여부 (6인 이상)")
+                        .font(.Modakbul.title2)
+                        .bold()
+                    
+                    HStack {
+                        ForEach(viewModel.groupSeatingStateSelection) { state in
+                            if state == viewModel.groupSeatingState {
+                                StrokedFilledButton(.capsule, .all, 14) {
+                                    Text(state.shortDescription)
+                                } action: {
+                                    //
+                                }
+                                .padding(.horizontal, 4)
+                            } else {
+                                StrokedButton(.capsule, .all, 14) {
+                                    Text(state.shortDescription)
+                                } action: {
+                                    withAnimation(.easeInOut) {
+                                        viewModel.groupSeatingState = state
+                                    }
+                                }
+                                .padding(.horizontal, 4)
+                            }
+                        }
+                    }
+                }
+                .padding(.vertical)
+            }
         }
     }
-    
-    private var statesArea: some View {
-        VStack(alignment: .leading, spacing: 20) {
-            VStack(alignment: .leading, spacing: 10) {
-                Text("콘센트")
-                    .font(.Modakbul.title2)
-                    .bold()
-                
-                HStack {
-                    ForEach(viewModel.powerSocketStateSelection) { state in
-                        if state == viewModel.powerSocketState {
-                            StrokedFilledButton(.capsule, .all, 14) {
-                                Text(state.shortDescription)
-                            } action: {
-                                //
-                            }
-                            .padding(.horizontal, 4)
-                        } else {
-                            StrokedButton(.capsule, .all, 14) {
-                                Text(state.shortDescription)
-                            } action: {
-                                withAnimation(.easeInOut) {
-                                    viewModel.powerSocketState = state
-                                }
-                            }
-                            .padding(.horizontal, 4)
-                        }
-                    }
-                }
-            }
-            .padding(.vertical)
-            
-            VStack(alignment: .leading, spacing: 10) {
-                Text("단체석 여부 (6인 이상)")
-                    .font(.Modakbul.title2)
-                    .bold()
-                
-                HStack {
-                    ForEach(viewModel.groupSeatingStateSelection) { state in
-                        if state == viewModel.groupSeatingState {
-                            StrokedFilledButton(.capsule, .all, 14) {
-                                Text(state.shortDescription)
-                            } action: {
-                                //
-                            }
-                            .padding(.horizontal, 4)
-                        } else {
-                            StrokedButton(.capsule, .all, 14) {
-                                Text(state.shortDescription)
-                            } action: {
-                                withAnimation(.easeInOut) {
-                                    viewModel.groupSeatingState = state
-                                }
-                            }
-                            .padding(.horizontal, 4)
-                        }
-                    }
-                }
-            }
-            .padding(.vertical)
+}
+
+struct PlaceReviewView_Preview: PreviewProvider {
+    static var previews: some View {
+        NavigationStack {
+            router.view(to: .placeReviewView(place: nil, userId: 3))
         }
-        .padding()
     }
 }
