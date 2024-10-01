@@ -31,8 +31,8 @@ struct BlockedListView<Router: AppRouter>: View {
                 .font(.Modakbul.headline)
         } else {
             List {
-                ForEach(viewModel.blockedUsers, id: \.blockId) { (blockedId, user) in
-                    listCell(user, blockedId)
+                ForEach(viewModel.blockedUsers, id: \.blockId) { (blockId, user) in
+                    listCell(user, blockId)
                         .listRowSeparator(.hidden)
                 }
             }
@@ -40,7 +40,7 @@ struct BlockedListView<Router: AppRouter>: View {
         }
     }
     
-    @ViewBuilder private func listCell(_ user: User, _ blockedId: Int64) -> some View {
+    @ViewBuilder private func listCell(_ user: User, _ blockId: Int64) -> some View {
         HStack {
             AsyncImageView(
                 url: user.imageURL,
@@ -63,7 +63,7 @@ struct BlockedListView<Router: AppRouter>: View {
             Spacer()
             
             Button {
-                viewModel.cancelBlock(userId: Int64(userId), blockId: blockedId)
+                viewModel.unblock(userId: Int64(userId), blockId: blockId)
             } label: {
                 Text("차단 해제")
                     .font(.Modakbul.footnote)
