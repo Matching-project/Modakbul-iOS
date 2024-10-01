@@ -35,22 +35,30 @@ struct Location: Identifiable {
         var cityAndState = String()
         var address = String()
         
-        cityAndState = placemark.locality ?? String()
-        if let city = placemark.administrativeArea {
-            cityAndState = cityAndState.isEmpty ? city : "\(city) \(cityAndState)"
+        // 지역과 주를 결합
+        if let locality = placemark.locality {
+            cityAndState = locality
+        }
+        if let administrativeArea = placemark.administrativeArea {
+            cityAndState = cityAndState.isEmpty ? administrativeArea : "\(administrativeArea) \(cityAndState)"
         }
         
-        address = placemark.subThoroughfare ?? String()
-        if let street = placemark.thoroughfare {
-            address = address.isEmpty ? street : "\(street) \(address)"
+        // 상세 주소 설정
+        if let subThoroughfare = placemark.subThoroughfare {
+            address = subThoroughfare
+        }
+        if let thoroughfare = placemark.thoroughfare {
+            address = address.isEmpty ? thoroughfare : "\(thoroughfare) \(address)"
         }
         
-        if address.trimmingCharacters(in: .whitespaces).isEmpty, cityAndState.isEmpty == false {
+        // 주소가 비어있는 경우, 지역과 주를 사용
+        if address.trimmingCharacters(in: .whitespaces).isEmpty {
             address = cityAndState
-        } else {
-            address = cityAndState.isEmpty ? address : "\(cityAndState) \(address)"
+        } else if !cityAndState.isEmpty {
+            address = "\(cityAndState) \(address)"
         }
         
-        self.init(name: placemark.name, address: address, coordinate: placemark.location?.coordinate ?? CLLocationCoordinate2D())
+        // name을 적절히 설정
+        self.init(name: placemark.thoroughfare ?? "Unknown Location", address: address, coordinate: placemark.location?.coordinate ?? CLLocationCoordinate2D())
     }
 }
