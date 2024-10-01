@@ -24,13 +24,14 @@ final class ReportViewModel: ObservableObject {
     
     @MainActor
     func report(userId: Int64, opponentUserId: Int64) {
-        if reportType != .other { description = "" }
+        guard let reportType = reportType else { return }
         
         Task {
             do {
                 try await userBusinessUseCase.report(userId: userId,
                                                      opponentUserId: opponentUserId,
-                                                     report: Report(content: description))
+                                                     report: Report(content: reportType.description + " " + description))
+                initialize()
             } catch {
                 print(error)
             }

@@ -70,7 +70,6 @@ struct ReportView<Router: AppRouter>: View {
                     .defaultAction("확인") {
                         vm.report(userId: Int64(userId), opponentUserId: opponentUserId)
                         isReported = true
-                        vm.initialize()
                         router.dismiss()
                     }
                 ])
