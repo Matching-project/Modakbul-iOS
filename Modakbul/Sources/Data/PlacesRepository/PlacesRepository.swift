@@ -14,7 +14,7 @@ protocol PlacesRepository: TokenRefreshable {
     func readPlaces(with keyword: String, on coordinate: Coordinate) async throws -> [Place]
     func readPlacesOrderedByDistance(on coordinate: Coordinate) async throws -> [Place]
     func readPlacesOrderedByMatchesCount(on coordinate: Coordinate) async throws -> [Place]
-    func readLocations(with keyword: String) async throws -> [Location]
+    func readCoordinateOnPlace(with keyword: String) async throws -> [Coordinate]
     func readCurrentCoordinate() async throws -> Coordinate
     func startSuggestion(with continuation: AsyncStream<[SuggestedResult]>.Continuation)
     func stopSuggestion()
@@ -86,18 +86,8 @@ extension DefaultPlacesRepository: PlacesRepository {
         }
     }
     
-    func readLocations(with keyword: String) async throws -> [Location] {
-        do {
-            if let currentCoordinate = currentCoordinate {
-                let locations = await localMapService.search(by: keyword, on: currentCoordinate)
-                return locations
-            } else {
-                let coordinate = try await readCurrentCoordinate()
-                return await localMapService.search(by: keyword, on: coordinate)
-            }
-        } catch {
-            throw PlacesRepositoryError.fetchFailed
-        }
+    func readCoordinateOnPlace(with keyword: String) async throws -> [Coordinate] {
+        return await localMapService.search(by: keyword)
     }
     
     func readCurrentCoordinate() async throws -> Coordinate {

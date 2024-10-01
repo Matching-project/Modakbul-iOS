@@ -11,7 +11,7 @@ import MapKit
 protocol LocalMapService: NSObject, MKLocalSearchCompleterDelegate {
     typealias Coordinate = CLLocationCoordinate2D
     
-    func search(by keyword: String, on coordinate: Coordinate) async -> [Location]
+    func search(by keyword: String) async -> [Coordinate]
     func startSuggestion(with continuation: AsyncStream<[SuggestedResult]>.Continuation)
     func stopSuggestion()
     func provideSuggestions(by keyword: String, on coordinate: Coordinate)
@@ -20,11 +20,10 @@ protocol LocalMapService: NSObject, MKLocalSearchCompleterDelegate {
 final class DefaultLocalMapService: NSObject {
     private var completer: MKLocalSearchCompleter?
     
-    private var span: MKCoordinateSpan = MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
     private var currentSearch: MKLocalSearch?
     private var resultStreamContinuation: AsyncStream<[SuggestedResult]>.Continuation?
     
-    private func performSearch(_ request: MKLocalSearch.Request) async -> [Location] {
+    private func performSearch(_ request: MKLocalSearch.Request) async -> [Coordinate] {
         currentSearch?.cancel()
         let search = MKLocalSearch(request: request)
         currentSearch = search
@@ -39,16 +38,16 @@ final class DefaultLocalMapService: NSObject {
             results = []
         }
         
-        return results.map { Location($0.placemark) }
+        return results.map { $0.placemark.coordinate }
     }
 }
 
 // MARK: LocalMapService Conformation
 extension DefaultLocalMapService: LocalMapService {
-    func search(by keyword: String, on coordinate: Coordinate) async -> [Location] {
+    func search(by keyword: String) async -> [Coordinate] {
+//        let simplifiedKeyword = keyword.components(separatedBy: ",").first?.trimmingCharacters(in: .whitespacesAndNewlines) ?? keyword
         let request = MKLocalSearch.Request()
         request.naturalLanguageQuery = keyword
-        request.region = MKCoordinateRegion(center: coordinate, span: span)
         return await performSearch(request)
     }
     
@@ -66,7 +65,6 @@ extension DefaultLocalMapService: LocalMapService {
     
     func provideSuggestions(by keyword: String, on coordinate: Coordinate) {
         completer?.resultTypes = .pointOfInterest
-        completer?.region = MKCoordinateRegion(center: coordinate, span: span)
         completer?.queryFragment = keyword
     }
 }

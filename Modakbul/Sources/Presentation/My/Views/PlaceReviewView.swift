@@ -55,6 +55,11 @@ struct PlaceReviewView<Router: AppRouter>: View {
         .onDisappear {
             viewModel.stopSuggestion()
         }
+        .onReceive(viewModel.$submitCompletion) { result in
+            if result {
+                router.alert(for: .showcaseAndReviewSuccess, actions: [ConfirmationAction.defaultAction("확인", action: {router.dismiss()})])
+            }
+        }
     }
     
     @ViewBuilder private func header(_ place: Place?) -> some View {
@@ -93,15 +98,7 @@ extension PlaceReviewView {
                 Text("카페명")
                     .font(.Modakbul.title.bold())
                 
-                HStack {
-                    RoundedTextField("카페를 검색하세요.", text: $viewModel.searchingText)
-                    
-                    RoundedButton {
-                        viewModel.searchLocation()
-                    } label: {
-                        Text("검색")
-                    }
-                }
+                RoundedTextField("카페를 검색하세요.", text: $viewModel.searchingText)
                 
                 if viewModel.suggestedResults.isEmpty == false {
                     ScrollView(.vertical) {
@@ -117,7 +114,9 @@ extension PlaceReviewView {
                                 .padding()
                                 .contentShape(.rect)
                                 .onTapGesture {
-                                    viewModel.selectSuggestion(result)
+                                    withAnimation(.easeInOut) {
+                                        viewModel.selectSuggestion(result)
+                                    }
                                 }
                             }
                         }
@@ -194,14 +193,6 @@ extension PlaceReviewView {
                 }
                 .padding(.vertical)
             }
-        }
-    }
-}
-
-struct PlaceReviewView_Preview: PreviewProvider {
-    static var previews: some View {
-        NavigationStack {
-            router.view(to: .placeReviewView(place: nil, userId: 3))
         }
     }
 }

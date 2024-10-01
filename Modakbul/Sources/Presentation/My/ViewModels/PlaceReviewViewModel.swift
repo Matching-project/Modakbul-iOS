@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import CoreLocation
 
 final class PlaceReviewViewModel: ObservableObject {
     @Published var powerSocketState: PowerSocketState = .moderate
@@ -16,12 +17,14 @@ final class PlaceReviewViewModel: ObservableObject {
     @Published var selectedLocation: Location?
     @Published var suggestedResults: [SuggestedResult] = []
     @Published var isSubmitButtonDisabled: Bool = true
+    @Published var submitCompletion: Bool = false
     
     let groupSeatingStateSelection: [GroupSeatingState] = [.yes, .no]
     let powerSocketStateSelection: [PowerSocketState] = PowerSocketState.allCases
 
     private let locationsSubject = PassthroughSubject<[Location], Never>()
     private let suggestedResultsSubject = PassthroughSubject<[SuggestedResult], Never>()
+    private let submitCompletionSubject = PassthroughSubject<Bool, Never>()
     private var cancellables = Set<AnyCancellable>()
     private var updateSuggestedResultsTask: Task<Void, Never>?
 
@@ -75,14 +78,17 @@ final class PlaceReviewViewModel: ObservableObject {
 
 // MARK: Interfaces
 extension PlaceReviewViewModel {
-    func searchLocation() {
+    func searchLocation(title: String, subtitle: String) {
+        searchingText = subtitle + ", " + title
         guard searchingText.isEmpty == false else { return }
         suggestedResults.removeAll()
 
         Task {
             do {
-                let searchedLocations = try await placeShowcaseAndReviewUseCase.fetchLocations(with: searchingText)
-                locationsSubject.send(searchedLocations)
+                let locations = try await placeShowcaseAndReviewUseCase.fetchCoordinateOnPlace(with: searchingText).map {
+                    Location(name: title, address: subtitle, coordinate: $0)
+                }
+                locationsSubject.send(locations)
             } catch {
                 locationsSubject.send([])
             }
@@ -109,11 +115,11 @@ extension PlaceReviewViewModel {
         powerSocketState = .moderate
         groupSeatingState = .yes
         place = nil
+        submitCompletion = false
     }
     
     func selectSuggestion(_ suggestedResult: SuggestedResult) {
-        searchingText = [suggestedResult.title, suggestedResult.subtitle].joined(separator: " ")
-        searchLocation()
+        searchLocation(title: suggestedResult.title, subtitle: suggestedResult.subtitle)
     }
     
     func submit(userId: Int64, on place: Place?) {
@@ -127,6 +133,7 @@ extension PlaceReviewViewModel {
                                       powerSocketState: powerSocketState,
                                       groupSeatingState: groupSeatingState)
                     try await placeShowcaseAndReviewUseCase.suggestPlace(userId: userId, on: place)
+                    submitCompletionSubject.send(true)
                 } else {
                     guard let place = place else { return }
                     let reviewingPlace = Place(id: place.id,
@@ -134,8 +141,10 @@ extension PlaceReviewViewModel {
                                                powerSocketState: powerSocketState,
                                                groupSeatingState: groupSeatingState)
                     try await placeShowcaseAndReviewUseCase.reviewPlace(userId: userId, on: reviewingPlace)
+                    submitCompletionSubject.send(true)
                 }
             } catch {
+                submitCompletionSubject.send(false)
                 print(error)
             }
         }
