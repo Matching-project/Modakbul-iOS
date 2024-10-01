@@ -108,6 +108,10 @@ extension DefaultNetworkService: NetworkService {
         return try await withCheckedThrowingContinuation { [weak self] continuation in
             guard let self = self else { return }
             
+            #if DEBUG
+            print(type)
+            #endif
+            
             let provider = MoyaProvider<E>()
             
             provider.request(endpoint) { [weak self] result in
