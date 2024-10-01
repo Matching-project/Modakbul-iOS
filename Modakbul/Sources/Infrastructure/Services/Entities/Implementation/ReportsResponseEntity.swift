@@ -17,7 +17,7 @@ struct ReportsResponseEntity: ResponseEntity {
     struct Result: Decodable {
         let imageURL: URL?
         let nickname: String
-        let category: Set<Category>
+        let category: Category
         let job: Job
         let inquiryStatus: InquiryStatusType
         
@@ -34,7 +34,7 @@ struct ReportsResponseEntity: ResponseEntity {
             let user = User(
                 nickname: $0.nickname,
                 job: $0.job,
-                categoriesOfInterest: $0.category,
+                categoriesOfInterest: [$0.category],
                 imageURL: $0.imageURL
             )
             

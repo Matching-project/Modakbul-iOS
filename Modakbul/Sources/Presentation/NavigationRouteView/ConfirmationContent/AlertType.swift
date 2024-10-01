@@ -24,6 +24,8 @@ enum AlertType {
     case login
     /// 로그아웃 알림입니다.
     case logout
+    /// 제보/리뷰 완료 알림입니다.
+    case showcaseAndReviewSuccess
     
     func alert(_ actions: [ConfirmationAction]) -> ConfirmationContent {
         switch self {
@@ -43,6 +45,8 @@ enum AlertType {
             Alert(message: "로그인이 필요한 서비스입니다.\n로그인하시겠어요?", actions: actions)
         case .logout:
             Alert(message: "정말 로그아웃하시겠어요?", actions: actions)
+        case .showcaseAndReviewSuccess:
+            Alert(title: "카페 제보/리뷰 완료!", message: "관리자가 검토한 후 반영됩니다.", actions: actions)
         }
     }
 }

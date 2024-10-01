@@ -6,10 +6,11 @@
 //
 
 import Foundation
+import CoreLocation
 
 protocol PlaceShowcaseAndReviewUseCase {
-    /// MapKit 장소 검색
-    func fetchLocations(with keyword: String) async throws -> [Location]
+    /// MapKit 장소명으로 좌표 검색
+    func fetchCoordinateOnPlace(with keyword: String) async throws -> [CLLocationCoordinate2D]
     
     /// MapKit 관심 장소 검색어 제안 시작
     func startSuggestion(with continuation: AsyncStream<[SuggestedResult]>.Continuation)
@@ -40,8 +41,8 @@ final class DefaultPlaceShowcaseAndReviewUseCase {
 
 // MARK: PlaceShowcaseAndReviewUseCase Conformation
 extension DefaultPlaceShowcaseAndReviewUseCase: PlaceShowcaseAndReviewUseCase {
-    func fetchLocations(with keyword: String) async throws -> [Location] {
-        try await placesRepository.readLocations(with: keyword)
+    func fetchCoordinateOnPlace(with keyword: String) async throws -> [CLLocationCoordinate2D] {
+        try await placesRepository.readCoordinateOnPlace(with: keyword)
     }
     
     func startSuggestion(with continuation: AsyncStream<[SuggestedResult]>.Continuation) {

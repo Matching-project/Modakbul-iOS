@@ -29,9 +29,11 @@ enum ReportType: CaseIterable, Hashable, CustomStringConvertible {
 
 /// 신고 또는 문의에 대한 처리 상태를 표현합니다.
 enum InquiryStatusType: String, Decodable {
+    /// 처리 완료
     case completed = "COMPLETED"
-    case waiting = "WAITING"
-    case deleted = "DELETED"
+    
+    /// 처리 대기 중
+    case pending = "PENDING"
 }
 
 /// 신고 내용을 표현합니다.

@@ -79,9 +79,9 @@ struct ReportListView<Router: AppRouter>: View {
     
     @ViewBuilder private func inquiryStatus(_ status: InquiryStatusType) -> some View {
         switch status {
-        case .completed, .deleted:
+        case .completed:
             Text("처리 완료")
-        case .waiting:
+        case .pending:
             Text("처리 중")
         }
     }

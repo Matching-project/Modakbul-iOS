@@ -304,6 +304,8 @@ extension Endpoint: TargetType {
             ["Authorization": "Bearer \(token)"]
         case .readOpponentUserProfile(let token, _):
             ["Authorization": "Bearer \(token)"]
+        case .reportOpponentUserProfile(let token, _, _):
+            ["Authorization": "Bearer \(token)"]
             
             // MARK: Place Related
         case .readPlacesForShowcaseAndReview(let token):

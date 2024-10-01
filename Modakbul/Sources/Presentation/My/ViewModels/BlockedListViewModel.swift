@@ -12,6 +12,7 @@ final class BlockedListViewModel: ObservableObject {
     @Published var blockedUsers: [(blockId: Int64, blockedUser: User)] = []
     
     private let usersSubject = PassthroughSubject<[(blockId: Int64, blockedUser: User)], Never>()
+    private let unblockPerformSubject = PassthroughSubject<Int64, Never>()
     private var cancellables = Set<AnyCancellable>()
     
     private let userBusinessUseCase: UserBusinessUseCase
@@ -28,6 +29,14 @@ final class BlockedListViewModel: ObservableObject {
                 self?.blockedUsers = users
             }
             .store(in: &cancellables)
+        
+        unblockPerformSubject
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] id in
+                guard let index = self?.blockedUsers.firstIndex(where: { $0.blockId == id }) else { return }
+                self?.blockedUsers.remove(at: index)
+            }
+            .store(in: &cancellables)
     }
 }
 
@@ -42,10 +51,11 @@ extension BlockedListViewModel {
         }
     }
     
-    func cancelBlock(userId: Int64, blockId: Int64) {
+    func unblock(userId: Int64, blockId: Int64) {
         Task {
             do {
                 try await userBusinessUseCase.unblock(userId: userId, blockId: blockId)
+                unblockPerformSubject.send(blockId)
             } catch {
                 print(error)
             }

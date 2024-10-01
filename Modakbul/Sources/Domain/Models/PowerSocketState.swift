@@ -27,4 +27,10 @@ enum PowerSocketState: String, Selectable, Codable {
         case .few: "적음"
         }
     }
+    
+    enum CodingKeys: String, CodingKey {
+        case plenty = "MANY"
+        case moderate = "SEVERAL"
+        case few = "FEW"
+    }
 }

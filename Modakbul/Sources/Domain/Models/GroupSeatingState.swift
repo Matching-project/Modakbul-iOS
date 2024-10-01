@@ -26,4 +26,10 @@ enum GroupSeatingState: String, Selectable, Codable {
         case .no, .unknown: "없음"
         }
     }
+    
+    enum CodingKeys: String, CodingKey {
+        case yes = "AVAILABLE"
+        case no = "UNAVAILABLE"
+        case unknown = "UNKNOWN"
+    }
 }
