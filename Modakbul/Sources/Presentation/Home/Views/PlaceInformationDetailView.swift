@@ -140,7 +140,7 @@ struct PlaceInformationDetailView<Router: AppRouter>: View {
                     // TODO: 채팅하기 기능 연결
                 }
                 
-                MatchRequestButton(matchState: $viewModel.matchState, action: viewModel.requestMatch)
+                MatchRequestButton(matchState: $viewModel.matchState, isFull: $viewModel.isFull, action: viewModel.requestMatch)
             }
         }
     }
@@ -300,6 +300,7 @@ extension PlaceInformationDetailView {
     
     private struct MatchRequestButton: View {
         @Binding var matchState: MatchState
+        @Binding var isFull: Bool
         
         let action: () -> Void
         
@@ -319,6 +320,7 @@ extension PlaceInformationDetailView {
                 FlatButton("참여 요청하기") {
                     action()
                 }
+                .disabled(isFull)
             }
         }
     }

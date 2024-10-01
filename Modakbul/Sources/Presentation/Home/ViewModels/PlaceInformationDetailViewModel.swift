@@ -14,6 +14,7 @@ final class PlaceInformationDetailViewModel: ObservableObject {
     @Published var matchState: MatchState = .cancel
     @Published var isDeleted: Bool = false
     @Published var isCompleted: Bool = false
+    @Published var isFull: Bool = false
     
     // MARK: Presenting Data
     @Published var imageURLs: [URL?] = []
@@ -60,6 +61,7 @@ final class PlaceInformationDetailViewModel: ObservableObject {
                 self?.communityRecruitingContent = content
                 self?.isDeleted = false
                 self?.isCompleted = false
+                self?.isFull = content.community.participants.count >= content.community.participantsLimit
             }
             .store(in: &cancellables)
         
