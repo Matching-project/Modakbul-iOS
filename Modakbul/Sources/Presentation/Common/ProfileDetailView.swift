@@ -67,7 +67,7 @@ struct ProfileDetailView<Router: AppRouter>: View {
     
     private var unBlockButton: some View {
         Button {
-            vm.unblock(userId: Int64(userId), blockId: opponentUserId)
+            vm.unblock(userId: Int64(userId))
         } label: {
             Text("차단해제")
         }
