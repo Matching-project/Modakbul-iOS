@@ -22,8 +22,7 @@ struct UserProfileResponseEntity: ResponseEntity {
         let isGenderVisible: Bool
         let categories: Set<Category>
         
-        enum CodingKeys: String,
-                         CodingKey {
+        enum CodingKeys: String, CodingKey {
             case id, nickname, categories, job, isGenderVisible
             case imageURL = "image"
         }

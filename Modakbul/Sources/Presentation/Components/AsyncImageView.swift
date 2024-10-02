@@ -56,15 +56,13 @@ struct AsyncImageView<ClipShape: Shape>: View {
     var body: some View {
         CachedAsyncImage(url: url) { phase in
             switch phase {
-            case .empty:
-                ProgressView()
             case .success(let image):
                 image
                     .resizable()
             case .failure:
                 Image(.modakbulMain)
                     .resizable()
-            @unknown default:
+            default:
                 Image(.modakbulMain)
                     .resizable()
             }
