@@ -50,6 +50,10 @@ final class HomeViewModel: ObservableObject {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] places in
                 self?.places = places
+                
+                #if DEBUG
+                print(places.map {$0.location.name})
+                #endif
             }
             .store(in: &cancellables)
         
@@ -57,7 +61,6 @@ final class HomeViewModel: ObservableObject {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] places in
                 self?.searchedPlaces = places
-                self?.cameraPosition = .automatic
             }
             .store(in: &cancellables)
         
@@ -74,7 +77,10 @@ final class HomeViewModel: ObservableObject {
             .sink { [weak self] text in
                 guard let self = self,
                       text.isEmpty == false
-                else { return }
+                else {
+                    self?.searchedPlacesSubject.send([])
+                    return
+                }
                 
                 Task { await self.findPlaces(by: text, on: self.currentUsersCoordinate) }
             }
@@ -94,6 +100,7 @@ extension HomeViewModel {
         if locationNeeded {
             updateLocationOnce()
             locationNeeded = false
+            findPlaces()
         }
     }
     
@@ -127,9 +134,16 @@ extension HomeViewModel {
     }
     
     func selectPlace(_ place: Place) {
-        searchingText = place.location.name
-        placesSubject.send([place])
+        let center = place.location.coordinate
+        let span = MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
+        cameraPosition = .region(.init(center: center, span: span))
+        searchingText.removeAll()
         searchedPlacesSubject.send([])
+        placesSubject.send([place])
+    }
+    
+    func moveToUserLocation() {
+        cameraPosition = .userLocation(fallback: .automatic)
     }
 }
 
