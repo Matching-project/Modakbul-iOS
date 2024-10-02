@@ -55,7 +55,7 @@ struct PlaceInformationDetailMakingView<Router: AppRouter>: View {
                     }
                     
                     cell(title: "모집인원") {
-                        MenuPicker.Range(selection: $vm.peopleCount, range: 1...10)
+                        MenuPicker.Range(selection: $vm.peopleCount, range: 2...10)
                             .roundedRectangleStyle()
                     }
                     
