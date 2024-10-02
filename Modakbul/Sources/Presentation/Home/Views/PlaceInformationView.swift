@@ -164,7 +164,7 @@ extension PlaceInformationView {
                 HStack {
                     HStack {
                         Image(systemName: "person.fill")
-                        Text("\(community.participants.count)/\(community.participantsLimit)")
+                        Text("\(community.participantsCount)/\(community.participantsLimit)")
                     }
                     
                     HStack {
