@@ -48,6 +48,7 @@ struct PlacesListArea<Router: AppRouter>: View {
                         }
                         .background(.ultraThinMaterial)
                         .clipShape(.rect(cornerRadius: 14))
+                        .padding([.horizontal, .bottom])
                     }
                 }
             }
