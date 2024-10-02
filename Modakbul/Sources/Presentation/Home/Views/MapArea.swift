@@ -167,7 +167,7 @@ struct MapArea<Router: AppRouter>: View {
                         Image(systemName: "location.fill")
                     } action: {
                         withAnimation(.easeInOut) {
-                            viewModel.cameraPosition = .userLocation(fallback: .automatic)
+                            viewModel.moveToUserLocation()
                         }
                     }
                 }
