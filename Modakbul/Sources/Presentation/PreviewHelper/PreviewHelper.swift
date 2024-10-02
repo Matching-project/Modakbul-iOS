@@ -25,6 +25,24 @@ final class PreviewHelper: ObservableObject {
     
     let places: [Place] = [
         Place(
+            id: 0,
+            location: Location(
+                name: "스타벅스 구로오류DT점",
+                address: "서울특별시 구로구 서해안로 2233",
+                coordinate: CLLocationCoordinate2D(latitude: 37.488176, longitude: 126.834651)
+            ),
+            openingHours: [
+                OpeningHour(dayOfWeek: .mon, open: "09:00", close: "18:00", openingState: .closed),
+                OpeningHour(dayOfWeek: .tue, open: "09:00", close: "18:00", openingState: .opened),
+                OpeningHour(dayOfWeek: .wed, open: "09:00", close: "18:00", openingState: .closed),
+                OpeningHour(dayOfWeek: .thr, open: "09:00", close: "18:00", openingState: .opened),
+                OpeningHour(dayOfWeek: .fri, open: "09:00", close: "18:00", openingState: .opened),
+                OpeningHour(dayOfWeek: .sat, open: "10:00", close: "15:00", openingState: .opened),
+                OpeningHour(dayOfWeek: .sun, open: "10:00", close: "15:00", openingState: .closed)
+            ],
+            imageURLs: []
+        ),
+        Place(
             id: 1,
             location: Location(
                 name: "구로디지털단지",
