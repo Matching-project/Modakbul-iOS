@@ -59,9 +59,10 @@ struct ReportListView<Router: AppRouter>: View {
                     .foregroundStyle(.accent)
             }
             .lineLimit(1)
-            .onTapGesture {
-                router.route(to: .profileDetailView(opponentUserId: user.id))
-            }
+            // TODO: 신고목록 -> 프로필 -> 신고목록 -> 프로필 라우팅 로직 개선 필요
+//            .onTapGesture {
+//                router.route(to: .profileDetailView(opponentUserId: user.id))
+//            }
             
             Spacer()
             
