@@ -29,6 +29,10 @@ struct MyView<Router: AppRouter>: View {
             Cell(for: $vm.user)
         }
         .padding(.horizontal, Constants.horizontal)
+        .onReceive(vm.$user) { user in
+            // 로그인 이후 UserDefaults 내 userId 값 갱신
+            userId = Int(user.id)
+        }
     }
 }
 
