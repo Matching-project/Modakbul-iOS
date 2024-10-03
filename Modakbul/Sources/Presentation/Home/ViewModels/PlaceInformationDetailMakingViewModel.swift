@@ -11,7 +11,7 @@ final class PlaceInformationDetailMakingViewModel: ObservableObject {
     @Published var placeId: Int64?
     @Published var locationName: String?
     @Published var category: Category = .interview
-    @Published var peopleCount: Int = 1
+    @Published var peopleCount: Int = 2
     @Published var date: Date = .now
     @Published var startTime: Date = .now.unitizeToTenMinutes()
     @Published var endTime: Date = .now.unitizeToTenMinutes()
@@ -63,7 +63,7 @@ final class PlaceInformationDetailMakingViewModel: ObservableObject {
     
     func configureView(_ communityRecruitingContent: CommunityRecruitingContent?) {
         self.category = communityRecruitingContent?.community.category ?? .interview
-        self.peopleCount = communityRecruitingContent?.community.participantsCount ?? 1
+        self.peopleCount = communityRecruitingContent?.community.participantsCount ?? 2
         // TODO: 이거 모집글 수정일 경우 구현 필요
         self.date = .now
         self.startTime = .now.unitizeToTenMinutes()
@@ -76,7 +76,7 @@ final class PlaceInformationDetailMakingViewModel: ObservableObject {
         id = Int64(Constants.loggedOutUserId)
         placeId = nil
         category = .interview
-        peopleCount = 1
+        peopleCount = 2
         date = .now
         startTime = .now
         endTime = .now
