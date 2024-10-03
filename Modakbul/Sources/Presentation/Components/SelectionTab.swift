@@ -14,15 +14,25 @@ struct SelectionTab: View {
     @Binding var selectedTab: ActiveState
     @Namespace private var namespace
     
+    enum DisplayMode {
+        /// 날짜, 시간만 표시
+        case fullFilled
+        
+        /// 카테고리, 모집인원, 날짜, 시간 모두 표시
+        case summary
+    }
+    
     private let items: [CommunityRelationship]
     private let selection: [(state: ActiveState, title: String)]
     private let filteringOption: (CommunityRelationship) -> Bool
     private let onSelectCell: (CommunityRelationship) -> Void
+    private let displayMode: DisplayMode
     
     init(
         selectedTab: Binding<ActiveState>,
         _ selection: [(state: ActiveState, title: String)],
         _ items: [CommunityRelationship],
+        _ displayMode: DisplayMode,
         _ filteringOption: @escaping (CommunityRelationship) -> Bool,
         onSelectCell: @escaping (CommunityRelationship) -> Void
     ) {
@@ -30,6 +40,7 @@ struct SelectionTab: View {
         self.selection = selection
         self.items = items
         self.filteringOption = filteringOption
+        self.displayMode = displayMode
         self.onSelectCell = onSelectCell
     }
     
@@ -76,22 +87,42 @@ struct SelectionTab: View {
             Text(content.title)
                 .font(.Modakbul.headline)
             
-            HStack(spacing: 10) {
-                Text(content.community.category.description)
-                
-                Text("\(content.community.participantsCount)/\(content.community.participantsLimit)명")
-                
-                Text(content.community.meetingDate)
-                
-                Text("\(content.community.startTime)~\(content.community.endTime)")
-            }
-            .font(.Modakbul.caption)
+            tagArea(relationship.communityRecruitingContent)
         }
         .listRowSeparator(.hidden)
         .padding(.vertical, 4)
         .contentShape(.rect)
         .onTapGesture {
             onSelectCell(relationship)
+        }
+    }
+    
+    @ViewBuilder private func tagArea(_ content: CommunityRecruitingContent) -> some View {
+        let category = content.community.category.description
+        let participants = "\(content.community.participantsCount)/\(content.community.participantsLimit)명"
+        let meetingDateComponents = content.community.meetingDate.split(separator: "-")
+        let startTimeComponents = content.community.startTime.split(separator: ":")
+        let endTimeComponents = content.community.endTime.split(separator: ":")
+        
+        switch displayMode {
+        case .fullFilled:
+            HStack(spacing: 10) {
+                Text(category)
+                
+                Text(participants)
+                
+                Text("\(meetingDateComponents[1])월 \(meetingDateComponents[2])일")
+                
+                Text("\(startTimeComponents[0]):\(startTimeComponents[1])~\(endTimeComponents[0]):\(endTimeComponents[1])")
+            }
+            .font(.Modakbul.caption)
+        case .summary:
+            HStack(spacing: 10) {
+                Text("\(meetingDateComponents[1])월 \(meetingDateComponents[2])일")
+                
+                Text("\(startTimeComponents[0]):\(startTimeComponents[1])~\(endTimeComponents[0]):\(endTimeComponents[1])")
+            }
+            .font(.Modakbul.caption)
         }
     }
 }

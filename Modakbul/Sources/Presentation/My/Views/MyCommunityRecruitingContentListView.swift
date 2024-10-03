@@ -26,7 +26,9 @@ struct MyCommunityRecruitingContentListView<Router: AppRouter>: View {
             SelectionTab(
                 selectedTab: $viewModel.selectedTab,
                 viewModel.selection,
-                viewModel.relationships) { relationship in
+                viewModel.relationships,
+                .fullFilled
+            ) { relationship in
                     relationship.communityRecruitingContent.activeState == viewModel.selectedTab
                 } onSelectCell: { relationship in
                     router.route(to: .placeInformationDetailView(placeId: relationship.placeId, locationName: relationship.locationName, communityRecruitingContentId: relationship.communityRecruitingContent.id, userId: userId))
