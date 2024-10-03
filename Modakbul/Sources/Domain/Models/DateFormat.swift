@@ -27,6 +27,9 @@ enum DateFormat: String {
     /// 한국어 월일 (MM월 dd일)
     case MMddKorean = "MM월 dd일"
     
+    /// 한국어 월일 (M월 d일)
+    case MdKorean = "M월 d일"
+    
     /// 년.월
     case yyyyMM = "yyyy.MM"
     
@@ -92,6 +95,16 @@ extension DateFormat {
         return formatter
     }
     
+    static func cachedFormatter(dateFormat: DateFormat) -> DateFormatter {
+        if let cached = formatters[dateFormat.rawValue] {
+            return cached
+        }
+        
+        let formatter = createFormatter(with: dateFormat.rawValue)
+        Self.formatters[dateFormat.rawValue] = formatter
+        return formatter
+    }
+    
     private static func createFormatter(with dateFormat: String) -> DateFormatter {
         let formatter = DateFormatter()
         formatter.dateFormat = dateFormat
@@ -109,7 +122,8 @@ extension DateFormat {
 // MARK: Date+Format
 extension Date {
     func toString(by dateFormat: DateFormat) -> String {
-        dateFormat.formatter.string(from: self)
+        let formatter = DateFormat.cachedFormatter(dateFormat: dateFormat)
+        return formatter.string(from: self)
     }
     
     /// DateFormat에서 제공하는 형태와 다른 날짜 형식일 경우 사용
@@ -121,7 +135,8 @@ extension Date {
 
 extension String {
     func toDate(by dateFormat: DateFormat) -> Date? {
-        dateFormat.formatter.date(from: dateFormat.rawValue)
+        let formatter = DateFormat.cachedFormatter(dateFormat: dateFormat)
+        return formatter.date(from: dateFormat.rawValue)
     }
 }
 
