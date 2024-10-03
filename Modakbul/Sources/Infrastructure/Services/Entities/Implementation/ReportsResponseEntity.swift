@@ -15,6 +15,7 @@ struct ReportsResponseEntity: ResponseEntity {
     let result: [Result]
     
     struct Result: Decodable {
+        let userId: Int64
         let imageURL: URL?
         let nickname: String
         let category: Category
@@ -22,7 +23,7 @@ struct ReportsResponseEntity: ResponseEntity {
         let inquiryStatus: InquiryStatusType
         
         enum CodingKeys: String, CodingKey {
-            case nickname, job
+            case nickname, job, userId
             case imageURL = "image"
             case category = "categoryName"
             case inquiryStatus = "status"
@@ -32,6 +33,7 @@ struct ReportsResponseEntity: ResponseEntity {
     func toDTO() -> [(user: User, status: InquiryStatusType)] {
         result.map {
             let user = User(
+                id: $0.userId,
                 nickname: $0.nickname,
                 job: $0.job,
                 categoriesOfInterest: [$0.category],
