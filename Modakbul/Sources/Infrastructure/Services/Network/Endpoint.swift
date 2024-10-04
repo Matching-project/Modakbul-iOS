@@ -63,7 +63,7 @@ enum Endpoint {
     case reportAndExitChatRoom(token: String, chatRoomId: Int64, userId: Int64, report: Report) // 채팅방 신고 후 나가기
     
     // MARK: - Notification Related
-    case sendNotification(token: String, notification: NotificationSendingRequestEntity)// 알림 전송
+    case sendNotification(token: String, targetId: Int64, notification: NotificationSendingRequestEntity)// 알림 전송
     case fetchNotifications(token: String)                                              // 알림 목록 조회
     case removeNotifications(token: String, notificationsIds: NotificationRemovingRequestEntity)                  // 알림 삭제 (단일, 선택, 전체)
     case readNotification(token: String, notificationId: Int64)                         // 알림 읽기
@@ -179,8 +179,8 @@ extension Endpoint: TargetType {
             return "/reports/\(chatRoomId)/\(userId)"
             
             // MARK: Notification Related
-        case .sendNotification(_, let notification):
-            return "/notifications/\(notification.opponentUserId)"
+        case .sendNotification(_, let targetId, _):
+            return "/notifications/\(targetId)"
         case .fetchNotifications:
             return "/notifications"
         case .removeNotifications:
@@ -267,7 +267,7 @@ extension Endpoint: TargetType {
             return .requestJSONEncodable(suggest)
         case .reportAndExitChatRoom(_, _, _, let report):
             return .requestJSONEncodable(report)
-        case .sendNotification(_, let notification):
+        case .sendNotification(_, _, let notification):
             return .requestJSONEncodable(notification)
         case .removeNotifications(_, let notificationsIds):
             return .requestJSONEncodable(notificationsIds)
@@ -364,7 +364,7 @@ extension Endpoint: TargetType {
             ["Authorization": "Bearer \(token)"]
             
             // MARK: Notification Related
-        case .sendNotification(let token, _):
+        case .sendNotification(let token, _, _):
             ["Authorization": "Bearer \(token)"]
         case .fetchNotifications(let token):
             ["Authorization": "Bearer \(token)"]

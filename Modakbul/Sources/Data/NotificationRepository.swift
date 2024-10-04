@@ -30,15 +30,15 @@ final class DefaultNotificationRepository {
 extension DefaultNotificationRepository: NotificationRepository {
     func send(_ communityRecruitingContentId: Int64, from userId: Int64, to opponentUserId: Int64, subtitle: String, type: PushNotification.ShowingType) async throws {
         let token = try tokenStorage.fetch(by: userId)
-        let entity = NotificationSendingRequestEntity(communityRecruitingContentId: communityRecruitingContentId, opponentUserId: opponentUserId, subtitle: subtitle, type: type.description)
+        let entity = NotificationSendingRequestEntity(communityRecruitingContentId: communityRecruitingContentId, subtitle: subtitle, type: type.description)
         
         do {
-            let endpoint = Endpoint.sendNotification(token: token.accessToken, notification: entity)
+            let endpoint = Endpoint.sendNotification(token: token.accessToken, targetId: opponentUserId, notification: entity)
             try await networkService.request(endpoint: endpoint, for: DefaultResponseEntity.self)
         } catch APIError.accessTokenExpired {
             let tokens = try await reissueTokens(userId: userId, token.refreshToken)
             
-            let endpoint = Endpoint.sendNotification(token: tokens.accessToken, notification: entity)
+            let endpoint = Endpoint.sendNotification(token: tokens.accessToken, targetId: opponentUserId, notification: entity)
             try await networkService.request(endpoint: endpoint, for: DefaultResponseEntity.self)
         } catch {
             throw error
