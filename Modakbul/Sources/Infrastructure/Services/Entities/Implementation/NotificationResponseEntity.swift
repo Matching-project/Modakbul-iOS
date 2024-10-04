@@ -12,27 +12,23 @@ struct NotificationResponseEntity: ResponseEntity {
     let status: Bool
     let code: Int
     let message: String
-    let result: Result
+    let result: [Result]
     
     struct Result: Decodable {
-        let notifications: [PushNotification]
+        let id, communityRecruitingContentId: Int64
+        let title, type, subtitle, timestamp: String
+        let isRead: Bool
         
-        struct PushNotification: Decodable {
-            let id, communityRecruitingContentId: Int64
-            let title, type, subtitle, timestamp: String
-            let isRead: Bool
-            
-            enum CodingKeys: String, CodingKey {
-                case id, title, type, isRead
-                case communityRecruitingContentId = "boardId"
-                case subtitle = "content"
-                case timestamp = "createdAt"
-            }
+        enum CodingKeys: String, CodingKey {
+            case id, title, type, isRead
+            case communityRecruitingContentId = "boardId"
+            case subtitle = "content"
+            case timestamp = "createdAt"
         }
     }
     
     func toDTO() -> [PushNotification] {
-        result.notifications.map {
+        result.map {
             .init(id: $0.id,
                   title: $0.title,
                   subtitle: $0.subtitle,
