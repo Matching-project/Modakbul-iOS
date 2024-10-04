@@ -45,6 +45,7 @@ extension MyViewModel {
         Task {
             do {
                 try await userRegistrationUseCase.logout(userId: userId)
+                userSubject.send(User())
             } catch {
                 print(error)
             }
