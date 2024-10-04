@@ -29,7 +29,7 @@ struct ParticipationRequestListView<Router: AppRouter>: View {
             .navigationTitle("참여 요청 목록")
             .navigationBarTitleDisplayMode(.inline)
             .task {
-                await viewModel.fetchParticipationRequests(userId: userId, by: communityRecruitingContent.id)
+                await viewModel.fetchParticipationRequests(userId: userId, by: communityRecruitingContent)
             }
     }
     
@@ -44,13 +44,13 @@ struct ParticipationRequestListView<Router: AppRouter>: View {
                 )
                     .swipeActions(edge: .trailing) {
                         Button {
-                            viewModel.acceptParticipationRequest(userId, matchingId: participatedRequest.id)
+                            viewModel.acceptParticipationRequest(userId, participationRequest: participatedRequest)
                         } label: {
                             Text("수락")
                         }
                         
                         Button(role: .destructive) {
-                            viewModel.rejectParticipationRequest(userId, matchingId: participatedRequest.id)
+                            viewModel.rejectParticipationRequest(userId, participationRequest: participatedRequest)
                         } label: {
                             Text("거절")
                         }

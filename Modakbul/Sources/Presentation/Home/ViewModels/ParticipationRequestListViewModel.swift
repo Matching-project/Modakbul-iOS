@@ -10,15 +10,21 @@ import Combine
 
 final class ParticipationRequestListViewModel: ObservableObject {
     @Published var participationRequests: [ParticipationRequest] = []
+    private var communityRecruitingContent: CommunityRecruitingContent?
     
     private let participationRequestsSubject = PassthroughSubject<[ParticipationRequest], Never>()
     private let indexPerformSubject = PassthroughSubject<Int64, Never>()
     private var cancellables = Set<AnyCancellable>()
     
     private let matchingUseCase: MatchingUseCase
+    private let notificationUseCase: NotificationUseCase
     
-    init(matchingUseCase: MatchingUseCase) {
+    init(
+        matchingUseCase: MatchingUseCase,
+        notificationUseCase: NotificationUseCase
+    ) {
         self.matchingUseCase = matchingUseCase
+        self.notificationUseCase = notificationUseCase
         subscribe()
     }
     
@@ -50,9 +56,11 @@ final class ParticipationRequestListViewModel: ObservableObject {
 
 // MARK: Interfaces
 extension ParticipationRequestListViewModel {
-    func fetchParticipationRequests(userId: Int64, by communityRecruitingContentId: Int64) async {
+    func fetchParticipationRequests(userId: Int64, by communityRecruitingContent: CommunityRecruitingContent) async {
+        self.communityRecruitingContent = communityRecruitingContent
+        
         do {
-            let requests = try await matchingUseCase.readMatches(userId: userId, with: communityRecruitingContentId)
+            let requests = try await matchingUseCase.readMatches(userId: userId, with: communityRecruitingContent.id)
             participationRequestsSubject.send(requests)
         } catch {
             participationRequestsSubject.send([])
@@ -60,11 +68,15 @@ extension ParticipationRequestListViewModel {
     }
     
     @MainActor
-    func acceptParticipationRequest(_ userId: Int64, matchingId: Int64) {
+    func acceptParticipationRequest(_ userId: Int64, participationRequest request: ParticipationRequest) {
+        guard let content = communityRecruitingContent else { return }
+        let matchingId = request.id
+        
         Task {
             do {
                 try await matchingUseCase.acceptMatchRequest(userId: userId, with: matchingId)
                 indexPerformSubject.send(matchingId)
+                try await notificationUseCase.send(content.id, from: userId, to: content.writer.id, subtitle: content.title, type: .acceptParticipation(communityRecruitingContentId: content.id))
             } catch {
                 print(error)
             }
@@ -72,7 +84,9 @@ extension ParticipationRequestListViewModel {
     }
     
     @MainActor
-    func rejectParticipationRequest(_ userId: Int64, matchingId: Int64) {
+    func rejectParticipationRequest(_ userId: Int64, participationRequest request: ParticipationRequest) {
+        let matchingId = request.id
+        
         Task {
             do {
                 try await matchingUseCase.rejectMatchRequest(userId: userId, with: matchingId)

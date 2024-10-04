@@ -160,10 +160,13 @@ extension PlaceInformationDetailViewModel {
     }
     
     func exitCommunity() {
+        guard let content = communityRecruitingContent else { return }
+        
         Task {
             do {
                 try await matchingUseCase.exitMatch(userId: userId, with: matchingId)
                 userRoleSubject.send((role: UserRole.nonParticipant, matchingId: nil, state: MatchState.exit))
+                try await notificationUseCase.send(content.id, from: userId, to: content.writer.id, subtitle: content.title, type: .exitParticipation)
             } catch {
                 print(error)
             }
@@ -171,12 +174,13 @@ extension PlaceInformationDetailViewModel {
     }
     
     func requestMatch() {
-        guard let id = communityRecruitingContent?.id else { return }
+        guard let content = communityRecruitingContent else { return }
         
         Task {
             do {
-                try await matchingUseCase.requestMatch(userId: userId, with: id)
+                try await matchingUseCase.requestMatch(userId: userId, with: content.id)
                 userRoleSubject.send((role: UserRole.nonParticipant, matchingId: nil, state: MatchState.pending))
+                try await notificationUseCase.send(content.id, from: userId, to: content.writer.id, subtitle: content.title, type: .requestParticipation(communityRecruitingContentId: content.id))
             } catch {
                 print(error)
             }
