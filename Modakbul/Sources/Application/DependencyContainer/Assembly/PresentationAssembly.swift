@@ -87,7 +87,8 @@ struct PresentationAssembly: Assembly {
         }
         
         container.register(for: ParticipationRequestListViewModel.self) { resolver in
-            ParticipationRequestListViewModel(matchingUseCase: resolver.resolve(MatchingUseCase.self))
+            ParticipationRequestListViewModel(matchingUseCase: resolver.resolve(MatchingUseCase.self),
+                                              notificationUseCase: resolver.resolve(NotificationUseCase.self))
         }
         
         container.register(for: NotificationViewModel.self) { resolver in
