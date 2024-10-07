@@ -82,7 +82,7 @@ final class HomeViewModel: ObservableObject {
                     return
                 }
                 
-                Task { await self.findPlaces(by: text, on: self.currentUsersCoordinate) }
+                Task { await self.findPlaces(by: text, on: self.cameraCenterCoordinate) }
             }
             .store(in: &cancellables)
         

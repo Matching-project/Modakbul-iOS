@@ -29,9 +29,10 @@ struct MyView<Router: AppRouter>: View {
             Cell(for: $vm.user)
         }
         .padding(.horizontal, Constants.horizontal)
-        .onReceive(vm.$user) { user in
-            // 로그인 이후 UserDefaults 내 userId 값 갱신
-            userId = Int(user.id)
+        .onChange(of: vm.user.id) { oldValue, newValue in
+            if newValue != Constants.loggedOutUserId {
+                userId = Int(newValue)
+            }
         }
     }
 }
@@ -192,11 +193,5 @@ extension MyView {
                 router.route(to: destination)
             }
         }
-    }
-}
-
-struct MyView_Preview: PreviewProvider {
-    static var previews: some View {
-        router.view(to: .myView)
     }
 }
