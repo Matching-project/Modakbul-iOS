@@ -169,7 +169,7 @@ extension PlaceInformationView {
                     
                     HStack {
                         Image(systemName: "clock")
-                        Text("\(community.startTime)~\(community.endTime)")
+                        Text("\(community.startTime.prefix(5))~\(community.endTime.prefix(5))")
                     }
                     
                     Text(community.category.description)
