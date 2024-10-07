@@ -34,7 +34,9 @@ struct PlaceShowcaseView<Router: AppRouter>: View {
             }
         }
         .padding()
-        .navigationTitle("카페 제보/리뷰")
+        .navigationModifier(title: "카페 제보/리뷰") {
+            router.dismiss()
+        }
         .navigationBarTitleDisplayMode(.inline)
         .task {
             await viewModel.fetchPlaces(userId: userId)
