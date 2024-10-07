@@ -29,12 +29,14 @@ struct NotificationResponseEntity: ResponseEntity {
     
     func toDTO() -> [PushNotification] {
         result.map {
-            .init(id: $0.id,
-                  title: $0.title,
-                  subtitle: $0.subtitle,
-                  timestamp: $0.timestamp,
-                  type: .init(from: $0.type,
-                              communityRecruitingContentId: $0.communityRecruitingContentId))
+            PushNotification(
+                id: $0.id,
+                title: $0.title,
+                subtitle: $0.subtitle,
+                timestamp: $0.timestamp,
+                type: .init(from: $0.type, communityRecruitingContentId: $0.communityRecruitingContentId),
+                isRead: $0.isRead
+            )
         }
     }
 }
