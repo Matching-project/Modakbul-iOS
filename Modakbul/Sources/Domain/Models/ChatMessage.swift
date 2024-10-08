@@ -6,15 +6,65 @@
 //
 
 import Foundation
+import SwiftData
 
-struct ChatMessage: Identifiable, Encodable {
-    let id = UUID()
-    let chatRoomId: Int64
-    let senderId: Int64
-    let senderNickname: String
-    let content: String
-    let sendTime: Date
-    let readCount: Int
+@Model
+final class ChatRoom: Identifiable {
+    @Attribute(.unique) var id: Int64
+    @Relationship(.unique, deleteRule: .cascade) var messages: [ChatMessage]
+    var title: String
+    var opponentUserId: Int64
+    var opponentuserImageURL: URL?
+    var relatedCommunityRecruitingContentId: Int64
+    var unreadMessagesCount: Int { messages.filter { $0.isRead == false }.count }
+    
+    init(
+        id: Int64,
+        messages: [ChatMessage],
+        title: String,
+        opponentUserId: Int64,
+        opponentuserImageURL: URL? = nil,
+        relatedCommunityRecruitingContentId: Int64
+    ) {
+        self.id = id
+        self.messages = messages
+        self.title = title
+        self.opponentUserId = opponentUserId
+        self.opponentuserImageURL = opponentuserImageURL
+        self.relatedCommunityRecruitingContentId = relatedCommunityRecruitingContentId
+    }
+}
+
+@Model
+final class ChatMessage: Identifiable {
+    @Attribute(.unique) var id = UUID()
+    var chatRoomId: Int64
+    var senderId: Int64
+    var senderNickname: String
+    var content: String
+    var sendTime: Date
+    var unreadCount: Int
+    var isRead: Bool
+    
+    init(
+        id: UUID = UUID(),
+        chatRoomId: Int64,
+        senderId: Int64,
+        senderNickname: String,
+        content: String,
+        sendTime: Date,
+        unreadCount: Int,
+        isRead: Bool = false
+    ) {
+        self.id = id
+        self.chatRoomId = chatRoomId
+        self.senderId = senderId
+        self.senderNickname = senderNickname
+        self.content = content
+        self.sendTime = sendTime
+        self.unreadCount = unreadCount
+        self.isRead = isRead
+    }
 }
 
 enum ChatRole {

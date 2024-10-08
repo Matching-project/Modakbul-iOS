@@ -28,5 +28,6 @@ struct ModakbulApp: App {
                     .environmentObject(networkChecker)
             }
         }
+        .modelContainer(for: [ChatMessage.self, ChatRoom.self])
     }
 }
