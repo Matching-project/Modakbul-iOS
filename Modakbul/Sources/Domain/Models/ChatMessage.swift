@@ -11,7 +11,7 @@ import SwiftData
 @Model
 final class ChatRoom: Identifiable {
     @Attribute(.unique) var id: Int64
-    @Relationship(.unique, deleteRule: .cascade) var messages: [ChatMessage]
+    @Relationship(deleteRule: .cascade) var messages: [ChatMessage]
     var title: String
     var opponentUserId: Int64
     var opponentuserImageURL: URL?
