@@ -40,7 +40,15 @@ final class AppDelegate: UIResponder, UIApplicationDelegate, ObservableObject {
     // MARK: - APNs 토큰 갱신 및 FCM 토큰 갱신
     func application(_ application: UIApplication,
                      didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        Messaging.messaging().apnsToken = deviceToken
+        Messaging.messaging().setAPNSToken(deviceToken, type: .unknown)
+        
+        Messaging.messaging().token { token, error in
+            if let error = error {
+                print("Error fetching FCM registration token: \(error)")
+            } else if let token = token {
+                print("🔴 FCM registration token: \(token)")
+            }
+        }
     }
 }
 
@@ -86,13 +94,7 @@ extension AppDelegate: MessagingDelegate {
         guard let fcmToken = fcmToken else { return }
         fcmManager.updateToken(fcmToken)
         
-        Messaging.messaging().token { token, error in
-            if let error = error {
-                print("Error fetching FCM registration token: \(error)")
-            } else if let token = token {
-                print("🔴 FCM registration token: \(token)")
-            }
-        }
+        print(fcmToken)
         
         let dataDict: [String: String] = ["token": fcmToken]
         NotificationCenter.default.post(
