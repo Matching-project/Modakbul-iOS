@@ -11,7 +11,7 @@ import SwiftData
 
 final class ChatViewModel: ObservableObject {
     @Published var communityRecruitingContent: CommunityRecruitingContent?
-    @Published var place: Place?
+    @Published var location: String
     @Published var messages: [ChatMessage] = PreviewHelper.shared.messages
     @Published var textOnTextField: String = ""
     private var previousDate: Date?
