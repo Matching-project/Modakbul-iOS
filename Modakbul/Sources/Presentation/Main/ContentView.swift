@@ -35,8 +35,8 @@ struct ContentView<Router: AppRouter>: View {
             router.view(to: .homeView)
                 .tabItemStyle(.home)
 
-//            router.view(to: .chatRoomListView)
-//                .tabItemStyle(.chattings)
+            router.view(to: .chatRoomListView)
+                .tabItemStyle(.chattings)
             
             router.view(to: .myView)
                 .tabItemStyle(.settings)

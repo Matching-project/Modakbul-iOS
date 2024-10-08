@@ -10,9 +10,13 @@ import SwiftData
 
 struct ChatRoomListView<Router: AppRouter>: View {
     @EnvironmentObject private var router: Router
+    @ObservedObject private var viewModel: ChatRoomListViewModel
     
-    // TODO: - 채팅방 목록 조회 API 연결 필요. 다만, HTTP Request임.
     @Query private var chatRooms: [ChatRoom]
+    
+    init(_ viewModel: ChatRoomListViewModel) {
+        self.viewModel = viewModel
+    }
     
     var body: some View {
         List(chatRooms) { chatRoom in
