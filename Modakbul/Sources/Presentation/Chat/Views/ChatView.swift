@@ -7,8 +7,11 @@
 
 import SwiftUI
 import Combine
+import SwiftData
 
 final class ChatViewModel: ObservableObject {
+    @Published var communityRecruitingContent: CommunityRecruitingContent?
+    @Published var place: Place?
     @Published var messages: [ChatMessage] = PreviewHelper.shared.messages
     @Published var textOnTextField: String = ""
     private var previousDate: Date?
@@ -48,38 +51,46 @@ final class ChatViewModel: ObservableObject {
     //    }
 }
 
+// MARK: Interfaces
+extension ChatViewModel {
+    func send() {
+        // TODO: 채팅 메세지 전송
+    }
+}
+
 struct ChatView<Router: AppRouter>: View {
-    @FocusState private var isFocused: Bool
+    @Environment(\.modelContext) private var context
     @EnvironmentObject private var router: Router
     @ObservedObject private var vm: ChatViewModel
+    @FocusState private var isFocused: Bool
+    @Query private var chatRoom: ChatRoom
     
-    private let place: Place
-    private let opponentUser: User
-    private let communityRecruitingContent: CommunityRecruitingContent
+    private let userId: Int64
     
-    init(_ chatViewModel: ChatViewModel,
-         place: Place = Place(location: Location(name: "스타벅스 성수역점", address: "루몰")),
-         opponentUser: User = User(id: 0, name: "디자인", nickname: "디자인 천재", gender: .female, job: .collegeStudent, isGenderVisible: true, birth: .now, imageURL: nil),
-         communityRecruitingContent: CommunityRecruitingContent = CommunityRecruitingContent(title: "UI/UX 디자인 카페모임", content: "스벅", community: Community(routine: .daily, category: .coding, participants: [], participantsLimit: 10, meetingDate: "몰루", startTime: "10시", endTime: "20시"))
+    init(
+        _ chatViewModel: ChatViewModel,
+        userId: Int64,
+        chatRoomId: Int64
     ) {
         self.vm = chatViewModel
-        self.place = place
-        self.opponentUser = opponentUser
-        self.communityRecruitingContent = communityRecruitingContent
+        self.userId = userId
+        
+        let predicate = #Predicate<ChatRoom> { $0.id == chatRoomId }
+        _chatRoom = Query(filter: predicate)
     }
     
     var body: some View {
-        VStack {
-            Chat(vm, isFocused: $isFocused, opponentUser: opponentUser)
-            
-            Footer(isFocused: $isFocused, textOnTextField: $vm.textOnTextField)
+        ZStack {
+            chats
+                .overlay(alignment: .topTrailing) {
+                    Header(place, communityRecruitingContent)
+                }
         }
-        .overlay(alignment: .topTrailing) {
-            Header(place: place, communityRecruitingContent: communityRecruitingContent)
-        }
-        .navigationModifier(title: opponentUser.nickname) {
-            // TODO: - 화면 나가기 전에 vm 초기화같은 작업이 필요한지?
+        .navigationModifier(title: chatRoom.title) {
             router.dismiss()
+        }
+        .onDisappear {
+            // TODO: - 화면 나가기 전에 vm 초기화같은 작업이 필요한지?
         }
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
@@ -102,6 +113,121 @@ struct ChatView<Router: AppRouter>: View {
             }
         }
     }
+    
+    private var chats: some View {
+        VStack {
+            ScrollView(.vertical) {
+                LazyVStack {
+                    ForEach(vm.messages) { message in
+                        cell(message: message)
+                    }
+                }
+            }
+            .defaultScrollAnchor(.bottom)
+            
+            HStack {
+                TextField("메세지를 입력해주세요", text: $vm.textOnTextField, axis: .vertical)
+                    .automaticFunctionDisabled()
+                    .roundedRectangleStyle(cornerRadius: 30, vertical: 10)
+                    .focused($isFocused)
+                    .lineLimit(5)
+                
+                Button {
+                    vm.send()
+                } label: {
+                    Image(systemName: "paperplane.circle.fill")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 45, height: 45)
+                        .rotationEffect(.degrees(45))
+                }
+            }
+            .safeAreaPadding(.horizontal)
+        }
+        .onTapGesture {
+            isFocused = false
+        }
+    }
+    
+    @ViewBuilder
+    private func cell(message: ChatMessage) -> some View {
+        let role = ChatRole(myUserId: userId, senderId: message.senderId)
+        switch role {
+        case .system:
+            systemCell(message)
+        case .me:
+            myCell(message)
+        case .opponentUser:
+            opponentUserCell(message, opponentUser)
+        }
+    }
+    
+    @ViewBuilder
+    private func systemCell(_ message: ChatMessage) -> some View {
+        Text(message.sendTime.toString(by: .yyyyMMddKorean))
+            .padding(10)
+            .font(.Modakbul.caption)
+            .containerRelativeFrame(.horizontal)
+    }
+    
+    @ViewBuilder
+    private func myCell(_ message: ChatMessage) -> some View {
+        HStack(alignment: .bottom) {
+            Spacer()
+            
+            VStack(alignment: .trailing, spacing: -3) {
+                Text(message.unreadCount == 0 ? "" : message.unreadCount.description)
+                    .foregroundStyle(.accent)
+                
+                Text(message.sendTime.toString(by: .HHmm))
+                    .foregroundStyle(.gray)
+            }
+            
+            Text(message.content)
+                .padding(10)
+                .foregroundStyle(.white)
+                .background(.accent)
+                .clipShape(.rect(cornerRadius: 10))
+        }
+        .padding(10)
+    }
+    
+    @ViewBuilder
+    private func opponentUserCell(_ message: ChatMessage, _ user: User) -> some View {
+        HStack(alignment: .top) {
+            AsyncImageView(url: user.imageURL)
+                .frame(width: 50, height: 50)
+                .clipShape(.circle)
+                .onTapGesture {
+                    router.route(to: .profileDetailView(opponentUserId: user.id))
+                }
+            
+            VStack(alignment: .leading, spacing: 6) {
+                Text(user.nickname)
+                    .bold()
+                
+                // 채팅방 위치를 기준으로 읽음 처리 및 시간이 표시되어야 합니다.
+                HStack(alignment: .bottom) {
+                    Text(message.content)
+                        .padding(10)
+                        .foregroundStyle(.white)
+                        .background(.secondary)
+                        .clipShape(.rect(cornerRadius: 10))
+                    
+                    VStack(alignment: .leading, spacing: -3) {
+                        Text(message.readCount == 0 ? "" : message.readCount.description)
+                            .foregroundStyle(.accent)
+                        
+                        Text(message.sendTime.toString(by: .HHmm))
+                            .foregroundStyle(.gray)
+                    }
+                }
+            }
+            
+            Spacer()
+        }
+        .padding(10)
+    }
 }
 
 extension ChatView {
@@ -113,7 +239,10 @@ extension ChatView {
         private let place: Place
         private let communityRecruitingContent: CommunityRecruitingContent
         
-        init(place: Place, communityRecruitingContent: CommunityRecruitingContent) {
+        init(
+            _ place: Place,
+            _ communityRecruitingContent: CommunityRecruitingContent
+        ) {
             self.place = place
             self.communityRecruitingContent = communityRecruitingContent
         }
@@ -169,180 +298,6 @@ extension ChatView {
                 }
                 .padding([.top, .trailing], 10)
             }
-        }
-    }
-    
-    /// 채팅 내용을 나타내는 뷰입니다.
-    struct Chat: View {
-        @ObservedObject private var vm: ChatViewModel
-        private var isFocused: FocusState<Bool>.Binding
-        //        @AppStorage(AppStorageKey.userId) private var userId: Int = Constants.loggedOutUserId
-        
-        // TODO: - 임시로 사용하는 유저 아이디
-        private var userId = 10
-        
-        private let opponentUser: User
-        
-        init(_ vm: ChatViewModel, isFocused: FocusState<Bool>.Binding, opponentUser: User) {
-            self.vm = vm
-            self.isFocused = isFocused
-            self.opponentUser = opponentUser
-        }
-        
-        var body: some View {
-            ScrollView(.vertical) {
-                LazyVStack {
-                    ForEach(vm.messages) { message in
-                        cell(message: message)
-                            .padding(.horizontal, 10)
-                    }
-                }
-                .scrollTargetLayout()
-            }
-            .defaultScrollAnchor(.bottom)
-            .onTapGesture {
-                isFocused.wrappedValue = false
-            }
-        
-            // TODO: - 키보드를 통해 값이 입력되면 화면 맨 아래로 이동하게끔 해야함
-        }
-        
-        @ViewBuilder
-        private func cell(message: ChatMessage) -> some View {
-            let role = ChatRole(myUserId: Int64(userId), senderId: message.senderId)
-            switch role {
-            case .system:
-                SystemCell(message: message)
-            case .me:
-                MyCell(message: message)
-            case .opponentUser:
-                OpponentUserCell(message: message, user: opponentUser)
-            }
-        }
-    }
-    
-    struct SystemCell: View {
-        private let message: ChatMessage
-        
-        init(message: ChatMessage) {
-            self.message = message
-        }
-        
-        var body: some View {
-            Text(message.sendTime.toString(by: .yyyyMMddKorean))
-                .font(.Modakbul.caption)
-                .containerRelativeFrame(.horizontal)
-        }
-    }
-    
-    struct MyCell: View {
-        private let message: ChatMessage
-        
-        init(message: ChatMessage) {
-            self.message = message
-        }
-        
-        var body: some View {
-            HStack(alignment: .bottom) {
-                Spacer()
-                
-                VStack(alignment: .trailing, spacing: -3) {
-                    Text(message.readCount == 0 ? "" : message.readCount.description)
-                        .foregroundStyle(.accent)
-                    
-                    Text(message.sendTime.toString(by: .HHmm))
-                        .foregroundStyle(.gray)
-                }
-                
-                Text(message.content)
-                    .padding(10)
-                    .foregroundStyle(.white)
-                    .background(.accent)
-                    .clipShape(.rect(cornerRadius: 10))
-            }
-            .frame(maxWidth: .infinity, alignment: .trailing)
-            .listRowSeparator(.hidden)
-        }
-    }
-    
-    struct OpponentUserCell: View {
-        @EnvironmentObject private var router: Router
-        
-        private let message: ChatMessage
-        private let user: User
-        
-        init(message: ChatMessage, user: User) {
-            self.message = message
-            self.user = user
-        }
-        
-        var body: some View {
-            HStack(alignment: .top) {
-                AsyncImageView(url: user.imageURL)
-                    .frame(width: 50, height: 50)
-                    .clipShape(.circle)
-                    .onTapGesture {
-                        router.route(to: .profileDetailView(opponentUserId: user.id))
-                    }
-                
-                VStack(alignment: .leading, spacing: 6) {
-                    Text(user.nickname)
-                        .bold()
-                    
-                    // 채팅방 위치를 기준으로 읽음 처리 및 시간이 표시되어야 합니다.
-                    HStack(alignment: .bottom) {
-                        Text(message.content)
-                            .padding(10)
-                            .foregroundStyle(.white)
-                            .background(.secondary)
-                            .clipShape(.rect(cornerRadius: 10))
-                        
-                        VStack(alignment: .leading, spacing: -3) {
-                            Text(message.readCount == 0 ? "" : message.readCount.description)
-                                .foregroundStyle(.accent)
-                            
-                            Text(message.sendTime.toString(by: .HHmm))
-                                .foregroundStyle(.gray)
-                        }
-                    }
-                }
-                
-                Spacer()
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .listRowSeparator(.hidden)
-        }
-    }
-    
-    /// 텍스트필드와 전송버튼을 나타내는 뷰입니다.
-    struct Footer: View {
-        private var isFocused: FocusState<Bool>.Binding
-        @Binding private var textOnTextField: String
-        
-        init(isFocused: FocusState<Bool>.Binding, textOnTextField: Binding<String>) {
-            self.isFocused = isFocused
-            self._textOnTextField = textOnTextField
-        }
-        
-        var body: some View {
-            HStack {
-                TextField("메세지를 입력해주세요", text: $textOnTextField, axis: .vertical)
-                    .roundedRectangleStyle(cornerRadius: 30, vertical: 10)
-                    .focused(isFocused)
-                    .lineLimit(5)
-                
-                Button {
-                    textOnTextField = ""
-                    // TODO: - vm.send()
-                } label: {
-                    Image(systemName: "paperplane.circle.fill")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 45, height: 45)
-                        .rotationEffect(.degrees(45))
-                }
-            }
-            .padding(10)
         }
     }
 }

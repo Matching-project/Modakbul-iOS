@@ -6,21 +6,16 @@
 //
 
 import SwiftUI
-
-typealias Item = (id: UUID, image: URL?, nickname: String, lastMessage: String, time: Date, unreadCount: Int)
+import SwiftData
 
 struct ChatRoomListView<Router: AppRouter>: View {
     @EnvironmentObject private var router: Router
     
-    @State private var chatRooms: [Item] = [
-        (UUID(), nil, "디자인 천재", "네 오늘 너무 유익했어요!", .now, 10),
-        (UUID(), nil, "웹 개발 10년차", "좋아요!", .now, 1),
-        (UUID(), nil, "똑똑똑한박사", "알겠습니다~감사합니다.", .now, 11)
-    ]
+    @Query private var chatRooms: [ChatRoom]
     
     var body: some View {
-        List(chatRooms, id: \.id) { item in
-            Cell(item)
+        List(chatRooms) { chatRoom in
+            Cell(chatRoom)
                 .contentShape(.rect)
                 .onTapGesture {
                     router.route(to: .chatView)
@@ -33,21 +28,21 @@ struct ChatRoomListView<Router: AppRouter>: View {
 
 extension ChatRoomListView {
     struct Cell: View {
-        let chatRoom: Item
+        let chatRoom: ChatRoom
         
-        init(_ item: Item) {
-            self.chatRoom = item
+        init(_ chatRoom: ChatRoom) {
+            self.chatRoom = chatRoom
         }
         
         var body: some View {
             HStack {
-                AsyncImageView(url: chatRoom.image)
+                AsyncImageView(url: chatRoom.opponentuserImageURL)
                 
                 VStack(alignment: .leading, spacing: 10) {
-                    Text(chatRoom.nickname)
+                    Text(chatRoom.title)
                         .font(.Modakbul.headline)
                     
-                    Text(chatRoom.lastMessage)
+                    Text(chatRoom.messages.last?.content ?? "")
                         .font(.Modakbul.subheadline)
                         .foregroundStyle(.secondary)
                 }
@@ -55,10 +50,10 @@ extension ChatRoomListView {
                 Spacer()
                 
                 VStack(alignment: .trailing, spacing: 10) {
-                    Text(chatRoom.time.toString(by: .ahmm))
+                    Text(chatRoom.messages.last?.sendTime.toString(by: .ahmm) ?? "")
                         .font(.Modakbul.subheadline)
                     
-                    Badge(count: chatRoom.unreadCount)
+                    Badge(count: chatRoom.unreadMessagesCount)
                 }
             }
         }
