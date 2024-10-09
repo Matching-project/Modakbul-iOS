@@ -59,7 +59,7 @@ struct PushNotification: Identifiable {
             switch self {
 //                            case .requestParticipation(let communityRecruitingContentId): .placeInformationDetailView(communityRecruitingContentId: <#T##Int64#>, userId: <#T##Int64#>)
                 //            case .acceptParticipation(let communityRecruitingContentId): .placeInformationDetailView(communityRecruitingContentId: communityRecruitingContentId)
-            case .newChat: .chatView
+//            case .newChat: .chatView(chatRoomId: ch)
             default: nil
             }
         }

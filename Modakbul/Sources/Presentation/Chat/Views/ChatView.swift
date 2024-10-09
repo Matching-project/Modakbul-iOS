@@ -34,6 +34,8 @@ final class ChatViewModel: ObservableObject {
 
                 communityRecruitingContentTitle = chatHistory.communityRecruitingContentTitle
                 locationName = chatHistory.locationName
+                // TODO: - 채팅내역 불러오기 API 변경 필요
+//                messages = chatHistory.messages
             }
             .store(in: &cancellables)
     }
@@ -103,7 +105,7 @@ struct ChatView<Router: AppRouter>: View {
     @EnvironmentObject private var router: Router
     @ObservedObject private var vm: ChatViewModel
     @FocusState private var isFocused: Bool
-    @Query private var chatRoom: ChatRoom
+//    @Query private var chatRoom: ChatRoom
     
     init(
         _ chatViewModel: ChatViewModel,
@@ -112,7 +114,7 @@ struct ChatView<Router: AppRouter>: View {
         self.vm = chatViewModel
         
         let predicate = #Predicate<ChatRoom> { $0.id == chatRoomId }
-        _chatRoom = Query(filter: predicate)
+//        _chatRoom = Query(filter: predicate)
     }
     
     var body: some View {
@@ -122,9 +124,9 @@ struct ChatView<Router: AppRouter>: View {
                     Header(vm.locationName, vm.communityRecruitingContentTitle)
                 }
         }
-        .navigationModifier(title: chatRoom.title) {
-            router.dismiss()
-        }
+//        .navigationModifier(title: chatRoom.title) {
+//            router.dismiss()
+//        }
         .onDisappear {
             // TODO: - 화면 나가기 전에 vm 초기화같은 작업이 필요한지?
         }
@@ -194,7 +196,8 @@ struct ChatView<Router: AppRouter>: View {
         case .me:
             myCell(message)
         case .opponentUser:
-            opponentUserCell(message, opponentUser)
+            myCell(message)
+//            opponentUserCell(message, opponentUser)
         }
     }
     
