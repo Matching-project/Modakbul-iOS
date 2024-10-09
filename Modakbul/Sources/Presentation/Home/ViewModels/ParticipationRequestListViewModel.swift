@@ -71,12 +71,13 @@ extension ParticipationRequestListViewModel {
     func acceptParticipationRequest(_ userId: Int64, participationRequest request: ParticipationRequest) {
         guard let content = communityRecruitingContent else { return }
         let matchingId = request.id
+        let opponentUserId = request.participatedUser.id
         
         Task {
             do {
                 try await matchingUseCase.acceptMatchRequest(userId: userId, with: matchingId)
                 indexPerformSubject.send(matchingId)
-                try await notificationUseCase.send(content.id, from: userId, to: content.writer.id, subtitle: content.title, type: .acceptParticipation(communityRecruitingContentId: content.id))
+                try await notificationUseCase.send(content.id, from: userId, to: opponentUserId, subtitle: content.title, type: .acceptParticipation(communityRecruitingContentId: content.id))
             } catch {
                 print(error)
             }
