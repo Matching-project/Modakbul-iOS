@@ -136,6 +136,7 @@ final class RegistrationViewModel: ObservableObject {
         categoriesOfInterest = []
         image = nil
         currentField = .name
+        fieldIndex = 0
         integrityResult = nil
         isWaiting = false
     }
