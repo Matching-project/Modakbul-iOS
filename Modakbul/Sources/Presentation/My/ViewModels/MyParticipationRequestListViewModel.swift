@@ -16,9 +16,13 @@ final class MyParticipationRequestListViewModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
     
     private let matchingUseCase: MatchingUseCase
+    private let notificationUseCase: NotificationUseCase
     
-    init(matchingUseCase: MatchingUseCase) {
+    init(matchingUseCase: MatchingUseCase,
+         notificationUseCase: NotificationUseCase
+    ) {
         self.matchingUseCase = matchingUseCase
+        self.notificationUseCase = notificationUseCase
         subscribe()
     }
     
@@ -62,11 +66,18 @@ extension MyParticipationRequestListViewModel {
         }
     }
     
-    func exitMatch(userId: Int64, with matchingId: Int64) {
+    func exitMatch(userId: Int64, with match: MatchRequest) {
+        let communityRecruitingContent = match.relationship.communityRecruitingContent
+
         Task {
             do {
-                try await matchingUseCase.exitMatch(userId: userId, with: matchingId)
-                requestPerformSubject.send(matchingId)
+                try await matchingUseCase.exitMatch(userId: userId, with: match.matchingId)
+                requestPerformSubject.send(match.matchingId)
+                try await notificationUseCase.send(communityRecruitingContent.id,
+                                         from: userId,
+                                         to: communityRecruitingContent.writer.id,
+                                         subtitle: communityRecruitingContent.title,
+                                         type: .exitParticipation)
             } catch {
                 print(error)
             }

@@ -92,7 +92,7 @@ struct MyParticipationRequestListView<Router: AppRouter>: View {
                 .disabled(true)
             case .accepted:
                 Button {
-                    viewModel.exitMatch(userId: userId, with: matchingId)
+                    viewModel.exitMatch(userId: userId, with: match)
                 } label: {
                     Text("나가기")
                         .font(.Modakbul.footnote.bold())
