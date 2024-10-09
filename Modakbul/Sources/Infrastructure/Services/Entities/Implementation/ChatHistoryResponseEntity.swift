@@ -16,12 +16,12 @@ struct ChatHistoryResponseEntity: Decodable, ResponseEntity {
     
     struct Result: Decodable {
         let contents, sendTimes: [String]
-        let placeName, communityRecruitingContentTitle: String
+        let locationName, communityRecruitingContentTitle: String
         let category: Category
         
         enum CodingKeys: String, CodingKey {
             case contents, sendTimes
-            case placeName = "cafeName"
+            case locationName = "cafeName"
             case communityRecruitingContentTitle = "boardTitle"
             case category = "categoryName"
         }
@@ -31,7 +31,7 @@ struct ChatHistoryResponseEntity: Decodable, ResponseEntity {
         let messages = zip(result.contents, result.sendTimes).map { ($0.0, $0.1.toDate(by: .serverDateTime1) ?? .now) }
         
         return .init(
-            placeName: result.placeName,
+            locationName: result.locationName,
             communityRecruitingContentTitle: result.communityRecruitingContentTitle,
             category: result.category,
             messages: messages

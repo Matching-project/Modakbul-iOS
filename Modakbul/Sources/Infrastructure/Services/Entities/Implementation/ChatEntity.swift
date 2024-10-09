@@ -13,7 +13,7 @@ struct ChatEntity: Codable {
     let senderNickname: String
     let content: String
     let sendTime: Date
-    let readCount: Int
+    let unreadCount: Int
     
     func toDTO() -> ChatMessage {
         .init(
@@ -22,7 +22,7 @@ struct ChatEntity: Codable {
             senderNickname: senderNickname,
             content: content,
             sendTime: sendTime,
-            readCount: readCount
+            unreadCount: unreadCount
         )
     }
 }

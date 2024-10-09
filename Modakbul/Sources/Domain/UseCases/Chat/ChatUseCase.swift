@@ -67,7 +67,10 @@ extension DefaultChatUseCase: ChatUseCase {
         try await chatRepository.deleteChat(userId: userId, on: chatRoomId)
     }
     
-    func readChatingHistory(userId: UserId, on chatRoomId: ChatRoomId, with communityRecruitingContentId: CommunityRecruitingContentId) async throws -> ChatHistory {
+    func readChatingHistory(userId: UserId,
+                            on chatRoomId: ChatRoomId,
+                            with communityRecruitingContentId: CommunityRecruitingContentId
+    ) async throws -> ChatHistory {
         try await chatRepository.readChatingHistory(userId: userId, on: chatRoomId, with: communityRecruitingContentId)
     }
     
