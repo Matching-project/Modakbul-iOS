@@ -16,7 +16,7 @@ final class RegistrationViewModel: ObservableObject {
     // MARK: Data From User
     @Published var id: Int64?
     @Published var name = ""
-    @Published var nickname = "닉네임 테스트"
+    @Published var nickname = ""
     @Published var birth: DateComponents = DateComponents(year: 2000, month: 1, day: 1)
     @Published var gender: Gender? = nil
     @Published var job: Job? = nil
