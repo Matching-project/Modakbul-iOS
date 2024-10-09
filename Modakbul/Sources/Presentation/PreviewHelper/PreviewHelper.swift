@@ -150,17 +150,17 @@ final class PreviewHelper: ObservableObject {
     ]
     
     let messages: [ChatMessage] = [
-        ChatMessage(chatRoomId: 0, senderId: 0, senderNickname: "디자인 천재", content: "안녕하세요!", sendTime: Calendar.current.date(from: DateComponents(year: 2024, month: 9, day: 11))!, readCount: 0),
-        ChatMessage(chatRoomId: 0, senderId: 0, senderNickname: "디자인 천재", content: "안녕하세요!", sendTime: Calendar.current.date(from: DateComponents(year: 2024, month: 9, day: 11))!, readCount: 0),
-        ChatMessage(chatRoomId: 0, senderId: 0, senderNickname: "디자인 천재", content: "안녕하세요!", sendTime: Calendar.current.date(from: DateComponents(year: 2024, month: 9, day: 11))!, readCount: 0),
-        ChatMessage(chatRoomId: 0, senderId: -1, senderNickname: "", content: "", sendTime: Calendar.current.date(from: DateComponents(year: 2024, month: 9, day: 11))!, readCount: 0),
-        ChatMessage(chatRoomId: 0, senderId: 10, senderNickname: "디자인 천재", content: "안녕하사시부리", sendTime: Calendar.current.date(from: DateComponents(year: 2024, month: 9, day: 12))!, readCount: 2),
-        ChatMessage(chatRoomId: 0, senderId: 10, senderNickname: "디자인 천재", content: "안녕", sendTime: Calendar.current.date(from: DateComponents(year: 2024, month: 9, day: 12))!, readCount: 2),
-        ChatMessage(chatRoomId: 0, senderId: 10, senderNickname: "디자인 천재", content: "안녕하다고", sendTime: Calendar.current.date(from: DateComponents(year: 2024, month: 9, day: 12))!, readCount: 2),
-        ChatMessage(chatRoomId: 0, senderId: -0, senderNickname: "디자인 천재", content: "삼성\n엘지\n테슬라", sendTime: Calendar.current.date(from: DateComponents(year: 2024, month: 9, day: 12))!, readCount: 1),
-        ChatMessage(chatRoomId: 0, senderId: 10, senderNickname: "디자인 천재", content: "테스트\n테스트\n테스트\n테스트라이크~", sendTime: Calendar.current.date(from: DateComponents(year: 2024, month: 9, day: 12))!, readCount: 1),
-        ChatMessage(chatRoomId: 0, senderId: -0, senderNickname: "디자인 천재", content: "이거어디까지길어지는거에요이거어디까지길어지는거에요이거어디까지길어지는거에요이거어디까지길어지는거에요", sendTime: Calendar.current.date(from: DateComponents(year: 2024, month: 9, day: 13))!, readCount: 1),
-        ChatMessage(chatRoomId: 0, senderId: 10, senderNickname: "디자인 천재", content: "이거어디까지길어지는거에요이거어디까지길어지는거에요이거어디까지길어지는거에요이거어디까지길어지는거에요이거어디까지길어지는거에요이거어디까지길어지는거에요이거어디까지길어지는거에요", sendTime: Calendar.current.date(from: DateComponents(year: 2024, month: 9, day: 13))!, readCount: 1),
+        ChatMessage(chatRoomId: 0, senderId: 0, senderNickname: "디자인 천재", content: "안녕하세요!", sendTime: Calendar.current.date(from: DateComponents(year: 2024, month: 9, day: 11))!, unreadCount: 0),
+        ChatMessage(chatRoomId: 0, senderId: 0, senderNickname: "디자인 천재", content: "안녕하세요!", sendTime: Calendar.current.date(from: DateComponents(year: 2024, month: 9, day: 11))!, unreadCount: 0),
+        ChatMessage(chatRoomId: 0, senderId: 0, senderNickname: "디자인 천재", content: "안녕하세요!", sendTime: Calendar.current.date(from: DateComponents(year: 2024, month: 9, day: 11))!, unreadCount: 0),
+        ChatMessage(chatRoomId: 0, senderId: -1, senderNickname: "", content: "", sendTime: Calendar.current.date(from: DateComponents(year: 2024, month: 9, day: 11))!, unreadCount: 0),
+        ChatMessage(chatRoomId: 0, senderId: 10, senderNickname: "디자인 천재", content: "안녕하사시부리", sendTime: Calendar.current.date(from: DateComponents(year: 2024, month: 9, day: 12))!, unreadCount: 2),
+        ChatMessage(chatRoomId: 0, senderId: 10, senderNickname: "디자인 천재", content: "안녕", sendTime: Calendar.current.date(from: DateComponents(year: 2024, month: 9, day: 12))!, unreadCount: 2),
+        ChatMessage(chatRoomId: 0, senderId: 10, senderNickname: "디자인 천재", content: "안녕하다고", sendTime: Calendar.current.date(from: DateComponents(year: 2024, month: 9, day: 12))!, unreadCount: 2),
+        ChatMessage(chatRoomId: 0, senderId: -0, senderNickname: "디자인 천재", content: "삼성\n엘지\n테슬라", sendTime: Calendar.current.date(from: DateComponents(year: 2024, month: 9, day: 12))!, unreadCount: 1),
+        ChatMessage(chatRoomId: 0, senderId: 10, senderNickname: "디자인 천재", content: "테스트\n테스트\n테스트\n테스트라이크~", sendTime: Calendar.current.date(from: DateComponents(year: 2024, month: 9, day: 12))!, unreadCount: 1),
+        ChatMessage(chatRoomId: 0, senderId: -0, senderNickname: "디자인 천재", content: "이거어디까지길어지는거에요이거어디까지길어지는거에요이거어디까지길어지는거에요이거어디까지길어지는거에요", sendTime: Calendar.current.date(from: DateComponents(year: 2024, month: 9, day: 13))!, unreadCount: 1),
+        ChatMessage(chatRoomId: 0, senderId: 10, senderNickname: "디자인 천재", content: "이거어디까지길어지는거에요이거어디까지길어지는거에요이거어디까지길어지는거에요이거어디까지길어지는거에요이거어디까지길어지는거에요이거어디까지길어지는거에요이거어디까지길어지는거에요", sendTime: Calendar.current.date(from: DateComponents(year: 2024, month: 9, day: 13))!, unreadCount: 1),
     ]
     
     let communityRecruitingContents = [

@@ -86,7 +86,7 @@ struct ChatView<Router: AppRouter>: View {
         ZStack {
             chats
                 .overlay(alignment: .topTrailing) {
-                    Header(place, communityRecruitingContent)
+                    Header(vm.locationName, vm.communityRecruitingContentTitle)
                 }
         }
         .navigationModifier(title: chatRoom.title) {
@@ -154,7 +154,7 @@ struct ChatView<Router: AppRouter>: View {
     
     @ViewBuilder
     private func cell(message: ChatMessage) -> some View {
-        let role = ChatRole(myUserId: userId, senderId: message.senderId)
+        let role = ChatRole(myUserId: Int64(userId), senderId: message.senderId)
         switch role {
         case .system:
             systemCell(message)
@@ -218,7 +218,7 @@ struct ChatView<Router: AppRouter>: View {
                         .clipShape(.rect(cornerRadius: 10))
                     
                     VStack(alignment: .leading, spacing: -3) {
-                        Text(message.readCount == 0 ? "" : message.readCount.description)
+                        Text(message.unreadCount == 0 ? "" : message.unreadCount.description)
                             .foregroundStyle(.accent)
                         
                         Text(message.sendTime.toString(by: .HHmm))
@@ -239,25 +239,25 @@ extension ChatView {
         @State private var topExpanded: Bool = false
         @Environment(\.colorScheme) private var colorScheme
         
-        private let place: Place
-        private let communityRecruitingContent: CommunityRecruitingContent
+        private let place: String
+        private let communityRecruitingContentTitle: String
         
         init(
-            _ place: Place,
-            _ communityRecruitingContent: CommunityRecruitingContent
+            _ place: String,
+            _ communityRecruitingContentTitle: String
         ) {
             self.place = place
-            self.communityRecruitingContent = communityRecruitingContent
+            self.communityRecruitingContentTitle = communityRecruitingContentTitle
         }
         
         var body: some View {
             if topExpanded {
                 HStack {
                     VStack(alignment: .leading, spacing: 8) {
-                        Text(communityRecruitingContent.title)
+                        Text(communityRecruitingContentTitle)
                             .bold()
                         
-                        Text(place.location.name)
+                        Text(place)
                             .font(.Modakbul.caption)
                             .bold()
                     }
@@ -308,7 +308,7 @@ extension ChatView {
 struct ChatView_Preview: PreviewProvider {
     static var previews: some View {
         NavigationStack {
-            router.view(to: .chatView)
+            router.view(to: .chatView(chatRoomId: 0))
         }
     }
 }
