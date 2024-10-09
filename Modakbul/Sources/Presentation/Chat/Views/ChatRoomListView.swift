@@ -24,7 +24,7 @@ struct ChatRoomListView<Router: AppRouter>: View {
             Cell(chatRoom)
                 .contentShape(.rect)
                 .onTapGesture {
-                    router.route(to: .chatView)
+                    router.route(to: .chatView(chatRoomId: chatRoom.id))
                 }
         }
         .listStyle(.plain)

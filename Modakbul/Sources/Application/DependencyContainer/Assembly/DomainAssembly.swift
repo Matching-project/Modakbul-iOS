@@ -38,6 +38,11 @@ struct DomainAssembly: Assembly {
             DefaultMatchingUseCase(matchingRepository: resolver.resolve(MatchingRepository.self))
         }
         
+        // MARK: - Chat
+        container.register(for: ChatUseCase.self) { resolver in
+            DefaultChatUseCase(chatRepository: resolver.resolve(ChatRepository.self))
+        }
+        
         // MARK: - Notification
         container.register(for: NotificationUseCase.self) { resolver in
             DefaultNotificationUseCase(notificationRepository: resolver.resolve(NotificationRepository.self))

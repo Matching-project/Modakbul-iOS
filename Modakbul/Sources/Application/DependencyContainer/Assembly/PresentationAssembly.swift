@@ -100,7 +100,13 @@ struct PresentationAssembly: Assembly {
             ReportViewModel(userBusinessUseCase: resolver.resolve(UserBusinessUseCase.self))
         }
         
-        container.register(for: ChatViewModel.self, ChatViewModel())
+        container.register(for: ChatViewModel.self) { resolver in
+            ChatViewModel(chatUseCase: resolver.resolve(ChatUseCase.self))
+        }
+        
+        container.register(for: ChatRoomListViewModel.self) { resolver in
+            ChatRoomListViewModel(chatUseCase: resolver.resolve(ChatUseCase.self))
+        }
         
         // MARK: - Common
         container.register(for: ProfileDetailViewModel.self) { resolver in

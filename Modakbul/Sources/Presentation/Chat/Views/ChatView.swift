@@ -11,10 +11,16 @@ import SwiftData
 
 final class ChatViewModel: ObservableObject {
     @Published var communityRecruitingContent: CommunityRecruitingContent?
-    @Published var location: String
+    @Published var location: String = ""
     @Published var messages: [ChatMessage] = PreviewHelper.shared.messages
     @Published var textOnTextField: String = ""
+    
+    private let chatUseCase: ChatUseCase
     private var previousDate: Date?
+    
+    init(chatUseCase: ChatUseCase) {
+        self.chatUseCase = chatUseCase
+    }
     
     //    init() {
     //        $messages
@@ -59,21 +65,18 @@ extension ChatViewModel {
 }
 
 struct ChatView<Router: AppRouter>: View {
+    @AppStorage(AppStorageKey.userId) private var userId = Constants.loggedOutUserId
     @Environment(\.modelContext) private var context
     @EnvironmentObject private var router: Router
     @ObservedObject private var vm: ChatViewModel
     @FocusState private var isFocused: Bool
     @Query private var chatRoom: ChatRoom
     
-    private let userId: Int64
-    
     init(
         _ chatViewModel: ChatViewModel,
-        userId: Int64,
         chatRoomId: Int64
     ) {
         self.vm = chatViewModel
-        self.userId = userId
         
         let predicate = #Predicate<ChatRoom> { $0.id == chatRoomId }
         _chatRoom = Query(filter: predicate)
