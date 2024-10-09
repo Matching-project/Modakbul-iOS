@@ -10,16 +10,49 @@ import Combine
 import SwiftData
 
 final class ChatViewModel: ObservableObject {
-    @Published var communityRecruitingContent: CommunityRecruitingContent?
-    @Published var location: String = ""
+    @Published var communityRecruitingContentTitle: String = ""
+    @Published var locationName: String = ""
     @Published var messages: [ChatMessage] = PreviewHelper.shared.messages
     @Published var textOnTextField: String = ""
     
     private let chatUseCase: ChatUseCase
     private var previousDate: Date?
     
+    private var cancellables = Set<AnyCancellable>()
+    private let chatHistorySubject = PassthroughSubject<ChatHistory, Never>()
+    
     init(chatUseCase: ChatUseCase) {
         self.chatUseCase = chatUseCase
+        subscribe()
+    }
+    
+    private func subscribe() {
+        chatHistorySubject
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] chatHistory in
+                guard let self = self else { return }
+
+                communityRecruitingContentTitle = chatHistory.communityRecruitingContentTitle
+                locationName = chatHistory.locationName
+            }
+            .store(in: &cancellables)
+    }
+    
+    @MainActor
+    func readChatingHistory(userId: Int64,
+                            on chatRoomId: Int64,
+                            with communityRecruitingContentId: Int64
+    ) {
+        Task {
+            do {
+                let chatHistory = try await chatUseCase.readChatingHistory(userId: userId,
+                                                                 on: chatRoomId,
+                                                                 with: communityRecruitingContentId)
+                chatHistorySubject.send(chatHistory)
+            } catch {
+                print(error)
+            }
+        }
     }
     
     //    init() {
