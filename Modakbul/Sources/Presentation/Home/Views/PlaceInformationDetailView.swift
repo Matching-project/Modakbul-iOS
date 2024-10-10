@@ -47,6 +47,10 @@ struct PlaceInformationDetailView<Router: AppRouter>: View {
                     router.dismiss()
                 }
             }
+            .onReceive(viewModel.$chatRoomConfiguration) { chatRoomConfiguration in
+                // MARK: - 기존 채팅방이 없는 경우, 임시적으로 채팅방 아이디를 만들어 라우팅
+                router.route(to: .chatView(chatRoomId: chatRoomConfiguration?.id ?? Constants.temporalId))
+            }
             .navigationModifier {
                 router.dismiss()
             }
@@ -127,7 +131,7 @@ struct PlaceInformationDetailView<Router: AppRouter>: View {
         case .participant:
             HStack {
                 FlatButton("채팅하기") {
-                    // TODO: 채팅하기 기능 연결
+                    viewModel.readChatRoom(userId: userId, opponentUserId: viewModel.writer.id)
                 }
                 
                 FlatButton("나가기") {
@@ -137,7 +141,7 @@ struct PlaceInformationDetailView<Router: AppRouter>: View {
         case .nonParticipant:
             HStack {
                 FlatButton("채팅하기") {
-                    // TODO: 채팅하기 기능 연결
+                    viewModel.readChatRoom(userId: userId, opponentUserId: viewModel.writer.id)
                 }
                 
                 MatchRequestButton(matchState: $viewModel.matchState, isFull: $viewModel.isFull, action: viewModel.requestMatch)

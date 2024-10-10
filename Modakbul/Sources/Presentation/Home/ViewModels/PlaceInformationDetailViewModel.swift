@@ -15,6 +15,7 @@ final class PlaceInformationDetailViewModel: ObservableObject {
     @Published var isDeleted: Bool = false
     @Published var isCompleted: Bool = false
     @Published var isFull: Bool = false
+    @Published var chatRoomConfiguration: ChatRoomConfiguration?
     
     // MARK: Presenting Data
     @Published var imageURLs: [URL?] = []
@@ -34,20 +35,21 @@ final class PlaceInformationDetailViewModel: ObservableObject {
     private let isCompletedSubject = PassthroughSubject<Bool, Never>()
     private let communityRecruitingContentSubject = PassthroughSubject<CommunityRecruitingContent, Never>()
     private let userRoleSubject = PassthroughSubject<(role: UserRole, matchingId: Int64?, state: MatchState), Never>()
+    private let chatRoomConfigurationSubject = PassthroughSubject<ChatRoomConfiguration?, Never>()
     private var cancellables = Set<AnyCancellable>()
     
-//    private let chatUseCase: ChatUseCase
+    private let chatUseCase: ChatUseCase
     private let communityUseCase: CommunityUseCase
     private let matchingUseCase: MatchingUseCase
     private let notificationUseCase: NotificationUseCase
     
     init(
-//        chatUseCase: ChatUseCase,
+        chatUseCase: ChatUseCase,
         communityUseCase: CommunityUseCase,
         matchingUseCase: MatchingUseCase,
         notificationUseCase: NotificationUseCase
     ) {
-//        self.chatUseCase = chatUseCase
+        self.chatUseCase = chatUseCase
         self.communityUseCase = communityUseCase
         self.matchingUseCase = matchingUseCase
         self.notificationUseCase = notificationUseCase
@@ -105,6 +107,13 @@ final class PlaceInformationDetailViewModel: ObservableObject {
                 self?.role = role
                 self?.matchingId = matchingId ?? Int64(Constants.loggedOutUserId)
                 self?.matchState = state
+            }
+            .store(in: &cancellables)
+        
+        chatRoomConfigurationSubject
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] chatRoomConfiguration in
+                self?.chatRoomConfiguration = chatRoomConfiguration
             }
             .store(in: &cancellables)
     }
@@ -199,6 +208,40 @@ extension PlaceInformationDetailViewModel {
         Task {
             do {
                 try await notificationUseCase.send(communityRecruitingContentId, from: userId, to: opponentUserId, subtitle: communityRecruitingContentName, type: type)
+            } catch {
+                print(error)
+            }
+        }
+    }
+}
+
+// MARK: - Interfaces for ChatUseCase
+extension PlaceInformationDetailViewModel {
+    /// 해당 게시물과 관련된 채팅방이 있는지 불러옵니다.
+    /// 채팅방이 없는 경우, 채팅방을 임시적으로 생성 후 채팅방을 불러옵니다. 첫 메시지를 발송하기 전까지 사용자들의 채팅목록 화면에서 채팅방이 보여지지 않습니다.
+    /// - Warning: 게시물과 관련된 채팅방이 존재하지 않을 수 있습니다.
+    /// - Parameters:
+    ///   - userId: 내 유저 아이디
+    ///   - opponentUserId: 상대방 유저 아이디
+    @MainActor
+    func readChatRoom(userId: Int64, opponentUserId: Int64) {
+        Task {
+            do {
+                let chatRoomConfigurations = try await chatUseCase.readChatRooms(userId: userId)
+                if let chatRoomConfiguration = chatRoomConfigurations.filter ({ $0.opponentUserId == opponentUserId }).first {
+                    chatRoomConfigurationSubject.send(chatRoomConfiguration)
+                }
+                
+                guard let communityRecruitingContent = communityRecruitingContent else { return }
+                let chatRoomId = try await chatUseCase.createChatRoom(userId: userId, opponentUserId: opponentUserId, with: communityRecruitingContent.id)
+                
+                let chatRoomConfiguration = ChatRoomConfiguration(id: chatRoomId,
+                                                                  title: communityRecruitingContent.title,
+                                                                  opponentUserId: opponentUserId,
+                                                                  relatedCommunityRecruitingContentId: communityRecruitingContent.id,
+                                                                  unreadMessagesCount: 0)
+                
+                chatRoomConfigurationSubject.send(chatRoomConfiguration)
             } catch {
                 print(error)
             }
