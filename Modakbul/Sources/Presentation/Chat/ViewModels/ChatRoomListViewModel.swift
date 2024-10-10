@@ -9,7 +9,7 @@ import Combine
 import Foundation
 
 final class ChatRoomListViewModel: ObservableObject {
-    @Published var chatRooms: [ChatRoomConfiguration] = []
+    @Published var configurations: [ChatRoomConfiguration] = []
     
     private let chatRoomsSubject = PassthroughSubject<[ChatRoomConfiguration], Never>()
     private var cancellables = Set<AnyCancellable>()
@@ -25,7 +25,7 @@ final class ChatRoomListViewModel: ObservableObject {
         chatRoomsSubject
             .receive(on: DispatchQueue.main)
             .sink { [weak self] configurations in
-                self?.chatRooms = configurations
+                self?.configurations = configurations
             }
             .store(in: &cancellables)
     }
