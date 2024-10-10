@@ -9,7 +9,7 @@ import SwiftUI
 
 struct PlaceInformationDetailView<Router: AppRouter>: View {
     @EnvironmentObject private var router: Router
-    @ObservedObject private var viewModel: PlaceInformationDetailViewModel
+    @ObservedObject private var vm: PlaceInformationDetailViewModel
     
     private let placeId: Int64
     private let locationName: String
@@ -17,13 +17,13 @@ struct PlaceInformationDetailView<Router: AppRouter>: View {
     private let userId: Int64
     
     init(
-        _ viewModel: PlaceInformationDetailViewModel,
+        _ vm: PlaceInformationDetailViewModel,
         placeId: Int64,
         locationName: String,
         communityRecruitingContentId: Int64,
         userId: Int64
     ) {
-        self.viewModel = viewModel
+        self.vm = vm
         self.placeId = placeId
         self.locationName = locationName
         self.communityRecruitingContentId = communityRecruitingContentId
@@ -31,23 +31,23 @@ struct PlaceInformationDetailView<Router: AppRouter>: View {
     }
     
     var body: some View {
-        buildView(viewModel.communityRecruitingContent == nil)
+        buildView(vm.communityRecruitingContent == nil)
             .task {
-                await viewModel.configureView(communityRecruitingContentId, userId)
+                await vm.configureView(communityRecruitingContentId, userId)
             }
-            .onChange(of: viewModel.isDeleted) { oldValue, newValue in
+            .onChange(of: vm.isDeleted) { oldValue, newValue in
                 // 모집글 삭제 처리 완료 되었으면 dismiss
                 if oldValue == false, newValue == true {
                     router.dismiss()
                 }
             }
-            .onChange(of: viewModel.isCompleted) { oldValue, newValue in
+            .onChange(of: vm.isCompleted) { oldValue, newValue in
                 // 모집글 모집 종료 처리 완료 되었으면 dismiss
                 if oldValue == false, newValue == true {
                     router.dismiss()
                 }
             }
-            .onReceive(viewModel.$chatRoomConfiguration) { chatRoomConfiguration in
+            .onReceive(vm.$chatRoomConfiguration) { chatRoomConfiguration in
                 // MARK: - 기존 채팅방이 없는 경우, 임시적으로 채팅방 아이디를 만들어 라우팅
                 router.route(to: .chatView(chatRoomId: chatRoomConfiguration?.id ?? Constants.temporalId))
             }
@@ -61,7 +61,7 @@ struct PlaceInformationDetailView<Router: AppRouter>: View {
             VStack {
                 ContentUnavailableView("내용을 불러오는 중 입니다.", image: "Marker")
                 Button {
-                    viewModel.communityRecruitingContent = PreviewHelper.shared.communityRecruitingContents.first
+                    vm.communityRecruitingContent = PreviewHelper.shared.communityRecruitingContents.first
                 } label: {
                     Text("슛")
                 }
@@ -73,14 +73,14 @@ struct PlaceInformationDetailView<Router: AppRouter>: View {
                     
                     ScrollView(.vertical) {
                         LazyVStack {
-                            ImageCaroselArea(size, viewModel.imageURLs)
+                            ImageCaroselArea(size, vm.imageURLs)
                             
-                            HeaderArea(viewModel.title, viewModel.creationDate, viewModel.writer)
+                            HeaderArea(vm.title, vm.creationDate, vm.writer)
                                 .environmentObject(router)
                             
-                            TagArea(viewModel.category, viewModel.recruitingCount, viewModel.meetingDate, viewModel.meetingTime)
+                            TagArea(vm.category, vm.recruitingCount, vm.meetingDate, vm.meetingTime)
                             
-                            ContentArea(viewModel.content)
+                            ContentArea(vm.content)
                         }
                     }
                     .scrollIndicators(.hidden)
@@ -90,17 +90,17 @@ struct PlaceInformationDetailView<Router: AppRouter>: View {
                     .padding()
             }
             .toolbar {
-                if viewModel.role == .exponent {
+                if vm.role == .exponent {
                     ToolbarItem(placement: .topBarTrailing) {
                         Menu {
                             Button {
-                                router.route(to: .placeInformationDetailMakingView(placeId: placeId, locationName: locationName, communityRecruitingContent: viewModel.communityRecruitingContent))
+                                router.route(to: .placeInformationDetailMakingView(placeId: placeId, locationName: locationName, communityRecruitingContent: vm.communityRecruitingContent))
                             } label: {
                                 Text("모집글 수정하기")
                             }
                             
                             Button {
-                                viewModel.deleteCommunityRecruitingContent(userId: userId)
+                                vm.deleteCommunityRecruitingContent(userId: userId)
                             } label: {
                                 Text("모집글 삭제하기")
                             }
@@ -115,36 +115,36 @@ struct PlaceInformationDetailView<Router: AppRouter>: View {
     }
     
     @ViewBuilder private func controls() -> some View {
-        switch viewModel.role {
+        switch vm.role {
         case .exponent:
             HStack {
                 FlatButton("요청목록") {
-                    if let communityRecruitingContent = viewModel.communityRecruitingContent {
+                    if let communityRecruitingContent = vm.communityRecruitingContent {
                         router.route(to: .participationRequestListView(communityRecruitingContent: communityRecruitingContent, userId: userId))
                     }
                 }
                 
                 FlatButton("모집종료") {
-                    viewModel.completeCommunityRecruiting()
+                    vm.completeCommunityRecruiting()
                 }
             }
         case .participant:
             HStack {
                 FlatButton("채팅하기") {
-                    viewModel.readChatRoom(userId: userId, opponentUserId: viewModel.writer.id)
+                    vm.readChatRoom(userId: userId, opponentUserId: vm.writer.id)
                 }
                 
                 FlatButton("나가기") {
-                    viewModel.exitCommunity()
+                    vm.exitCommunity()
                 }
             }
         case .nonParticipant:
             HStack {
                 FlatButton("채팅하기") {
-                    viewModel.readChatRoom(userId: userId, opponentUserId: viewModel.writer.id)
+                    vm.readChatRoom(userId: userId, opponentUserId: vm.writer.id)
                 }
                 
-                MatchRequestButton(matchState: $viewModel.matchState, isFull: $viewModel.isFull, action: viewModel.requestMatch)
+                MatchRequestButton(matchState: $vm.matchState, isFull: $vm.isFull, action: vm.requestMatch)
             }
         }
     }
