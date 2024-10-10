@@ -355,7 +355,7 @@ extension Endpoint: TargetType {
         case .createChatRoom(let token, _):
             ["Authorization": "Bearer \(token)"]
         case .readChatrooms(let token):
-            ["Authorization": "\(token)"]
+            ["Authorization": "Bearer \(token)"]
         case .exitChatRoom(let token, _):
             ["Authorization": "Bearer \(token)"]
         case .readChatHistory(let token, _, _):
