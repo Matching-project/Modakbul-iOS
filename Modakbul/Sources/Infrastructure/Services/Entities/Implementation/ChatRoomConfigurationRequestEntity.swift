@@ -14,7 +14,7 @@ struct ChatRoomConfigurationRequestEntity: Encodable {
     
     enum CodingKeys: String, CodingKey {
         case communityRecruitingContentId = "boardId"
-        case opponentUserId = "opponentUserId"
+        case opponentUserId = "theOtherUserId"
     }
 }
 
