@@ -39,9 +39,7 @@ final class RegistrationViewModel: ObservableObject {
         case .name:
             return !name.isEmpty && name.count <= 30
         case .nickname:
-//            return integrityResult == .normal
-            // MARK: - 테스트 위해 임시로 다음 버튼 강제 허용
-            return true
+            return integrityResult == .normal
         case .gender:
             return gender != nil
         case .job:
