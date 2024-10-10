@@ -15,6 +15,33 @@ struct ChatEntity: Codable {
     let sendTime: Date
     let unreadCount: Int
     
+    init(
+        chatRoomId: Int64,
+        senderId: Int64,
+        senderNickname: String,
+        content: String,
+        sendTime: Date,
+        unreadCount: Int
+    ) {
+        self.chatRoomId = chatRoomId
+        self.senderId = senderId
+        self.senderNickname = senderNickname
+        self.content = content
+        self.sendTime = sendTime
+        self.unreadCount = unreadCount
+    }
+    
+    init(chatMessage: ChatMessage) {
+        self.init(
+            chatRoomId: chatMessage.chatRoomId,
+            senderId: chatMessage.senderId,
+            senderNickname: chatMessage.senderNickname,
+            content: chatMessage.content,
+            sendTime: chatMessage.sendTime,
+            unreadCount: chatMessage.unreadCount
+        )
+    }
+    
     func toDTO() -> ChatMessage {
         .init(
             chatRoomId: chatRoomId,
