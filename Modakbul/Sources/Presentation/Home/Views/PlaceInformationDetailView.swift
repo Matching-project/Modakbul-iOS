@@ -60,14 +60,7 @@ struct PlaceInformationDetailView<Router: AppRouter>: View {
     
     @ViewBuilder private func buildView(_ isContentEmpty: Bool) -> some View {
         if isContentEmpty {
-            VStack {
-                ContentUnavailableView("내용을 불러오는 중 입니다.", image: "Marker")
-                Button {
-                    vm.communityRecruitingContent = PreviewHelper.shared.communityRecruitingContents.first
-                } label: {
-                    Text("슛")
-                }
-            }
+            ContentUnavailableView("내용을 불러오는 중 입니다.", image: "Marker")
         } else {
             VStack {
                 GeometryReader { proxy in
