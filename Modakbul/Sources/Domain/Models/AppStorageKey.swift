@@ -17,6 +17,8 @@ struct AppStorageKey {
     static let userId: String = "userId"
     /// 최근 로그인한 OAuth를 의미합니다.
     static let provider: String = "provider"
+    /// 최근 로그인한 사용자 닉네임을 의미합니다.
+    static let userNickname: String = "userNickname"
     
     /// 알림 설정 값입니다.
     /// - WARNING: 값 변경시 `PushNotification.ShowingType.description`도 같이 동기화 해야합니다.

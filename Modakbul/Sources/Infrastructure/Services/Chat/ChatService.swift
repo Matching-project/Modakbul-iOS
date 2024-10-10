@@ -17,9 +17,9 @@
 import Foundation
 import SwiftStomp
 
-protocol ChatService: SwiftStompDelegate {
+protocol ChatService {
     /// 소켓 연결
-    func connect(token: String, on chatRoomId: Int64, opponentUserId: Int64, opponentUserNickname: String) throws
+    func connect(token: String, on chatRoomId: Int64, userId: Int64, userNickname nickname: String) throws
     /// 소켓 연결 해제
     func disconnect()
     /// 소켓을 통해 특정 채팅방 구독
@@ -27,7 +27,7 @@ protocol ChatService: SwiftStompDelegate {
     /// 소켓을 통해 특정 채팅방 구독 해제
     func unsubscribe(from chatRoomId: Int64)
     /// 채널(채팅방)로 메세지 전송
-    func send<T: Encodable>(message: T, to chatRoomId: Int64) async throws
+    func send<T: Encodable>(message: T) async throws
 }
 
 enum ChatServiceCloseCode {
@@ -80,14 +80,14 @@ final class DefaultChatService {
 
 // MARK: ChatService Conformation
 extension DefaultChatService: ChatService {
-    func connect(token: String, on chatRoomId: Int64, opponentUserId: Int64, opponentUserNickname: String) throws {
+    func connect(token: String, on chatRoomId: Int64, userId: Int64, userNickname nickname: String) throws {
         // TODO: 서버 URL 배포 예정
-        guard let url = URL(string: "wss://13.209.130.215/") else { throw ChatServiceError.invalidURL }
+        guard let url = URL(string: "ws://13.209.130.215:8080/stomp") else { throw ChatServiceError.invalidURL }
         let headers = [
             "Authorization" : "Bearer \(token)",
             "chatRoomId" : "\(chatRoomId)",
-            "userId" : "\(opponentUserId)",
-            "nickname" : "\(opponentUserNickname)"
+            "userId" : "\(userId)",
+            "nickname" : "\(nickname)"
         ]
         stomp = SwiftStomp(host: url, headers: headers)
         stomp?.delegate = self
@@ -110,7 +110,7 @@ extension DefaultChatService: ChatService {
         chatStreamContinuation?.finish()
     }
     
-    func send<T: Encodable>(message: T, to chatRoomId: Int64) async throws {
+    func send<T: Encodable>(message: T) async throws {
         stomp?.send(body: message, to: "/pub/message")
     }
 }

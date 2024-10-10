@@ -12,8 +12,8 @@ protocol ChatRepository: TokenRefreshable {
     typealias UserId = Int64
     typealias CommunityRecruitingContentId = Int64
 
-    func startChat(on chatRoomId: ChatRoomId, _ continuation: AsyncThrowingStream<ChatMessage, Error>.Continuation) async throws
-    func stopChat(on chatRoomId: ChatRoomId, messages: [ChatMessage])
+    func startChat(userId: Int64, userNickname nickname: String, on chatRoomId: ChatRoomId, _ continuation: AsyncThrowingStream<ChatMessage, any Error>.Continuation) async throws
+    func stopChat(on chatRoomId: ChatRoomId)
     func readChatRooms(userId: UserId) async throws -> [ChatRoomConfiguration]
     func createChatRoom(userId: UserId, opponentUserId: UserId, with communityRecruitingContentId: CommunityRecruitingContentId) async throws -> ChatRoomId
     func deleteChat(userId: UserId, on chatRoomId: ChatRoomId) async throws
@@ -26,7 +26,6 @@ final class DefaultChatRepository {
     private let chatService: ChatService
     let networkService: NetworkService
     let tokenStorage: TokenStorage
-//    private let chattingStorage:
     
     init(
         chatService: ChatService,
@@ -41,12 +40,30 @@ final class DefaultChatRepository {
 
 // MARK: ChatRepository Conformation
 extension DefaultChatRepository: ChatRepository {
-    func startChat(on chatRoomId: ChatRoomId, _ continuation: AsyncThrowingStream<ChatMessage, any Error>.Continuation) async throws {
-        //
+    func startChat(
+        userId: Int64,
+        userNickname nickname: String,
+        on chatRoomId: ChatRoomId,
+        _ continuation: AsyncThrowingStream<ChatMessage, any Error>.Continuation
+    ) async throws {
+        let token = try tokenStorage.fetch(by: userId)
+        
+        do {
+            try chatService.connect(token: token.accessToken, on: chatRoomId, userId: userId, userNickname: nickname)
+            chatService.subscribe(to: chatRoomId, continuation: continuation)
+        } catch APIError.accessTokenExpired {
+            let tokens = try await reissueTokens(userId: userId, token.refreshToken)
+            
+            try chatService.connect(token: tokens.accessToken, on: chatRoomId, userId: userId, userNickname: nickname)
+            chatService.subscribe(to: chatRoomId, continuation: continuation)
+        } catch {
+            throw error
+        }
     }
     
-    func stopChat(on chatRoomId: ChatRoomId, messages: [ChatMessage]) {
-        //
+    func stopChat(on chatRoomId: ChatRoomId) {
+        chatService.unsubscribe(from: chatRoomId)
+        chatService.disconnect()
     }
     
     func readChatRooms(userId: UserId) async throws -> [ChatRoomConfiguration] {
@@ -122,7 +139,14 @@ extension DefaultChatRepository: ChatRepository {
     }
     
     func send(message: ChatMessage) throws {
-        //
+        Task {
+            do {
+                let entity = ChatEntity(chatMessage: message)
+                try await chatService.send(message: entity)
+            } catch {
+                throw error
+            }
+        }
     }
     
     func reportAndExitChatRoom(userId: UserId, opponentUserId: UserId, chatRoomId: ChatRoomId, report: Report) async throws {

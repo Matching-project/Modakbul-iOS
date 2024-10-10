@@ -15,6 +15,8 @@ final class ChatViewModel: ObservableObject {
     @Published var messages: [ChatMessage] = []
     @Published var textOnTextField: String = ""
     
+    private var chatRoomId: Int64 = Constants.temporalId
+    
     private let chatUseCase: ChatUseCase
     private var previousDate: Date?
     
@@ -31,16 +33,37 @@ final class ChatViewModel: ObservableObject {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] chatHistory in
                 guard let self = self else { return }
-
+                
                 communityRecruitingContentTitle = chatHistory.communityRecruitingContentTitle
                 locationName = chatHistory.locationName
                 // TODO: - 채팅내역 불러오기 API 변경 필요
-//                messages = chatHistory.messages
+//                let newMessages = chatHistory.messages.map { (content, timestamp) in
+//                    return ChatMessage(
+//                        chatRoomId: self.chatRoomId,
+//                        senderId: <#T##Int64#>,
+//                        senderNickname: <#T##String#>,
+//                        content: content,
+//                        sendTime: timestamp,
+//                        unreadCount: <#T##Int#>
+//                    )
+//                }
+                
+            }
+            .store(in: &cancellables)
+        
+        $messages
+            .sink { [weak self] _ in
+                Task { [weak self] in
+                    await self?.compareNewMessages()
+                }
             }
             .store(in: &cancellables)
     }
     
-    @MainActor
+    func configureView(chatRoomId: Int64) {
+        self.chatRoomId = chatRoomId
+    }
+    
     func readChatingHistory(userId: Int64,
                             on chatRoomId: Int64,
                             with communityRecruitingContentId: Int64
@@ -48,8 +71,8 @@ final class ChatViewModel: ObservableObject {
         Task {
             do {
                 let chatHistory = try await chatUseCase.readChatingHistory(userId: userId,
-                                                                 on: chatRoomId,
-                                                                 with: communityRecruitingContentId)
+                                                                           on: chatRoomId,
+                                                                           with: communityRecruitingContentId)
                 chatHistorySubject.send(chatHistory)
             } catch {
                 print(error)
@@ -57,64 +80,89 @@ final class ChatViewModel: ObservableObject {
         }
     }
     
-    //    init() {
-    //        $messages
-    //            .sink { [weak self] _ in
-    //                Task { [weak self] in
-    //                    await self?.compareNewMessages()
-    //                }
-    //            }
-    //            .store(in: &cancellables)
-    //    }
+    @MainActor
+    private func compareNewMessages() {
+        guard let currentMessage = messages.last else { return }
+        messages.removeLast()
+        
+        guard let lastMessage = messages.last else { return }
+        compare(latestMessage: lastMessage, currentMessage: currentMessage)
+        
+        messages.append(currentMessage)
+    }
     
-    //    private var cancellables = Set<AnyCancellable>()
-    //
-    //    @MainActor
-    //    private func compareNewMessages() {
-    //        guard let currentMessage = messages.last else { return }
-    //        messages.removeLast()
-    //
-    //        guard let lastMessage = messages.last else { return }
-    //        compare(latestMessage: lastMessage, currentMessage: currentMessage)
-    //
-    //        messages.append(currentMessage)
-    //    }
-    //
-    //    @MainActor
-    //    func compare(latestMessage: ChatMessage, currentMessage: ChatMessage) {
-    //        let latestMessage = Calendar.current.startOfDay(for: latestMessage.sendTime)
-    //        let currentMessageDate = Calendar.current.startOfDay(for: currentMessage.sendTime)
-    //
-    //        // TODO: - senderId: -1이면 시스템 메세지로 취급하고 시간을 알려주는 용도로 사용할지?
-    //        if latestMessage != currentMessageDate {
-    //            messages.append(ChatMessage(chatRoomId: currentMessage.chatRoomId, senderId: -1, senderNickname: "", content: "", sendTime: currentMessage.sendTime, readCount: 0))
-    //        }
-    //    }
+    @MainActor
+    func compare(latestMessage: ChatMessage, currentMessage: ChatMessage) {
+        let latestMessage = Calendar.current.startOfDay(for: latestMessage.sendTime)
+        let currentMessageDate = Calendar.current.startOfDay(for: currentMessage.sendTime)
+        
+        // TODO: - senderId: -1이면 시스템 메세지로 취급하고 시간을 알려주는 용도로 사용할지?
+        if latestMessage != currentMessageDate {
+            //            messages.append(ChatMessage(chatRoomId: currentMessage.chatRoomId, senderId: -1, senderNickname: "", content: "", sendTime: currentMessage.sendTime, readCount: 0))
+        }
+    }
 }
 
-// MARK: Interfaces
+// MARK: Interfaces for ChatUseCase
 extension ChatViewModel {
-    func send() {
-        // TODO: 채팅 메세지 전송
+    func startChat(userId: Int64, userNickname nickname: String) async {
+        let stream = AsyncThrowingStream<ChatMessage, any Error> { continuation in
+            Task {
+                do {
+                    try await chatUseCase.startChat(userId: userId, userNickname: nickname, on: chatRoomId, continuation)
+                } catch {
+                    print(error)
+                }
+            }
+        }
+        
+        do {
+            for try await message in stream {
+                messages.append(message)
+            }
+        } catch {
+            print(error)
+        }
+    }
+    
+    func stopChat() {
+        chatUseCase.stopChat(on: chatRoomId)
+    }
+    
+    func send(userId: Int64, userNickname nickname: String) {
+        guard textOnTextField.isEmpty == false else { return }
+        
+        let chatMessage = ChatMessage(
+            chatRoomId: chatRoomId,
+            senderId: userId,
+            senderNickname: nickname,
+            content: textOnTextField,
+            sendTime: .now,
+            unreadCount: 1
+        )
+        
+        // TODO: 전송 실패 했을 경우 에러핸들링 필요
+        try? chatUseCase.send(message: chatMessage)
     }
 }
 
 struct ChatView<Router: AppRouter>: View {
     @AppStorage(AppStorageKey.userId) private var userId = Constants.loggedOutUserId
+    @AppStorage(AppStorageKey.userNickname) private var userNickname: String = String()
     @Environment(\.modelContext) private var context
     @EnvironmentObject private var router: Router
     @ObservedObject private var vm: ChatViewModel
     @FocusState private var isFocused: Bool
-//    @Query private var chatRoom: ChatRoom
     
     init(
         _ chatViewModel: ChatViewModel,
         chatRoomId: Int64
     ) {
+        chatViewModel.configureView(chatRoomId: chatRoomId)
         self.vm = chatViewModel
         
         let predicate = #Predicate<ChatRoom> { $0.id == chatRoomId }
-//        _chatRoom = Query(filter: predicate)
+        //        _chatRoom = Query(filter: predicate)
     }
     
     var body: some View {
@@ -124,11 +172,15 @@ struct ChatView<Router: AppRouter>: View {
                     Header(vm.locationName, vm.communityRecruitingContentTitle)
                 }
         }
-//        .navigationModifier(title: chatRoom.title) {
-//            router.dismiss()
-//        }
+        .navigationModifier(title: "채팅방") {
+            router.dismiss()
+        }
+        .task {
+            await vm.startChat(userId: Int64(userId), userNickname: userNickname)
+        }
         .onDisappear {
-            // TODO: - 화면 나가기 전에 vm 초기화같은 작업이 필요한지?
+            // TODO: - 화면 나가기 전에 vm 초기화같은 작업이 필요한지? 네
+            vm.stopChat()
         }
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
@@ -171,7 +223,7 @@ struct ChatView<Router: AppRouter>: View {
                     .lineLimit(5)
                 
                 Button {
-                    vm.send()
+                    vm.send(userId: Int64(userId), userNickname: userNickname)
                 } label: {
                     Image(systemName: "paperplane.circle.fill")
                         .resizable()
@@ -197,7 +249,7 @@ struct ChatView<Router: AppRouter>: View {
             myCell(message)
         case .opponentUser:
             myCell(message)
-//            opponentUserCell(message, opponentUser)
+            //            opponentUserCell(message, opponentUser)
         }
     }
     
