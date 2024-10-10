@@ -35,7 +35,7 @@ final class PlaceInformationDetailViewModel: ObservableObject {
     private let isCompletedSubject = PassthroughSubject<Bool, Never>()
     private let communityRecruitingContentSubject = PassthroughSubject<CommunityRecruitingContent, Never>()
     private let userRoleSubject = PassthroughSubject<(role: UserRole, matchingId: Int64?, state: MatchState), Never>()
-    private let chatRoomConfigurationSubject = PassthroughSubject<ChatRoomConfiguration?, Never>()
+    private let chatRoomConfigurationSubject = PassthroughSubject<ChatRoomConfiguration, Never>()
     private var cancellables = Set<AnyCancellable>()
     
     private let chatUseCase: ChatUseCase

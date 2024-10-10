@@ -47,9 +47,11 @@ struct PlaceInformationDetailView<Router: AppRouter>: View {
                     router.dismiss()
                 }
             }
-            .onReceive(vm.$chatRoomConfiguration) { chatRoomConfiguration in
-                // MARK: - 기존 채팅방이 없는 경우, 임시적으로 채팅방 아이디를 만들어 라우팅
-                router.route(to: .chatView(chatRoomId: chatRoomConfiguration?.id ?? Constants.temporalId))
+            .onChange(of: vm.chatRoomConfiguration) { oldValue, newValue in
+                guard let newValue = newValue else { return }
+                if oldValue?.id != newValue.id {
+                    router.route(to: .chatView(chatRoomId: newValue.id))
+                }
             }
             .navigationModifier {
                 router.dismiss()

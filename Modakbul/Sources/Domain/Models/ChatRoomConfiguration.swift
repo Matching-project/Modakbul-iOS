@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct ChatRoomConfiguration: Identifiable {
+struct ChatRoomConfiguration: Identifiable, Equatable {
     let id: Int64
     /// 단체 채팅방시를 고려하여 `String`이 아닌 `String?`로 선언
     let title: String?
