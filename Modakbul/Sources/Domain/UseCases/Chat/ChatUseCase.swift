@@ -13,10 +13,15 @@ protocol ChatUseCase {
     typealias CommunityRecruitingContentId = Int64
     
     /// 채팅 시작
-    func startChat(on chatRoomId: ChatRoomId, _ continuation: AsyncThrowingStream<ChatMessage, Error>.Continuation) async throws
+    func startChat(
+        userId: Int64,
+        userNickname nickname: String,
+        on chatRoomId: ChatRoomId,
+        _ continuation: AsyncThrowingStream<ChatMessage, any Error>.Continuation
+    ) async throws
     
     /// 채팅 종료
-    func stopChat(on chatRoomId: ChatRoomId, messages: [ChatMessage])
+    func stopChat(on chatRoomId: ChatRoomId)
     
     /// 채팅방 목록 조회
     func readChatRooms(userId: UserId) async throws -> [ChatRoomConfiguration]
@@ -47,12 +52,17 @@ final class DefaultChatUseCase {
 
 // MARK: ChatUseCase Conformation
 extension DefaultChatUseCase: ChatUseCase {
-    func startChat(on chatRoomId: ChatRoomId, _ continuation: AsyncThrowingStream<ChatMessage, any Error>.Continuation) async throws {
-        //
+    func startChat(
+        userId: Int64,
+        userNickname nickname: String,
+        on chatRoomId: ChatRoomId,
+        _ continuation: AsyncThrowingStream<ChatMessage, any Error>.Continuation
+    ) async throws {
+        try await chatRepository.startChat(userId: userId, userNickname: nickname, on: chatRoomId, continuation)
     }
     
-    func stopChat(on chatRoomId: ChatRoomId, messages: [ChatMessage]) {
-        //
+    func stopChat(on chatRoomId: ChatRoomId) {
+        chatRepository.stopChat(on: chatRoomId)
     }
     
     func readChatRooms(userId: UserId) async throws -> [ChatRoomConfiguration] {
@@ -75,7 +85,7 @@ extension DefaultChatUseCase: ChatUseCase {
     }
     
     func send(message: ChatMessage) throws {
-        //
+        try chatRepository.send(message: message)
     }
     
     func reportAndExitChatRoom(userId: UserId, opponentUserId: UserId, chatRoomId: ChatRoomId, report: Report) async throws {
