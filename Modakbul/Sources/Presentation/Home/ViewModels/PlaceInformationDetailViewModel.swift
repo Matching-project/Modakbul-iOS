@@ -227,11 +227,13 @@ extension PlaceInformationDetailViewModel {
     func readChatRoom(userId: Int64, opponentUserId: Int64) {
         Task {
             do {
+                // 이미 채팅방이 존재하는 경우
                 let chatRoomConfigurations = try await chatUseCase.readChatRooms(userId: userId)
                 if let chatRoomConfiguration = chatRoomConfigurations.filter ({ $0.opponentUserId == opponentUserId }).first {
                     chatRoomConfigurationSubject.send(chatRoomConfiguration)
                 }
                 
+                // 채팅방이 존재하지 않는 경우
                 guard let communityRecruitingContent = communityRecruitingContent else { return }
                 let chatRoomId = try await chatUseCase.createChatRoom(userId: userId, opponentUserId: opponentUserId, with: communityRecruitingContent.id)
                 
