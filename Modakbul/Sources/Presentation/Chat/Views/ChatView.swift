@@ -12,7 +12,7 @@ import SwiftData
 final class ChatViewModel: ObservableObject {
     @Published var communityRecruitingContentTitle: String = ""
     @Published var locationName: String = ""
-    @Published var messages: [ChatMessage] = PreviewHelper.shared.messages
+    @Published var messages: [ChatMessage] = []
     @Published var textOnTextField: String = ""
     
     private let chatUseCase: ChatUseCase
