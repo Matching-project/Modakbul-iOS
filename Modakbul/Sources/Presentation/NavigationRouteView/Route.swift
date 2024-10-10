@@ -53,7 +53,7 @@ enum Route: Routable {
     case placeInformationDetailMakingView(placeId: Int64, locationName: String, communityRecruitingContent: CommunityRecruitingContent?)
     case participationRequestListView(communityRecruitingContent: CommunityRecruitingContent, userId: Int64)
     case notificationView(userId: Int64)
-    case chatView(chatRoomId: Int64)               // MARK: - Chat
+    case chatView(chatRoom: ChatRoom)               // MARK: - Chat
     case chatRoomListView
     case reportView(opponentUserId: Int64, isReported: Binding<Bool>)
     case profileDetailView(opponentUserId: Int64)  // MARK: - Common
@@ -143,8 +143,8 @@ enum Route: Routable {
             ParticipationRequestListView<Router>(participationRequestListViewModel: router.resolver.resolve(ParticipationRequestListViewModel.self), communityRecruitingContent: communityRecruitingContent, userId: userId)
         case .notificationView(let userId):
             NotificationView<Router>(router.resolver.resolve(NotificationViewModel.self), userId: userId)
-        case .chatView(let chatRoomId):         // MARK: - Chat
-            ChatView<Router>(router.resolver.resolve(ChatViewModel.self), chatRoomId: chatRoomId)
+        case .chatView(let chatRoom):         // MARK: - Chat
+            ChatView<Router>(router.resolver.resolve(ChatViewModel.self), chatRoom: chatRoom)
         case .chatRoomListView:
             ChatRoomListView<Router>(router.resolver.resolve(ChatRoomListViewModel.self))
         case .reportView(let opponentUserId, let isReported):
