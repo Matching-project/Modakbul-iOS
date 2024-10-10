@@ -34,7 +34,7 @@ struct PlaceInformationDetailMakingView<Router: AppRouter>: View {
     var body: some View {
         VStack {
             ScrollView {
-                LazyVStack(spacing: 20) {
+                VStack(spacing: 20) {
                     cell(title: "장소") {
                         ZStack(alignment: .leading) {
                             RoundedRectangle(cornerRadius: 8)
@@ -102,7 +102,7 @@ struct PlaceInformationDetailMakingView<Router: AppRouter>: View {
                             ZStack(alignment: .leading) {
                                 Text(vm.endTime.toString(by: .HHmm))
                                     .frame(maxWidth: .infinity, alignment: .leading)
-                                    .onChange(of: vm.startTime) { newStartTime in
+                                    .onChange(of: vm.startTime) { _, newStartTime in
                                         if vm.endTime < newStartTime {
                                             vm.endTime = newStartTime
                                         }
@@ -140,7 +140,6 @@ struct PlaceInformationDetailMakingView<Router: AppRouter>: View {
             }
             .padding(.horizontal, Constants.horizontal)
             .padding(.vertical, 5)
-            
         }
         .navigationModifier(title: communityRecruitingContent == nil ? "모집글 작성" : "모집글 수정") {
             vm.initialize()
