@@ -9,7 +9,7 @@ import Foundation
 import Combine
 
 final class MyViewModel: ObservableObject {
-    @Published var user: User
+    @Published var user: User = User()
     
     private let userRegistrationUseCase: UserRegistrationUseCase
     private let userBusinessUseCase: UserBusinessUseCase
@@ -18,11 +18,9 @@ final class MyViewModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
     
     init(
-        user: User = User(),
         userRegistrationUseCase: UserRegistrationUseCase,
         userBusinessUseCase: UserBusinessUseCase
     ) {
-        self.user = user
         self.userRegistrationUseCase = userRegistrationUseCase
         self.userBusinessUseCase = userBusinessUseCase
         subscribe()
