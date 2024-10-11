@@ -34,13 +34,13 @@ final class ChatRoom: Identifiable {
         self.relatedCommunityRecruitingContentId = relatedCommunityRecruitingContentId
     }
     
-    convenience init(config: ChatRoomConfiguration) {
-        self.id = config.id
-        self.messages = []
-        self.title = config.title
-        self.opponentUserId = config.opponentUserId
-        self.opponentuserImageURL = config.opponentUserImageURL
-        self.relatedCommunityRecruitingContentId = config.relatedCommunityRecruitingContentId
+    convenience init(configuration: ChatRoomConfiguration) {
+        self.init(id: configuration.id,
+                  messages: [],
+                  title: configuration.title,
+                  opponentUserId: configuration.opponentUserId,
+                  opponentuserImageURL: configuration.opponentUserImageURL,
+                  relatedCommunityRecruitingContentId: configuration.relatedCommunityRecruitingContentId)
     }
 }
 
