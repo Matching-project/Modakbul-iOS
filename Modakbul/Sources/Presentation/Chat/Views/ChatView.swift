@@ -210,7 +210,7 @@ extension ChatViewModel {
 struct ChatView<Router: AppRouter>: View {
     @AppStorage(AppStorageKey.userId) private var userId = Constants.loggedOutUserId
     @AppStorage(AppStorageKey.userNickname) private var userNickname: String = String()
-    @Environment(\.modelContext) private var context
+    @Environment(\.modelContext) private var modelContext
     @EnvironmentObject private var router: Router
     @ObservedObject private var vm: ChatViewModel
     @FocusState private var isFocused: Bool
