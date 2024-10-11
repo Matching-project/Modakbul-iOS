@@ -16,7 +16,7 @@ struct ChatRoomListResponseEntity: ResponseEntity {
     
     struct Result: Decodable {
         let roomTitle: String
-        let lastMessage: String
+        let lastMessage: String?
         /// ISO8601 형식 문자열 시간 표현
         let lastMessageTimestamp: String
         let opponentUserImageURL: URL?
