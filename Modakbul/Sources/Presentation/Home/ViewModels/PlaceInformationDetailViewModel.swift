@@ -229,19 +229,20 @@ extension PlaceInformationDetailViewModel {
             do {
                 // 이미 채팅방이 존재하는 경우
                 let chatRoomConfigurations = try await chatUseCase.readChatRooms(userId: userId)
-                if let chatRoomConfiguration = chatRoomConfigurations.filter ({ $0.opponentUserId == opponentUserId }).first {
+                guard let chatRoomConfiguration = chatRoomConfigurations.filter ({ $0.opponentUserId == opponentUserId }).first else {
+                    // 채팅방이 존재하지 않는 경우
+                    guard let communityRecruitingContent = communityRecruitingContent else { return }
+                    let chatRoomId = try await chatUseCase.createChatRoom(userId: userId, opponentUserId: opponentUserId, with: communityRecruitingContent.id)
+                    
+                    let chatRoomConfiguration = ChatRoomConfiguration(id: chatRoomId,
+                                                                      title: communityRecruitingContent.title,
+                                                                      opponentUserId: opponentUserId,
+                                                                      relatedCommunityRecruitingContentId: communityRecruitingContent.id,
+                                                                      unreadMessagesCount: 0)
+                
                     chatRoomConfigurationSubject.send(chatRoomConfiguration)
+                    return
                 }
-                
-                // 채팅방이 존재하지 않는 경우
-                guard let communityRecruitingContent = communityRecruitingContent else { return }
-                let chatRoomId = try await chatUseCase.createChatRoom(userId: userId, opponentUserId: opponentUserId, with: communityRecruitingContent.id)
-                
-                let chatRoomConfiguration = ChatRoomConfiguration(id: chatRoomId,
-                                                                  title: communityRecruitingContent.title,
-                                                                  opponentUserId: opponentUserId,
-                                                                  relatedCommunityRecruitingContentId: communityRecruitingContent.id,
-                                                                  unreadMessagesCount: 0)
                 
                 chatRoomConfigurationSubject.send(chatRoomConfiguration)
             } catch {

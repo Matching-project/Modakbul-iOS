@@ -49,10 +49,12 @@ struct PlaceInformationDetailView<Router: AppRouter>: View {
             }
             .onChange(of: vm.chatRoomConfiguration) { oldValue, newValue in
                 guard let newValue = newValue else { return }
+                
                 if oldValue?.id != newValue.id {
-                    router.route(to: .chatView(chatRoomId: newValue.id))
+                    router.route(to: .chatView(chatRoom: ChatRoom(configuration: newValue)))
                 }
             }
+
             .navigationModifier {
                 router.dismiss()
             }
