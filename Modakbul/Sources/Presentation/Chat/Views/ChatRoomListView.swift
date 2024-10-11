@@ -84,8 +84,6 @@ extension ChatRoomListView {
                 AsyncImageView(
                     url: chatRoom.opponentuserImageURL,
                     contentMode: .fill,
-                    maxWidth: 100,
-                    maxHeight: 100,
                     clipShape: .circle
                 )
                 
