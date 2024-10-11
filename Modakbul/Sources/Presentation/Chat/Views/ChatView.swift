@@ -141,8 +141,14 @@ extension ChatViewModel {
             unreadCount: 1
         )
         
-        // TODO: 전송 실패 했을 경우 에러핸들링 필요
-        try? chatUseCase.send(message: chatMessage)
+        textOnTextField.removeAll()
+        
+        do {
+            try chatUseCase.send(message: chatMessage)
+            messages.append(chatMessage)
+        } catch {
+            print("채팅메세지 전송 실패: \(error)")
+        }
     }
 }
 
@@ -183,6 +189,7 @@ struct ChatView<Router: AppRouter>: View {
         .onDisappear {
             // TODO: - 화면 나가기 전에 vm 초기화같은 작업이 필요한지? 네
             vm.stopChat()
+            chatRoom.messages = vm.messages
         }
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
