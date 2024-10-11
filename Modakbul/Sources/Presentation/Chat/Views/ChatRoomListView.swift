@@ -9,6 +9,7 @@ import SwiftUI
 import SwiftData
 
 struct ChatRoomListView<Router: AppRouter>: View {
+    @Environment(\.modelContext) private var modelContext
     @EnvironmentObject private var router: Router
     @ObservedObject private var viewModel: ChatRoomListViewModel
     
@@ -24,11 +25,24 @@ struct ChatRoomListView<Router: AppRouter>: View {
             Cell(chatRoom)
                 .contentShape(.rect)
                 .onTapGesture {
-                    router.route(to: .chatView(chatRoomId: chatRoom.id))
+                    router.route(to: .chatView(chatRoom: chatRoom))
                 }
         }
         .listStyle(.plain)
         .listRowSeparator(.hidden)
+        .onReceive(viewModel.$configurations) { configs in
+            configs.forEach { config in
+                guard chatRooms.contains(where: { $0.id == config.id }) == false else { return }
+                let newChatRoom = ChatRoom(config: config)
+                modelContext.insert(newChatRoom)
+            }
+            
+            do {
+                try modelContext.save()
+            } catch {
+                print(error)
+            }
+        }
     }
 }
 
@@ -45,7 +59,7 @@ extension ChatRoomListView {
                 AsyncImageView(url: chatRoom.opponentuserImageURL)
                 
                 VStack(alignment: .leading, spacing: 10) {
-                    Text(chatRoom.title)
+                    Text(chatRoom.title ?? "새로운 채팅방")
                         .font(.Modakbul.headline)
                     
                     Text(chatRoom.messages.last?.content ?? "")

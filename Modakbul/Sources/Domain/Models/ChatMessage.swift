@@ -12,7 +12,7 @@ import SwiftData
 final class ChatRoom: Identifiable {
     @Attribute(.unique) var id: Int64
     @Relationship(deleteRule: .cascade) var messages: [ChatMessage]
-    var title: String
+    var title: String?
     var opponentUserId: Int64
     var opponentuserImageURL: URL?
     var relatedCommunityRecruitingContentId: Int64
@@ -21,7 +21,7 @@ final class ChatRoom: Identifiable {
     init(
         id: Int64,
         messages: [ChatMessage],
-        title: String,
+        title: String?,
         opponentUserId: Int64,
         opponentuserImageURL: URL? = nil,
         relatedCommunityRecruitingContentId: Int64
@@ -32,6 +32,15 @@ final class ChatRoom: Identifiable {
         self.opponentUserId = opponentUserId
         self.opponentuserImageURL = opponentuserImageURL
         self.relatedCommunityRecruitingContentId = relatedCommunityRecruitingContentId
+    }
+    
+    convenience init(config: ChatRoomConfiguration) {
+        self.id = config.id
+        self.messages = []
+        self.title = config.title
+        self.opponentUserId = config.opponentUserId
+        self.opponentuserImageURL = config.opponentUserImageURL
+        self.relatedCommunityRecruitingContentId = config.relatedCommunityRecruitingContentId
     }
 }
 

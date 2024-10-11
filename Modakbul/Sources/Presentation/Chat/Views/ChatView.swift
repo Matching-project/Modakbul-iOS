@@ -154,15 +154,15 @@ struct ChatView<Router: AppRouter>: View {
     @ObservedObject private var vm: ChatViewModel
     @FocusState private var isFocused: Bool
     
+    @Bindable var chatRoom: ChatRoom
+    
     init(
         _ chatViewModel: ChatViewModel,
-        chatRoomId: Int64
+        chatRoom: ChatRoom
     ) {
-        chatViewModel.configureView(chatRoomId: chatRoomId)
+        chatViewModel.configureView(chatRoomId: chatRoom.id)
         self.vm = chatViewModel
-        
-        let predicate = #Predicate<ChatRoom> { $0.id == chatRoomId }
-        //        _chatRoom = Query(filter: predicate)
+        self.chatRoom = chatRoom
     }
     
     var body: some View {
@@ -176,6 +176,8 @@ struct ChatView<Router: AppRouter>: View {
             router.dismiss()
         }
         .task {
+            vm.messages = chatRoom.messages
+            vm.readChatingHistory(userId: Int64(userId), on: chatRoom.id, with: chatRoom.relatedCommunityRecruitingContentId)
             await vm.startChat(userId: Int64(userId), userNickname: userNickname)
         }
         .onDisappear {
@@ -389,14 +391,6 @@ extension ChatView {
                 }
                 .padding([.top, .trailing], 10)
             }
-        }
-    }
-}
-
-struct ChatView_Preview: PreviewProvider {
-    static var previews: some View {
-        NavigationStack {
-            router.view(to: .chatView(chatRoomId: 0))
         }
     }
 }
