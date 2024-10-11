@@ -98,13 +98,8 @@ final class ChatViewModel: ObservableObject {
     }
     
     private func compare(currentMessage: ChatMessage) {
-        //MARK: - 전체 메세지 개수가 1개면 비교하지 않습니다.
-        guard let lastMessage = messages.last else {
-            messages.append(currentMessage)
-            return
-        }
-        
-        compare(latestMessage: lastMessage, currentMessage: currentMessage)
+        //MARK: - 전체 메세지 개수가 1개면 비교하지 않습니다.        
+        compare(latestMessage: messages.last, currentMessage: currentMessage)
         messages.append(currentMessage)
     }
     
