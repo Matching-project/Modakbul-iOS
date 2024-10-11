@@ -6,8 +6,10 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct PlaceInformationDetailView<Router: AppRouter>: View {
+    @Environment(\.modelContext) private var modelContext
     @EnvironmentObject private var router: Router
     @ObservedObject private var vm: PlaceInformationDetailViewModel
     
@@ -47,14 +49,27 @@ struct PlaceInformationDetailView<Router: AppRouter>: View {
                     router.dismiss()
                 }
             }
-            .onChange(of: vm.chatRoomConfiguration) { oldValue, newValue in
-                guard let newValue = newValue else { return }
+            .onReceive(vm.$chatRoomConfiguration) { configuration in
+                /**
+                 https://forums.developer.apple.com/forums/thread/747801
+                 
+                 * SwiftData Predicate 문법 내에서 객체의 프로퍼티를 직접 참조할 수 없음.
+                 클로저 외부에서 `chatRoomId`를 상수 바인딩 후 Predicate 참조 값으로 사용.
+                 */
+                guard let configuration = configuration else { return }
+                let chatRoomId = configuration.id
                 
-                if oldValue?.id != newValue.id {
-                    router.route(to: .chatView(chatRoom: ChatRoom(configuration: newValue)))
+                let descriptor = FetchDescriptor<ChatRoom>(
+                    predicate: #Predicate<ChatRoom> { $0.id == chatRoomId }
+                )
+                
+                if let chatRoom = try? modelContext.fetch(descriptor).first {
+                    router.route(to: .chatView(chatRoom: chatRoom))
+                    return
                 }
+                
+                router.route(to: .chatView(chatRoom: ChatRoom(configuration: configuration)))
             }
-
             .navigationModifier {
                 router.dismiss()
             }
