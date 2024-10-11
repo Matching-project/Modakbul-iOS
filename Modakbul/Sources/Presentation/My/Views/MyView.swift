@@ -19,7 +19,7 @@ struct MyView<Router: AppRouter>: View {
     
     var body: some View {
         VStack(alignment: .leading) {
-            if userId == Constants.loggedOutUserId || vm.user.id == Constants.loggedOutUserId {
+            if userId == Constants.loggedOutUserId && vm.user.id == Constants.loggedOutUserId {
                 HeaderWhenLoggedOut()
             } else {
                 HeaderWhenLoggedIn(vm)
