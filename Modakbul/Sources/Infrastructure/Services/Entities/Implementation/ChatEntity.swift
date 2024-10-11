@@ -12,7 +12,7 @@ struct ChatEntity: Codable {
     let senderId: Int64
     let senderNickname: String
     let content: String
-    let sendTime: Date
+    let sendTime: String
     let unreadCount: Int
     
     init(
@@ -27,7 +27,7 @@ struct ChatEntity: Codable {
         self.senderId = senderId
         self.senderNickname = senderNickname
         self.content = content
-        self.sendTime = sendTime
+        self.sendTime = sendTime.toString(by: .serverDateTime1)
         self.unreadCount = unreadCount
     }
     
@@ -48,7 +48,7 @@ struct ChatEntity: Codable {
             senderId: senderId,
             senderNickname: senderNickname,
             content: content,
-            sendTime: sendTime,
+            sendTime: sendTime.toDate(by: .serverDateTime1) ?? .now,
             unreadCount: unreadCount
         )
     }
