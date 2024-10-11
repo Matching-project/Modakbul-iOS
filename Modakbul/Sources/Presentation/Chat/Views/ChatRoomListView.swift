@@ -10,6 +10,7 @@ import SwiftData
 
 struct ChatRoomListView<Router: AppRouter>: View {
     @Environment(\.modelContext) private var modelContext
+    @AppStorage(AppStorageKey.userId) private var userId: Int = Constants.loggedOutUserId
     @EnvironmentObject private var router: Router
     @ObservedObject private var viewModel: ChatRoomListViewModel
     
@@ -43,7 +44,19 @@ struct ChatRoomListView<Router: AppRouter>: View {
                 print(error)
             }
         }
+        .onAppear {
+            viewModel.readChatRooms(userId: Int64(userId))
+        }
     }
+    
+    // TODO: 비로그인 상태에서 채팅방 목록 화면 진입 시 로그인뷰로 대신 라우팅
+//    @ViewBuilder private func buildView() -> some View {
+//        if userId == Constants.loggedOutUserId {
+//            
+//        } else {
+//            
+//        }
+//    }
 }
 
 extension ChatRoomListView {
