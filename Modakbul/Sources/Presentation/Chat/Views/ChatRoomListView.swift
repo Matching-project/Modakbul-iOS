@@ -21,42 +21,54 @@ struct ChatRoomListView<Router: AppRouter>: View {
     }
     
     var body: some View {
-        List(chatRooms) { chatRoom in
-            // TODO: - 채팅이 새로 들어올때마다 시간순으로 정렬 필요
-            Cell(chatRoom)
-                .contentShape(.rect)
-                .onTapGesture {
-                    router.route(to: .chatView(chatRoom: chatRoom))
+        buildView()
+            .onAppear {
+                if userId != Constants.loggedOutUserId {
+                    viewModel.readChatRooms(userId: Int64(userId))
                 }
-        }
-        .listStyle(.plain)
-        .listRowSeparator(.hidden)
-        .onReceive(viewModel.$configurations) { configurations in
-            configurations.forEach { configuration in
-                guard chatRooms.contains(where: { $0.id == configuration.id }) == false else { return }
-                let newChatRoom = ChatRoom(configuration: configuration)
-                modelContext.insert(newChatRoom)
             }
-            
-            do {
-                try modelContext.save()
-            } catch {
-                print(error)
-            }
-        }
-        .onAppear {
-            viewModel.readChatRooms(userId: Int64(userId))
-        }
     }
     
-    // TODO: 비로그인 상태에서 채팅방 목록 화면 진입 시 로그인뷰로 대신 라우팅
-//    @ViewBuilder private func buildView() -> some View {
-//        if userId == Constants.loggedOutUserId {
-//            
-//        } else {
-//            
-//        }
-//    }
+    @ViewBuilder private func buildView() -> some View {
+        if userId == Constants.loggedOutUserId {
+            ContentUnavailableView {
+                VStack {
+                    Spacer()
+                    Text("로그인 해야 볼 수 있어요.")
+                    Spacer()
+                    Button {
+                        router.route(to: .loginView)
+                    } label: {
+                        Text("로그인하기")
+                    }
+                }
+            }
+        } else {
+            List(chatRooms) { chatRoom in
+                // TODO: - 채팅이 새로 들어올때마다 시간순으로 정렬 필요
+                Cell(chatRoom)
+                    .contentShape(.rect)
+                    .onTapGesture {
+                        router.route(to: .chatView(chatRoom: chatRoom))
+                    }
+            }
+            .listStyle(.plain)
+            .listRowSeparator(.hidden)
+            .onReceive(viewModel.$configurations) { configurations in
+                configurations.forEach { configuration in
+                    guard chatRooms.contains(where: { $0.id == configuration.id }) == false else { return }
+                    let newChatRoom = ChatRoom(configuration: configuration)
+                    modelContext.insert(newChatRoom)
+                }
+                
+                do {
+                    try modelContext.save()
+                } catch {
+                    print(error)
+                }
+            }
+        }
+    }
 }
 
 extension ChatRoomListView {
@@ -69,7 +81,13 @@ extension ChatRoomListView {
         
         var body: some View {
             HStack {
-                AsyncImageView(url: chatRoom.opponentuserImageURL)
+                AsyncImageView(
+                    url: chatRoom.opponentuserImageURL,
+                    contentMode: .fill,
+                    maxWidth: 100,
+                    maxHeight: 100,
+                    clipShape: .circle
+                )
                 
                 VStack(alignment: .leading, spacing: 10) {
                     Text(chatRoom.title ?? "새로운 채팅방")
