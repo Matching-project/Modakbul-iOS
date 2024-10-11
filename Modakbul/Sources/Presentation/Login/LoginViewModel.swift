@@ -12,19 +12,25 @@ import Combine
 
 final class LoginViewModel: ObservableObject {
     @Published var userId: Int64?
+    @Published var userNickname: String?
     @Published var userCredential: UserCredential?
     
     private var fcmToken: String?
     
-    private let userIdSubject = PassthroughSubject<Int64, Never>()
+    /// 유저 아이디와 유저 닉네임을 의미합니다.
+    private let userSubject = PassthroughSubject<(Int64, String), Never>()
     private let userCredentialSubject = PassthroughSubject<UserCredential?, Never>()
     private var cancellables = Set<AnyCancellable>()
     
     private let userRegistrationUseCase: UserRegistrationUseCase
+    private let userBusinessUseCase: UserBusinessUseCase
     private let fcmManager = FcmManager.instance
     
-    init(userRegistrationUseCase: UserRegistrationUseCase) {
+    init(userRegistrationUseCase: UserRegistrationUseCase,
+         userBusinessUseCase: UserBusinessUseCase
+    ) {
         self.userRegistrationUseCase = userRegistrationUseCase
+        self.userBusinessUseCase = userBusinessUseCase
         subscribe()
     }
     
@@ -35,10 +41,11 @@ final class LoginViewModel: ObservableObject {
             }
             .store(in: &cancellables)
         
-        userIdSubject
+        userSubject
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] userId in
+            .sink { [weak self] (userId, userNickname) in
                 self?.userId = userId
+                self?.userNickname = userNickname
             }
             .store(in: &cancellables)
         
@@ -58,9 +65,11 @@ final class LoginViewModel: ObservableObject {
         Task {
             do {
                 let userId = try await userRegistrationUseCase.login(userCredential)
-                userIdSubject.send(userId)
+                let userNickname = try await userBusinessUseCase.readMyProfile(userId: userId).nickname
+
+                userSubject.send((userId, userNickname))
             } catch {
-                userIdSubject.send(Int64(Constants.loggedOutUserId))
+                userSubject.send((Int64(Constants.loggedOutUserId), "닉네임 없음"))
             }
         }
         

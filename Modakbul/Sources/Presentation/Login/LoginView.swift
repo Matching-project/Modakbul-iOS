@@ -13,6 +13,7 @@ struct LoginView<Router: AppRouter>: View {
     @EnvironmentObject private var router: Router
     @ObservedObject private var loginViewModel: LoginViewModel
     @AppStorage(AppStorageKey.userId) private var userId: Int = Constants.loggedOutUserId
+    @AppStorage(AppStorageKey.userNickname) private var userNickname: String = String()
     @AppStorage(AppStorageKey.provider) private var provider: AuthenticationProvider?
     
     @State private var isPresented: Bool = false
@@ -38,7 +39,7 @@ struct LoginView<Router: AppRouter>: View {
             }
         }
         .padding()
-        .onReceive(loginViewModel.$userId, perform: handleUserIdUpdate)
+        .onReceive(loginViewModel.$userId, perform: handleUserUpdate)
     }
     
     private var appLogo: some View {
@@ -84,15 +85,18 @@ struct LoginView<Router: AppRouter>: View {
         .frame(height: 44)
     }
     
-    private func handleUserIdUpdate(_ userId: Int64?) {
+    private func handleUserUpdate(_ userId: Int64?) {
           guard let userId = userId,
+                let userNickname = loginViewModel.userNickname,
                 let userCredential = loginViewModel.userCredential else { return }
     
         // 로그인 버튼을 터치했을 때에만 약관동의 뷰로 이동되어야 합니다.
           if userId == Constants.loggedOutUserId {
+              router.dismiss()
               router.route(to: .requiredTermView(userCredential: userCredential))
           } else {
               self.userId = Int(userId)
+              self.userNickname = userNickname
               self.provider = userCredential.provider
           }
       }

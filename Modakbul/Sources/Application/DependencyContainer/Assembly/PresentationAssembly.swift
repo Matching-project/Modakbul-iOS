@@ -11,7 +11,8 @@ struct PresentationAssembly: Assembly {
     func assemble(container: DependencyContainer) {
         // MARK: - Login
         container.register(for: LoginViewModel.self) { resolver in
-            LoginViewModel(userRegistrationUseCase: resolver.resolve(UserRegistrationUseCase.self))
+            LoginViewModel(userRegistrationUseCase: resolver.resolve(UserRegistrationUseCase.self),
+                           userBusinessUseCase: resolver.resolve(UserBusinessUseCase.self))
         }
         
         // MARK: - Registration
@@ -102,7 +103,8 @@ struct PresentationAssembly: Assembly {
         }
         
         container.register(for: ChatViewModel.self) { resolver in
-            ChatViewModel(chatUseCase: resolver.resolve(ChatUseCase.self))
+            ChatViewModel(chatUseCase: resolver.resolve(ChatUseCase.self),
+                          userBusinessUseCase: resolver.resolve(UserBusinessUseCase.self))
         }
         
         container.register(for: ChatRoomListViewModel.self) { resolver in

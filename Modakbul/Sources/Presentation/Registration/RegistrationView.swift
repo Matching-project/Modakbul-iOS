@@ -11,6 +11,7 @@ struct RegistrationView<Router: AppRouter>: View {
     @EnvironmentObject private var router: Router
     @ObservedObject private var vm: RegistrationViewModel
     @AppStorage(AppStorageKey.userId) private var userId: Int = Constants.loggedOutUserId
+    @AppStorage(AppStorageKey.userNickname) private var userNickname: String = String()
     @AppStorage(AppStorageKey.provider) private var provider: AuthenticationProvider?
     
     private let userCredential: UserCredential
@@ -29,6 +30,7 @@ struct RegistrationView<Router: AppRouter>: View {
             .onReceive(vm.$id) { id in
                 guard let id = id else { return }
                 userId = Int(id)
+                userNickname = vm.nickname
                 router.popToRoot()
             }
     }
