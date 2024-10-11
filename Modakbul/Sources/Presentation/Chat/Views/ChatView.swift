@@ -15,16 +15,25 @@ final class ChatViewModel: ObservableObject {
     @Published var messages: [ChatMessage] = []
     @Published var textOnTextField: String = ""
     
+    @Published var opponentUser: User?
+    
     private var chatRoomId: Int64 = Constants.temporalId
     
     private let chatUseCase: ChatUseCase
+    private let userBusinessUseCase: UserBusinessUseCase
     private var previousDate: Date?
     
     private var cancellables = Set<AnyCancellable>()
     private let chatHistorySubject = PassthroughSubject<ChatHistory, Never>()
+    private let opponentUserSubject = PassthroughSubject<User, Never>()
+//    private let newMessageSubject = CurrentValueSubject<ChatMessage?, Error>(nil)
     
-    init(chatUseCase: ChatUseCase) {
+    init(
+        chatUseCase: ChatUseCase,
+        userBusinessUseCase: UserBusinessUseCase
+    ) {
         self.chatUseCase = chatUseCase
+        self.userBusinessUseCase = userBusinessUseCase
         subscribe()
     }
     
@@ -48,6 +57,13 @@ final class ChatViewModel: ObservableObject {
 //                    )
 //                }
                 
+            }
+            .store(in: &cancellables)
+        
+        opponentUserSubject
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] user in
+                self?.opponentUser = user
             }
             .store(in: &cancellables)
         
@@ -152,6 +168,32 @@ extension ChatViewModel {
     }
 }
 
+// MARK: Interfaces for UserBusinessUseCase
+extension ChatViewModel {
+    func fetchOpponentUserProfile(userId: Int64, opponentUserId: Int64) {
+        Task {
+            do {
+                let opponentUser = try await userBusinessUseCase.readOpponentUserProfile(userId: userId, opponentUserId: opponentUserId)
+                opponentUserSubject.send(opponentUser)
+            } catch {
+                print(error)
+            }
+        }
+    }
+    
+    func block(userId: Int64) {
+        guard let opponentUserId = opponentUser?.id else { return }
+        
+        Task {
+            do {
+                try await userBusinessUseCase.block(userId: userId, opponentUserId: opponentUserId)
+            } catch {
+                print(error)
+            }
+        }
+    }
+}
+
 struct ChatView<Router: AppRouter>: View {
     @AppStorage(AppStorageKey.userId) private var userId = Constants.loggedOutUserId
     @AppStorage(AppStorageKey.userNickname) private var userNickname: String = String()
@@ -182,6 +224,7 @@ struct ChatView<Router: AppRouter>: View {
             router.dismiss()
         }
         .task {
+            vm.fetchOpponentUserProfile(userId: Int64(userId), opponentUserId: chatRoom.opponentUserId)
             vm.messages = chatRoom.messages
             vm.readChatingHistory(userId: Int64(userId), on: chatRoom.id, with: chatRoom.relatedCommunityRecruitingContentId)
             await vm.startChat(userId: Int64(userId), userNickname: userNickname)
@@ -196,13 +239,13 @@ struct ChatView<Router: AppRouter>: View {
                 // TODO: 기능 연결 필요
                 Menu {
                     Button {
-                        
+                        vm.block(userId: Int64(userId))
                     } label: {
                         Text("차단하기")
                     }
                     
                     Button {
-                        
+                        // TODO: 신고하기 화면으로 이동할 방법 고민 좀
                     } label: {
                         Text("신고하기")
                     }
@@ -257,8 +300,7 @@ struct ChatView<Router: AppRouter>: View {
         case .me:
             myCell(message)
         case .opponentUser:
-            myCell(message)
-            //            opponentUserCell(message, opponentUser)
+            opponentUserCell(message, vm.opponentUser)
         }
     }
     
@@ -293,17 +335,19 @@ struct ChatView<Router: AppRouter>: View {
     }
     
     @ViewBuilder
-    private func opponentUserCell(_ message: ChatMessage, _ user: User) -> some View {
+    private func opponentUserCell(_ message: ChatMessage, _ user: User?) -> some View {
         HStack(alignment: .top) {
-            AsyncImageView(url: user.imageURL)
+            AsyncImageView(url: user?.imageURL)
                 .frame(width: 50, height: 50)
                 .clipShape(.circle)
                 .onTapGesture {
-                    router.route(to: .profileDetailView(opponentUserId: user.id))
+                    if let id = user?.id {
+                        router.route(to: .profileDetailView(opponentUserId: id))
+                    }
                 }
             
             VStack(alignment: .leading, spacing: 6) {
-                Text(user.nickname)
+                Text(user?.nickname ?? "")
                     .bold()
                 
                 // 채팅방 위치를 기준으로 읽음 처리 및 시간이 표시되어야 합니다.
