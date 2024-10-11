@@ -30,10 +30,10 @@ struct ChatRoomListView<Router: AppRouter>: View {
         }
         .listStyle(.plain)
         .listRowSeparator(.hidden)
-        .onReceive(viewModel.$configurations) { configs in
-            configs.forEach { config in
-                guard chatRooms.contains(where: { $0.id == config.id }) == false else { return }
-                let newChatRoom = ChatRoom(config: config)
+        .onReceive(viewModel.$configurations) { configurations in
+            configurations.forEach { configuration in
+                guard chatRooms.contains(where: { $0.id == configuration.id }) == false else { return }
+                let newChatRoom = ChatRoom(configuration: configuration)
                 modelContext.insert(newChatRoom)
             }
             
