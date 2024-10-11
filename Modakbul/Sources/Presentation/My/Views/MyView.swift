@@ -19,14 +19,14 @@ struct MyView<Router: AppRouter>: View {
     
     var body: some View {
         VStack(alignment: .leading) {
-            if userId == Constants.loggedOutUserId {
+            if userId == Constants.loggedOutUserId || vm.user.id == Constants.loggedOutUserId {
                 HeaderWhenLoggedOut()
             } else {
                 HeaderWhenLoggedIn(vm)
                     .padding(.bottom, -10)
             }
             
-            Cell(for: $vm.user)
+            Cell(for: vm.user)
         }
         .padding(.horizontal, Constants.horizontal)
         .onChange(of: vm.user.id) { oldValue, newValue in
@@ -133,11 +133,11 @@ extension MyView {
     
     struct Cell: View {
         @EnvironmentObject private var router: Router
-        @Binding private var user: User
         @AppStorage(AppStorageKey.userId) private var userId: Int = Constants.loggedOutUserId
+        private let user: User
         
-        init(for user: Binding<User>) {
-            self._user = user
+        init(for user: User) {
+            self.user = user
         }
         
         var body: some View {
