@@ -26,7 +26,7 @@ final class ChatViewModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
     private let chatHistorySubject = PassthroughSubject<ChatHistory, Never>()
     private let opponentUserSubject = PassthroughSubject<User, Never>()
-//    private let newMessageSubject = CurrentValueSubject<ChatMessage?, Error>(nil)
+    private let newMessageSubject = CurrentValueSubject<ChatMessage?, Never>(nil)
     
     init(
         chatUseCase: ChatUseCase,
@@ -67,10 +67,11 @@ final class ChatViewModel: ObservableObject {
             }
             .store(in: &cancellables)
         
-        $messages
-            .sink { [weak self] _ in
-                Task { [weak self] in
-                    await self?.compareNewMessages()
+        newMessageSubject
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] message in
+                if let message = message {
+                    self?.compare(currentMessage: message)
                 }
             }
             .store(in: &cancellables)
@@ -96,25 +97,42 @@ final class ChatViewModel: ObservableObject {
         }
     }
     
-    @MainActor
-    private func compareNewMessages() {
-        guard let currentMessage = messages.last else { return }
-        messages.removeLast()
+    private func compare(currentMessage: ChatMessage) {
+        //MARK: - 전체 메세지 개수가 1개면 비교하지 않습니다.
+        guard let lastMessage = messages.last else {
+            messages.append(currentMessage)
+            return
+        }
         
-        guard let lastMessage = messages.last else { return }
         compare(latestMessage: lastMessage, currentMessage: currentMessage)
-        
         messages.append(currentMessage)
     }
     
-    @MainActor
-    func compare(latestMessage: ChatMessage, currentMessage: ChatMessage) {
-        let latestMessage = Calendar.current.startOfDay(for: latestMessage.sendTime)
+    /// 마지막으로 보낸 메시지와 현재 보낸 메세지를 비교합니다. 이를 통해, 날짜가 바꼈음을 알리는 시스템 메시지를 삽입합니다. senderId: -1이면 시스템 메세지로 취급하고 시간을 알려주는 용도로 사용됩니다.
+    /// - Parameters:
+    ///   - latestMessage: 마지막으로 보낸 메시지입니다.
+    ///   - currentMessage: 현재 보낸 메세지입니다.
+    private func compare(latestMessage: ChatMessage?, currentMessage: ChatMessage) {
+        guard let latestMessage = latestMessage else {
+            messages.append(ChatMessage(chatRoomId: currentMessage.chatRoomId,
+                                        senderId: Constants.temporalId,
+                                        senderNickname: "",
+                                        content: "",
+                                        sendTime: currentMessage.sendTime,
+                                        unreadCount: 0))
+            return
+        }
+        
+        let latestMessageDate = Calendar.current.startOfDay(for: latestMessage.sendTime)
         let currentMessageDate = Calendar.current.startOfDay(for: currentMessage.sendTime)
         
-        // TODO: - senderId: -1이면 시스템 메세지로 취급하고 시간을 알려주는 용도로 사용할지?
-        if latestMessage != currentMessageDate {
-            //            messages.append(ChatMessage(chatRoomId: currentMessage.chatRoomId, senderId: -1, senderNickname: "", content: "", sendTime: currentMessage.sendTime, readCount: 0))
+        if latestMessageDate != currentMessageDate {
+            messages.append(ChatMessage(chatRoomId: currentMessage.chatRoomId,
+                                        senderId: Constants.temporalId,
+                                        senderNickname: "",
+                                        content: "",
+                                        sendTime: currentMessage.sendTime,
+                                        unreadCount: 0))
         }
     }
 }
@@ -145,7 +163,7 @@ extension ChatViewModel {
         chatUseCase.stopChat(on: chatRoomId)
     }
     
-    func send(userId: Int64, userNickname nickname: String) {
+    func send(userId: Int64, userNickname: String) {
         guard textOnTextField.isEmpty == false else { return }
         
         let chatMessage = ChatMessage(
@@ -156,12 +174,12 @@ extension ChatViewModel {
             sendTime: .now,
             unreadCount: 1
         )
-        
+            
         textOnTextField.removeAll()
         
         do {
             try chatUseCase.send(message: chatMessage)
-            messages.append(chatMessage)
+            newMessageSubject.send(chatMessage)
         } catch {
             print("채팅메세지 전송 실패: \(error)")
         }
