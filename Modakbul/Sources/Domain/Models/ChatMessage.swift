@@ -14,13 +14,13 @@ final class ChatRoom: Identifiable {
     @Relationship(deleteRule: .cascade) var messages: [ChatMessage]
     var title: String?
     var opponentUserId: Int64
-    var opponentuserImageURL: URL?
+    var opponentUserImageURL: URL?
     var relatedCommunityRecruitingContentId: Int64
     var unreadMessagesCount: Int { messages.filter { $0.isRead == false }.count }
     
     init(
         id: Int64,
-        messages: [ChatMessage],
+        messages: [ChatMessage] = [],
         title: String?,
         opponentUserId: Int64,
         opponentuserImageURL: URL? = nil,
@@ -30,7 +30,7 @@ final class ChatRoom: Identifiable {
         self.messages = messages
         self.title = title
         self.opponentUserId = opponentUserId
-        self.opponentuserImageURL = opponentuserImageURL
+        self.opponentUserImageURL = opponentuserImageURL
         self.relatedCommunityRecruitingContentId = relatedCommunityRecruitingContentId
     }
     
@@ -46,7 +46,7 @@ final class ChatRoom: Identifiable {
 
 @Model
 final class ChatMessage: Identifiable {
-    @Attribute(.unique) var id = UUID()
+    @Attribute(.unique) var id: UUID
     var chatRoomId: Int64
     var senderId: Int64
     var senderNickname: String
