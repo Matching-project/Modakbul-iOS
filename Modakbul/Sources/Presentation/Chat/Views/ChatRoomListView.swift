@@ -45,7 +45,6 @@ struct ChatRoomListView<Router: AppRouter>: View {
             }
         } else {
             List(chatRooms) { chatRoom in
-                // TODO: - 채팅이 새로 들어올때마다 시간순으로 정렬 필요
                 Cell(chatRoom)
                     .contentShape(.rect)
                     .onTapGesture {
