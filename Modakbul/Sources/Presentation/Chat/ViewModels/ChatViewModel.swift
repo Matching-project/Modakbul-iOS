@@ -40,22 +40,23 @@ final class ChatViewModel: ObservableObject {
         chatHistorySubject
             .receive(on: DispatchQueue.main)
             .sink { [weak self] chatHistory in
-                guard let self = self else { return }
+                guard let self = self,
+                      let opponentUser = opponentUser else { return }
+                
                 
                 communityRecruitingContentTitle = chatHistory.communityRecruitingContentTitle
                 locationName = chatHistory.locationName
-                // TODO: - 채팅내역 불러오기 API 변경 필요
-//                let newMessages = chatHistory.messages.map { (content, timestamp) in
-//                    return ChatMessage(
-//                        chatRoomId: self.chatRoomId,
-//                        senderId: <#T##Int64#>,
-//                        senderNickname: <#T##String#>,
-//                        content: content,
-//                        sendTime: timestamp,
-//                        unreadCount: <#T##Int#>
-//                    )
-//                }
-                
+                let messages = chatHistory.messages.map { (content, timestamp) in
+                    return ChatMessage(
+                        chatRoomId: self.chatRoomId,
+                        senderId: opponentUser.id,
+                        senderNickname: opponentUser.nickname,
+                        content: content,
+                        sendTime: timestamp,
+                        unreadCount: 0
+                    )
+                }
+                self.messages += messages
             }
             .store(in: &cancellables)
         
@@ -83,16 +84,14 @@ final class ChatViewModel: ObservableObject {
     func readChatingHistory(userId: Int64,
                             on chatRoomId: Int64,
                             with communityRecruitingContentId: Int64
-    ) {
-        Task {
-            do {
-                let chatHistory = try await chatUseCase.readChatingHistory(userId: userId,
-                                                                           on: chatRoomId,
-                                                                           with: communityRecruitingContentId)
-                chatHistorySubject.send(chatHistory)
-            } catch {
-                print(error)
-            }
+    ) async {
+        do {
+            let chatHistory = try await chatUseCase.readChatingHistory(userId: userId,
+                                                                       on: chatRoomId,
+                                                                       with: communityRecruitingContentId)
+            chatHistorySubject.send(chatHistory)
+        } catch {
+            print(error)
         }
     }
     
@@ -182,14 +181,12 @@ extension ChatViewModel {
 
 // MARK: Interfaces for UserBusinessUseCase
 extension ChatViewModel {
-    func fetchOpponentUserProfile(userId: Int64, opponentUserId: Int64) {
-        Task {
-            do {
-                let opponentUser = try await userBusinessUseCase.readOpponentUserProfile(userId: userId, opponentUserId: opponentUserId)
-                opponentUserSubject.send(opponentUser)
-            } catch {
-                print(error)
-            }
+    func fetchOpponentUserProfile(userId: Int64, opponentUserId: Int64) async {
+        do {
+            let opponentUser = try await userBusinessUseCase.readOpponentUserProfile(userId: userId, opponentUserId: opponentUserId)
+            opponentUserSubject.send(opponentUser)
+        } catch {
+            print(error)
         }
     }
     

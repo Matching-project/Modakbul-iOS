@@ -38,9 +38,9 @@ struct ChatView<Router: AppRouter>: View {
             router.dismiss()
         }
         .task {
-            vm.fetchOpponentUserProfile(userId: Int64(userId), opponentUserId: chatRoom.opponentUserId)
-            vm.messages = chatRoom.messages
-            vm.readChatingHistory(userId: Int64(userId), on: chatRoom.id, with: chatRoom.relatedCommunityRecruitingContentId)
+            await vm.fetchOpponentUserProfile(userId: Int64(userId), opponentUserId: chatRoom.opponentUserId)
+            vm.messages = chatRoom.messages // 로컬에 저장된 채팅을 불러옵니다.
+            await vm.readChatingHistory(userId: Int64(userId), on: chatRoom.id, with: chatRoom.relatedCommunityRecruitingContentId) // 서버에서 새로운 채팅을 불러옵니다.
             await vm.startChat(userId: Int64(userId), userNickname: userNickname)
         }
         .onDisappear {
