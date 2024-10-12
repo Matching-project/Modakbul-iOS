@@ -99,7 +99,7 @@ struct ProfileDetailView<Router: AppRouter>: View {
             router.alert(for: .reportUser, actions: [
                 .cancelAction("취소") {},
                 .destructiveAction("신고") {
-                    router.route(to: .reportView(opponentUserId: opponentUserId,
+                    router.route(to: .reportView(opponentUserId: opponentUserId, chatRoomId: nil,
                                                  isReported: $vm.isReported))
                 },
             ])

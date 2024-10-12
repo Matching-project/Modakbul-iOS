@@ -15,6 +15,8 @@ final class ChatViewModel: ObservableObject {
     @Published var textOnTextField: String = ""
     
     @Published var opponentUser: User?
+    @Published var isReported: Bool = false
+    @Published var isExit: Bool = false
     
     private var chatRoomId: Int64 = Constants.temporalId
     
@@ -26,6 +28,7 @@ final class ChatViewModel: ObservableObject {
     private let chatHistorySubject = PassthroughSubject<ChatHistory, Never>()
     private let opponentUserSubject = PassthroughSubject<User, Never>()
     private let newMessageSubject = CurrentValueSubject<ChatMessage?, Never>(nil)
+    private let exitPerformSubject = PassthroughSubject<Bool, Never>()
     
     init(
         chatUseCase: ChatUseCase,
@@ -75,10 +78,18 @@ final class ChatViewModel: ObservableObject {
                 }
             }
             .store(in: &cancellables)
+        
+        exitPerformSubject
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] result in
+                self?.isExit = result
+            }
+            .store(in: &cancellables)
     }
     
     func configureView(chatRoomId: Int64) {
         self.chatRoomId = chatRoomId
+        self.isExit = false
     }
     
     func readChatingHistory(userId: Int64,
@@ -177,6 +188,17 @@ extension ChatViewModel {
             print("채팅메세지 전송 실패: \(error)")
         }
     }
+    
+    func exitChatRoom(userId: Int64, chatRoomId: Int64) {
+        Task {
+            do {
+                try await chatUseCase.exitChatRoom(userId: userId, chatRoomId: chatRoomId)
+                exitPerformSubject.send(true)
+            } catch {
+                print(error)
+            }
+        }
+    }
 }
 
 // MARK: Interfaces for UserBusinessUseCase
@@ -187,18 +209,6 @@ extension ChatViewModel {
             opponentUserSubject.send(opponentUser)
         } catch {
             print(error)
-        }
-    }
-    
-    func block(userId: Int64) {
-        guard let opponentUserId = opponentUser?.id else { return }
-        
-        Task {
-            do {
-                try await userBusinessUseCase.block(userId: userId, opponentUserId: opponentUserId)
-            } catch {
-                print(error)
-            }
         }
     }
 }

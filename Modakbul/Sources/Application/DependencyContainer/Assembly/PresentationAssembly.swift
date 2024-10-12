@@ -99,7 +99,10 @@ struct PresentationAssembly: Assembly {
         
         // MARK: - Chat
         container.register(for: ReportViewModel.self) { resolver in
-            ReportViewModel(userBusinessUseCase: resolver.resolve(UserBusinessUseCase.self))
+            ReportViewModel(
+                userBusinessUseCase: resolver.resolve(UserBusinessUseCase.self),
+                chatUseCase: resolver.resolve(ChatUseCase.self)
+            )
         }
         
         container.register(for: ChatViewModel.self) { resolver in

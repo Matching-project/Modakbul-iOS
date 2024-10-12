@@ -16,13 +16,16 @@ struct ReportView<Router: AppRouter>: View {
     @AppStorage(AppStorageKey.userId) private var userId: Int = Constants.loggedOutUserId
     
     private let opponentUserId: Int64
+    private let chatRoomId: Int64?
     
     init(_ vm: ReportViewModel,
          opponentUserId: Int64,
+         chatRoomId: Int64?,
          isReported: Binding<Bool>
     ) {
         self.vm = vm
         self.opponentUserId = opponentUserId
+        self.chatRoomId = chatRoomId
         self._isReported = isReported
     }
     
@@ -68,7 +71,7 @@ struct ReportView<Router: AppRouter>: View {
             FlatButton("신고완료") {
                 router.alert(for: .reportUserConfirmation, actions: [
                     .defaultAction("확인") {
-                        vm.report(userId: Int64(userId), opponentUserId: opponentUserId)
+                        vm.report(userId: Int64(userId), opponentUserId: opponentUserId, chatRoomId: chatRoomId)
                         isReported = true
                         router.dismiss()
                     }
@@ -78,15 +81,5 @@ struct ReportView<Router: AppRouter>: View {
             .padding(.vertical, 5)
         }
         .padding(.horizontal, Constants.horizontal)
-    }
-}
-
-struct ReportView_Preview: PreviewProvider {
-    @State private static var isReported: Bool = false
-
-    static var previews: some View {
-        NavigationStack {
-            router.view(to: .reportView(opponentUserId: -1, isReported: $isReported))
-        }
     }
 }

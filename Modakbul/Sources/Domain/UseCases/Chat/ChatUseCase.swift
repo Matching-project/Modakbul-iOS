@@ -40,6 +40,9 @@ protocol ChatUseCase {
     
     /// 채팅방 신고하고 나가기
     func reportAndExitChatRoom(userId: UserId, opponentUserId: UserId, chatRoomId: ChatRoomId, report: Report) async throws
+    
+    /// 채팅방 나가기
+    func exitChatRoom(userId: UserId, chatRoomId: ChatRoomId) async throws
 }
 
 final class DefaultChatUseCase {
@@ -90,5 +93,9 @@ extension DefaultChatUseCase: ChatUseCase {
     
     func reportAndExitChatRoom(userId: UserId, opponentUserId: UserId, chatRoomId: ChatRoomId, report: Report) async throws {
         try await chatRepository.reportAndExitChatRoom(userId: userId, opponentUserId: opponentUserId, chatRoomId: chatRoomId, report: report)
+    }
+    
+    func exitChatRoom(userId: UserId, chatRoomId: ChatRoomId) async throws {
+        try await chatRepository.exitChatRoom(userId: userId, chatRoomId: chatRoomId)
     }
 }

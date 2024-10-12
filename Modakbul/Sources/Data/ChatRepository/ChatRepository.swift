@@ -20,6 +20,7 @@ protocol ChatRepository: TokenRefreshable {
     func readChatingHistory(userId: UserId, on chatRoomId: ChatRoomId, with communityRecruitingContentId: CommunityRecruitingContentId) async throws -> ChatHistory
     func send(message: ChatMessage) throws
     func reportAndExitChatRoom(userId: UserId, opponentUserId: UserId, chatRoomId: ChatRoomId, report: Report) async throws
+    func exitChatRoom(userId: UserId, chatRoomId: ChatRoomId) async throws
 }
 
 final class DefaultChatRepository {
@@ -159,6 +160,22 @@ extension DefaultChatRepository: ChatRepository {
             let tokens = try await reissueTokens(userId: userId, token.refreshToken)
             
             let endpoint = Endpoint.reportAndExitChatRoom(token: tokens.accessToken, chatRoomId: chatRoomId, userId: opponentUserId, report: report)
+            try await networkService.request(endpoint: endpoint, for: DefaultResponseEntity.self)
+        } catch {
+            throw error
+        }
+    }
+    
+    func exitChatRoom(userId: UserId, chatRoomId: ChatRoomId) async throws {
+        let token = try tokenStorage.fetch(by: userId)
+        
+        do {
+            let endpoint = Endpoint.exitChatRoom(token: token.accessToken, chatRoomId: chatRoomId)
+            try await networkService.request(endpoint: endpoint, for: DefaultResponseEntity.self)
+        } catch APIError.accessTokenExpired {
+            let tokens = try await reissueTokens(userId: userId, token.refreshToken)
+            
+            let endpoint = Endpoint.exitChatRoom(token: tokens.accessToken, chatRoomId: chatRoomId)
             try await networkService.request(endpoint: endpoint, for: DefaultResponseEntity.self)
         } catch {
             throw error
