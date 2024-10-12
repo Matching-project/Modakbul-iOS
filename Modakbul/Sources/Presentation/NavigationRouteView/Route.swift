@@ -55,7 +55,7 @@ enum Route: Routable {
     case notificationView(userId: Int64)
     case chatView(chatRoom: ChatRoom)               // MARK: - Chat
     case chatRoomListView
-    case reportView(opponentUserId: Int64, isReported: Binding<Bool>)
+    case reportView(opponentUserId: Int64, chatRoomId: Int64?, isReported: Binding<Bool>)
     case profileDetailView(opponentUserId: Int64)  // MARK: - Common
     case networkContentUnavailableView
 
@@ -147,8 +147,8 @@ enum Route: Routable {
             ChatView<Router>(router.resolver.resolve(ChatViewModel.self), chatRoom: chatRoom)
         case .chatRoomListView:
             ChatRoomListView<Router>(router.resolver.resolve(ChatRoomListViewModel.self))
-        case .reportView(let opponentUserId, let isReported):
-            ReportView<Router>(router.resolver.resolve(ReportViewModel.self), opponentUserId: opponentUserId, isReported: isReported)
+        case .reportView(let opponentUserId, let chatRoomId, let isReported):
+            ReportView<Router>(router.resolver.resolve(ReportViewModel.self), opponentUserId: opponentUserId, chatRoomId: chatRoomId, isReported: isReported)
         case .profileDetailView(let opponentUserId):// MARK: - Common
             ProfileDetailView<Router>(router.resolver.resolve(ProfileDetailViewModel.self), opponentUserId: opponentUserId)
         case .networkContentUnavailableView:
