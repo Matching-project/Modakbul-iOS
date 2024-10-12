@@ -34,7 +34,7 @@ struct ChatView<Router: AppRouter>: View {
                     Header(vm.locationName, vm.communityRecruitingContentTitle)
                 }
         }
-        .navigationModifier(title: "채팅방") {
+        .navigationModifier(title: chatRoom.title) {
             router.dismiss()
         }
         .task {
