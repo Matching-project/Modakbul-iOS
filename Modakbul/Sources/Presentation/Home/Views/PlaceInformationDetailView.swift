@@ -49,7 +49,7 @@ struct PlaceInformationDetailView<Router: AppRouter>: View {
                     router.dismiss()
                 }
             }
-            .onReceive(vm.$chatRoomConfiguration) { configuration in
+            .onChange(of: vm.chatRoomConfiguration) { _, configuration in
                 /**
                  https://forums.developer.apple.com/forums/thread/747801
                  
