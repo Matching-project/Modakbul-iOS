@@ -39,7 +39,9 @@ struct LoginView<Router: AppRouter>: View {
             }
         }
         .padding()
-        .onReceive(loginViewModel.$userId, perform: handleUserUpdate)
+        .onReceive(loginViewModel.$userId) { userId in
+            handleUserUpdate(userId)
+        }
     }
     
     private var appLogo: some View {
@@ -92,7 +94,6 @@ struct LoginView<Router: AppRouter>: View {
     
         // 로그인 버튼을 터치했을 때에만 약관동의 뷰로 이동되어야 합니다.
           if userId == Constants.loggedOutUserId {
-              router.dismiss()
               router.route(to: .requiredTermView(userCredential: userCredential))
           } else {
               self.userId = Int(userId)

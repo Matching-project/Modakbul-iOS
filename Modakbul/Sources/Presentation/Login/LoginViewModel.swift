@@ -44,8 +44,8 @@ final class LoginViewModel: ObservableObject {
         userSubject
             .receive(on: DispatchQueue.main)
             .sink { [weak self] (userId, userNickname) in
-                self?.userId = userId
                 self?.userNickname = userNickname
+                self?.userId = userId
             }
             .store(in: &cancellables)
         
