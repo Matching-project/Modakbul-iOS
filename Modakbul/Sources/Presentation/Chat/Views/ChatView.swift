@@ -34,7 +34,7 @@ struct ChatView<Router: AppRouter>: View {
                     Header(vm.locationName, vm.communityRecruitingContentTitle)
                 }
         }
-        .navigationModifier(title: "채팅방") {
+        .navigationModifier(title: chatRoom.title) {
             router.dismiss()
         }
         .task {
@@ -81,7 +81,7 @@ struct ChatView<Router: AppRouter>: View {
         VStack {
             ScrollView(.vertical) {
                 LazyVStack {
-                    ForEach(vm.messages) { message in
+                    ForEach(vm.messages.sorted { $0.sendTime < $1.sendTime }) { message in
                         cell(message: message)
                     }
                 }

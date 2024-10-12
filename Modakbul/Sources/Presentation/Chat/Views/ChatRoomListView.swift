@@ -29,6 +29,14 @@ struct ChatRoomListView<Router: AppRouter>: View {
             }
     }
     
+    private func deleteSwipeAction(for chatRoom: ChatRoom) -> some View {
+        Button(role: .destructive) {
+            viewModel.deleteChatRoom(chatRoom, on: Int64(userId), by: modelContext)
+        } label: {
+            Label("삭제하기", systemImage: "trash")
+        }
+    }
+    
     @ViewBuilder private func buildView() -> some View {
         if userId == Constants.loggedOutUserId {
             ContentUnavailableView {
@@ -45,11 +53,13 @@ struct ChatRoomListView<Router: AppRouter>: View {
             }
         } else {
             List(chatRooms) { chatRoom in
-                // TODO: - 채팅이 새로 들어올때마다 시간순으로 정렬 필요
                 Cell(chatRoom)
                     .contentShape(.rect)
                     .onTapGesture {
                         router.route(to: .chatView(chatRoom: chatRoom))
+                    }
+                    .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                        deleteSwipeAction(for: chatRoom)
                     }
             }
             .listStyle(.plain)

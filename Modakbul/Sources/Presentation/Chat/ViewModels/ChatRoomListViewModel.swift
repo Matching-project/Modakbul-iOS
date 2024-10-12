@@ -5,8 +5,9 @@
 //  Created by Swain Yun on 10/8/24.
 //
 
-import Combine
 import Foundation
+import Combine
+import SwiftData
 
 final class ChatRoomListViewModel: ObservableObject {
     @Published var configurations: [ChatRoomConfiguration] = []
@@ -38,6 +39,17 @@ extension ChatRoomListViewModel {
             do {
                 let configurations = try await chatUseCase.readChatRooms(userId: userId)
                 chatRoomsSubject.send(configurations)
+            } catch {
+                print(error)
+            }
+        }
+    }
+    
+    func deleteChatRoom(_ chatRoom: ChatRoom, on userId: Int64, by modelContext: ModelContext) {
+        Task {
+            do {
+                try await chatUseCase.deleteChat(userId: userId, on: chatRoom.id)
+                modelContext.delete(chatRoom)
             } catch {
                 print(error)
             }
