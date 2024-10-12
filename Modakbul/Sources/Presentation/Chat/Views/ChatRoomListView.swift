@@ -82,7 +82,7 @@ extension ChatRoomListView {
         var body: some View {
             HStack {
                 AsyncImageView(
-                    url: chatRoom.opponentuserImageURL,
+                    url: chatRoom.opponentUserImageURL,
                     contentMode: .fill,
                     clipShape: .circle
                 )
