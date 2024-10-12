@@ -163,7 +163,7 @@ extension ChatViewModel {
         let chatMessage = ChatMessage(
             chatRoomId: chatRoomId,
             senderId: userId,
-            senderNickname: "Jjong",
+            senderNickname: userNickname,
             content: textOnTextField,
             sendTime: .now,
             unreadCount: 1
