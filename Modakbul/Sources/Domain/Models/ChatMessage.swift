@@ -16,7 +16,7 @@ final class ChatRoom: Identifiable {
     var opponentUserId: Int64
     var opponentUserImageURL: URL?
     var relatedCommunityRecruitingContentId: Int64
-    var unreadMessagesCount: Int { messages.filter { $0.isRead == false }.count }
+    var unreadMessagesCount: Int { messages.filter { $0.isRead == false && $0.senderId != -1 && $0.senderId == opponentUserId  }.count }
     
     init(
         id: Int64,
