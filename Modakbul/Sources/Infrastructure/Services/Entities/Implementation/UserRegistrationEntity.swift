@@ -34,7 +34,7 @@ struct AppleUserRegistrationRequestEntity: Encodable {
     let gender: Gender
     let job: Job
     let categories: Set<Category>
-    let authorizationCode: Data
+    let authorizationCode: String
     let fcm: String
     
     init(_ user: User, authorizationCode: Data, fcm: String) {
@@ -44,7 +44,7 @@ struct AppleUserRegistrationRequestEntity: Encodable {
         self.gender = user.gender
         self.job = user.job
         self.categories = user.categoriesOfInterest
-        self.authorizationCode = authorizationCode
+        self.authorizationCode = String(data: authorizationCode, encoding: .utf8) ?? ""
         self.fcm = fcm
     }
 }
