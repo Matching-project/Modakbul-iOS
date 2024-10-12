@@ -48,20 +48,27 @@ struct ChatView<Router: AppRouter>: View {
             vm.stopChat()
             chatRoom.messages = vm.messages
         }
+        .onChange(of: vm.isReported) { oldValue, newValue in
+            if oldValue == false, newValue == true {
+                router.dismiss()
+            }
+        }
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 // TODO: 기능 연결 필요
                 Menu {
                     Button {
-                        vm.block(userId: Int64(userId))
+                        vm.exitChatRoom(userId: Int64(userId), chatRoomId: chatRoom.id)
                     } label: {
-                        Text("차단하기")
+                        Text("채팅방 나가기")
                     }
                     
                     Button {
-                        // TODO: 신고하기 화면으로 이동할 방법 고민 좀
+                        if let opponentUserId = vm.opponentUser?.id {
+                            router.route(to: .reportView(opponentUserId: opponentUserId, chatRoomId: chatRoom.id, isReported: $vm.isReported))
+                        }
                     } label: {
-                        Text("신고하기")
+                        Text("신고하고 나가기")
                     }
                 } label: {
                     Image(systemName: "ellipsis")
