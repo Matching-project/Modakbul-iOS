@@ -68,7 +68,7 @@ extension ParticipationRequestListViewModel {
     }
     
     @MainActor
-    func acceptParticipationRequest(_ userId: Int64, participationRequest request: ParticipationRequest) {
+    func acceptParticipationRequest(_ userId: Int64, userNickname: String, participationRequest request: ParticipationRequest) {
         guard let content = communityRecruitingContent else { return }
         let matchingId = request.id
         let opponentUserId = request.participatedUser.id
@@ -77,7 +77,17 @@ extension ParticipationRequestListViewModel {
             do {
                 try await matchingUseCase.acceptMatchRequest(userId: userId, with: matchingId)
                 indexPerformSubject.send(matchingId)
-                try await notificationUseCase.send(content.id, from: userId, to: opponentUserId, subtitle: content.title, type: .acceptParticipation(communityRecruitingContentId: content.id))
+                let pushNotification = PushNotificationBuilder
+                    .create(type: .acceptParticipation(communityRecruitingContentId: content.id))
+                    .setTitle(userNickname)
+                    .setSubtitle(content.title)
+                    .build()
+                try await notificationUseCase.send(
+                    content.id,
+                    from: userId,
+                    to: opponentUserId,
+                    pushNotification: pushNotification
+                )
             } catch {
                 print(error)
             }

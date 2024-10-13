@@ -10,6 +10,7 @@ import SwiftUI
 struct ParticipationRequestListView<Router: AppRouter>: View {
     @EnvironmentObject private var router: Router
     @ObservedObject private var viewModel: ParticipationRequestListViewModel
+    @AppStorage(AppStorageKey.userNickname) private var userNickname: String = Constants.temporalUserNickname
     
     private let communityRecruitingContent: CommunityRecruitingContent
     private let userId: Int64
@@ -44,7 +45,7 @@ struct ParticipationRequestListView<Router: AppRouter>: View {
                 )
                     .swipeActions(edge: .trailing) {
                         Button {
-                            viewModel.acceptParticipationRequest(userId, participationRequest: participatedRequest)
+                            viewModel.acceptParticipationRequest(userId, userNickname: userNickname, participationRequest: participatedRequest)
                         } label: {
                             Text("수락")
                         }

@@ -12,6 +12,7 @@ struct PlaceInformationDetailView<Router: AppRouter>: View {
     @Environment(\.modelContext) private var modelContext
     @EnvironmentObject private var router: Router
     @ObservedObject private var vm: PlaceInformationDetailViewModel
+    @AppStorage(AppStorageKey.userNickname) private var userNickname: String = Constants.temporalUserNickname
     
     private let placeId: Int64
     private let locationName: String
@@ -147,7 +148,7 @@ struct PlaceInformationDetailView<Router: AppRouter>: View {
                 }
                 
                 FlatButton("나가기") {
-                    vm.exitCommunity()
+                    vm.exitCommunity(userNickname: userNickname)
                 }
             }
         case .nonParticipant:
@@ -156,7 +157,9 @@ struct PlaceInformationDetailView<Router: AppRouter>: View {
                     vm.readChatRoom(userId: userId, opponentUserId: vm.writer.id)
                 }
                 
-                MatchRequestButton(matchState: $vm.matchState, isFull: $vm.isFull, action: vm.requestMatch)
+                MatchRequestButton(matchState: $vm.matchState, isFull: $vm.isFull, userNickname: userNickname) { userNickname in
+                    vm.requestMatch(userNickname: userNickname)
+                }
             }
         }
     }
@@ -318,7 +321,8 @@ extension PlaceInformationDetailView {
         @Binding var matchState: MatchState
         @Binding var isFull: Bool
         
-        let action: () -> Void
+        let userNickname: String
+        let action: (String) -> Void
         
         var body: some View {
             switch matchState {
@@ -334,7 +338,7 @@ extension PlaceInformationDetailView {
                 .disabled(true)
             default:
                 FlatButton("참여 요청하기") {
-                    action()
+                    action(userNickname)
                 }
                 .disabled(isFull)
             }

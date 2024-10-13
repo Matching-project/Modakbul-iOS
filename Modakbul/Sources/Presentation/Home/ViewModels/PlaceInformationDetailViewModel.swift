@@ -168,46 +168,48 @@ extension PlaceInformationDetailViewModel {
         }
     }
     
-    func exitCommunity() {
+    func exitCommunity(userNickname: String) {
         guard let content = communityRecruitingContent else { return }
         
         Task {
             do {
                 try await matchingUseCase.exitMatch(userId: userId, with: matchingId)
                 userRoleSubject.send((role: UserRole.nonParticipant, matchingId: nil, state: MatchState.exit))
-                try await notificationUseCase.send(content.id, from: userId, to: content.writer.id, subtitle: content.title, type: .exitParticipation)
+                let pushNotification = PushNotificationBuilder
+                    .create(type: .exitParticipation)
+                    .setTitle(userNickname)
+                    .setSubtitle(content.title)
+                    .build()
+                try await notificationUseCase.send(
+                    content.id,
+                    from: userId,
+                    to: content.writer.id,
+                    pushNotification: pushNotification
+                )
             } catch {
                 print(error)
             }
         }
     }
     
-    func requestMatch() {
+    func requestMatch(userNickname: String) {
         guard let content = communityRecruitingContent else { return }
         
         Task {
             do {
                 try await matchingUseCase.requestMatch(userId: userId, with: content.id)
                 userRoleSubject.send((role: UserRole.nonParticipant, matchingId: nil, state: MatchState.pending))
-                try await notificationUseCase.send(content.id, from: userId, to: content.writer.id, subtitle: content.title, type: .requestParticipation(communityRecruitingContentId: content.id))
-            } catch {
-                print(error)
-            }
-        }
-    }
-}
-
-// MARK: - Interfaces for NotificationUseCase
-extension PlaceInformationDetailViewModel {
-    @MainActor
-    func send(_ communityRecruitingContentId: Int64,
-              from userId: Int64,
-              to opponentUserId: Int64,
-              communityRecruitingContentName: String,
-              type: PushNotification.ShowingType) {
-        Task {
-            do {
-                try await notificationUseCase.send(communityRecruitingContentId, from: userId, to: opponentUserId, subtitle: communityRecruitingContentName, type: type)
+                let pushNotification = PushNotificationBuilder
+                    .create(type: .requestParticipation(communityRecruitingContentId: content.id))
+                    .setTitle(userNickname)
+                    .setSubtitle(content.title)
+                    .build()
+                try await notificationUseCase.send(
+                    content.id,
+                    from: userId,
+                    to: content.writer.id,
+                    pushNotification: pushNotification
+                )
             } catch {
                 print(error)
             }

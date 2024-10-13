@@ -12,6 +12,7 @@ typealias MatchRequest = (relationship: CommunityRelationship, matchingId: Int64
 struct MyParticipationRequestListView<Router: AppRouter>: View {
     @EnvironmentObject private var router: Router
     @ObservedObject private var viewModel: MyParticipationRequestListViewModel
+    @AppStorage(AppStorageKey.userNickname) private var userNickname = Constants.temporalUserNickname
     
     private let userId: Int64
     
@@ -92,7 +93,7 @@ struct MyParticipationRequestListView<Router: AppRouter>: View {
                 .disabled(true)
             case .accepted:
                 Button {
-                    viewModel.exitMatch(userId: userId, with: match)
+                    viewModel.exitMatch(userId: userId, userNickname: userNickname, with: match)
                 } label: {
                     Text("나가기")
                         .font(.Modakbul.footnote.bold())

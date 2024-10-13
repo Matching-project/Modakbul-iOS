@@ -66,18 +66,24 @@ extension MyParticipationRequestListViewModel {
         }
     }
     
-    func exitMatch(userId: Int64, with match: MatchRequest) {
+    func exitMatch(userId: Int64, userNickname: String, with match: MatchRequest) {
         let communityRecruitingContent = match.relationship.communityRecruitingContent
 
         Task {
             do {
                 try await matchingUseCase.exitMatch(userId: userId, with: match.matchingId)
                 requestPerformSubject.send(match.matchingId)
-                try await notificationUseCase.send(communityRecruitingContent.id,
-                                         from: userId,
-                                         to: communityRecruitingContent.writer.id,
-                                         subtitle: communityRecruitingContent.title,
-                                         type: .exitParticipation)
+                let pushNotification = PushNotificationBuilder
+                    .create(type: .exitParticipation)
+                    .setTitle(userNickname)
+                    .setSubtitle(communityRecruitingContent.title)
+                    .build()
+                try await notificationUseCase.send(
+                    communityRecruitingContent.id,
+                    from: userId,
+                    to: communityRecruitingContent.writer.id,
+                    pushNotification: pushNotification
+                )
             } catch {
                 print(error)
             }

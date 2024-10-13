@@ -8,7 +8,7 @@
 import Foundation
 
 protocol NotificationRepository: TokenRefreshable {
-    func send(_ communityRecruitingContentId: Int64, from userId: Int64, to opponentUserId: Int64, subtitle: String, type: PushNotification.ShowingType) async throws
+    func send(_ communityRecruitingContentId: Int64, from userId: Int64, to opponentUserId: Int64, pushNotification: PushNotification) async throws
     func fetch(userId: Int64) async throws -> [PushNotification]
     func remove(userId: Int64, _ notificationIds: [Int64]) async throws
     func read(userId: Int64, _ notificationIds: Int64) async throws
@@ -28,9 +28,9 @@ final class DefaultNotificationRepository {
 }
 
 extension DefaultNotificationRepository: NotificationRepository {
-    func send(_ communityRecruitingContentId: Int64, from userId: Int64, to opponentUserId: Int64, subtitle: String, type: PushNotification.ShowingType) async throws {
+    func send(_ communityRecruitingContentId: Int64, from userId: Int64, to opponentUserId: Int64, pushNotification: PushNotification) async throws {
         let token = try tokenStorage.fetch(by: userId)
-        let entity = NotificationSendingRequestEntity(communityRecruitingContentId: communityRecruitingContentId, subtitle: subtitle, type: type.description)
+        let entity = NotificationSendingRequestEntity(communityRecruitingContentId: communityRecruitingContentId, pushNotification)
         
         do {
             let endpoint = Endpoint.sendNotification(token: token.accessToken, targetId: opponentUserId, notification: entity)

@@ -11,11 +11,17 @@ import Foundation
 /// 알림 전송
 struct NotificationSendingRequestEntity: Encodable {
     let communityRecruitingContentId: Int64
-    let subtitle, type: String
+    let title, subtitle, type: String
     
     enum CodingKeys: String, CodingKey {
-        case type
+        case type, title, subtitle
         case communityRecruitingContentId = "boardId"
-        case subtitle = "content"
+    }
+    
+    init(communityRecruitingContentId: Int64, _ pushNotification: PushNotification) {
+        self.communityRecruitingContentId = communityRecruitingContentId
+        self.title = pushNotification.title
+        self.subtitle = pushNotification.subtitle
+        self.type = pushNotification.type.description
     }
 }
