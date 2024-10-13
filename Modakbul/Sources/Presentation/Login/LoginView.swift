@@ -16,8 +16,6 @@ struct LoginView<Router: AppRouter>: View {
     @AppStorage(AppStorageKey.userNickname) private var userNickname: String = String()
     @AppStorage(AppStorageKey.provider) private var provider: AuthenticationProvider?
     
-    @State private var isPresented: Bool = false
-    
     init(_ loginViewModel: LoginViewModel) {
         self.loginViewModel = loginViewModel
     }
@@ -40,7 +38,18 @@ struct LoginView<Router: AppRouter>: View {
         }
         .padding()
         .onReceive(loginViewModel.$userId) { userId in
-            handleUserUpdate(userId)
+            guard let userId = userId,
+                  let userNickname = loginViewModel.userNickname,
+                  let userCredential = loginViewModel.userCredential else { return }
+      
+          // 로그인 버튼을 터치했을 때에만 약관동의 뷰로 이동되어야 합니다.
+            if userId == Constants.loggedOutUserId {
+                router.route(to: .requiredTermView(userCredential: userCredential))
+            } else {
+                self.userId = Int(userId)
+                self.userNickname = userNickname
+                self.provider = userCredential.provider
+            }
         }
     }
     
@@ -86,21 +95,6 @@ struct LoginView<Router: AppRouter>: View {
         .clipShape(RoundedRectangle(cornerRadius: 14))
         .frame(height: 44)
     }
-    
-    private func handleUserUpdate(_ userId: Int64?) {
-          guard let userId = userId,
-                let userNickname = loginViewModel.userNickname,
-                let userCredential = loginViewModel.userCredential else { return }
-    
-        // 로그인 버튼을 터치했을 때에만 약관동의 뷰로 이동되어야 합니다.
-          if userId == Constants.loggedOutUserId {
-              router.route(to: .requiredTermView(userCredential: userCredential))
-          } else {
-              self.userId = Int(userId)
-              self.userNickname = userNickname
-              self.provider = userCredential.provider
-          }
-      }
 }
 
 struct LoginView_Preview: PreviewProvider {

@@ -62,6 +62,8 @@ final class LoginViewModel: ObservableObject {
         
         let userCredential = UserCredential(provider: provider, fcm: fcm, email: email, authorizationCode: authorizationCode)
         
+        userCredentialSubject.send(userCredential)
+        
         Task {
             do {
                 let userId = try await userRegistrationUseCase.login(userCredential)
@@ -72,8 +74,6 @@ final class LoginViewModel: ObservableObject {
                 userSubject.send((Int64(Constants.loggedOutUserId), "닉네임 없음"))
             }
         }
-        
-        userCredentialSubject.send(userCredential)
     }
     
     func kakaoLogin(_ email: String?) {
