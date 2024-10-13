@@ -38,44 +38,29 @@ struct ChatRoomListView<Router: AppRouter>: View {
     }
     
     @ViewBuilder private func buildView() -> some View {
-        if userId == Constants.loggedOutUserId {
-            ContentUnavailableView {
-                VStack {
-                    Spacer()
-                    Text("로그인 해야 볼 수 있어요.")
-                    Spacer()
-                    Button {
-                        router.route(to: .loginView)
-                    } label: {
-                        Text("로그인하기")
-                    }
+        List(chatRooms) { chatRoom in
+            Cell(chatRoom)
+                .contentShape(.rect)
+                .onTapGesture {
+                    router.route(to: .chatView(chatRoom: chatRoom))
                 }
+                .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                    deleteSwipeAction(for: chatRoom)
+                }
+        }
+        .listStyle(.plain)
+        .listRowSeparator(.hidden)
+        .onReceive(viewModel.$configurations) { configurations in
+            configurations.forEach { configuration in
+                guard chatRooms.contains(where: { $0.id == configuration.id }) == false else { return }
+                let newChatRoom = ChatRoom(configuration: configuration)
+                modelContext.insert(newChatRoom)
             }
-        } else {
-            List(chatRooms) { chatRoom in
-                Cell(chatRoom)
-                    .contentShape(.rect)
-                    .onTapGesture {
-                        router.route(to: .chatView(chatRoom: chatRoom))
-                    }
-                    .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-                        deleteSwipeAction(for: chatRoom)
-                    }
-            }
-            .listStyle(.plain)
-            .listRowSeparator(.hidden)
-            .onReceive(viewModel.$configurations) { configurations in
-                configurations.forEach { configuration in
-                    guard chatRooms.contains(where: { $0.id == configuration.id }) == false else { return }
-                    let newChatRoom = ChatRoom(configuration: configuration)
-                    modelContext.insert(newChatRoom)
-                }
-                
-                do {
-                    try modelContext.save()
-                } catch {
-                    print(error)
-                }
+            
+            do {
+                try modelContext.save()
+            } catch {
+                print(error)
             }
         }
     }
