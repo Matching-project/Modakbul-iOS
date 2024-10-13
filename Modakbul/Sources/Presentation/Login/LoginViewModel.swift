@@ -13,13 +13,10 @@ import Combine
 final class LoginViewModel: ObservableObject {
     @Published var userId: Int64?
     @Published var userNickname: String?
-    @Published var userCredential: UserCredential?
+    var userCredential: UserCredential?
     
     private var fcmToken: String?
     
-    /// 유저 아이디와 유저 닉네임을 의미합니다.
-    private let userSubject = PassthroughSubject<(Int64, String), Never>()
-    private let userCredentialSubject = PassthroughSubject<UserCredential?, Never>()
     private var cancellables = Set<AnyCancellable>()
     
     private let userRegistrationUseCase: UserRegistrationUseCase
@@ -40,51 +37,34 @@ final class LoginViewModel: ObservableObject {
                 self?.fcmToken = fcmToken
             }
             .store(in: &cancellables)
-        
-        userSubject
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] (userId, userNickname) in
-                self?.userNickname = userNickname
-                self?.userId = userId
-            }
-            .store(in: &cancellables)
-        
-        userCredentialSubject
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] credential in
-                self?.userCredential = credential
-            }
-            .store(in: &cancellables)
     }
     
-    private func login(provider: AuthenticationProvider, email: String? = nil, authorizationCode: Data? = nil) {
+    private func login(provider: AuthenticationProvider, email: String? = nil, authorizationCode: Data? = nil, _ completion: @escaping (Int64, String) -> Void) {
         guard let fcm = fcmToken else { return }
         
-        let userCredential = UserCredential(provider: provider, fcm: fcm, email: email, authorizationCode: authorizationCode)
-        
-        userCredentialSubject.send(userCredential)
-        
         Task {
+            let userCredential = UserCredential(provider: provider, fcm: fcm, email: email, authorizationCode: authorizationCode)
+            self.userCredential = userCredential
+            
             do {
                 let userId = try await userRegistrationUseCase.login(userCredential)
                 let userNickname = try await userBusinessUseCase.readMyProfile(userId: userId).nickname
-
-                userSubject.send((userId, userNickname))
+                completion(userId, userNickname)
             } catch {
-                userSubject.send((Int64(Constants.loggedOutUserId), "닉네임 없음"))
+                completion(Int64(Constants.loggedOutUserId), "닉네임 없음")
             }
         }
     }
     
-    func kakaoLogin(_ email: String?) {
+    func kakaoLogin(_ email: String?, _ completion: @escaping (Int64, String) -> Void) {
         guard let email = email else { return }
         
-        login(provider: .kakao, email: email)
+        login(provider: .kakao, email: email, completion)
     }
     
-    func appleLogin(_ authorizationCode: Data?) {
+    func appleLogin(_ authorizationCode: Data?, _ completion: @escaping (Int64, String) -> Void) {
         guard let authorizationCode = authorizationCode else { return }
         
-        login(provider: .apple, authorizationCode: authorizationCode)
+        login(provider: .apple, authorizationCode: authorizationCode, completion)
     }
 }

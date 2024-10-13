@@ -37,20 +37,6 @@ struct LoginView<Router: AppRouter>: View {
             }
         }
         .padding()
-        .onReceive(loginViewModel.$userId) { userId in
-            guard let userId = userId,
-                  let userNickname = loginViewModel.userNickname,
-                  let userCredential = loginViewModel.userCredential else { return }
-      
-          // 로그인 버튼을 터치했을 때에만 약관동의 뷰로 이동되어야 합니다.
-            if userId == Constants.loggedOutUserId {
-                router.route(to: .requiredTermView(userCredential: userCredential))
-            } else {
-                self.userId = Int(userId)
-                self.userNickname = userNickname
-                self.provider = userCredential.provider
-            }
-        }
     }
     
     private var appLogo: some View {
@@ -63,7 +49,9 @@ struct LoginView<Router: AppRouter>: View {
         SignInKakaoButton { result in
             switch result {
             case .success(let email):
-                loginViewModel.kakaoLogin(email)
+                loginViewModel.kakaoLogin(email) {
+                    performLogin($0, $1)
+                }
                 router.dismiss()
             case .failure(let error):
                 print(error)
@@ -85,7 +73,9 @@ struct LoginView<Router: AppRouter>: View {
                     return print("애플 아이디로 로그인만 지원함")
                 }
                 
-                loginViewModel.appleLogin(authorizationCode)
+                loginViewModel.appleLogin(authorizationCode) {
+                    performLogin($0, $1)
+                }
                 router.dismiss()
             case .failure(let error):
                 print(error)
@@ -94,6 +84,20 @@ struct LoginView<Router: AppRouter>: View {
         .signInWithAppleButtonStyle(scheme == .dark ? .white : .black)
         .clipShape(RoundedRectangle(cornerRadius: 14))
         .frame(height: 44)
+    }
+    
+    private func performLogin(_ userId: Int64, _ userNickname: String) {
+        guard let userCredential = loginViewModel.userCredential else { return }
+        
+        if userId == Constants.loggedOutUserId {
+            Task { @MainActor in
+                router.route(to: .requiredTermView(userCredential: userCredential))
+            }
+        } else {
+            self.userId = Int(userId)
+            self.userNickname = userNickname
+            self.provider = userCredential.provider
+        }
     }
 }
 
