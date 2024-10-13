@@ -17,6 +17,7 @@ struct Constants {
 extension Constants {
     static let loggedOutUserId: Int = -1
     static let temporalId: Int64 = -1
+    static let temporalUserNickname: String = "알 수 없는 사용자"
 }
 
 // MARK: - 기본 폰트를 지정하는 용도입니다.
