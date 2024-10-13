@@ -28,6 +28,7 @@ enum PageType {
 
 struct ContentView<Router: AppRouter>: View {
     @EnvironmentObject private var router: Router
+    @AppStorage(AppStorageKey.userId) private var userId: Int = Constants.loggedOutUserId
     @State private var selectedPage: PageType = .home
     
     var body: some View {
@@ -35,8 +36,10 @@ struct ContentView<Router: AppRouter>: View {
             router.view(to: .homeView)
                 .tabItemStyle(.home)
 
-            router.view(to: .chatRoomListView)
-                .tabItemStyle(.chattings)
+            if userId != Constants.loggedOutUserId {
+                router.view(to: .chatRoomListView)
+                    .tabItemStyle(.chattings)
+            }
             
             router.view(to: .myView)
                 .tabItemStyle(.settings)
