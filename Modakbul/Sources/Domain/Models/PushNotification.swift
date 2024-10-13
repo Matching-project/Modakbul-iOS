@@ -29,13 +29,13 @@ struct PushNotification: Identifiable {
         private var baseMessages: (title: String, subtitle: String) {
             switch self {
             case .requestParticipation:
-                return ("참여 요청", " 카페모임에 참여 요청이 왔어요.")
+                return ("님의 참여 요청", " 카페모임에 참여 요청이 왔어요.")
             case .acceptParticipation:
-                return ("참여 요청 수락", " 카페모임 참여 요청이 수락되었어요.")
+                return ("님의 참여 요청 수락", " 카페모임 참여 요청이 수락되었어요.")
             case .newChat:
-                return ("새로운 채팅", "님이 보낸 새로운 채팅을 확인하세요.")
+                return ("님의 새로운 채팅", "님이 보낸 새로운 채팅을 확인하세요.")
             case .exitParticipation:
-                return ("참여 종료", " 카페모임을 나갔어요.")
+                return ("님 참여 종료", " 카페모임을 나갔어요.")
             case .unknown:
                 return ("알 수 없음", "알 수 없는 에러입니다.")
             }
@@ -78,7 +78,7 @@ struct PushNotification: Identifiable {
          imageURL: URL? = nil,
          title: String,
          subtitle: String,
-         timestamp: String,
+         timestamp: String = "",
          type: ShowingType,
          isRead: Bool = false
     ) {
@@ -90,5 +90,32 @@ struct PushNotification: Identifiable {
         self.timestamp = timestamp.toDate(by: .serverDateTime2)?.toDateComponent() ?? "방금 전"
         self.type = type
         self.isRead = isRead
+    }
+}
+
+final class PushNotificationBuilder {
+    private var title: String = ""
+    private var subtitle: String = ""
+    private var boardId: Int64 = Constants.temporalId
+    private var type: PushNotification.ShowingType = .unknown
+    
+    static func create(type: PushNotification.ShowingType) -> PushNotificationBuilder {
+        let builder = PushNotificationBuilder()
+        builder.type = type
+        return builder
+    }
+    
+    func setSubtitle(_ communityRecruitingContentTitle: String) -> PushNotificationBuilder {
+        self.subtitle = "\(communityRecruitingContentTitle)\(type.subtitlePostfix)"
+        return self
+    }
+    
+    func setTitle(_ senderNickname: String) -> PushNotificationBuilder {
+        self.title = "\(senderNickname)\(type.titlePostfix)"
+        return self
+    }
+    
+    func build() -> PushNotification {
+        .init(id: Constants.temporalId, title: title, subtitle: subtitle, type: type)
     }
 }
