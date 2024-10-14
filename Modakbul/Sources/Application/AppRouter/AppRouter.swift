@@ -12,6 +12,7 @@ protocol AppRouter: ObservableObject {
     associatedtype Destination: Routable where Destination == Route
     associatedtype Content: View
     
+    // Properties
     var path: NavigationPath { get set }
     var sheet: Destination? { get set }
     var detents: Set<PresentationDetent> { get }
@@ -23,6 +24,9 @@ protocol AppRouter: ObservableObject {
     var assembler: Assembler { get }
     var resolver: DependencyResolver { get }
     
+    // Dependencies
+    var routerAdaptor: RouterAdaptor { get }
+    
     @ViewBuilder func view(to destination: Destination) -> Content
     func route(to destination: Destination)
     func alert(for type: AlertType, actions: [ConfirmationAction])
@@ -33,6 +37,7 @@ protocol AppRouter: ObservableObject {
 
 extension AppRouter {
     var resolver: DependencyResolver { assembler.resolver }
+    var routerAdaptor: RouterAdapter { .shared }
 }
 
 final class DefaultAppRouter: AppRouter {
@@ -45,17 +50,10 @@ final class DefaultAppRouter: AppRouter {
     var isModalPresented: Bool { sheet != nil || fullScreenCover != nil }
     @Published var isAlertPresented: Bool = false
     @Published var isConfirmationDialogPresented: Bool = false
-    @Published var notification: Destination? = RouterAdapter.shared.destionation {
-        didSet {
-            if let notification = notification {
-                route(to: notification)
-            }
-        }
-    }
     
     private(set) var detents: Set<PresentationDetent> = [.large, .medium]
     let assembler: Assembler
-    private var cancellable: AnyCancellable?
+    private var cancellables = Set<AnyCancellable>()
     
     init(
         path: NavigationPath = NavigationPath(),
@@ -63,9 +61,7 @@ final class DefaultAppRouter: AppRouter {
     ) {
         self.path = path
         self.assembler = assembler
-        
-        cancellable = RouterAdapter.shared.$destionation
-            .assign(to: \.notification, on: self)
+        subscribe()
     }
     
     convenience init(
@@ -73,6 +69,15 @@ final class DefaultAppRouter: AppRouter {
     ) {
         let assembler = Assembler(by: assemblies)
         self.init(assembler: assembler)
+    }
+    
+    private func subscribe() {
+        routerAdaptor.$destionation
+            .sink { [weak self] destination in
+                guard let destination = destination else { return }
+                self?.route(to: destination)
+            }
+            .store(in: &cancellables)
     }
     
     private func _push(_ destination: Destination) {
