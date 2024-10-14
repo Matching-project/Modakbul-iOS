@@ -51,9 +51,11 @@ struct UnregistrationView<Router: AppRouter>: View {
         .padding(.vertical, Constants.vertical)
         // TODO: - SocialLoginRepository.unregister() 에서 처리해주는 로직 구상
         .onChange(of: vm.provider) { _, provider in
-            self.provider = provider
-            self.userId = Constants.loggedOutUserId
-            router.popToRoot()
+            if provider == nil {
+                self.provider = provider
+                self.userId = Constants.loggedOutUserId
+                router.dismiss()
+            }
         }
         .onAppear {
             vm.provider = provider
