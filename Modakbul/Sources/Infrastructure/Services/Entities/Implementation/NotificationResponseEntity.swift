@@ -17,10 +17,12 @@ struct NotificationResponseEntity: ResponseEntity {
     struct Result: Decodable {
         let id, communityRecruitingContentId: Int64
         let title, type, subtitle, timestamp: String
+        let imageURL: URL?
         let isRead: Bool
         
         enum CodingKeys: String, CodingKey {
             case id, title, type, isRead
+            case imageURL = "thumbnail"
             case communityRecruitingContentId = "boardId"
             case subtitle = "content"
             case timestamp = "createdAt"
@@ -31,6 +33,7 @@ struct NotificationResponseEntity: ResponseEntity {
         result.map {
             PushNotification(
                 id: $0.id,
+                imageURL: $0.imageURL,
                 title: $0.title,
                 subtitle: $0.subtitle,
                 timestamp: $0.timestamp,
