@@ -25,7 +25,7 @@ protocol AppRouter: ObservableObject {
     var resolver: DependencyResolver { get }
     
     // Dependencies
-    var routerAdaptor: RouterAdaptor { get }
+    var routerAdaptor: RouterAdapter { get }
     
     @ViewBuilder func view(to destination: Destination) -> Content
     func route(to destination: Destination)
