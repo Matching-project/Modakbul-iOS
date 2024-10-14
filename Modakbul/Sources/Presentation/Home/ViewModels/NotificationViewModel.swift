@@ -38,7 +38,7 @@ final class NotificationViewModel: ObservableObject {
         multiSelection.removeAll()
     }
     
-    @MainActor func removeAllNotifications(userId: Int64) {
+    func removeAllNotifications(userId: Int64) {
         removeNotifications(userId: userId, notifications.map { $0.id })
         notifications.removeAll()
     }
@@ -66,7 +66,6 @@ extension NotificationViewModel {
         }
     }
     
-    @MainActor
     func fetchNotifications(userId: Int64) {
         Task {
             do {
