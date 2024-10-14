@@ -56,7 +56,7 @@ extension DefaultSocialLoginRepository: SocialLoginRepository {
     }
     
     func appleLogin(_ userCredential: UserCredential) async throws -> Int64 {
-        let entity = AppleLoginRequestEntity(authorizationCode: userCredential.authorizationCode!, fcm: userCredential.fcm!)
+        let entity = AppleLoginRequestEntity(appleCI: userCredential.appleCI!, fcm: userCredential.fcm!)
         let endpoint = Endpoint.appleLogin(entity: entity, provider: .apple)
         let response = try await networkService.request(endpoint: endpoint, for: UserRegistrationResponseEntity.self)
         let userId = response.body.toDTO()

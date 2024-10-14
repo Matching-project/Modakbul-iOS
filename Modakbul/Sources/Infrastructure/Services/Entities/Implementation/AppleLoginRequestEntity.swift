@@ -9,11 +9,14 @@ import Foundation
 
 /// 애플 로그인 요청
 struct AppleLoginRequestEntity: Encodable {
-    let authorizationCode: String
+    let appleCI: String
     let fcm: String
     
-    init(authorizationCode: Data, fcm: String) {
-        self.authorizationCode = String(data: authorizationCode, encoding: .utf8) ?? ""
+    init(
+        appleCI: String,
+        fcm: String
+    ) {
+        self.appleCI = appleCI
         self.fcm = fcm
     }
 }
