@@ -68,12 +68,7 @@ struct LoginView<Router: AppRouter>: View {
         } onCompletion: { result in
             switch result {
             case .success(let auth):
-                guard let appleIDCredential = auth.credential as? ASAuthorizationAppleIDCredential,
-                      let authorizationCode = appleIDCredential.authorizationCode else {
-                    return print("애플 아이디로 로그인만 지원함")
-                }
-                
-                loginViewModel.appleLogin(authorizationCode) {
+                loginViewModel.appleLogin(auth) {
                     performLogin($0, $1)
                 }
                 router.dismiss()

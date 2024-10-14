@@ -39,11 +39,17 @@ final class LoginViewModel: ObservableObject {
             .store(in: &cancellables)
     }
     
-    private func login(provider: AuthenticationProvider, email: String? = nil, authorizationCode: Data? = nil, _ completion: @escaping (Int64, String) -> Void) {
+    private func login(
+        provider: AuthenticationProvider,
+        email: String?,
+        appleCI: String?,
+        authorizationCode: Data?,
+        _ completion: @escaping (Int64, String) -> Void
+    ) {
         guard let fcm = fcmToken else { return }
         
         Task {
-            let userCredential = UserCredential(provider: provider, fcm: fcm, email: email, authorizationCode: authorizationCode)
+            let userCredential = UserCredential(provider: provider, fcm: fcm, email: email, appleCI: appleCI, authorizationCode: authorizationCode)
             self.userCredential = userCredential
             
             do {
@@ -59,12 +65,17 @@ final class LoginViewModel: ObservableObject {
     func kakaoLogin(_ email: String?, _ completion: @escaping (Int64, String) -> Void) {
         guard let email = email else { return }
         
-        login(provider: .kakao, email: email, completion)
+        login(provider: .kakao, email: email, appleCI: nil, authorizationCode: nil, completion)
     }
     
-    func appleLogin(_ authorizationCode: Data?, _ completion: @escaping (Int64, String) -> Void) {
-        guard let authorizationCode = authorizationCode else { return }
+    func appleLogin(_ auth: ASAuthorization, _ completion: @escaping (Int64, String) -> Void) {
+        guard let appleIDCredential = auth.credential as? ASAuthorizationAppleIDCredential,
+              let authorizationCode = appleIDCredential.authorizationCode else {
+            return print("애플 아이디로 로그인만 지원함")
+        }
         
-        login(provider: .apple, authorizationCode: authorizationCode, completion)
+        let appleCI = appleIDCredential.user
+        
+        login(provider: .apple, email: nil, appleCI: appleCI, authorizationCode: authorizationCode, completion)
     }
 }
