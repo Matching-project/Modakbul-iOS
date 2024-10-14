@@ -68,7 +68,6 @@ struct PushNotification: Identifiable {
     let id: Int64
     let imageURL: URL?
     let title: String
-    let titlePostfix: String
     let subtitle: String
     let timestamp: String
     var type: ShowingType
@@ -85,8 +84,7 @@ struct PushNotification: Identifiable {
         self.id = id
         self.imageURL = imageURL
         self.title = title
-        self.titlePostfix = type.titlePostfix
-        self.subtitle = subtitle + type.subtitlePostfix
+        self.subtitle = subtitle
         self.timestamp = timestamp.toDate(by: .serverDateTime2)?.toDateComponent() ?? "방금 전"
         self.type = type
         self.isRead = isRead

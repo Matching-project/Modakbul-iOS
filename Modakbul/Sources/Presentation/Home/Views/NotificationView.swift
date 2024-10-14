@@ -129,8 +129,6 @@ extension NotificationView {
                 Text(notification.title)
                     .foregroundColor(.accent)
                     .bold()
-                Text(notification.titlePostfix)
-                    .bold()
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .overlay(alignment: .topTrailing) {
