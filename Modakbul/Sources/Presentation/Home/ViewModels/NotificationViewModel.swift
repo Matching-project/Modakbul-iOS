@@ -47,6 +47,7 @@ final class NotificationViewModel: ObservableObject {
 // MARK: - Interfaces for NotificationUseCase
 extension NotificationViewModel {
     private func removeNotifications(userId: Int64, _ notificationIds: [Int64]) {
+        // TODO: 알림 삭제 전 읽음 처리
         Task {
             do {
                 try await notificationUseCase.remove(userId: userId, notificationIds)

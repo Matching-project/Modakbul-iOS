@@ -145,11 +145,3 @@ extension NotificationView {
         }
     }
 }
-
-struct NotificationView_Preview: PreviewProvider {
-    static var previews: some View {
-        NavigationStack {
-            router.view(to: .notificationView(userId: 0))
-        }
-    }
-}
