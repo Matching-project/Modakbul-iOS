@@ -19,4 +19,9 @@ struct AppleLoginRequestEntity: Encodable {
         self.appleCI = appleCI
         self.fcm = fcm
     }
+    
+    enum CodingKeys: String, CodingKey {
+        case fcm
+        case appleCI = "provideId"
+    }
 }
