@@ -33,7 +33,7 @@ final class DefaultKakaoAuthService {
             completion(.failure(error))
         }
         
-        if let token = token {
+        if let _ = token {
             kakaoAPI.me { user, error in
                 if let error = error {
                     completion(.failure(error))
