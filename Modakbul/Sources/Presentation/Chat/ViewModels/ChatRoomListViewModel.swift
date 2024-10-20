@@ -49,7 +49,7 @@ extension ChatRoomListViewModel {
         Task {
             do {
                 try await chatUseCase.deleteChat(userId: userId, on: chatRoom.id)
-                modelContext.delete(chatRoom)
+                chatRoom.messages.removeAll()
             } catch {
                 print(error)
             }
