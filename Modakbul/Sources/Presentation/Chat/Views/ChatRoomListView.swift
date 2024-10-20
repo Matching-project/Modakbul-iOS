@@ -38,29 +38,33 @@ struct ChatRoomListView<Router: AppRouter>: View {
     }
     
     @ViewBuilder private func buildView() -> some View {
-        List(chatRooms) { chatRoom in
-            Cell(chatRoom)
-                .contentShape(.rect)
-                .onTapGesture {
-                    router.route(to: .chatView(chatRoom: chatRoom))
-                }
-                .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-                    deleteSwipeAction(for: chatRoom)
-                }
-        }
-        .listStyle(.plain)
-        .listRowSeparator(.hidden)
-        .onReceive(viewModel.$configurations) { configurations in
-            configurations.forEach { configuration in
-                guard chatRooms.contains(where: { $0.id == configuration.id }) == false else { return }
-                let newChatRoom = ChatRoom(configuration: configuration)
-                modelContext.insert(newChatRoom)
+        if viewModel.configurations.isEmpty {
+            ContentUnavailableView("채팅방이 없습니다.", systemImage: "questionmark", description: Text("아무도 없어요..."))
+        } else {
+            List(chatRooms) { chatRoom in
+                Cell(chatRoom)
+                    .contentShape(.rect)
+                    .onTapGesture {
+                        router.route(to: .chatView(chatRoom: chatRoom))
+                    }
+                    .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                        deleteSwipeAction(for: chatRoom)
+                    }
             }
-            
-            do {
-                try modelContext.save()
-            } catch {
-                print(error)
+            .listStyle(.plain)
+            .listRowSeparator(.hidden)
+            .onReceive(viewModel.$configurations) { configurations in
+                configurations.forEach { configuration in
+                    guard chatRooms.contains(where: { $0.id == configuration.id }) == false else { return }
+                    let newChatRoom = ChatRoom(configuration: configuration)
+                    modelContext.insert(newChatRoom)
+                }
+                
+                do {
+                    try modelContext.save()
+                } catch {
+                    print(error)
+                }
             }
         }
     }
