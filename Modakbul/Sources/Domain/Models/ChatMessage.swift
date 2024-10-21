@@ -16,7 +16,18 @@ final class ChatRoom: Identifiable {
     var opponentUserId: Int64
     var opponentUserImageURL: URL?
     var relatedCommunityRecruitingContentId: Int64
-    var unreadMessagesCount: Int { messages.filter { $0.isRead == false && $0.senderId != -1 && $0.senderId == opponentUserId  }.count }
+    
+    private var _unreadMessagesCount: Int = 0
+    var unreadMessagesCount: Int {
+        get {
+            let count = messages.filter { $0.isRead == false && $0.senderId != -1 && $0.senderId == opponentUserId  }.count
+            return max(_unreadMessagesCount, count)
+        }
+        
+        set {
+            _unreadMessagesCount = newValue
+        }
+    }
     
     init(
         id: Int64,
@@ -41,6 +52,14 @@ final class ChatRoom: Identifiable {
                   opponentUserId: configuration.opponentUserId,
                   opponentuserImageURL: configuration.opponentUserImageURL,
                   relatedCommunityRecruitingContentId: configuration.relatedCommunityRecruitingContentId)
+    }
+    
+    func update(with configuration: ChatRoomConfiguration) {
+        self.title = configuration.title
+        self.opponentUserId = configuration.opponentUserId
+        self.opponentUserImageURL = configuration.opponentUserImageURL
+        self.relatedCommunityRecruitingContentId = configuration.relatedCommunityRecruitingContentId
+        self.unreadMessagesCount = configuration.unreadMessagesCount
     }
 }
 
