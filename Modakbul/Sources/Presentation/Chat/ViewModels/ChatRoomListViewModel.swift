@@ -13,6 +13,7 @@ final class ChatRoomListViewModel: ObservableObject {
     @Published var configurations: [ChatRoomConfiguration] = []
     
     private let chatRoomsSubject = PassthroughSubject<[ChatRoomConfiguration], Never>()
+    private let deletionSubject = PassthroughSubject<ChatRoom, Never>()
     private var cancellables = Set<AnyCancellable>()
     
     private let chatUseCase: ChatUseCase
@@ -27,6 +28,14 @@ final class ChatRoomListViewModel: ObservableObject {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] configurations in
                 self?.configurations = configurations
+            }
+            .store(in: &cancellables)
+        
+        deletionSubject
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] chatRoom in
+                guard let index = self?.configurations.firstIndex(where: { $0.id == chatRoom.id }) else { return }
+                self?.configurations.remove(at: index)
             }
             .store(in: &cancellables)
     }
@@ -49,7 +58,8 @@ extension ChatRoomListViewModel {
         Task {
             do {
                 try await chatUseCase.deleteChat(userId: userId, on: chatRoom.id)
-                chatRoom.messages.removeAll()
+                modelContext.delete(chatRoom)
+                deletionSubject.send(chatRoom)
             } catch {
                 print(error)
             }
