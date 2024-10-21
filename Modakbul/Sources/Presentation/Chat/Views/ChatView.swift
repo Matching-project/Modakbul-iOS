@@ -22,7 +22,6 @@ struct ChatView<Router: AppRouter>: View {
         _ chatViewModel: ChatViewModel,
         chatRoom: ChatRoom
     ) {
-        chatViewModel.configureView(chatRoomId: chatRoom.id)
         self.vm = chatViewModel
         self.chatRoom = chatRoom
     }
@@ -43,12 +42,20 @@ struct ChatView<Router: AppRouter>: View {
             await vm.readChatingHistory(userId: Int64(userId), on: chatRoom.id, with: chatRoom.relatedCommunityRecruitingContentId) // 서버에서 새로운 채팅을 불러옵니다.
             await vm.startChat(userId: Int64(userId), userNickname: userNickname)
         }
+        .onAppear {
+            vm.configureView(chatRoomId: chatRoom.id)
+        }
         .onDisappear {
             // TODO: - 화면 나가기 전에 vm 초기화같은 작업이 필요한지? 네
             vm.stopChat()
             chatRoom.messages = vm.messages
         }
         .onChange(of: vm.isReported) { oldValue, newValue in
+            if oldValue == false, newValue == true {
+                router.popToRoot()
+            }
+        }
+        .onChange(of: vm.isExit) { oldValue, newValue in
             if oldValue == false, newValue == true {
                 router.dismiss()
             }
