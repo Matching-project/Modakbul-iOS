@@ -15,6 +15,7 @@ struct ChatView<Router: AppRouter>: View {
     @EnvironmentObject private var router: Router
     @ObservedObject private var vm: ChatViewModel
     @FocusState private var isFocused: Bool
+    @State private var isKeyboardOn: Bool = false
     
     @Bindable var chatRoom: ChatRoom
     
@@ -92,8 +93,13 @@ struct ChatView<Router: AppRouter>: View {
                         cell(message: message)
                     }
                 }
+                
+                if isKeyboardOn {
+                    Spacer()
+                }
             }
             .defaultScrollAnchor(.bottom)
+            .ignoresSafeArea(.keyboard, edges: .bottom)
             
             HStack {
                 TextField("메세지를 입력해주세요", text: $vm.textOnTextField, axis: .vertical)
@@ -113,9 +119,15 @@ struct ChatView<Router: AppRouter>: View {
                 }
             }
             .safeAreaPadding(.horizontal)
+            .padding(.bottom, 5)
         }
         .onTapGesture {
             isFocused = false
+        }
+        .onChange(of: isFocused) { oldValue, newValue in
+            withAnimation {
+                isKeyboardOn = newValue ? true : false
+            }
         }
     }
     
