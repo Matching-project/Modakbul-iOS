@@ -69,7 +69,15 @@ struct PlaceInformationDetailView<Router: AppRouter>: View {
                     return
                 }
                 
-                router.route(to: .chatView(chatRoom: ChatRoom(configuration: configuration)))
+                let newChatRoom = ChatRoom(configuration: configuration)
+                modelContext.insert(newChatRoom)
+                router.route(to: .chatView(chatRoom: newChatRoom))
+                
+                do {
+                    try modelContext.save()
+                } catch {
+                    print(error)
+                }
             }
             .navigationModifier {
                 router.dismiss()
