@@ -19,14 +19,9 @@ import SwiftStomp
 
 protocol ChatService {
     /// 소켓 연결
-    func connect(token: String, on chatRoomId: Int64, userId: Int64, userNickname nickname: String) throws
+    func connect(token: String, on chatRoomId: Int64, userId: Int64, userNickname nickname: String, continuation: AsyncThrowingStream<ChatMessage, Error>.Continuation) throws
     /// 소켓 연결 해제
     func disconnect()
-    /// 소켓을 통해 특정 채팅방 구독
-    func subscribe(to chatRoomId: Int64, continuation: AsyncThrowingStream<ChatMessage, Error>.Continuation)
-    /// 소켓을 통해 특정 채팅방 구독 해제
-    func unsubscribe(from chatRoomId: Int64)
-    /// 채널(채팅방)로 메세지 전송
     func send<T: Encodable>(message: T) async throws
 }
 
@@ -50,6 +45,7 @@ final class DefaultChatService {
     private let decoder: JSONDecodable
     
     private var chatStreamContinuation: AsyncThrowingStream<ChatMessage, Error>.Continuation?
+    private var currentChatRoomId: Int64?
     
     init(
         encoder: JSONEncodable = JSONEncoder(),
@@ -76,11 +72,21 @@ final class DefaultChatService {
         }
         return decodedData
     }
+    
+    private func subscribe(to chatRoomId: Int64, continuation: AsyncThrowingStream<ChatMessage, Error>.Continuation) {
+        chatStreamContinuation = continuation
+        stomp?.subscribe(to: "/sub/chat/\(chatRoomId)")
+    }
+    
+    private func unsubscribe(from chatRoomId: Int64) {
+        stomp?.unsubscribe(from: "/sub/chat/\(chatRoomId)")
+        chatStreamContinuation?.finish()
+    }
 }
 
 // MARK: ChatService Conformation
 extension DefaultChatService: ChatService {
-    func connect(token: String, on chatRoomId: Int64, userId: Int64, userNickname nickname: String) throws {
+    func connect(token: String, on chatRoomId: Int64, userId: Int64, userNickname nickname: String, continuation: AsyncThrowingStream<ChatMessage, any Error>.Continuation) throws {
         // TODO: 서버 URL 배포 예정
         guard let url = URL(string: "ws://13.209.130.215:8080/stomp") else { throw ChatServiceError.invalidURL }
         let headers = [
@@ -89,6 +95,8 @@ extension DefaultChatService: ChatService {
             "userId" : "\(userId)",
             "nickname" : "\(nickname)"
         ]
+        chatStreamContinuation = continuation
+        currentChatRoomId = chatRoomId
         stomp = SwiftStomp(host: url, headers: headers)
         stomp?.delegate = self
         stomp?.connect()
@@ -100,16 +108,6 @@ extension DefaultChatService: ChatService {
         stomp?.disconnect()
     }
     
-    func subscribe(to chatRoomId: Int64, continuation: AsyncThrowingStream<ChatMessage, Error>.Continuation) {
-        chatStreamContinuation = continuation
-        stomp?.subscribe(to: "/sub/chat/\(chatRoomId)")
-    }
-    
-    func unsubscribe(from chatRoomId: Int64) {
-        stomp?.unsubscribe(from: "/sub/chat/\(chatRoomId)")
-        chatStreamContinuation?.finish()
-    }
-    
     func send<T: Encodable>(message: T) async throws {
         stomp?.send(body: message, to: "/pub/message")
     }
@@ -118,7 +116,14 @@ extension DefaultChatService: ChatService {
 // MARK: SwiftStompDelegate Conformation
 extension DefaultChatService: SwiftStompDelegate {
     func onConnect(swiftStomp: SwiftStomp, connectType: StompConnectType) {
-        print("Chat Service Connected")
+        if connectType == .toStomp {
+            guard let currentChatRoomId = currentChatRoomId,
+                  let chatStreamContinuation = chatStreamContinuation
+            else { return }
+            
+            subscribe(to: currentChatRoomId, continuation: chatStreamContinuation)
+            print("Chat Service Connected")
+        }
     }
     
     func onDisconnect(swiftStomp: SwiftStomp, disconnectType: StompDisconnectType) {
@@ -126,7 +131,9 @@ extension DefaultChatService: SwiftStompDelegate {
     }
     
     func onMessageReceived(swiftStomp: SwiftStomp, message: Any?, messageId: String, destination: String, headers: [String : String]) {
-        guard let data = message as? Data else {
+        guard let message = message else { return }
+        
+        guard let data = try? JSONSerialization.data(withJSONObject: message) else {
             chatStreamContinuation?.yield(with: .failure(ChatServiceError.invalidMessageFormat))
             return
         }
