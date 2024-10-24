@@ -52,4 +52,9 @@ struct ChatEntity: Codable {
             unreadCount: unreadCount
         )
     }
+    
+    enum CodingKeys: String, CodingKey {
+        case chatRoomId, senderId, senderNickname, content, sendTime
+        case unreadCount = "readCount"
+    }
 }
