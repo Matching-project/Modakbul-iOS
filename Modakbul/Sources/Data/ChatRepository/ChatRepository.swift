@@ -50,21 +50,18 @@ extension DefaultChatRepository: ChatRepository {
         let token = try tokenStorage.fetch(by: userId)
         
         do {
-            try chatService.connect(token: token.accessToken, on: chatRoomId, userId: userId, userNickname: nickname)
-            chatService.subscribe(to: chatRoomId, continuation: continuation)
+            try chatService.connect(token: token.accessToken, on: chatRoomId, userId: userId, userNickname: nickname, continuation: continuation)
         } catch APIError.accessTokenExpired {
             let tokens = try await reissueTokens(userId: userId, token.refreshToken)
             
-            try chatService.connect(token: tokens.accessToken, on: chatRoomId, userId: userId, userNickname: nickname)
-            chatService.subscribe(to: chatRoomId, continuation: continuation)
+            try chatService.connect(token: tokens.accessToken, on: chatRoomId, userId: userId, userNickname: nickname, continuation: continuation)
         } catch {
             throw error
         }
     }
     
     func stopChat(on chatRoomId: ChatRoomId) {
-        chatService.unsubscribe(from: chatRoomId)
-        chatService.disconnect()
+        chatService.disconnect(on: chatRoomId)
     }
     
     func readChatRooms(userId: UserId) async throws -> [ChatRoomConfiguration] {
