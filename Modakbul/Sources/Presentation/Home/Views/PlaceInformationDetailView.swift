@@ -144,7 +144,7 @@ struct PlaceInformationDetailView<Router: AppRouter>: View {
         case .participant:
             HStack {
                 FlatButton("채팅하기") {
-                    vm.readChatRoom(userId: userId, opponentUserId: vm.writer.id)
+                    vm.routeToChatRoom(userId: userId, opponentUserId: vm.writer.id)
                 }
                 
                 FlatButton("나가기") {
@@ -154,7 +154,7 @@ struct PlaceInformationDetailView<Router: AppRouter>: View {
         case .nonParticipant:
             HStack {
                 FlatButton("채팅하기") {
-                    vm.readChatRoom(userId: userId, opponentUserId: vm.writer.id)
+                    vm.routeToChatRoom(userId: userId, opponentUserId: vm.writer.id)
                 }
                 
                 MatchRequestButton(matchState: $vm.matchState, isFull: $vm.isFull, userNickname: userNickname) { userNickname in

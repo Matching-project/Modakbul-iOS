@@ -225,26 +225,14 @@ extension PlaceInformationDetailViewModel {
     /// - Parameters:
     ///   - userId: 내 유저 아이디
     ///   - opponentUserId: 상대방 유저 아이디
-    func readChatRoom(userId: Int64, opponentUserId: Int64) {
+    func routeToChatRoom(userId: Int64, opponentUserId: Int64) {
         Task {
+            guard let communityRecruitingContent = communityRecruitingContent else { return }
+            
             do {
-                // 이미 채팅방이 존재하는 경우
+                let chatRoomId = try await chatUseCase.createChatRoom(userId: userId, opponentUserId: opponentUserId, with: communityRecruitingContent.id)
                 let chatRoomConfigurations = try await chatUseCase.readChatRooms(userId: userId)
-                guard let chatRoomConfiguration = chatRoomConfigurations.filter ({ $0.opponentUserId == opponentUserId }).first else {
-                    // 채팅방이 존재하지 않는 경우
-                    guard let communityRecruitingContent = communityRecruitingContent else { return }
-                    let chatRoomId = try await chatUseCase.createChatRoom(userId: userId, opponentUserId: opponentUserId, with: communityRecruitingContent.id)
-                    
-                    let chatRoomConfiguration = ChatRoomConfiguration(id: chatRoomId,
-                                                                      title: communityRecruitingContent.title,
-                                                                      opponentUserId: opponentUserId,
-                                                                      relatedCommunityRecruitingContentId: communityRecruitingContent.id,
-                                                                      unreadMessagesCount: 0)
-                
-                    chatRoomConfigurationSubject.send(chatRoomConfiguration)
-                    return
-                }
-                
+                guard let chatRoomConfiguration = chatRoomConfigurations.filter({ $0.id == chatRoomId }).first else { return }
                 chatRoomConfigurationSubject.send(chatRoomConfiguration)
             } catch {
                 print(error)
