@@ -225,7 +225,6 @@ extension PlaceInformationDetailViewModel {
     /// - Parameters:
     ///   - userId: 내 유저 아이디
     ///   - opponentUserId: 상대방 유저 아이디
-    @MainActor
     func readChatRoom(userId: Int64, opponentUserId: Int64) {
         Task {
             do {
