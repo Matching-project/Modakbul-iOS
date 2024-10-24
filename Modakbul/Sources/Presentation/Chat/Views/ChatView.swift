@@ -58,6 +58,7 @@ struct ChatView<Router: AppRouter>: View {
         }
         .onChange(of: vm.isExit) { oldValue, newValue in
             if oldValue == false, newValue == true {
+                modelContext.delete(chatRoom)
                 router.dismiss()
             }
         }

@@ -31,7 +31,7 @@ struct ChatRoomListView<Router: AppRouter>: View {
     
     private func deleteSwipeAction(for chatRoom: ChatRoom) -> some View {
         Button(role: .destructive) {
-            viewModel.deleteChatRoom(chatRoom, on: Int64(userId), by: modelContext)
+            viewModel.deleteChatRoom(chatRoom.id, on: Int64(userId))
         } label: {
             Label("삭제하기", systemImage: "trash")
         }
@@ -66,6 +66,15 @@ struct ChatRoomListView<Router: AppRouter>: View {
                 
                 do {
                     try modelContext.save()
+                } catch {
+                    print(error)
+                }
+            }
+            .onReceive(viewModel.deletionSubject) { deletedChatRoomId in
+                guard let index = chatRooms.firstIndex(where: { $0.id == deletedChatRoomId }) else { return }
+                
+                do {
+                    try modelContext.delete(model: ChatRoom.self, where: #Predicate<ChatRoom>{ $0.id == deletedChatRoomId })
                 } catch {
                     print(error)
                 }
