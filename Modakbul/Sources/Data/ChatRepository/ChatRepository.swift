@@ -61,7 +61,7 @@ extension DefaultChatRepository: ChatRepository {
     }
     
     func stopChat(on chatRoomId: ChatRoomId) {
-        chatService.disconnect(chatRoomId: chatRoomId)
+        chatService.disconnect(on: chatRoomId)
     }
     
     func readChatRooms(userId: UserId) async throws -> [ChatRoomConfiguration] {

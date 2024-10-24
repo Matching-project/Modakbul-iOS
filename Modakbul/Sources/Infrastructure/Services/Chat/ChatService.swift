@@ -21,7 +21,7 @@ protocol ChatService {
     /// 소켓 연결
     func connect(token: String, on chatRoomId: Int64, userId: Int64, userNickname nickname: String, continuation: AsyncThrowingStream<ChatMessage, Error>.Continuation) throws
     /// 소켓 연결 해제
-    func disconnect(chatRoomId: Int64)
+    func disconnect(on chatRoomId: Int64)
     func send<T: Encodable>(message: T) async throws
 }
 
@@ -102,7 +102,8 @@ extension DefaultChatService: ChatService {
         stomp?.connect()
     }
     
-    func disconnect(chatRoomId: Int64) {
+    func disconnect(on chatRoomId: Int64) {
+        unsubscribe(from: chatRoomId)
         // Auto-Reconnect 옵션이 켜져 있을 경우, disconnect 시 자동으로 재연결 하기 때문에 수동으로 옵션을 꺼줄 것.
         stomp?.autoReconnect = false
         stomp?.disconnect()
