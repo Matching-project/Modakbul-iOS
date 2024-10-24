@@ -102,11 +102,11 @@ extension DefaultChatService: ChatService {
     
     func subscribe(to chatRoomId: Int64, continuation: AsyncThrowingStream<ChatMessage, Error>.Continuation) {
         chatStreamContinuation = continuation
-        stomp?.subscribe(to: "/sub/public/\(chatRoomId)")
+        stomp?.subscribe(to: "/sub/chat/\(chatRoomId)")
     }
     
     func unsubscribe(from chatRoomId: Int64) {
-        stomp?.unsubscribe(from: "/sub/public/\(chatRoomId)")
+        stomp?.unsubscribe(from: "/sub/chat/\(chatRoomId)")
         chatStreamContinuation?.finish()
     }
     
