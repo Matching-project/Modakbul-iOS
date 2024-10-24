@@ -154,7 +154,7 @@ extension ChatViewModel {
         }
         
         do {
-            for try await message in stream {
+            for try await message in stream where message.senderId == opponentUser?.id {
                 newMessageSubject.send(message)
             }
         } catch {
