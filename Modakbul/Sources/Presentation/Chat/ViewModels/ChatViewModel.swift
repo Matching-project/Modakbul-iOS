@@ -156,7 +156,7 @@ extension ChatViewModel {
         
         do {
             for try await message in stream {
-                messages.append(message)
+                newMessageSubject.send(message)
             }
         } catch {
             print(error)
