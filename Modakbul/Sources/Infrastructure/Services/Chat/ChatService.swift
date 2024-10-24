@@ -116,6 +116,7 @@ extension DefaultChatService: ChatService {
 // MARK: SwiftStompDelegate Conformation
 extension DefaultChatService: SwiftStompDelegate {
     func onConnect(swiftStomp: SwiftStomp, connectType: StompConnectType) {
+        swiftStomp.enableLogging = true
         if connectType == .toStomp {
             guard let currentChatRoomId = currentChatRoomId,
                   let chatStreamContinuation = chatStreamContinuation
@@ -138,10 +139,16 @@ extension DefaultChatService: SwiftStompDelegate {
             return
         }
         
+        guard let data = messageString.data(using: .utf8) else {
+            chatStreamContinuation?.yield(with: .failure(ChatServiceError.invalidMessageFormat))
+            return
+        }
+        
         guard let entity = try? decoder.decode(ChatEntity.self, from: data) else {
             chatStreamContinuation?.yield(with: .failure(ChatServiceError.generic(type: String(describing: data))))
             return
         }
+        
         chatStreamContinuation?.yield(entity.toDTO())
     }
     
