@@ -192,7 +192,7 @@ extension ChatViewModel {
     func exitChatRoom(userId: Int64, chatRoomId: Int64) {
         Task {
             do {
-                try await chatUseCase.exitChatRoom(userId: userId, chatRoomId: chatRoomId)
+                try await chatUseCase.exitChatRoom(userId: userId, on: chatRoomId)
                 exitPerformSubject.send(true)
             } catch {
                 print(error)

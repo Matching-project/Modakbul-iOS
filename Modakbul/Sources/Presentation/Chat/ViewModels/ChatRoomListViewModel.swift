@@ -57,7 +57,7 @@ extension ChatRoomListViewModel {
     func deleteChatRoom(_ chatRoomId: Int64, on userId: Int64) {
         Task {
             do {
-                try await chatUseCase.deleteChat(userId: userId, on: chatRoomId)
+                try await chatUseCase.exitChatRoom(userId: userId, on: chatRoomId)
                 deletionSubject.send(chatRoomId)
             } catch {
                 print(error)

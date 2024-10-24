@@ -16,7 +16,7 @@ protocol ChatRepository: TokenRefreshable {
     func stopChat(on chatRoomId: ChatRoomId)
     func readChatRooms(userId: UserId) async throws -> [ChatRoomConfiguration]
     func createChatRoom(userId: UserId, opponentUserId: UserId, with communityRecruitingContentId: CommunityRecruitingContentId) async throws -> ChatRoomId
-    func deleteChat(userId: UserId, on chatRoomId: ChatRoomId) async throws
+    func exitChatRoom(userId: UserId, on chatRoomId: ChatRoomId) async throws
     func readChatingHistory(userId: UserId, on chatRoomId: ChatRoomId, with communityRecruitingContentId: CommunityRecruitingContentId) async throws -> ChatHistory
     func send(message: ChatMessage) throws
     func reportAndExitChatRoom(userId: UserId, opponentUserId: UserId, chatRoomId: ChatRoomId, report: Report) async throws
@@ -102,7 +102,7 @@ extension DefaultChatRepository: ChatRepository {
         }
     }
     
-    func deleteChat(userId: UserId, on chatRoomId: ChatRoomId) async throws {
+    func exitChatRoom(userId: UserId, on chatRoomId: ChatRoomId) async throws {
         let token = try tokenStorage.fetch(by: userId)
         
         do {
