@@ -50,7 +50,7 @@ struct PlaceInformationDetailView<Router: AppRouter>: View {
                     router.dismiss()
                 }
             }
-            .onChange(of: vm.chatRoomConfiguration) { _, configuration in
+            .onReceive(vm.$chatRoomConfiguration) { configuration in
                 /**
                  https://forums.developer.apple.com/forums/thread/747801
                  
@@ -81,6 +81,9 @@ struct PlaceInformationDetailView<Router: AppRouter>: View {
             }
             .navigationModifier {
                 router.dismiss()
+            }
+            .onDisappear {
+                vm.chatRoomConfiguration = nil
             }
     }
     
