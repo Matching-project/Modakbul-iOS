@@ -107,7 +107,6 @@ extension DefaultChatService: ChatService {
         // Auto-Reconnect 옵션이 켜져 있을 경우, disconnect 시 자동으로 재연결 하기 때문에 수동으로 옵션을 꺼줄 것.
         stomp?.autoReconnect = false
         stomp?.disconnect()
-        unsubscribe(from: chatRoomId)
     }
     
     func send<T: Encodable>(message: T) async throws {
