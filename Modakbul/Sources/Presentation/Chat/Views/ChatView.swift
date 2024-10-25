@@ -49,17 +49,20 @@ struct ChatView<Router: AppRouter>: View {
         .onDisappear {
             // TODO: - 화면 나가기 전에 vm 초기화같은 작업이 필요한지? 네
             vm.stopChat()
-            chatRoom.messages = vm.messages
+            if !vm.isExit && !vm.isReported {
+                chatRoom.messages = vm.messages
+            }
         }
-        .onChange(of: vm.isReported) { oldValue, newValue in
-            if oldValue == false, newValue == true {
+        .onReceive(vm.$isReported) { isReported in
+            if isReported == true {
                 router.popToRoot()
+                modelContext.delete(chatRoom)
             }
         }
         .onChange(of: vm.isExit) { oldValue, newValue in
             if oldValue == false, newValue == true {
-                modelContext.delete(chatRoom)
                 router.dismiss()
+                modelContext.delete(chatRoom)
             }
         }
         .toolbar {

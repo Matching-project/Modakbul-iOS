@@ -81,5 +81,8 @@ struct ReportView<Router: AppRouter>: View {
             .padding(.vertical, 5)
         }
         .padding(.horizontal, Constants.horizontal)
+        .onDisappear {
+            isReported = false
+        }
     }
 }

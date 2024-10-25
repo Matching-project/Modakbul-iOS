@@ -27,6 +27,9 @@ struct ChatRoomListView<Router: AppRouter>: View {
                     viewModel.readChatRooms(userId: Int64(userId))
                 }
             }
+            .onDisappear {
+                viewModel.configurations.removeAll()
+            }
     }
     
     private func deleteSwipeAction(for chatRoom: ChatRoom) -> some View {
