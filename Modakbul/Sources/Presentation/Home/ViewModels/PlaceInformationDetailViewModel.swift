@@ -219,9 +219,8 @@ extension PlaceInformationDetailViewModel {
 
 // MARK: - Interfaces for ChatUseCase
 extension PlaceInformationDetailViewModel {
-    /// 해당 게시물과 관련된 채팅방이 있는지 불러옵니다.
-    /// 채팅방이 없는 경우, 채팅방을 임시적으로 생성 후 채팅방을 불러옵니다. 첫 메시지를 발송하기 전까지 사용자들의 채팅목록 화면에서 채팅방이 보여지지 않습니다.
-    /// - Warning: 게시물과 관련된 채팅방이 존재하지 않을 수 있습니다.
+    /// 해당 게시물과 관련된 채팅방이 있는지 확인한 후 해당 채팅방으로 이동하기 위한 채팅방 ID를 응답으로 받습니다.
+    /// - Warning: 게시물과 관련된 채팅방이 존재하지 않을 수 있습니다. 이 경우 새로운 채팅방이 생성되어 그 채팅방 ID를 응답으로 받습니다.
     /// - Parameters:
     ///   - userId: 내 유저 아이디
     ///   - opponentUserId: 상대방 유저 아이디
