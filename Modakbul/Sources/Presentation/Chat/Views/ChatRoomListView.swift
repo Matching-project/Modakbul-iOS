@@ -23,12 +23,10 @@ struct ChatRoomListView<Router: AppRouter>: View {
     var body: some View {
         buildView()
             .onAppear {
+                viewModel.configurations.removeAll()
                 if userId != Constants.loggedOutUserId {
                     viewModel.readChatRooms(userId: Int64(userId))
                 }
-            }
-            .onDisappear {
-                viewModel.configurations.removeAll()
             }
     }
     
