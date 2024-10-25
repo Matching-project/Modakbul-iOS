@@ -67,6 +67,7 @@ extension NotificationViewModel {
         }
     }
     
+    @MainActor
     func fetchNotifications(userId: Int64) {
         Task {
             do {

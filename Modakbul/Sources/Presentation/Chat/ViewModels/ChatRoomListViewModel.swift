@@ -54,6 +54,7 @@ extension ChatRoomListViewModel {
         }
     }
     
+    @MainActor
     func deleteChatRoom(_ chatRoomId: Int64, on userId: Int64) {
         Task {
             do {
