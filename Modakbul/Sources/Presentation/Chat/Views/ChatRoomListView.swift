@@ -40,7 +40,8 @@ struct ChatRoomListView<Router: AppRouter>: View {
         }
     }
     
-    @ViewBuilder private func buildView() -> some View {
+    @ViewBuilder
+    private func buildView() -> some View {
         if viewModel.configurations.isEmpty {
             ContentUnavailableView("채팅방이 없습니다.", systemImage: "questionmark", description: Text("아무도 없어요..."))
         } else {

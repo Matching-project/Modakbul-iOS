@@ -45,6 +45,7 @@ final class ReportViewModel: ObservableObject {
                                                          opponentUserId: opponentUserId,
                                                          report: report)
                 }
+                
                 initialize()
             } catch {
                 print(error)
