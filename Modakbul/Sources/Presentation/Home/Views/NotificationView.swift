@@ -126,7 +126,7 @@ extension NotificationView {
         }
         
         private var titleView: some View {
-            HStack {
+            HStack(alignment: .firstTextBaseline) {
                 Text(notification.title)
                     .lineLimit(2)
                     .foregroundColor(.accent)
