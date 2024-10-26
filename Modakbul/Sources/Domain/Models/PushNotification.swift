@@ -14,6 +14,7 @@ struct PushNotification: Identifiable {
         case acceptParticipation(communityRecruitingContentId: Int64)
         case newChat
         case exitParticipation
+        case chat
         case unknown
         
         init(from type: String, communityRecruitingContentId: Int64) {
@@ -22,6 +23,7 @@ struct PushNotification: Identifiable {
             case "acceptParticipation": self = .acceptParticipation(communityRecruitingContentId: communityRecruitingContentId)
             case "newChat": self = .newChat
             case "exit": self = .exitParticipation
+            case "chat": self = .chat
             default: self = .unknown
             }
         }
@@ -36,6 +38,8 @@ struct PushNotification: Identifiable {
                 return ("님의 새로운 채팅", "님이 보낸 새로운 채팅을 확인하세요.")
             case .exitParticipation:
                 return ("님 참여 종료", " 카페모임을 나갔어요.")
+            case .chat:
+                return ("", "")
             case .unknown:
                 return ("알 수 없음", "알 수 없는 에러입니다.")
             }
@@ -51,6 +55,7 @@ struct PushNotification: Identifiable {
             case .acceptParticipation: "acceptParticipation"
             case .newChat: "newChat"
             case .exitParticipation: "exitParticipation"
+            case .chat: "chat"
             case .unknown: "unknown"
             }
         }

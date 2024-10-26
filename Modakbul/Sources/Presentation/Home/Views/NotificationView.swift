@@ -23,7 +23,7 @@ struct NotificationView<Router: AppRouter>: View {
     }
     
     var body: some View {
-        List(vm.notifications, selection: $vm.multiSelection) { notification in
+        List(vm.notifications.reversed(), selection: $vm.multiSelection) { notification in
             Cell(notification)
                 .swipeActions(edge: .trailing) {
                     deleteSwipeAction(for: notification)
