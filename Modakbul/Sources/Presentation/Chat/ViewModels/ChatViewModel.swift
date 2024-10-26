@@ -46,7 +46,6 @@ final class ChatViewModel: ObservableObject {
                 guard let self = self,
                       let opponentUser = opponentUser else { return }
                 
-                
                 communityRecruitingContentTitle = chatHistory.communityRecruitingContentTitle
                 locationName = chatHistory.locationName
                 let messages = chatHistory.messages.map { (content, timestamp) in
@@ -59,7 +58,8 @@ final class ChatViewModel: ObservableObject {
                         unreadCount: 0
                     )
                 }
-                self.messages += messages
+                
+                messages.forEach { self.newMessageSubject.send($0) }
             }
             .store(in: &cancellables)
         
