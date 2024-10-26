@@ -126,7 +126,7 @@ final class ChatViewModel: ObservableObject {
                                         senderId: Constants.temporalId,
                                         senderNickname: "",
                                         content: "",
-                                        sendTime: currentMessage.sendTime,
+                                        sendTime: currentMessage.sendTime.addingTimeInterval(.tolerance),
                                         unreadCount: 0))
             return
         }
@@ -139,7 +139,7 @@ final class ChatViewModel: ObservableObject {
                                         senderId: Constants.temporalId,
                                         senderNickname: "",
                                         content: "",
-                                        sendTime: currentMessage.sendTime,
+                                        sendTime: currentMessage.sendTime.addingTimeInterval(.tolerance),
                                         unreadCount: 0))
         }
     }
