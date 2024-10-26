@@ -9,6 +9,11 @@ import Foundation
 import Combine
 import SwiftData
 
+protocol ChatRoomListPerformable: AnyObject {
+    /// 채팅방 나가기 또는 신고 후 나가기 후 처리결과를 전달합니다.
+    func performDeletion(model: ChatViewModel, result: Bool, chatRoomId: Int64)
+}
+
 final class ChatRoomListViewModel: ObservableObject {
     @Published var configurations: [ChatRoomConfiguration] = []
     
@@ -64,5 +69,13 @@ extension ChatRoomListViewModel {
                 print(error)
             }
         }
+    }
+}
+
+// MARK: ChatRoomListPerformable Conformation
+extension ChatRoomListViewModel: ChatRoomListPerformable {
+    func performDeletion(model: ChatViewModel, result: Bool, chatRoomId: Int64) {
+        guard result else { return }
+        deletionSubject.send(chatRoomId)
     }
 }
