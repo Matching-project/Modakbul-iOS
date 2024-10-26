@@ -111,8 +111,6 @@ extension NotificationView {
                     .clipShape(.circle)
                 
                 VStack(alignment: .leading, spacing: 5) {
-                    timestamp
-                        .containerRelativeFrame(.horizontal, alignment: .topTrailing)
                     titleView
                     subtitleView
                 }
@@ -127,16 +125,19 @@ extension NotificationView {
             .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
         }
         
-        private var timestamp: some View {
-            Text(notification.timestamp)
-                .font(.Modakbul.caption)
-                .bold()
-        }
-        
         private var titleView: some View {
-            Text(notification.title)
-                .foregroundColor(.accent)
-                .bold()
+            HStack {
+                Text(notification.title)
+                    .lineLimit(2)
+                    .foregroundColor(.accent)
+                    .bold()
+                
+                Spacer()
+                
+                Text(notification.timestamp)
+                    .font(.Modakbul.caption)
+                    .bold()
+            }
         }
         
         private var subtitleView: some View {
