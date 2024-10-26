@@ -121,6 +121,7 @@ struct ChatView<Router: AppRouter>: View {
                         .frame(width: 45, height: 45)
                         .rotationEffect(.degrees(45))
                 }
+                .disabled(vm.textOnTextField.isEmpty)
             }
             .safeAreaPadding(.horizontal)
             .padding(.bottom, 5)
