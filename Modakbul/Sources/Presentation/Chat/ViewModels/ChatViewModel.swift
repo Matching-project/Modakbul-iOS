@@ -30,12 +30,16 @@ final class ChatViewModel: ObservableObject {
     private let newMessageSubject = CurrentValueSubject<ChatMessage?, Never>(nil)
     private let exitPerformSubject = PassthroughSubject<Bool, Never>()
     
+    weak var delegate: ChatRoomListPerformable?
+    
     init(
         chatUseCase: ChatUseCase,
-        userBusinessUseCase: UserBusinessUseCase
+        userBusinessUseCase: UserBusinessUseCase,
+        delegate: ChatRoomListPerformable? = nil
     ) {
         self.chatUseCase = chatUseCase
         self.userBusinessUseCase = userBusinessUseCase
+        self.delegate = delegate
         subscribe()
     }
     
@@ -198,6 +202,10 @@ extension ChatViewModel {
                 print(error)
             }
         }
+    }
+    
+    func reportAndExitChatRoom(on chatRoomId: Int64, isReported: Bool) {
+        delegate?.performDeletion(model: self, result: isReported, chatRoomId: chatRoomId)
     }
 }
 

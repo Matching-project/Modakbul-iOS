@@ -55,6 +55,7 @@ struct ChatView<Router: AppRouter>: View {
         }
         .onReceive(vm.$isReported) { isReported in
             if isReported == true {
+                vm.reportAndExitChatRoom(on: chatRoom.id, isReported: isReported)
                 router.popToRoot()
                 modelContext.delete(chatRoom)
             }
