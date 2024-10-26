@@ -11,6 +11,12 @@ struct Constants {
     static let horizontal: CGFloat = 30
     static let vertical: CGFloat = 20
     static let cornerRadius: CGFloat = 8
+    
+    static let tolerance: Double = -0.0001
+}
+
+extension TimeInterval {
+    static var tolerance: TimeInterval { Constants.tolerance }
 }
 
 // MARK: - userId를 관리하는 용도입니다.
