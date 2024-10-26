@@ -121,6 +121,7 @@ struct PresentationAssembly: Assembly {
     }
     
     func loaded(resolver: DependencyResolver) {
-        //
+        let chatViewModel = resolver.resolve(ChatViewModel.self)
+        chatViewModel.delegate = resolver.resolve(ChatRoomListViewModel.self)
     }
 }
