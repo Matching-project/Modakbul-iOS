@@ -138,6 +138,7 @@ struct PlaceInformationDetailMakingView<Router: AppRouter>: View {
                 vm.initialize()
                 router.dismiss()
             }
+            .disabled(vm.title.isEmpty || vm.content.isEmpty)
             .padding(.horizontal, Constants.horizontal)
             .padding(.vertical, 5)
         }
