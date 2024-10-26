@@ -157,7 +157,7 @@ extension MyView {
                 .listRowSeparator(.hidden, edges: .top)
                 
                 Section {
-                    button("알림 설정", destination: .notificationSettingsView)
+//                    button("알림 설정", destination: .notificationSettingsView)
                     // TODO: - 약관 및 정책 노션 링크 만들기
                     // button("약관 및 정책", destination: )
                     
