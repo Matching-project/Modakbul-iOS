@@ -68,7 +68,6 @@ struct ChatView<Router: AppRouter>: View {
         }
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
-                // TODO: 기능 연결 필요
                 Menu {
                     Button {
                         vm.exitChatRoom(userId: Int64(userId), chatRoomId: chatRoom.id)
@@ -114,7 +113,7 @@ struct ChatView<Router: AppRouter>: View {
                     .lineLimit(5)
                 
                 Button {
-                    vm.send(userId: Int64(userId), userNickname: userNickname)
+                    vm.send(chatRoom.relatedCommunityRecruitingContentId, userId: Int64(userId), userNickname: userNickname)
                 } label: {
                     Image(systemName: "paperplane.circle.fill")
                         .resizable()

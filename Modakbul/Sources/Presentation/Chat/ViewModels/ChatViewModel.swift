@@ -21,6 +21,7 @@ final class ChatViewModel: ObservableObject {
     private var chatRoomId: Int64 = Constants.temporalId
     
     private let chatUseCase: ChatUseCase
+    private let notificationUseCase: NotificationUseCase
     private let userBusinessUseCase: UserBusinessUseCase
     private var previousDate: Date?
     
@@ -34,10 +35,12 @@ final class ChatViewModel: ObservableObject {
     
     init(
         chatUseCase: ChatUseCase,
+        notificationUseCase: NotificationUseCase,
         userBusinessUseCase: UserBusinessUseCase,
         delegate: ChatRoomListPerformable? = nil
     ) {
         self.chatUseCase = chatUseCase
+        self.notificationUseCase = notificationUseCase
         self.userBusinessUseCase = userBusinessUseCase
         self.delegate = delegate
         subscribe()
@@ -171,8 +174,13 @@ extension ChatViewModel {
         chatUseCase.stopChat(on: chatRoomId)
     }
     
-    func send(userId: Int64, userNickname: String) {
+    // MARK: with Interfaces for NotificationUseCase
+    func send(_ communityRecruitingContentId: Int64,
+              userId: Int64,
+              userNickname: String
+    ) {
         guard textOnTextField.isEmpty == false else { return }
+        guard let opponentUser = opponentUser else { return }
         
         let chatMessage = ChatMessage(
             chatRoomId: chatRoomId,
@@ -188,6 +196,19 @@ extension ChatViewModel {
         do {
             try chatUseCase.send(message: chatMessage)
             newMessageSubject.send(chatMessage)
+            
+            Task {
+                let pushNotification = PushNotificationBuilder
+                    .create(type: .chat)
+                    .setTitle(userNickname)
+                    .setSubtitle(chatMessage.content)
+                    .build()
+                
+                try await notificationUseCase.send(communityRecruitingContentId,
+                                                   from: userId,
+                                                   to: opponentUser.id,
+                                                   pushNotification: pushNotification)
+            }
         } catch {
             print("채팅메세지 전송 실패: \(error)")
         }

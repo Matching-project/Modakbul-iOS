@@ -107,6 +107,7 @@ struct PresentationAssembly: Assembly {
         
         container.register(for: ChatViewModel.self) { resolver in
             ChatViewModel(chatUseCase: resolver.resolve(ChatUseCase.self),
+                          notificationUseCase: resolver.resolve(NotificationUseCase.self),
                           userBusinessUseCase: resolver.resolve(UserBusinessUseCase.self))
         }
         
