@@ -79,8 +79,7 @@ final class PlaceReviewViewModel: ObservableObject {
 // MARK: Interfaces
 extension PlaceReviewViewModel {
     func searchLocation(title: String, subtitle: String) {
-        searchingText = subtitle + ", " + title
-        guard searchingText.isEmpty == false else { return }
+        let searchingText = subtitle + ", " + title
         suggestedResults.removeAll()
 
         Task {
