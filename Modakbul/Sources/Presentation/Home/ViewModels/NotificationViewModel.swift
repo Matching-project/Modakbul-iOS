@@ -6,20 +6,35 @@
 //
 
 import SwiftUI
+import Combine
 
 final class NotificationViewModel: ObservableObject {
     @Published var notifications: [PushNotification] = []
     @Published var multiSelection = Set<Int64>()
+    @Published var performedNotificationIndex: Int?
+    
     private let notificationUseCase: NotificationUseCase
+    
+    private let notificationPerformSubject = PassthroughSubject<Int, Never>()
+    private var cancellables = Set<AnyCancellable>()
     
     init(notificationUseCase: NotificationUseCase) {
         self.notificationUseCase = notificationUseCase
+        subscribe()
+    }
+    
+    private func subscribe() {
+        notificationPerformSubject
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] index in
+                self?.notifications[index].isRead = true
+            }
+            .store(in: &cancellables)
     }
     
     func readNotification(userId: Int64,_ notification: PushNotification) {
-        if notifications.firstIndex(where: { $0.id == notification.id }) != nil {
-            readNotification(userId: userId, notification.id)
-        }
+        guard let index = notifications.firstIndex(where: { $0.id == notification.id }) else { return }
+        readNotification(userId: userId, notification.id, index: index)
     }
     
     func removeSwipedNotification(userId: Int64,_ notification: PushNotification) {
@@ -57,10 +72,11 @@ extension NotificationViewModel {
         }
     }
     
-    private func readNotification(userId: Int64,_ notificationId: Int64) {
+    private func readNotification(userId: Int64,_ notificationId: Int64, index: Int) {
         Task {
             do {
                 try await notificationUseCase.read(userId: userId, notificationId)
+                notificationPerformSubject.send(index)
             } catch {
                 print(error)
             }
