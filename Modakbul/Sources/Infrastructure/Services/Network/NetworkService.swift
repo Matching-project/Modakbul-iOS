@@ -77,7 +77,9 @@ final class DefaultNetworkService {
     
     private func performAPIResponse<T: ResponseEntity>(_ response: T) throws -> T {
         // TODO: 임시 코드 - APIERROR에 정의되지 않은 코드도 로그 찍기 위함
+        #if DEBUG
         print(response.code)
+        #endif
         
         guard (1000..<1410).contains(response.code) else {
             let error = APIError(rawValue: response.code) ?? .unknownError
