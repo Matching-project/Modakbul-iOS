@@ -44,7 +44,7 @@ final class LoginViewModel: ObservableObject {
         email: String?,
         appleCI: String?,
         authorizationCode: Data?,
-        _ completion: @escaping (Int64, String) -> Void
+        _ completion: @escaping (Result<(Int64, String), APIError>) -> Void
     ) {
         guard let fcm = fcmToken else { return }
         
@@ -55,20 +55,22 @@ final class LoginViewModel: ObservableObject {
             do {
                 let userId = try await userRegistrationUseCase.login(userCredential)
                 let userNickname = try await userBusinessUseCase.readMyProfile(userId: userId).nickname
-                completion(userId, userNickname)
+                completion(.success((userId, userNickname)))
+            } catch APIError.userNotExist {
+                completion(.failure(.userNotExist))
             } catch {
-                completion(Int64(Constants.loggedOutUserId), "닉네임 없음")
+                completion(.failure(.serverError))
             }
         }
     }
     
-    func kakaoLogin(_ email: String?, _ completion: @escaping (Int64, String) -> Void) {
+    func kakaoLogin(_ email: String?, _ completion: @escaping (Result<(Int64, String), APIError>) -> Void) {
         guard let email = email else { return }
         
         login(provider: .kakao, email: email, appleCI: nil, authorizationCode: nil, completion)
     }
     
-    func appleLogin(_ auth: ASAuthorization, _ completion: @escaping (Int64, String) -> Void) {
+    func appleLogin(_ auth: ASAuthorization, _ completion: @escaping (Result<(Int64, String), APIError>) -> Void) {
         guard let appleIDCredential = auth.credential as? ASAuthorizationAppleIDCredential,
               let authorizationCode = appleIDCredential.authorizationCode else {
             return print("애플 아이디로 로그인만 지원함")

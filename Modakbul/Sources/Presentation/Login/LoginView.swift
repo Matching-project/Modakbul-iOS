@@ -50,7 +50,7 @@ struct LoginView<Router: AppRouter>: View {
             switch result {
             case .success(let email):
                 loginViewModel.kakaoLogin(email) {
-                    performLogin($0, $1)
+                    performLogin($0)
                 }
                 router.dismiss()
             case .failure(let error):
@@ -69,7 +69,7 @@ struct LoginView<Router: AppRouter>: View {
             switch result {
             case .success(let auth):
                 loginViewModel.appleLogin(auth) {
-                    performLogin($0, $1)
+                    performLogin($0)
                 }
                 router.dismiss()
             case .failure(let error):
@@ -81,17 +81,22 @@ struct LoginView<Router: AppRouter>: View {
         .frame(height: 44)
     }
     
-    private func performLogin(_ userId: Int64, _ userNickname: String) {
+    private func performLogin(_ result: Result<(Int64, String), APIError>) {
         guard let userCredential = loginViewModel.userCredential else { return }
         
-        if userId == Constants.loggedOutUserId {
-            Task { @MainActor in
-                router.route(to: .requiredTermView(userCredential: userCredential))
-            }
-        } else {
-            self.userId = Int(userId)
-            self.userNickname = userNickname
+        switch result {
+        case .success(let success):
+            self.userId = Int(success.0)
+            self.userNickname = success.1
             self.provider = userCredential.provider
+        case .failure(let error):
+            if error == .userNotExist {
+                Task { @MainActor in
+                    router.route(to: .requiredTermView(userCredential: userCredential))
+                }
+            } else {
+                // TODO: 로그인 시도에 실패했을 경우의 처리가 필요.
+            }
         }
     }
 }
