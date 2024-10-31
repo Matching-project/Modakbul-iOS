@@ -23,6 +23,12 @@ protocol ChatUseCase {
     /// 채팅 종료
     func stopChat(on chatRoomId: ChatRoomId)
     
+    /// 채팅방 기접속여부 조회
+    /// - Returns:
+    ///     false일 경우 중복접속된 상태이므로 채팅방 접속 금지,
+    ///     true일 경우 중복접속 중인 상태가 아니므로 채팅방 접속 가능을 의미합니다.
+    func isConnectionAvailable(userId: UserId, on chatRoomId: ChatRoomId) async throws -> Bool
+    
     /// 채팅방 목록 조회
     func readChatRooms(userId: UserId) async throws -> [ChatRoomConfiguration]
     
@@ -63,6 +69,10 @@ extension DefaultChatUseCase: ChatUseCase {
     
     func stopChat(on chatRoomId: ChatRoomId) {
         chatRepository.stopChat(on: chatRoomId)
+    }
+    
+    func isConnectionAvailable(userId: UserId, on chatRoomId: ChatRoomId) async throws -> Bool {
+        try await chatRepository.isConnectionAvailable(userId: userId, on: chatRoomId)
     }
     
     func readChatRooms(userId: UserId) async throws -> [ChatRoomConfiguration] {
