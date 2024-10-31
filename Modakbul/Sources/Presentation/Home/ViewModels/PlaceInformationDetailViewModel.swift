@@ -15,6 +15,7 @@ final class PlaceInformationDetailViewModel: ObservableObject {
     @Published var isDeleted: Bool = false
     @Published var isCompleted: Bool = false
     @Published var isFull: Bool = false
+    @Published var presentedAlert: AlertType?
     @Published var chatRoomConfiguration: ChatRoomConfiguration?
     
     // MARK: Presenting Data
@@ -35,6 +36,7 @@ final class PlaceInformationDetailViewModel: ObservableObject {
     private let isCompletedSubject = PassthroughSubject<Bool, Never>()
     private let communityRecruitingContentSubject = PassthroughSubject<CommunityRecruitingContent, Never>()
     private let userRoleSubject = PassthroughSubject<(role: UserRole, matchingId: Int64?, state: MatchState), Never>()
+    private let alertSubject = PassthroughSubject<AlertType, Never>()
     private let chatRoomConfigurationSubject = PassthroughSubject<ChatRoomConfiguration, Never>()
     private var cancellables = Set<AnyCancellable>()
     
@@ -107,6 +109,13 @@ final class PlaceInformationDetailViewModel: ObservableObject {
                 self?.role = role
                 self?.matchingId = matchingId ?? Int64(Constants.loggedOutUserId)
                 self?.matchState = state
+            }
+            .store(in: &cancellables)
+        
+        alertSubject
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] alert in
+                self?.presentedAlert = alert
             }
             .store(in: &cancellables)
         
@@ -230,6 +239,10 @@ extension PlaceInformationDetailViewModel {
             
             do {
                 let chatRoomId = try await chatUseCase.createChatRoom(userId: userId, opponentUserId: opponentUserId, with: communityRecruitingContent.id)
+                guard try await chatUseCase.isConnectionAvailable(userId: userId, on: chatRoomId) else {
+                    alertSubject.send(.alreadyExistingChatRoom)
+                    return
+                }
                 let chatRoomConfigurations = try await chatUseCase.readChatRooms(userId: userId)
                 guard let chatRoomConfiguration = chatRoomConfigurations.filter({ $0.id == chatRoomId }).first else { return }
                 chatRoomConfigurationSubject.send(chatRoomConfiguration)

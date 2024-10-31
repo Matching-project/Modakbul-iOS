@@ -50,6 +50,10 @@ struct PlaceInformationDetailView<Router: AppRouter>: View {
                     router.dismiss()
                 }
             }
+            .onChange(of: vm.presentedAlert) { _, newValue in
+                guard let alert = newValue else { return }
+                router.alert(for: alert, actions: [])
+            }
             .onReceive(vm.$chatRoomConfiguration) { configuration in
                 /**
                  https://forums.developer.apple.com/forums/thread/747801

@@ -47,7 +47,9 @@ struct ChatRoomListView<Router: AppRouter>: View {
                 Cell(chatRoom)
                     .contentShape(.rect)
                     .onTapGesture {
-                        router.route(to: .chatView(chatRoom: chatRoom))
+                        viewModel.routeToChatRoom(userId: Int64(userId), on: chatRoom.id) {
+                            router.route(to: .chatView(chatRoom: chatRoom))
+                        }
                     }
                     .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                         deleteSwipeAction(for: chatRoom)
@@ -78,6 +80,10 @@ struct ChatRoomListView<Router: AppRouter>: View {
                 } catch {
                     print(error)
                 }
+            }
+            .onChange(of: viewModel.presentedAlert) { _, newValue in
+                guard let alert = newValue else { return }
+                router.alert(for: alert, actions: [])
             }
         }
     }

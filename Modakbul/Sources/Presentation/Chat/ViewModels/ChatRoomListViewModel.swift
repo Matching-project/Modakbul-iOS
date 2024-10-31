@@ -16,8 +16,10 @@ protocol ChatRoomListPerformable: AnyObject {
 
 final class ChatRoomListViewModel: ObservableObject {
     @Published var configurations: [ChatRoomConfiguration] = []
+    @Published var presentedAlert: AlertType?
     
     private let chatRoomsSubject = PassthroughSubject<[ChatRoomConfiguration], Never>()
+    private let alertSubject = PassthroughSubject<AlertType, Never>()
     let deletionSubject = PassthroughSubject<Int64, Never>()
     private var cancellables = Set<AnyCancellable>()
     
@@ -65,6 +67,21 @@ extension ChatRoomListViewModel {
             do {
                 try await chatUseCase.exitChatRoom(userId: userId, on: chatRoomId)
                 deletionSubject.send(chatRoomId)
+            } catch {
+                print(error)
+            }
+        }
+    }
+    
+    @MainActor
+    func routeToChatRoom(userId: Int64, on chatRoomId: Int64, completion: @escaping () -> Void) {
+        Task {
+            do {
+                guard try await chatUseCase.isConnectionAvailable(userId: userId, on: chatRoomId) else {
+                    alertSubject.send(.alreadyExistingChatRoom)
+                    return
+                }
+                completion()
             } catch {
                 print(error)
             }
