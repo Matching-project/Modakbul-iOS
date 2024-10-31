@@ -14,6 +14,7 @@ protocol ChatRepository: TokenRefreshable {
 
     func startChat(userId: Int64, userNickname nickname: String, on chatRoomId: ChatRoomId, _ continuation: AsyncThrowingStream<ChatMessage, any Error>.Continuation) async throws
     func stopChat(on chatRoomId: ChatRoomId)
+    func isConnectionAvailable(userId: UserId, on chatRoomId: ChatRoomId) async throws -> Bool
     func readChatRooms(userId: UserId) async throws -> [ChatRoomConfiguration]
     func createChatRoom(userId: UserId, opponentUserId: UserId, with communityRecruitingContentId: CommunityRecruitingContentId) async throws -> ChatRoomId
     func exitChatRoom(userId: UserId, on chatRoomId: ChatRoomId) async throws
@@ -62,6 +63,24 @@ extension DefaultChatRepository: ChatRepository {
     
     func stopChat(on chatRoomId: ChatRoomId) {
         chatService.disconnect(on: chatRoomId)
+    }
+    
+    func isConnectionAvailable(userId: UserId, on chatRoomId: ChatRoomId) async throws -> Bool {
+        let token = try tokenStorage.fetch(by: userId)
+        
+        do {
+            let endpoint = Endpoint.isConnectionAvailable(token: token.accessToken, chatRoomId: chatRoomId)
+            let response = try await networkService.request(endpoint: endpoint, for: DefaultResponseEntity.self)
+            return response.body.status
+        } catch APIError.accessTokenExpired {
+            let tokens = try await reissueTokens(userId: userId, token.refreshToken)
+            
+            let endpoint = Endpoint.isConnectionAvailable(token: tokens.accessToken, chatRoomId: chatRoomId)
+            let response = try await networkService.request(endpoint: endpoint, for: DefaultResponseEntity.self)
+            return response.body.status
+        } catch {
+            throw error
+        }
     }
     
     func readChatRooms(userId: UserId) async throws -> [ChatRoomConfiguration] {
