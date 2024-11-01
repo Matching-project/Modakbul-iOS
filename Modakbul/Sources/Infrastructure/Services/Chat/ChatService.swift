@@ -104,8 +104,6 @@ extension DefaultChatService: ChatService {
     
     func disconnect(on chatRoomId: Int64) {
         unsubscribe(from: chatRoomId)
-        // Auto-Reconnect 옵션이 켜져 있을 경우, disconnect 시 자동으로 재연결 하기 때문에 수동으로 옵션을 꺼줄 것.
-        stomp?.autoReconnect = false
         stomp?.disconnect()
     }
     
@@ -129,7 +127,12 @@ extension DefaultChatService: SwiftStompDelegate {
     }
     
     func onDisconnect(swiftStomp: SwiftStomp, disconnectType: StompDisconnectType) {
-        print("Chat Service Disconnected")
+        if disconnectType == .fromStomp {
+            swiftStomp.delegate = nil
+            chatStreamContinuation = nil
+            currentChatRoomId = nil
+            print("Chat Service Disconnected")
+        }
     }
     
     func onMessageReceived(swiftStomp: SwiftStomp, message: Any?, messageId: String, destination: String, headers: [String : String]) {
