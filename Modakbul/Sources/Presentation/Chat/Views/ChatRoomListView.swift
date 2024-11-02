@@ -47,7 +47,7 @@ struct ChatRoomListView<Router: AppRouter>: View {
                 Cell(chatRoom)
                     .contentShape(.rect)
                     .onTapGesture {
-                        viewModel.routeToChatRoom(userId: Int64(userId), on: chatRoom.id) {
+                        viewModel.routeToChatRoom(userId: Int64(userId), chatRoom: chatRoom) {
                             router.route(to: .chatView(chatRoom: chatRoom))
                         }
                     }

@@ -246,6 +246,8 @@ extension PlaceInformationDetailViewModel {
                 let chatRoomConfigurations = try await chatUseCase.readChatRooms(userId: userId)
                 guard let chatRoomConfiguration = chatRoomConfigurations.filter({ $0.id == chatRoomId }).first else { return }
                 chatRoomConfigurationSubject.send(chatRoomConfiguration)
+            } catch APIError.inactiveChatRoom {
+                alertSubject.send(.inactiveChatRoom)
             } catch {
                 print(error)
             }

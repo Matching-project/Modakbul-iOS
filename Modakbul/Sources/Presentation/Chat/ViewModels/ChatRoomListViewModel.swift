@@ -81,14 +81,20 @@ extension ChatRoomListViewModel {
     }
     
     @MainActor
-    func routeToChatRoom(userId: Int64, on chatRoomId: Int64, completion: @escaping () -> Void) {
+    func routeToChatRoom(userId: Int64, chatRoom: ChatRoom, completion: @escaping () -> Void) {
+        let opponentUserId = chatRoom.opponentUserId
+        let communityRecruitingContentId = chatRoom.relatedCommunityRecruitingContentId
+        
         Task {
             do {
+                let chatRoomId = try await chatUseCase.createChatRoom(userId: userId, opponentUserId: opponentUserId, with: communityRecruitingContentId)
                 guard try await chatUseCase.isConnectionAvailable(userId: userId, on: chatRoomId) else {
                     alertSubject.send(.alreadyExistingChatRoom)
                     return
                 }
                 completion()
+            } catch APIError.inactiveChatRoom {
+                alertSubject.send(.inactiveChatRoom)
             } catch {
                 print(error)
             }
