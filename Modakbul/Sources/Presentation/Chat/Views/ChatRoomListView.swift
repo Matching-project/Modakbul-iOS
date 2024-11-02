@@ -83,7 +83,11 @@ struct ChatRoomListView<Router: AppRouter>: View {
             }
             .onChange(of: viewModel.presentedAlert) { _, newValue in
                 guard let alert = newValue else { return }
-                router.alert(for: alert, actions: [])
+                router.alert(for: alert, actions: [
+                    .defaultAction("확인", action: {
+                        viewModel.presentedAlert = nil
+                    })
+                ])
             }
         }
     }

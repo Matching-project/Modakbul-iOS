@@ -45,6 +45,13 @@ final class ChatRoomListViewModel: ObservableObject {
                 self?.configurations.remove(at: index)
             }
             .store(in: &cancellables)
+        
+        alertSubject
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] alert in
+                self?.presentedAlert = alert
+            }
+            .store(in: &cancellables)
     }
 }
 
