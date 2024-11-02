@@ -81,6 +81,7 @@ struct LoginView<Router: AppRouter>: View {
         .frame(height: 44)
     }
     
+    @MainActor
     private func performLogin(_ result: Result<(Int64, String), APIError>) {
         guard let userCredential = loginViewModel.userCredential else { return }
         
@@ -91,11 +92,13 @@ struct LoginView<Router: AppRouter>: View {
             self.provider = userCredential.provider
         case .failure(let error):
             if error == .userNotExist {
-                Task { @MainActor in
-                    router.route(to: .requiredTermView(userCredential: userCredential))
-                }
+                router.route(to: .requiredTermView(userCredential: userCredential))
             } else {
-                // TODO: 로그인 시도에 실패했을 경우의 처리가 필요.
+                router.alert(for: .temporalErrorOccurred, actions: [
+                    .defaultAction("재시도", action: {
+                        performLogin(result)
+                    })
+                ])
             }
         }
     }

@@ -28,6 +28,8 @@ enum AlertType {
     case showcaseAndReviewSuccess
     /// 기접속 중인 채팅방으로 이동 전 알림입니다.
     case alreadyExistingChatRoom
+    /// 일시적인 오류 상황 알림입니다.
+    case temporalErrorOccurred
     
     func alert(_ actions: [ConfirmationAction]) -> ConfirmationContent {
         switch self {
@@ -51,6 +53,8 @@ enum AlertType {
             Alert(title: "카페 제보/리뷰 완료!", message: "관리자가 검토한 후 반영됩니다.", actions: actions)
         case .alreadyExistingChatRoom:
             Alert(title: "이미 채팅방에 접속 중인 것 같아요!", message: "다른 기기에서 채팅 중인 것은 아닌지 확인해주세요.", actions: actions)
+        case .temporalErrorOccurred:
+            Alert(title: "일시적인 오류가 발생했습니다.", message: "잠시 후에 다시 시도해주시겠어요?", actions: actions)
         }
     }
 }
