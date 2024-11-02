@@ -30,6 +30,9 @@ enum APIError: Int, Error {
     case userNotExist = 2004
     case accessDenied = 2011
     
+    // MARK: Chat
+    case inactiveChatRoom = 2206
+    
     // MARK: Token
     case accessTokenExpired = 2401
     case refreshTokenExpired = 2403
