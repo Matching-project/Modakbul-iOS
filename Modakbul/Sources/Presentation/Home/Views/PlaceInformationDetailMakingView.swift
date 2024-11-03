@@ -43,7 +43,7 @@ struct PlaceInformationDetailMakingView<Router: AppRouter>: View {
                                     RoundedRectangle(cornerRadius: 8)
                                         .opacity(0.1)
                                 }
-
+                            
                             Text(vm.locationName ?? "")
                                 .padding()
                         }
@@ -62,8 +62,6 @@ struct PlaceInformationDetailMakingView<Router: AppRouter>: View {
                     cell(title: "날짜") {
                         ZStack(alignment: .leading) {
                             Text(vm.date.toString(by: .yyyyMMdd))
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                                .padding(.horizontal, 4)
                             
                             DatePicker(
                                 "",
@@ -71,19 +69,20 @@ struct PlaceInformationDetailMakingView<Router: AppRouter>: View {
                                 in: Date.now...,
                                 displayedComponents: [.date]
                             )
+                            .transformEffect(.init(scaleX: 0.85, y: 1))
+                            .position(x: 45, y: 16)
                             .labelsHidden()
-                            .transformEffect(.init(scaleX: 2, y: 1))
-                            .opacity(0.02)
+                            .colorMultiply(.clear)
                         }
-                        .padding(-8)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.vertical, -8)
                         .roundedRectangleStyle()
                     }
                     
                     cell(title: "진행시간") {
                         HStack {
-                            ZStack(alignment: .leading) {
+                            ZStack {
                                 Text(vm.startTime.toString(by: .HHmm))
-                                    .padding(.leading, 4)
                                 
                                 DatePicker(
                                     "",
@@ -91,17 +90,17 @@ struct PlaceInformationDetailMakingView<Router: AppRouter>: View {
                                     in: vm.after(vm.date),
                                     displayedComponents: [.hourAndMinute]
                                 )
-                                .transformEffect(.init(scaleX: 0.5, y: 1))
+                                .transformEffect(.init(scaleX: 0.7, y: 1))
+                                .position(x: 35, y: 16)
                                 .labelsHidden()
-                                .opacity(0.02)
+                                .colorMultiply(.clear)
                             }
-                            
+                            .frame(maxWidth: 50)
+
                             Text("-")
-                                .padding(.leading, -25)
                             
-                            ZStack(alignment: .leading) {
+                            ZStack {
                                 Text(vm.endTime.toString(by: .HHmm))
-                                    .frame(maxWidth: .infinity, alignment: .leading)
                                     .onChange(of: vm.startTime) { _, newStartTime in
                                         if vm.endTime < newStartTime {
                                             vm.endTime = newStartTime
@@ -114,12 +113,16 @@ struct PlaceInformationDetailMakingView<Router: AppRouter>: View {
                                     in: vm.after(vm.startTime),
                                     displayedComponents: [.hourAndMinute]
                                 )
+                                .transformEffect(.init(scaleX: 0.7, y: 1))
+                                .position(x: 35, y: 16)
                                 .labelsHidden()
-                                .opacity(0.02)
+                                .colorMultiply(.clear)
                             }
-                            .padding(.leading, -20)
+                            .frame(maxWidth: 50)
                         }
-                        .padding(-10)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.leading, -4)
+                        .padding(.vertical, -8)
                         .roundedRectangleStyle()
                     }
                     
