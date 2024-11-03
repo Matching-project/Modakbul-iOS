@@ -121,7 +121,7 @@ struct PlaceInformationDetailMakingView<Router: AppRouter>: View {
                             .frame(maxWidth: 50)
                         }
                         .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(.leading, -4)
+                        .padding(.leading, -6)
                         .padding(.vertical, -8)
                         .roundedRectangleStyle()
                     }

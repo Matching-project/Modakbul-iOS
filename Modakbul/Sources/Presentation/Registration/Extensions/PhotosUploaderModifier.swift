@@ -14,44 +14,25 @@ extension View {
     }
 }
 
-@MainActor
 struct PhotosUploaderModifier: ViewModifier {
     @Binding var selectedPhoto: PhotosPickerItem?
     @Binding var image: Data?
     
     func body(content: Content) -> some View {
-        if #available(iOS 17.0, *) {
-            content
-                .onChange(of: selectedPhoto) { _, newItem in
-                    guard let newItem = newItem else { return }
-                    newItem.loadTransferable(type: Data.self) { result in
-                        switch result {
-                        case .success(let data):
-                            Task {
-                                image = data
-                            }
-                        case .failure:
-                            print("프로필 사진 불러오기 실패")
-                            break
+        content
+            .onChange(of: selectedPhoto) { _, newItem in
+                guard let newItem = newItem else { return }
+                newItem.loadTransferable(type: Data.self) { result in
+                    switch result {
+                    case .success(let data):
+                        Task { @MainActor in
+                            image = data
                         }
+                    case .failure:
+                        print("프로필 사진 불러오기 실패")
+                        break
                     }
                 }
-        } else {
-            content
-                .onChange(of: selectedPhoto) { newItem in
-                    guard let newItem = newItem else { return }
-                    newItem.loadTransferable(type: Data.self) { result in
-                        switch result {
-                        case .success(let data):
-                            Task {
-                                image = data
-                            }
-                        case .failure:
-                            print("프로필 사진 불러오기 실패")
-                            break
-                        }
-                    }
-                }
-        }
+            }
     }
 }
