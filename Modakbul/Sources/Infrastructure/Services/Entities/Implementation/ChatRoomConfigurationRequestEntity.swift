@@ -24,7 +24,7 @@ struct ChatRoomConfigurationResponseEntity: ResponseEntity {
     let code: Int
     let message: String
     /// 채팅방 고유 식별값
-    let result: Int64
+    let result: Int64?
     
-    func toDTO() -> Int64 { result }
+    func toDTO() -> Int64? { result }
 }
