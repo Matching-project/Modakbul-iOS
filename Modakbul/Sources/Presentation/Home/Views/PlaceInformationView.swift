@@ -108,7 +108,18 @@ struct PlaceInformationView<Router: AppRouter>: View {
     private var communityRecruitingContentEditButton: some View {
         Button {
             router.dismiss()
-            router.route(to: .placeInformationDetailMakingView(placeId: place.id, locationName: place.location.name, communityRecruitingContent: nil))
+            if userId == Constants.loggedOutUserId {
+                router.alert(for: .login, actions: [
+                    .cancelAction("취소") {
+                        router.dismiss()
+                    },
+                    .defaultAction("로그인") {
+                        router.route(to: .loginView)
+                    }
+                ])
+            } else {
+                router.route(to: .placeInformationDetailMakingView(placeId: place.id, locationName: place.location.name, communityRecruitingContent: nil))
+            }
         } label: {
             Image(.photoUploadSelection)
                 .resizable()

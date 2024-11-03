@@ -141,6 +141,7 @@ extension PlacesListArea {
         @EnvironmentObject private var router: Router
         @State private var selectedOpeningHourOfDay: OpeningHour?
         @State private var openingHourText: String
+        @AppStorage(AppStorageKey.userId) private var userId: Int = Constants.loggedOutUserId
         
         private let place: Place
         
@@ -245,7 +246,18 @@ extension PlacesListArea {
         
         private var communityRecruitingContentEditButton: some View {
             Button {
-                router.route(to: .placeInformationDetailMakingView(placeId: place.id, locationName: place.location.name, communityRecruitingContent: nil))
+                if userId == Constants.loggedOutUserId {
+                    router.alert(for: .login, actions: [
+                        .cancelAction("취소") {
+                            router.dismiss()
+                        },
+                        .defaultAction("로그인") {
+                            router.route(to: .loginView)
+                        }
+                    ])
+                } else {
+                    router.route(to: .placeInformationDetailMakingView(placeId: place.id, locationName: place.location.name, communityRecruitingContent: nil))
+                }
             } label: {
                 Image(.photoUploadSelection)
                     .resizable()
