@@ -10,6 +10,7 @@ import SwiftUI
 struct ProfileEditView<Router: AppRouter>: View {
     @EnvironmentObject private var router: Router
     @ObservedObject private var vm: ProfileEditViewModel
+    @AppStorage(AppStorageKey.userNickname) private var userNickname: String = String()
     
     private let user: User
     
@@ -43,6 +44,7 @@ struct ProfileEditView<Router: AppRouter>: View {
             
             FlatButton("저장") {
                 vm.submit()
+                userNickname = vm.nickname
                 router.dismiss()
             }
             .padding(.horizontal, Constants.horizontal)
