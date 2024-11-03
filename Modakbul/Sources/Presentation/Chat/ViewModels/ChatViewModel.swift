@@ -13,6 +13,7 @@ final class ChatViewModel: ObservableObject {
     @Published var locationName: String = ""
     @Published var messages: [ChatMessage] = []
     @Published var textOnTextField: String = ""
+    @Published var isTextFieldDisabled: Bool = false
     
     @Published var opponentUser: User?
     @Published var isReported: Bool = false
@@ -30,6 +31,7 @@ final class ChatViewModel: ObservableObject {
     private let opponentUserSubject = PassthroughSubject<User, Never>()
     private let newMessageSubject = CurrentValueSubject<ChatMessage?, Never>(nil)
     private let exitPerformSubject = PassthroughSubject<Bool, Never>()
+    private let opponentUserAvailabilitySubject = PassthroughSubject<Bool, Never>()
     
     weak var delegate: ChatRoomListPerformable?
     
@@ -90,6 +92,18 @@ final class ChatViewModel: ObservableObject {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] result in
                 self?.isExit = result
+            }
+            .store(in: &cancellables)
+        
+        opponentUserAvailabilitySubject
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] result in
+                guard result else {
+                    self?.isTextFieldDisabled = true
+                    self?.textOnTextField.removeAll()
+                    return
+                }
+                self?.isTextFieldDisabled = false
             }
             .store(in: &cancellables)
     }
@@ -227,6 +241,15 @@ extension ChatViewModel {
     
     func reportAndExitChatRoom(on chatRoomId: Int64, isReported: Bool) {
         delegate?.performDeletion(model: self, result: isReported, chatRoomId: chatRoomId)
+    }
+    
+    func isOpponentUserAvailable(userId: Int64, chatRoomId: Int64) async {
+        do {
+            let availability = try await chatUseCase.isOpponentUserAvailable(userId: userId, on: chatRoomId)
+            opponentUserAvailabilitySubject.send(availability)
+        } catch {
+            print(error)
+        }
     }
 }
 

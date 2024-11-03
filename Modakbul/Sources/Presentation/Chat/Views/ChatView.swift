@@ -38,10 +38,12 @@ struct ChatView<Router: AppRouter>: View {
             router.dismiss()
         }
         .task {
-            await vm.fetchOpponentUserProfile(userId: Int64(userId), opponentUserId: chatRoom.opponentUserId)
+            let userId = Int64(userId)
+            await vm.fetchOpponentUserProfile(userId: userId, opponentUserId: chatRoom.opponentUserId)
             vm.messages = chatRoom.messages // 로컬에 저장된 채팅을 불러옵니다.
-            await vm.readChatingHistory(userId: Int64(userId), on: chatRoom.id, with: chatRoom.relatedCommunityRecruitingContentId) // 서버에서 새로운 채팅을 불러옵니다.
-            await vm.startChat(userId: Int64(userId), userNickname: userNickname)
+            await vm.readChatingHistory(userId: userId, on: chatRoom.id, with: chatRoom.relatedCommunityRecruitingContentId) // 서버에서 새로운 채팅을 불러옵니다.
+            await vm.isOpponentUserAvailable(userId: userId, chatRoomId: chatRoom.id)
+            await vm.startChat(userId: userId, userNickname: userNickname)
         }
         .onAppear {
             vm.configureView(chatRoomId: chatRoom.id)
@@ -106,11 +108,12 @@ struct ChatView<Router: AppRouter>: View {
             .ignoresSafeArea(.keyboard, edges: .bottom)
             
             HStack {
-                TextField("메세지를 입력해주세요", text: $vm.textOnTextField, axis: .vertical)
+                TextField(vm.isTextFieldDisabled ? "상대방이 채팅방을 나갔어요." : "메세지를 입력해주세요.", text: $vm.textOnTextField, axis: .vertical)
                     .automaticFunctionDisabled()
                     .roundedRectangleStyle(cornerRadius: 30, vertical: 10)
                     .focused($isFocused)
                     .lineLimit(5)
+                    .disabled(vm.isTextFieldDisabled)
                 
                 Button {
                     vm.send(chatRoom.relatedCommunityRecruitingContentId, userId: Int64(userId), userNickname: userNickname)
