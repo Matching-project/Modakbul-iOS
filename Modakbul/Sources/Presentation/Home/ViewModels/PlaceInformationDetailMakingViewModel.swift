@@ -62,14 +62,25 @@ final class PlaceInformationDetailMakingViewModel: ObservableObject {
     }
     
     func configureView(_ communityRecruitingContent: CommunityRecruitingContent?) {
-        self.category = communityRecruitingContent?.community.category ?? .interview
-        self.peopleCount = communityRecruitingContent?.community.participantsCount ?? 2
-        // TODO: 이거 모집글 수정일 경우 구현 필요
-        self.date = .now
-        self.startTime = .now.unitizeToTenMinutes()
-        self.endTime = .now.unitizeToTenMinutes()
-        self.title = communityRecruitingContent?.title ?? String()
-        self.content = communityRecruitingContent?.content ?? String()
+        // MARK: - 게시물 수정시
+        if let communityRecruitingContent = communityRecruitingContent {
+            self.category = communityRecruitingContent.community.category
+            self.peopleCount = communityRecruitingContent.community.participantsCount + 1
+            self.date = communityRecruitingContent.community.meetingDate.toDate(by: .yyyyMMdd) ?? Date()
+            // 서버에서는 HHmmss로 주고 있고, 화면에는 HHmm만 필요하므로...
+            self.startTime = communityRecruitingContent.community.startTime.toDate(by: .HHmmss)?.toString(by: .HHmm).toDate(by: .HHmm) ?? Date()
+            self.endTime = communityRecruitingContent.community.endTime.toDate(by: .HHmmss)?.toString(by: .HHmm).toDate(by: .HHmm) ?? Date()
+            self.title = communityRecruitingContent.title
+            self.content = communityRecruitingContent.content
+        } else { // MARK: - 게시물 작성시
+            self.category = .interview
+            self.peopleCount = 2
+            self.date = .now
+            self.startTime = .now.unitizeToTenMinutes()
+            self.endTime = .now.unitizeToTenMinutes()
+            self.title = String()
+            self.content = String()
+        }
     }
     
     func initialize() {
