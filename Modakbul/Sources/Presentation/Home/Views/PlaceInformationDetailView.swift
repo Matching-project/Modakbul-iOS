@@ -52,7 +52,11 @@ struct PlaceInformationDetailView<Router: AppRouter>: View {
             }
             .onChange(of: vm.presentedAlert) { _, newValue in
                 guard let alert = newValue else { return }
-                router.alert(for: alert, actions: [])
+                router.alert(for: alert, actions: [
+                    .defaultAction("확인", action: {
+                        vm.presentedAlert = nil
+                    })
+                ])
             }
             .onReceive(vm.$chatRoomConfiguration) { configuration in
                 /**

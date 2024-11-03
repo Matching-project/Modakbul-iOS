@@ -32,6 +32,7 @@ enum APIError: Int, Error {
     
     // MARK: Chat
     case inactiveChatRoom = 2206
+    case opponentUserHasLeft = 2207
     
     // MARK: Token
     case accessTokenExpired = 2401

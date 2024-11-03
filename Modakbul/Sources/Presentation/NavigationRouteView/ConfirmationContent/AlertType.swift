@@ -56,7 +56,7 @@ enum AlertType {
         case .alreadyExistingChatRoom:
             Alert(title: "이미 채팅방에 접속 중인 것 같아요!", message: "다른 기기에서 채팅 중인 것은 아닌지 확인해주세요.", actions: actions)
         case .inactiveChatRoom:
-            Alert(title: "닫힌 채팅방 입니다.", message: "채팅 참가자가 나가면 채팅방이 닫힙니다.\n닫힌 채팅방은 다시 들어갈 수 없어요.", actions: actions)
+            Alert(title: "이미 닫힌 채팅방 입니다.", message: "채팅방을 나가면 채팅방이 닫힙니다.\n닫힌 채팅방은 다시 들어갈 수 없어요.", actions: actions)
         case .temporalErrorOccurred:
             Alert(title: "일시적인 오류가 발생했습니다.", message: "잠시 후에 다시 시도해주시겠어요?", actions: actions)
         }

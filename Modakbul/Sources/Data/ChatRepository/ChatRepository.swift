@@ -15,6 +15,7 @@ protocol ChatRepository: TokenRefreshable {
     func startChat(userId: Int64, userNickname nickname: String, on chatRoomId: ChatRoomId, _ continuation: AsyncThrowingStream<ChatMessage, any Error>.Continuation) async throws
     func stopChat(on chatRoomId: ChatRoomId)
     func isConnectionAvailable(userId: UserId, on chatRoomId: ChatRoomId) async throws -> Bool
+    func isOpponentUserAvailable(userId: UserId, on chatRoomId: ChatRoomId) async throws -> Bool
     func readChatRooms(userId: UserId) async throws -> [ChatRoomConfiguration]
     func createChatRoom(userId: UserId, opponentUserId: UserId, with communityRecruitingContentId: CommunityRecruitingContentId) async throws -> ChatRoomId
     func exitChatRoom(userId: UserId, on chatRoomId: ChatRoomId) async throws
@@ -83,6 +84,26 @@ extension DefaultChatRepository: ChatRepository {
         }
     }
     
+    func isOpponentUserAvailable(userId: UserId, on chatRoomId: ChatRoomId) async throws -> Bool {
+        let token = try tokenStorage.fetch(by: userId)
+        
+        do {
+            let endpoint = Endpoint.isOpponentUserAvailable(token: token.accessToken, chatRoomId: chatRoomId)
+            let response = try await networkService.request(endpoint: endpoint, for: DefaultResponseEntity.self)
+            return response.body.status
+        } catch APIError.accessTokenExpired {
+            let tokens = try await reissueTokens(userId: userId, token.refreshToken)
+            
+            let endpoint = Endpoint.isOpponentUserAvailable(token: tokens.accessToken, chatRoomId: chatRoomId)
+            let response = try await networkService.request(endpoint: endpoint, for: DefaultResponseEntity.self)
+            return response.body.status
+        } catch APIError.opponentUserHasLeft {
+            return false
+        } catch {
+            throw error
+        }
+    }
+    
     func readChatRooms(userId: UserId) async throws -> [ChatRoomConfiguration] {
         let token = try tokenStorage.fetch(by: userId)
         
@@ -108,14 +129,20 @@ extension DefaultChatRepository: ChatRepository {
             let entity = ChatRoomConfigurationRequestEntity(communityRecruitingContentId: communityRecruitingContentId, opponentUserId: opponentUserId)
             let endpoint = Endpoint.createChatRoom(token: token.accessToken, configuration: entity)
             let response = try await networkService.request(endpoint: endpoint, for: ChatRoomConfigurationResponseEntity.self)
-            return response.body.toDTO()
+            guard let chatRoomId = response.body.toDTO() else {
+                throw APIError.inactiveChatRoom
+            }
+            return chatRoomId
         } catch APIError.accessTokenExpired {
             let tokens = try await reissueTokens(userId: userId, token.refreshToken)
             
             let entity = ChatRoomConfigurationRequestEntity(communityRecruitingContentId: communityRecruitingContentId, opponentUserId: opponentUserId)
             let endpoint = Endpoint.createChatRoom(token: tokens.accessToken, configuration: entity)
             let response = try await networkService.request(endpoint: endpoint, for: ChatRoomConfigurationResponseEntity.self)
-            return response.body.toDTO()
+            guard let chatRoomId = response.body.toDTO() else {
+                throw APIError.inactiveChatRoom
+            }
+            return chatRoomId
         } catch {
             throw error
         }
