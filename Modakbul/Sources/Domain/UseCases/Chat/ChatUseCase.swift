@@ -29,6 +29,13 @@ protocol ChatUseCase {
     ///     true일 경우 중복접속 중인 상태가 아니므로 채팅방 접속 가능을 의미합니다.
     func isConnectionAvailable(userId: UserId, on chatRoomId: ChatRoomId) async throws -> Bool
     
+    /// 나간 채팅방 확인
+    ///
+    /// 상대방이 채팅을 수신할 수 있는지 확인합니다.
+    ///
+    /// - Note: 상대방이 채팅방을 나갔다면 채팅을 수신할 수 없습니다. 따라서 그러한 상황이라는 것을 사용자가 잘 인식할 수 있도록 해야합니다.
+    func isOpponentUserAvailable(userId: UserId, on chatRoomId: ChatRoomId) async throws -> Bool
+    
     /// 채팅방 목록 조회
     func readChatRooms(userId: UserId) async throws -> [ChatRoomConfiguration]
     
@@ -73,6 +80,10 @@ extension DefaultChatUseCase: ChatUseCase {
     
     func isConnectionAvailable(userId: UserId, on chatRoomId: ChatRoomId) async throws -> Bool {
         try await chatRepository.isConnectionAvailable(userId: userId, on: chatRoomId)
+    }
+    
+    func isOpponentUserAvailable(userId: UserId, on chatRoomId: ChatRoomId) async throws -> Bool {
+        try await chatRepository.isOpponentUserAvailable(userId: userId, on: chatRoomId)
     }
     
     func readChatRooms(userId: UserId) async throws -> [ChatRoomConfiguration] {
