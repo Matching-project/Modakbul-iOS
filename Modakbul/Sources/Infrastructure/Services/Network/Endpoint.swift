@@ -62,6 +62,7 @@ enum Endpoint {
     case exitChatRoom(token: String, chatRoomId: Int64)        // 채팅방 나가기
     case reportAndExitChatRoom(token: String, chatRoomId: Int64, userId: Int64, report: Report) // 채팅방 신고 후 나가기
     case isConnectionAvailable(token: String, chatRoomId: Int64)            // 채팅방 기접속여부 조회
+    case isOpponentUserAvailable(token: String, chatRoomId: Int64)        // 나간 대화방 확인
     
     // MARK: - Notification Related
     case sendNotification(token: String, targetId: Int64, notification: NotificationSendingRequestEntity)// 알림 전송
@@ -180,6 +181,8 @@ extension Endpoint: TargetType {
             return "/reports/\(chatRoomId)/\(userId)"
         case .isConnectionAvailable(_, let chatRoomId):
             return "/chatrooms/\(chatRoomId)"
+        case .isOpponentUserAvailable(_, let chatRoomId):
+            return "/chatrooms/checks/\(chatRoomId)"
             
             // MARK: Notification Related
         case .sendNotification(_, let targetId, _):
@@ -195,7 +198,7 @@ extension Endpoint: TargetType {
     
     var method: Moya.Method {
         switch self {
-        case .validateNicknameIntegrity, .readMyProfile, .readOpponentUserProfile, .readMyBoards, .readMyMatches, .readMyRequestMatches, .readPlaces, .readPlacesByMatches, .readPlacesByDistance, .readPlacesForShowcaseAndReview, .readBoards, .readBoardForUpdate, .readBoardDetail, .readMatches, .readChatrooms, .readChatHistory, .readBlockedUsers, .readReports, .fetchNotifications, .isConnectionAvailable:
+        case .validateNicknameIntegrity, .readMyProfile, .readOpponentUserProfile, .readMyBoards, .readMyMatches, .readMyRequestMatches, .readPlaces, .readPlacesByMatches, .readPlacesByDistance, .readPlacesForShowcaseAndReview, .readBoards, .readBoardForUpdate, .readBoardDetail, .readMatches, .readChatrooms, .readChatHistory, .readBlockedUsers, .readReports, .fetchNotifications, .isConnectionAvailable, .isOpponentUserAvailable:
             return .get
         case .kakaoLogin, .appleLogin, .kakaoRegister, .appleRegister, .reissueToken, .createBoard, .requestMatch, .createChatRoom, .block, .reviewPlace, .suggestPlace, .reportOpponentUserProfile, .reportAndExitChatRoom, .sendNotification:
             return .post
@@ -367,6 +370,8 @@ extension Endpoint: TargetType {
             ["Authorization": "Bearer \(token)"]
         case .isConnectionAvailable(let token, _):
             ["Authorization": "Bearer \(token)"]
+        case .isOpponentUserAvailable(let token, _):
+            ["Authorization": "Bearer \(token)"]
             
             // MARK: Notification Related
         case .sendNotification(let token, _, _):
@@ -387,7 +392,7 @@ extension Endpoint: TargetType {
     
     var authorizationType: AuthorizationType? {
         switch self {
-        case .logout, .unregister, .reissueToken, .updateProfile, .readMyProfile, .readMyBoards, .readMyMatches, .readMyRequestMatches, .block, .unblock, .readBlockedUsers, .readReports, .readBoards, .createBoard, .readBoardForUpdate, .updateBoard, .deleteBoard, .completeBoard, .readMatches, .requestMatch, .acceptMatchRequest, .exitMatch, .rejectMatchRequest, .createChatRoom, .readChatrooms, .exitChatRoom, .cancelMatchRequest, .reportAndExitChatRoom, .reportOpponentUserProfile, .sendNotification, .fetchNotifications, .removeNotifications, .readNotification, .reviewPlace, .suggestPlace, .isConnectionAvailable:
+        case .logout, .unregister, .reissueToken, .updateProfile, .readMyProfile, .readMyBoards, .readMyMatches, .readMyRequestMatches, .block, .unblock, .readBlockedUsers, .readReports, .readBoards, .createBoard, .readBoardForUpdate, .updateBoard, .deleteBoard, .completeBoard, .readMatches, .requestMatch, .acceptMatchRequest, .exitMatch, .rejectMatchRequest, .createChatRoom, .readChatrooms, .exitChatRoom, .cancelMatchRequest, .reportAndExitChatRoom, .reportOpponentUserProfile, .sendNotification, .fetchNotifications, .removeNotifications, .readNotification, .reviewPlace, .suggestPlace, .isConnectionAvailable, .isOpponentUserAvailable:
                 .bearer
         default: .none
         }
