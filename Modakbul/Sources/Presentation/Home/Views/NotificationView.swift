@@ -129,20 +129,22 @@ extension NotificationView {
             HStack(alignment: .firstTextBaseline) {
                 Text(notification.title)
                     .lineLimit(2)
-                    .foregroundColor(.accent)
+                    .foregroundStyle(.black)
                     .bold()
                 
                 Spacer()
                 
                 Text(notification.timestamp)
                     .font(.Modakbul.caption)
+                    .fontWeight(.ultraLight)
+                    .foregroundStyle(.gray.opacity(0.85))
                     .bold()
             }
         }
         
         private var subtitleView: some View {
             Text(notification.subtitle)
-                .foregroundColor(.accent)
+                .foregroundColor(.black)
                 .font(.Modakbul.caption)
         }
     }
