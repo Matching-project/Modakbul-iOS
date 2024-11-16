@@ -213,6 +213,7 @@ extension PlaceInformationDetailView {
                 TabView(selection: $index) {
                     ForEach(0..<imageURLs.count, id: \.self) { index in
                         AsyncImageView(url: imageURLs[index], maxWidth: size.width, maxHeight: size.height)
+                            .scaleEffect(1.2)
                     }
                 }
                 .tabViewStyle(.page(indexDisplayMode: .never))
