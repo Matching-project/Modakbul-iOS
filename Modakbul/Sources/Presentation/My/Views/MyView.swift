@@ -158,8 +158,7 @@ extension MyView {
                 
                 Section {
 //                    button("알림 설정", destination: .notificationSettingsView)
-                    // TODO: - 약관 및 정책 노션 링크 만들기
-                    // button("약관 및 정책", destination: )
+                    Link("약관 및 정책", destination: URL(string: "https://www.notion.so/204b106dd58a4f5fbec3320410cb72a7?pvs=4")!)
                     
                     button("탈퇴하기", destination: .unregistrationView(user: user))
                     
