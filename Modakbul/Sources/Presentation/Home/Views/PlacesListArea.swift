@@ -25,7 +25,7 @@ struct PlacesListArea<Router: AppRouter>: View {
                 sortCriteria
                 
                 ZStack {
-                    listArea
+                    listArea()
                     
                     if viewModel.searchedPlaces.isEmpty == false {
                         ScrollView(.vertical) {
@@ -60,12 +60,16 @@ struct PlacesListArea<Router: AppRouter>: View {
         }
     }
     
-    private var listArea: some View {
-        List(viewModel.places, id: \.id) { place in
-            Cell(place)
-                .listRowSeparator(.hidden)
+    @ViewBuilder private func listArea() -> some View {
+        if viewModel.places.isEmpty {
+            ContentUnavailableView("근처에 카페가 없어요!", systemImage: "questionmark", description: Text("카페 이름으로 검색해보거나, 새로운 카페를 제보해주세요!"))
+        } else {
+            List(viewModel.places, id: \.id) { place in
+                Cell(place)
+                    .listRowSeparator(.hidden)
+            }
+            .listStyle(.plain)
         }
-        .listStyle(.plain)
     }
     
     private var searchBarArea: some View {
