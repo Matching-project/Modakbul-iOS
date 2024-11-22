@@ -25,8 +25,7 @@ struct RegistrationView<Router: AppRouter>: View {
         view()
             .padding(.horizontal, Constants.horizontal)
             .onAppear {
-                if let name = userCredential.name,
-                   let email = userCredential.email {
+                if let name = userCredential.name {
                     vm.name = name
                 }
             }
