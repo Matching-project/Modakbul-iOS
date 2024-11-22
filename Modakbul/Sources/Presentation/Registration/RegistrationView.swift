@@ -24,6 +24,12 @@ struct RegistrationView<Router: AppRouter>: View {
     var body: some View {
         view()
             .padding(.horizontal, Constants.horizontal)
+            .onAppear {
+                if let name = userCredential.name,
+                   let email = userCredential.email {
+                    vm.name = name
+                }
+            }
             .onDisappear {
                 vm.initialize()
             }

@@ -48,8 +48,8 @@ struct LoginView<Router: AppRouter>: View {
     private var signInWithKakaoButton: some View {
         SignInKakaoButton { result in
             switch result {
-            case .success(let email):
-                loginViewModel.kakaoLogin(email) {
+            case .success(let account):
+                loginViewModel.kakaoLogin(account) {
                     performLogin($0)
                 }
                 router.dismiss()

@@ -41,6 +41,7 @@ final class LoginViewModel: ObservableObject {
     
     private func login(
         provider: AuthenticationProvider,
+        name: String?,
         email: String?,
         appleCI: String?,
         authorizationCode: Data?,
@@ -64,10 +65,10 @@ final class LoginViewModel: ObservableObject {
         }
     }
     
-    func kakaoLogin(_ email: String?, _ completion: @escaping (Result<(Int64, String), APIError>) -> Void) {
-        guard let email = email else { return }
+    func kakaoLogin(_ account: (name: String, email: String)?, _ completion: @escaping (Result<(Int64, String), APIError>) -> Void) {
+        guard let account = account else { return }
         
-        login(provider: .kakao, email: email, appleCI: nil, authorizationCode: nil, completion)
+        login(provider: .kakao, name: account.name, email: account.email, appleCI: nil, authorizationCode: nil, completion)
     }
     
     func appleLogin(_ auth: ASAuthorization, _ completion: @escaping (Result<(Int64, String), APIError>) -> Void) {
@@ -77,7 +78,8 @@ final class LoginViewModel: ObservableObject {
         }
         
         let appleCI = appleIDCredential.user
+        let name = appleIDCredential.fullName?.givenName
         
-        login(provider: .apple, email: nil, appleCI: appleCI, authorizationCode: authorizationCode, completion)
+        login(provider: .apple, name: name, email: nil, appleCI: appleCI, authorizationCode: authorizationCode, completion)
     }
 }

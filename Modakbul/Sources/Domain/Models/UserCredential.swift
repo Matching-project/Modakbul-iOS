@@ -12,6 +12,7 @@ import Foundation
 struct UserCredential {
     let provider: AuthenticationProvider
     let fcm: String?
+    let name: String?
     let email: String?
     /// Apple 로그인일 경우, 고유식별자를 제공합니다.
     let appleCI: String?
@@ -19,12 +20,14 @@ struct UserCredential {
     
     init(provider: AuthenticationProvider,
          fcm: String? = nil,
+         name: String? = nil,
          email: String? = nil,
          appleCI: String? = nil,
          authorizationCode: Data? = nil
     ) {
         self.provider = provider
         self.fcm = fcm
+        self.name = name
         self.email = email
         self.appleCI = appleCI
         self.authorizationCode = authorizationCode
