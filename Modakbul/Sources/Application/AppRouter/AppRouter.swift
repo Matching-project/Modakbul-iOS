@@ -53,6 +53,8 @@ final class DefaultAppRouter: AppRouter {
     
     private(set) var detents: Set<PresentationDetent> = [.large, .medium]
     let assembler: Assembler
+    private let sheetSubject = PassthroughSubject<Destination, Never>()
+    private let fullScreenCoverSubject = PassthroughSubject<Destination, Never>()
     private var cancellables = Set<AnyCancellable>()
     
     init(
@@ -78,6 +80,20 @@ final class DefaultAppRouter: AppRouter {
                 self?.route(to: destination)
             }
             .store(in: &cancellables)
+        
+        sheetSubject
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] route in
+                self?.sheet = route
+            }
+            .store(in: &cancellables)
+        
+        fullScreenCoverSubject
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] route in
+                self?.fullScreenCover = route
+            }
+            .store(in: &cancellables)
     }
     
     private func _push(_ destination: Destination) {
@@ -86,13 +102,13 @@ final class DefaultAppRouter: AppRouter {
     
     private func _sheet(_ destination: Destination, _ detents: Set<PresentationDetent>) {
         guard isModalPresented == false else { return }
-        sheet = destination
+        sheetSubject.send(destination)
         self.detents = detents
     }
     
     private func _fullScreenCover(_ destination: Destination) {
         guard isModalPresented == false else { return }
-        fullScreenCover = destination
+        fullScreenCoverSubject.send(destination)
     }
     
     @ViewBuilder func view(to destination: Destination) -> some View {
