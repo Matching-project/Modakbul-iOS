@@ -65,9 +65,7 @@ final class LoginViewModel: ObservableObject {
         }
     }
     
-    func kakaoLogin(_ account: (name: String, email: String)?, _ completion: @escaping (Result<(Int64, String), APIError>) -> Void) {
-        guard let account = account else { return }
-        
+    func kakaoLogin(_ account: (name: String?, email: String?), _ completion: @escaping (Result<(Int64, String), APIError>) -> Void) {
         login(provider: .kakao, name: account.name, email: account.email, appleCI: nil, authorizationCode: nil, completion)
     }
     
