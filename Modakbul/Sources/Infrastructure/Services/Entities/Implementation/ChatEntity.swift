@@ -8,26 +8,29 @@
 import Foundation
 
 struct ChatEntity: Codable {
+    // 필수 Field
     let chatRoomId: Int64
-    let senderId: Int64
     let senderNickname: String
-    let content: String
-    let sendTime: String
-    let unreadCount: Int
+    
+    // 옵셔널 Field
+    let senderId: Int64?
+    let content: String?
+    let sendTime: String?
+    let unreadCount: Int?
     
     init(
         chatRoomId: Int64,
-        senderId: Int64,
+        senderId: Int64? = nil,
         senderNickname: String,
-        content: String,
-        sendTime: Date,
-        unreadCount: Int
+        content: String? = nil,
+        sendTime: Date? = nil,
+        unreadCount: Int? = .zero
     ) {
         self.chatRoomId = chatRoomId
         self.senderId = senderId
         self.senderNickname = senderNickname
         self.content = content
-        self.sendTime = sendTime.toString(by: .serverDateTime1)
+        self.sendTime = sendTime?.toString(by: .serverDateTime1) ?? String()
         self.unreadCount = unreadCount
     }
     
@@ -45,11 +48,11 @@ struct ChatEntity: Codable {
     func toDTO() -> ChatMessage {
         .init(
             chatRoomId: chatRoomId,
-            senderId: senderId,
+            senderId: senderId ?? Constants.temporalId,
             senderNickname: senderNickname,
-            content: content,
-            sendTime: sendTime.toDate(by: .serverDateTime1) ?? .now,
-            unreadCount: unreadCount
+            content: content ?? String(),
+            sendTime: sendTime?.toDate(by: .serverDateTime1) ?? .now,
+            unreadCount: unreadCount ?? .zero
         )
     }
     

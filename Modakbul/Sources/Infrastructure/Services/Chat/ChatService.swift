@@ -46,6 +46,7 @@ final class DefaultChatService {
     
     private var chatStreamContinuation: AsyncThrowingStream<ChatMessage, Error>.Continuation?
     private var currentChatRoomId: Int64?
+    private var userNickname: String?
     
     init(
         encoder: JSONEncodable = JSONEncoder(),
@@ -97,6 +98,7 @@ extension DefaultChatService: ChatService {
         ]
         chatStreamContinuation = continuation
         currentChatRoomId = chatRoomId
+        userNickname = nickname
         stomp = SwiftStomp(host: url, headers: headers)
         stomp?.delegate = self
         stomp?.connect()
@@ -118,11 +120,16 @@ extension DefaultChatService: SwiftStompDelegate {
         swiftStomp.enableLogging = true
         if connectType == .toStomp {
             guard let currentChatRoomId = currentChatRoomId,
-                  let chatStreamContinuation = chatStreamContinuation
+                  let chatStreamContinuation = chatStreamContinuation,
+                  let userNickname = userNickname
             else { return }
             
             subscribe(to: currentChatRoomId, continuation: chatStreamContinuation)
             print("Chat Service Connected")
+            
+            // 채팅방 접속 시 입장했음을 알리는 메세지 전송
+            let entity = ChatEntity(chatRoomId: currentChatRoomId, senderNickname: userNickname)
+            stomp?.send(body: entity, to: "/pub/enter")
         }
     }
     
@@ -146,12 +153,30 @@ extension DefaultChatService: SwiftStompDelegate {
             return
         }
         
-        guard let entity = try? decoder.decode(ChatEntity.self, from: data) else {
+        do {
+            let json = try JSONSerialization.jsonObject(with: data) as? [String: Any]
+            
+            if let json = json,
+               let chatRoomIdString = json["chatRoomId"] as? String,
+               let chatRoomId = Int64(chatRoomIdString),
+               let senderNickname = json["senderNickname"] as? String {
+                let entity = ChatEntity(chatRoomId: chatRoomId, senderNickname: senderNickname)
+                chatStreamContinuation?.yield(entity.toDTO())
+                return
+            }
+            
+            let entity = try decoder.decode(ChatEntity.self, from: data)
+            chatStreamContinuation?.yield(entity.toDTO())
+        } catch {
             chatStreamContinuation?.yield(with: .failure(ChatServiceError.generic(type: String(describing: data))))
-            return
         }
         
-        chatStreamContinuation?.yield(entity.toDTO())
+//        guard let entity = try? decoder.decode(ChatEntity.self, from: data) else {
+//            chatStreamContinuation?.yield(with: .failure(ChatServiceError.generic(type: String(describing: data))))
+//            return
+//        }
+//        
+//        chatStreamContinuation?.yield(entity.toDTO())
     }
     
     func onReceipt(swiftStomp: SwiftStomp, receiptId: String) {

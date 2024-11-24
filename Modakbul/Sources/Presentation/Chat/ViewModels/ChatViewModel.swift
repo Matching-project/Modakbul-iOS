@@ -83,7 +83,7 @@ final class ChatViewModel: ObservableObject {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] message in
                 if let message = message {
-                    self?.compare(currentMessage: message)
+                    self?.handleMessage(message)
                 }
             }
             .store(in: &cancellables)
@@ -127,10 +127,24 @@ final class ChatViewModel: ObservableObject {
         }
     }
     
-    private func compare(currentMessage: ChatMessage) {
-        //MARK: - 전체 메세지 개수가 1개면 비교하지 않습니다.
-        compare(latestMessage: messages.last, currentMessage: currentMessage)
-        messages.append(currentMessage)
+    private func handleMessage(_ message: ChatMessage) {
+        // MARK: - 전체 메세지 개수가 1개면 비교하지 않습니다.
+        compare(latestMessage: messages.last, currentMessage: message)
+        messages.append(message)
+        
+        // MARK: 상대방 입장 시스템 메세지를 수신했을 때만 호출합니다.
+        if message.senderId == Constants.temporalId, message.senderNickname == opponentUser?.nickname {
+            onOpponentUserComingIn()
+        }
+    }
+    
+    private func onOpponentUserComingIn() {
+        messages.forEach {
+            if $0.unreadCount > 0 {
+                $0.unreadCount -= 1
+                
+            }
+        }
     }
     
     /// 마지막으로 보낸 메시지와 현재 보낸 메세지를 비교합니다. 이를 통해, 날짜가 바꼈음을 알리는 시스템 메시지를 삽입합니다. senderId: -1이면 시스템 메세지로 취급하고 시간을 알려주는 용도로 사용됩니다.
@@ -176,7 +190,7 @@ extension ChatViewModel {
         }
         
         do {
-            for try await message in stream where message.senderId == opponentUser?.id {
+            for try await message in stream where message.senderNickname == opponentUser?.nickname {
                 newMessageSubject.send(message)
             }
         } catch {
