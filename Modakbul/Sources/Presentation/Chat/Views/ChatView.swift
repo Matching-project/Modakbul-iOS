@@ -166,7 +166,7 @@ struct ChatView<Router: AppRouter>: View {
             Spacer()
             
             VStack(alignment: .trailing, spacing: -3) {
-                Text(message.unreadCount == 0 ? "" : message.unreadCount.description)
+                Text(message.unreadCount == 0 ? "" : "\(message.unreadCount)")
                     .foregroundStyle(.accent)
                 
                 Text(message.sendTime.toString(by: .HHmm))
@@ -207,7 +207,7 @@ struct ChatView<Router: AppRouter>: View {
                         .clipShape(.rect(cornerRadius: 10))
                     
                     VStack(alignment: .leading, spacing: -3) {
-                        Text(message.unreadCount == 0 ? "" : message.unreadCount.description)
+                        Text(message.unreadCount == 0 ? "" : "\(message.unreadCount)")
                             .foregroundStyle(.accent)
                         
                         Text(message.sendTime.toString(by: .HHmm))
