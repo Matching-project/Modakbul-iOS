@@ -142,7 +142,6 @@ final class ChatViewModel: ObservableObject {
         messages.forEach {
             if $0.unreadCount > 0 {
                 $0.unreadCount -= 1
-                
             }
         }
     }
