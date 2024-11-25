@@ -143,8 +143,10 @@ struct ChatView<Router: AppRouter>: View {
     private func cell(message: ChatMessage) -> some View {
         let role = ChatRole(myUserId: Int64(userId), senderId: message.senderId)
         switch role {
-        case .system:
-            systemCell(message)
+        case .timestamp:
+            timestampCell(message)
+        case .onOpponentUserComingIn:
+            EmptyView()
         case .me:
             myCell(message)
         case .opponentUser:
@@ -153,7 +155,7 @@ struct ChatView<Router: AppRouter>: View {
     }
     
     @ViewBuilder
-    private func systemCell(_ message: ChatMessage) -> some View {
+    private func timestampCell(_ message: ChatMessage) -> some View {
         Text(message.sendTime.toString(by: .yyyyMMddKorean))
             .padding(10)
             .font(.Modakbul.caption)

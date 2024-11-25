@@ -96,14 +96,17 @@ final class ChatMessage: Identifiable {
 }
 
 enum ChatRole {
-    case system
+    case timestamp
+    case onOpponentUserComingIn
     case me
     case opponentUser
     
     init(myUserId: Int64, senderId: Int64) {
         switch senderId {
-        case -1:
-            self = .system
+        case Constants.timestampId:
+            self = .timestamp
+        case Constants.temporalId:
+            self = .onOpponentUserComingIn
         case myUserId:
             self = .me
         default:

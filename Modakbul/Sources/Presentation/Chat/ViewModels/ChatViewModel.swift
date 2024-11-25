@@ -153,7 +153,7 @@ final class ChatViewModel: ObservableObject {
     private func compare(latestMessage: ChatMessage?, currentMessage: ChatMessage) {
         guard let latestMessage = latestMessage else {
             messages.append(ChatMessage(chatRoomId: currentMessage.chatRoomId,
-                                        senderId: Constants.temporalId,
+                                        senderId: Constants.timestampId,
                                         senderNickname: "",
                                         content: "",
                                         sendTime: currentMessage.sendTime.addingTimeInterval(.tolerance),
@@ -166,7 +166,7 @@ final class ChatViewModel: ObservableObject {
         
         if latestMessageDate != currentMessageDate {
             messages.append(ChatMessage(chatRoomId: currentMessage.chatRoomId,
-                                        senderId: Constants.temporalId,
+                                        senderId: Constants.timestampId,
                                         senderNickname: "",
                                         content: "",
                                         sendTime: currentMessage.sendTime.addingTimeInterval(.tolerance),
