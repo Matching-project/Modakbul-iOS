@@ -9,10 +9,12 @@ import Foundation
 import AuthenticationServices
 import KakaoSDKAuth
 import Combine
+import SwiftUI
 
 final class LoginViewModel: ObservableObject {
     @Published var userId: Int64?
     @Published var userNickname: String?
+    @ObservedObject private var vm: RegistrationViewModel
     var userCredential: UserCredential?
     
     private var fcmToken: String?
@@ -24,10 +26,12 @@ final class LoginViewModel: ObservableObject {
     private let fcmManager = FcmManager.instance
     
     init(userRegistrationUseCase: UserRegistrationUseCase,
-         userBusinessUseCase: UserBusinessUseCase
+         userBusinessUseCase: UserBusinessUseCase,
+         registrationViewModel: RegistrationViewModel
     ) {
         self.userRegistrationUseCase = userRegistrationUseCase
         self.userBusinessUseCase = userBusinessUseCase
+        self.vm = registrationViewModel
         subscribe()
     }
     
@@ -48,6 +52,8 @@ final class LoginViewModel: ObservableObject {
         _ completion: @escaping (Result<(Int64, String), APIError>) -> Void
     ) {
         guard let fcm = fcmToken else { return }
+        
+        vm.name = name ?? ""
         
         Task {
             let userCredential = UserCredential(provider: provider, fcm: fcm, email: email, appleCI: appleCI, authorizationCode: authorizationCode)

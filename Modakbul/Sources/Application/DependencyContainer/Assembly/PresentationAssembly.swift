@@ -9,15 +9,18 @@ import Foundation
 
 struct PresentationAssembly: Assembly {
     func assemble(container: DependencyContainer) {
-        // MARK: - Login
-        container.register(for: LoginViewModel.self) { resolver in
-            LoginViewModel(userRegistrationUseCase: resolver.resolve(UserRegistrationUseCase.self),
-                           userBusinessUseCase: resolver.resolve(UserBusinessUseCase.self))
-        }
-        
         // MARK: - Registration
         container.register(for: RegistrationViewModel.self) { resolver in
             RegistrationViewModel(userRegistrationUseCase: resolver.resolve(UserRegistrationUseCase.self))
+        }
+        
+        // MARK: - Login
+        container.register(for: LoginViewModel.self) { resolver in
+            LoginViewModel(userRegistrationUseCase: resolver.resolve(UserRegistrationUseCase.self),
+                           userBusinessUseCase: resolver.resolve(UserBusinessUseCase.self),
+                           // MARK: - RegistrationViewModel에 의한 결합도 존재하니 유의
+                           registrationViewModel: resolver.resolve(RegistrationViewModel.self)
+            )
         }
         
         // MARK: - My
