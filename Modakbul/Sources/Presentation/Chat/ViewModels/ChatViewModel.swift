@@ -189,7 +189,7 @@ extension ChatViewModel {
         }
         
         do {
-            for try await message in stream where message.senderNickname == opponentUser?.nickname {
+            for try await message in stream {
                 newMessageSubject.send(message)
             }
         } catch {
@@ -222,7 +222,6 @@ extension ChatViewModel {
         
         do {
             try chatUseCase.send(message: chatMessage)
-            newMessageSubject.send(chatMessage)
             
             Task {
                 let pushNotification = PushNotificationBuilder
