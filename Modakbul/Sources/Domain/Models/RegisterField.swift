@@ -24,8 +24,7 @@ enum RegisterField: CaseIterable {
     
     var subtitle: String {
         switch self {
-        case .name, .nickname, .image: ""
-        case .birth: "회원님의 나이 표시에 사용되며,\n이후 변경은 불가해요."
+        case .name, .nickname, .birth, .image: ""
         case .gender: "회원님의 성별 표시에 사용되며,\n설정에서 on/off 할 수 있어요."
         case .job: "회원님의 직업 표시에 사용되요."
         case .category: "관심 모임을 지도에서 표시해드려요!"
