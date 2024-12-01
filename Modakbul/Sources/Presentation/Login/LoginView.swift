@@ -97,6 +97,9 @@ struct LoginView<Router: AppRouter>: View {
                 router.alert(for: .temporalErrorOccurred, actions: [
                     .defaultAction("재시도", action: {
                         performLogin(result)
+                    }),
+                    .defaultAction("취소", action: {
+                        router.dismiss()
                     })
                 ])
             }
