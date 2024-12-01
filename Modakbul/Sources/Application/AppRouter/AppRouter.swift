@@ -55,6 +55,8 @@ final class DefaultAppRouter: AppRouter {
     let assembler: Assembler
     private let sheetSubject = PassthroughSubject<Destination, Never>()
     private let fullScreenCoverSubject = PassthroughSubject<Destination, Never>()
+    private let alertSubject = PassthroughSubject<ConfirmationContent, Never>()
+    private let confirmationDialogSubject = PassthroughSubject<ConfirmationContent, Never>()
     private var cancellables = Set<AnyCancellable>()
     
     init(
@@ -94,6 +96,24 @@ final class DefaultAppRouter: AppRouter {
                 self?.fullScreenCover = route
             }
             .store(in: &cancellables)
+        
+        alertSubject
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] alert in
+                self?.confirmationContent = alert
+                self?.isConfirmationDialogPresented = false
+                self?.isAlertPresented = true
+            }
+            .store(in: &cancellables)
+        
+        confirmationDialogSubject
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] confirmationDialog in
+                self?.confirmationContent = confirmationDialog
+                self?.isAlertPresented = false
+                self?.isConfirmationDialogPresented = true
+            }
+            .store(in: &cancellables)
     }
     
     private func _push(_ destination: Destination) {
@@ -129,15 +149,13 @@ final class DefaultAppRouter: AppRouter {
     }
     
     func alert(for type: AlertType, actions: [ConfirmationAction]) {
-        confirmationContent = type.alert(actions)
-        isConfirmationDialogPresented = false
-        isAlertPresented = true
+        let confirmationContent = type.alert(actions)
+        alertSubject.send(confirmationContent)
     }
     
     func confirmationDialog(for type: ConfirmationDialogType, actions: [ConfirmationAction]) {
-        confirmationContent = type.confirmationDialog(actions)
-        isAlertPresented = false
-        isConfirmationDialogPresented = true
+        let confirmationContent = type.confirmationDialog(actions)
+        confirmationDialogSubject.send(confirmationContent)
     }
     
     func dismiss() {
