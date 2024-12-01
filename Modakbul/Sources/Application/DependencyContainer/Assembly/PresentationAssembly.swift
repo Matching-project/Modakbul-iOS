@@ -16,10 +16,9 @@ struct PresentationAssembly: Assembly {
         
         // MARK: - Login
         container.register(for: LoginViewModel.self) { resolver in
-            LoginViewModel(userRegistrationUseCase: resolver.resolve(UserRegistrationUseCase.self),
-                           userBusinessUseCase: resolver.resolve(UserBusinessUseCase.self),
-                           // MARK: - RegistrationViewModel에 의한 결합도 존재하니 유의
-                           registrationViewModel: resolver.resolve(RegistrationViewModel.self)
+            LoginViewModel(
+                userRegistrationUseCase: resolver.resolve(UserRegistrationUseCase.self),
+                userBusinessUseCase: resolver.resolve(UserBusinessUseCase.self)
             )
         }
         
