@@ -64,10 +64,10 @@ extension RegistrationView {
                         .position(x: geometry.size.width / 2 - 70, y: geometry.size.height / 2 + 60)
                 }
             }
-        case .birth:
-            contentStackView(isZStack: true) {
-                BirthPicker(birth: $vm.birth)
-            }
+//        case .birth:
+//            contentStackView(isZStack: true) {
+//                BirthPicker(birth: $vm.birth)
+//            }
         case .gender:
             contentStackView(isZStack: false) {
                 SingleSelectionButton<Gender, GenderSelectionButton>(selectedItem: $vm.gender) { (item, selectedItem) in
