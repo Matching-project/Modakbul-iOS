@@ -20,7 +20,7 @@ enum Gender: String, Codable, Selectable {
         switch self {
         case .female: "여성"
         case .male: "남성"
-        case .unknown: "알 수 없음"
+        case .unknown: "선택하지 않음"
         }
     }
 }

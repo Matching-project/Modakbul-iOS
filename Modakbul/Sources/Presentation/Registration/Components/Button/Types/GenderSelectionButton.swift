@@ -14,13 +14,20 @@ struct GenderSelectionButton<T: Selectable>: View {
 
     var body: some View {
         VStack {
-            Image(item.description)
-                .resizable()
-                .padding(10)
-                .frame(maxHeight: 150)
-            Text(item.description)
-                .foregroundStyle(item == selectedItem ? .white : .accent)
-                .padding(10)
+            if item.description == Gender.unknown.description {
+                Text(item.description)
+                    .frame(width: 250, height: 50)
+                    .foregroundStyle(item == selectedItem ? .white : .accent)
+                    .padding(10)
+            } else {
+                Image(item.description)
+                    .resizable()
+                    .padding(10)
+                    .frame(maxHeight: 150)
+                Text(item.description)
+                    .foregroundStyle(item == selectedItem ? .white : .accent)
+                    .padding(10)
+            }
         }
         .background {
             RoundedRectangle(cornerRadius: 20)

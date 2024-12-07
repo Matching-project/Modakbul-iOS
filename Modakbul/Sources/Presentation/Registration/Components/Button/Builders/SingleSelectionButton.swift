@@ -13,8 +13,18 @@ struct SingleSelectionButton<T: Selectable, Content: View>: View {
     @ViewBuilder var content: (T, T?) -> Content
     
     var body: some View {
-        LazyVGrid(columns: columns, spacing: 20) {
-            ForEach(Array(T.allCases).filter { $0.id != "PRIVATE".hashValue }, id: \.self) { item in
+        VStack {
+            LazyVGrid(columns: columns, spacing: 20) {
+                ForEach(Array(T.allCases).filter { $0.id != Gender.unknown.hashValue }, id: \.self) { item in
+                    Button {
+                        selectedItem = item
+                    } label: {
+                        content(item, selectedItem)
+                    }
+                }.padding(5)
+            }
+            
+            ForEach(Array(T.allCases).filter { $0.id == Gender.unknown.hashValue }, id: \.self) { item in
                 Button {
                     selectedItem = item
                 } label: {
