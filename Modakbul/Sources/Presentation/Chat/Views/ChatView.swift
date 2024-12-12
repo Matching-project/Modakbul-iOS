@@ -43,6 +43,7 @@ struct ChatView<Router: AppRouter>: View {
             vm.messages = chatRoom.messages // 로컬에 저장된 채팅을 불러옵니다.
             await vm.readChatingHistory(userId: userId, on: chatRoom.id, with: chatRoom.relatedCommunityRecruitingContentId) // 서버에서 새로운 채팅을 불러옵니다.
             await vm.isOpponentUserAvailable(userId: userId, chatRoomId: chatRoom.id)
+            vm.noticeOpponentUserHasDeleted(isChatRoomActivated: chatRoom.isActivated)
             await vm.startChat(userId: userId, userNickname: userNickname)
         }
         .onAppear {
@@ -147,6 +148,8 @@ struct ChatView<Router: AppRouter>: View {
             timestampCell(message)
         case .onOpponentUserComingIn:
             EmptyView()
+        case .systemChat:
+            systemChatCell(message)
         case .me:
             myCell(message)
         case .opponentUser:
@@ -157,6 +160,14 @@ struct ChatView<Router: AppRouter>: View {
     @ViewBuilder
     private func timestampCell(_ message: ChatMessage) -> some View {
         Text(message.sendTime.toString(by: .yyyyMMddKorean))
+            .padding(10)
+            .font(.Modakbul.caption)
+            .containerRelativeFrame(.horizontal)
+    }
+    
+    @ViewBuilder
+    private func systemChatCell(_ message: ChatMessage) -> some View {
+        Text(message.content)
             .padding(10)
             .font(.Modakbul.caption)
             .containerRelativeFrame(.horizontal)
