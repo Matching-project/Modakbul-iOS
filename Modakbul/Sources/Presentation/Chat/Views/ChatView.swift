@@ -43,7 +43,6 @@ struct ChatView<Router: AppRouter>: View {
             vm.messages = chatRoom.messages // 로컬에 저장된 채팅을 불러옵니다.
             await vm.readChatingHistory(userId: userId, on: chatRoom.id, with: chatRoom.relatedCommunityRecruitingContentId) // 서버에서 새로운 채팅을 불러옵니다.
             await vm.isOpponentUserAvailable(userId: userId, chatRoomId: chatRoom.id)
-            vm.noticeOpponentUserHasDeleted(isChatRoomActivated: chatRoom.isActivated)
             await vm.startChat(userId: userId, userNickname: userNickname)
         }
         .onAppear {

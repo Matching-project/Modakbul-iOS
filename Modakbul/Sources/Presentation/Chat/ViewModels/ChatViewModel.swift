@@ -263,17 +263,6 @@ extension ChatViewModel {
             print(error)
         }
     }
-    
-    func noticeOpponentUserHasDeleted(isChatRoomActivated: Bool) {
-        if isChatRoomActivated == false {
-            messages.append(ChatMessage(chatRoomId: chatRoomId,
-                                        senderId: Constants.systemChat,
-                                        senderNickname: "",
-                                        content: "탈퇴한 사용자 입니다.",
-                                        sendTime: .now,
-                                        unreadCount: 0))
-        }
-    }
 }
 
 // MARK: Interfaces for UserBusinessUseCase
