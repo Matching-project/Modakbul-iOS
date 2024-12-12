@@ -17,6 +17,7 @@ struct ChatRoomConfiguration: Identifiable, Equatable {
     let opponentUserImageURL: URL?
     let relatedCommunityRecruitingContentId: Int64
     let unreadMessagesCount: Int
+    let opponentUserStatus: UserStatus
     
     init(id: Int64,
          title: String?,
@@ -25,7 +26,8 @@ struct ChatRoomConfiguration: Identifiable, Equatable {
          opponentUserId: Int64,
          opponentUserImageURL: URL? = nil,
          relatedCommunityRecruitingContentId: Int64,
-         unreadMessagesCount: Int
+         unreadMessagesCount: Int,
+         opponentUserStatus: UserStatus
     ) {
         self.id = id
         self.title = title
@@ -35,5 +37,6 @@ struct ChatRoomConfiguration: Identifiable, Equatable {
         self.opponentUserImageURL = opponentUserImageURL
         self.relatedCommunityRecruitingContentId = relatedCommunityRecruitingContentId
         self.unreadMessagesCount = unreadMessagesCount
+        self.opponentUserStatus = opponentUserStatus
     }
 }

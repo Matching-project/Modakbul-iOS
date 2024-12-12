@@ -16,6 +16,7 @@ final class ChatRoom: Identifiable {
     var opponentUserId: Int64
     var opponentUserImageURL: URL?
     var relatedCommunityRecruitingContentId: Int64
+    var isActivated: Bool
     
     private var _unreadMessagesCount: Int = 0
     var unreadMessagesCount: Int {
@@ -35,7 +36,8 @@ final class ChatRoom: Identifiable {
         title: String?,
         opponentUserId: Int64,
         opponentuserImageURL: URL? = nil,
-        relatedCommunityRecruitingContentId: Int64
+        relatedCommunityRecruitingContentId: Int64,
+        opponentUserStatus: UserStatus
     ) {
         self.id = id
         self.messages = messages
@@ -43,6 +45,7 @@ final class ChatRoom: Identifiable {
         self.opponentUserId = opponentUserId
         self.opponentUserImageURL = opponentuserImageURL
         self.relatedCommunityRecruitingContentId = relatedCommunityRecruitingContentId
+        self.isActivated = opponentUserStatus == .active
     }
     
     convenience init(configuration: ChatRoomConfiguration) {
@@ -51,7 +54,9 @@ final class ChatRoom: Identifiable {
                   title: configuration.title,
                   opponentUserId: configuration.opponentUserId,
                   opponentuserImageURL: configuration.opponentUserImageURL,
-                  relatedCommunityRecruitingContentId: configuration.relatedCommunityRecruitingContentId)
+                  relatedCommunityRecruitingContentId: configuration.relatedCommunityRecruitingContentId,
+                  opponentUserStatus: configuration.opponentUserStatus
+        )
     }
     
     func update(with configuration: ChatRoomConfiguration) {
@@ -60,6 +65,7 @@ final class ChatRoom: Identifiable {
         self.opponentUserImageURL = configuration.opponentUserImageURL
         self.relatedCommunityRecruitingContentId = configuration.relatedCommunityRecruitingContentId
         self.unreadMessagesCount = configuration.unreadMessagesCount
+        self.isActivated = configuration.opponentUserStatus == .active
     }
 }
 
@@ -95,8 +101,17 @@ final class ChatMessage: Identifiable {
     }
 }
 
+/// 채팅방 내 사용자의 탈퇴여부를 나타냅니다
+enum UserStatus: String, Decodable {
+    /// 활성 사용자
+    case active = "ACTIVE"
+    /// 탈퇴한 사용자
+    case deleted = "DELETED"
+}
+
 enum ChatRole {
     case timestamp
+    case systemChat
     case onOpponentUserComingIn
     case me
     case opponentUser
@@ -107,6 +122,8 @@ enum ChatRole {
             self = .timestamp
         case Constants.temporalId:
             self = .onOpponentUserComingIn
+        case Constants.systemChat:
+            self = .systemChat
         case myUserId:
             self = .me
         default:
