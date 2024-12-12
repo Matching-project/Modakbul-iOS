@@ -24,6 +24,7 @@ struct ChatRoomListResponseEntity: ResponseEntity {
         let id: Int64
         let communityRecruitingContentId: Int64
         let unreadMessagesCount: Int
+        let opponentUserStatus: UserStatus
         
         enum CodingKeys: String, CodingKey {
             case roomTitle, lastMessage
@@ -33,6 +34,7 @@ struct ChatRoomListResponseEntity: ResponseEntity {
             case id = "chatRoomId"
             case communityRecruitingContentId = "boardId"
             case unreadMessagesCount = "unreadCount"
+            case opponentUserStatus = "theOtherUserStatus"
         }
     }
     
@@ -46,7 +48,8 @@ struct ChatRoomListResponseEntity: ResponseEntity {
                 opponentUserId: $0.opponentUserId,
                 opponentUserImageURL: $0.opponentUserImageURL,
                 relatedCommunityRecruitingContentId: $0.communityRecruitingContentId,
-                unreadMessagesCount: $0.unreadMessagesCount
+                unreadMessagesCount: $0.unreadMessagesCount,
+                opponentUserStatus: $0.opponentUserStatus
             )
         }
     }
