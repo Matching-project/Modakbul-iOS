@@ -24,6 +24,7 @@ extension Constants {
     static let loggedOutUserId: Int = -1
     static let temporalId: Int64 = -1
     static let timestampId: Int64 = -2
+    static let systemChat: Int64 = -3
     static let temporalUserNickname: String = "알 수 없는 사용자"
 }
 
