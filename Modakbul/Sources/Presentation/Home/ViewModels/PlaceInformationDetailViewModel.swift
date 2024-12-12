@@ -248,6 +248,8 @@ extension PlaceInformationDetailViewModel {
                 chatRoomConfigurationSubject.send(chatRoomConfiguration)
             } catch APIError.inactiveChatRoom {
                 alertSubject.send(.inactiveChatRoom)
+            } catch APIError.opponentUserHasDeleted {
+                alertSubject.send(.opponentUserHasDeleted)
             } catch {
                 print(error)
             }
