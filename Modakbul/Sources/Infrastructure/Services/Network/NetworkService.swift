@@ -97,6 +97,14 @@ final class DefaultNetworkService {
     private func decode<T: Decodable>(for type: T.Type, with data: Data?) throws -> T {
         guard let data = data else { throw NetworkServiceError.requestFailed }
         
+        #if DEBUG
+        if let jsonString = String(data: data, encoding: .utf8) {
+            print(jsonString)
+        } else {
+            print("Failed to convert data to JSON string")
+        }
+        #endif
+        
         do {
             let decodedData = try decoder.decode(type, from: data)
             return decodedData
