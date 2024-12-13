@@ -14,14 +14,16 @@ struct OpeningHour: Hashable, Decodable {
     let openingState: OpeningState
     
     enum CodingKeys: String, CodingKey {
-        case open, close, dayOfWeek
-        case openingState = "status"
+        case dayOfWeek
+        case open = "openedAt"
+        case close = "closedAt"
+        case openingState = "openingStatus"
     }
 }
 
 enum OpeningState: String, Codable {
     case opened = "OPEN"
-    case closed = "CLOSE"
+    case closed = "CLOSED"
     
     var isOpened: Bool {
         switch self {
