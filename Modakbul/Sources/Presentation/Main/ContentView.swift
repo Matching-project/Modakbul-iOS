@@ -52,8 +52,8 @@ struct ContentView<Router: AppRouter>: View {
         .onAppear {
             vm.readMyProfile(Int64(userId))
         }
-        .onReceive(vm.$user) { user in
-            userId = Int(user.id)
+        .onChange(of: vm.user.id) { _, newValue in
+            userId = Int(newValue)
         }
         .navigationTitle(selectedPage.navigationTitle)
         .navigationBarTitleDisplayMode(.inline)
