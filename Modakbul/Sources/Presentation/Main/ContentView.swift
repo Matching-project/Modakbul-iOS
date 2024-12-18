@@ -27,9 +27,14 @@ enum PageType {
 }
 
 struct ContentView<Router: AppRouter>: View {
+    @ObservedObject private var vm: ContentViewModel
     @EnvironmentObject private var router: Router
     @AppStorage(AppStorageKey.userId) private var userId: Int = Constants.loggedOutUserId
     @State private var selectedPage: PageType = .home
+    
+    init(_ contentViewModel: ContentViewModel) {
+        self.vm = contentViewModel
+    }
     
     var body: some View {
         TabView(selection: $selectedPage) {
@@ -43,6 +48,12 @@ struct ContentView<Router: AppRouter>: View {
             
             router.view(to: .myView)
                 .tabItemStyle(.settings)
+        }
+        .onAppear {
+            vm.readMyProfile(Int64(userId))
+        }
+        .onReceive(vm.$user) { user in
+            userId = Int(user.id)
         }
         .navigationTitle(selectedPage.navigationTitle)
         .navigationBarTitleDisplayMode(.inline)

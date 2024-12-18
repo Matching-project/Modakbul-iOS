@@ -9,6 +9,11 @@ import Foundation
 
 struct PresentationAssembly: Assembly {
     func assemble(container: DependencyContainer) {
+        // MARK: - Main
+        container.register(for: ContentViewModel.self) { resolver in
+            ContentViewModel(userBusinessUseCase: resolver.resolve(UserBusinessUseCase.self))
+        }
+        
         // MARK: - Registration
         container.register(for: RegistrationViewModel.self) { resolver in
             RegistrationViewModel(userRegistrationUseCase: resolver.resolve(UserRegistrationUseCase.self))

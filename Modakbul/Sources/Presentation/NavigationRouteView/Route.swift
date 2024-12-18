@@ -98,7 +98,7 @@ enum Route: Routable {
         case .routerView:
             RouterView<Router>(router: router, root: .contentView)
         case .contentView:
-            ContentView<Router>()
+            ContentView<Router>(router.resolver.resolve(ContentViewModel.self))
         case .loginView:        // MARK: - Login
             LoginView<Router>(router.resolver.resolve(LoginViewModel.self))
         case .requiredTermView(let userCredential): // MARK: - Registration
