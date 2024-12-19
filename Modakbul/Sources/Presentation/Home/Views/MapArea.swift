@@ -18,6 +18,7 @@ struct MapArea<Router: AppRouter>: View {
     
     init(_ viewModel: HomeViewModel) {
         self.viewModel = viewModel
+        viewModel.findPlaces()
     }
     
     var body: some View {
