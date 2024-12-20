@@ -87,6 +87,7 @@ final class HomeViewModel: ObservableObject {
             .store(in: &cancellables)
         
         $sortCriteria
+            .dropFirst()
             .sink { _ in
                 Task { await self.findPlaces( on: self.currentUsersCoordinate) }
             }
@@ -97,20 +98,20 @@ final class HomeViewModel: ObservableObject {
 // MARK: Interfaces for LocalMapUseCase
 extension HomeViewModel {
     @MainActor func updateLocationOnceIfNeeded() {
-        if locationNeeded {
-            updateLocationOnce()
-            locationNeeded = false
-            findPlaces()
+        Task {
+            if locationNeeded {
+                await updateLocationOnce()
+                locationNeeded = false
+                findPlaces()
+            }
         }
     }
     
-    @MainActor func updateLocationOnce() {
-        Task {
-            do {
-                currentUsersCoordinate = try await localMapUseCase.updateCoordinate()
-            } catch {
-                print(error)
-            }
+    private func updateLocationOnce() async {
+        do {
+            currentUsersCoordinate = try await localMapUseCase.updateCoordinate()
+        } catch {
+            print(error)
         }
     }
     
