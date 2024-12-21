@@ -129,8 +129,10 @@ final class ChatViewModel: ObservableObject {
     
     private func handleMessage(_ message: ChatMessage) {
         // MARK: - 전체 메세지 개수가 1개면 비교하지 않습니다.
-        compare(latestMessage: messages.last, currentMessage: message)
-        messages.append(message)
+        if message.senderId != Constants.temporalId {
+            compare(latestMessage: messages.last, currentMessage: message)
+            messages.append(message)
+        }
         
         // MARK: 상대방 입장 시스템 메세지를 수신했을 때만 호출합니다.
         if message.senderId == Constants.temporalId, message.senderNickname == opponentUser?.nickname {
@@ -156,7 +158,7 @@ final class ChatViewModel: ObservableObject {
                                         senderId: Constants.timestampId,
                                         senderNickname: "",
                                         content: "",
-                                        sendTime: currentMessage.sendTime.addingTimeInterval(.tolerance),
+                                        sendTime: currentMessage.sendTime.addingTimeInterval(.tolerance) - 1,
                                         unreadCount: 0))
             return
         }
@@ -169,7 +171,7 @@ final class ChatViewModel: ObservableObject {
                                         senderId: Constants.timestampId,
                                         senderNickname: "",
                                         content: "",
-                                        sendTime: currentMessage.sendTime.addingTimeInterval(.tolerance),
+                                        sendTime: currentMessage.sendTime.addingTimeInterval(.tolerance) - 1,
                                         unreadCount: 0))
         }
     }
