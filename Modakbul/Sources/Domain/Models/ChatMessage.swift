@@ -21,7 +21,8 @@ final class ChatRoom: Identifiable {
     private var _unreadMessagesCount: Int = 0
     var unreadMessagesCount: Int {
         get {
-            let count = messages.filter { $0.isRead == false && $0.senderId != Constants.loggedOutUserId && $0.senderId == opponentUserId }.count
+            // MARK: - 기존 $0.isRead == false 조건에서 $0.unreadCount != 0로 수정함
+            let count = messages.filter { $0.unreadCount != 0 && $0.senderId != Constants.loggedOutUserId && $0.senderId == opponentUserId }.count
             return max(_unreadMessagesCount, count)
         }
         
