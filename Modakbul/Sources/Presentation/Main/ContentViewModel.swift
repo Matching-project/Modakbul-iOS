@@ -9,11 +9,10 @@ import Foundation
 import Combine
 
 final class ContentViewModel: ObservableObject {
-    @Published var user: User = User()
+    @Published var user: User?
     
     private let userBusinessUseCase: UserBusinessUseCase
     
-    private let userSubject = PassthroughSubject<User, Never>()
     private var cancellables = Set<AnyCancellable>()
     
     init(userBusinessUseCase: UserBusinessUseCase) {
@@ -22,7 +21,7 @@ final class ContentViewModel: ObservableObject {
     }
     
     private func subscribe() {
-        userSubject
+        userBusinessUseCase.user
             .receive(on: DispatchQueue.main)
             .sink { [weak self] user in
                 self?.user = user
@@ -38,8 +37,7 @@ extension ContentViewModel {
     func readMyProfile(_ userId: Int64) {
         Task {
             do {
-                let user = try await userBusinessUseCase.readMyProfile(userId: userId)
-                userSubject.send(user)
+                try await userBusinessUseCase.readMyProfile(userId: userId)
             } catch {
                 print(error)
             }

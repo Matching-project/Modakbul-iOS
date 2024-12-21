@@ -11,8 +11,8 @@ import KakaoSDKAuth
 import Combine
 
 final class LoginViewModel: ObservableObject {
-    @Published var userId: Int64?
-    @Published var userNickname: String?
+    private var userId: Int64?
+    private var userNickname: String?
     var userCredential: UserCredential?
     
     private var fcmToken: String?
@@ -38,6 +38,20 @@ final class LoginViewModel: ObservableObject {
                 self?.fcmToken = fcmToken
             }
             .store(in: &cancellables)
+        
+        userRegistrationUseCase.userId
+            .sink { [weak self] userId in
+                self?.userId = userId
+            }
+            .store(in: &cancellables)
+        
+        userBusinessUseCase.user
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] user in
+                self?.userId = user.id
+                self?.userNickname = user.nickname
+            }
+            .store(in: &cancellables)
     }
     
     private func login(
@@ -59,8 +73,10 @@ final class LoginViewModel: ObservableObject {
             #endif
             
             do {
-                let userId = try await userRegistrationUseCase.login(userCredential)
-                let userNickname = try await userBusinessUseCase.readMyProfile(userId: userId).nickname
+                try await userRegistrationUseCase.login(userCredential)
+                guard let userId = userId else { return }
+                try await userBusinessUseCase.readMyProfile(userId: userId)
+                guard let userNickname = userNickname else { return }
                 completion(.success((userId, userNickname)))
             } catch APIError.userNotExist {
                 completion(.failure(.userNotExist))

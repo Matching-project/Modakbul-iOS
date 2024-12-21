@@ -32,7 +32,6 @@ final class RegistrationViewModel: ObservableObject {
     
     private var fcm: String?
     
-    private let userIdSubject = PassthroughSubject<Int64, Never>()
     private let integrityResultSubject = PassthroughSubject<NicknameIntegrityType, Never>()
     private var cancellables = Set<AnyCancellable>()
     
@@ -58,7 +57,7 @@ final class RegistrationViewModel: ObservableObject {
     }
     
     private func subscribe() {
-        userIdSubject
+        userRegistrationUseCase.userId
             .receive(on: DispatchQueue.main)
             .sink { [weak self] id in
                 self?.id = id
@@ -95,31 +94,27 @@ final class RegistrationViewModel: ObservableObject {
     
     @MainActor
     func submit(_ userCredential: UserCredential) {
-        let user = User(name: name,
-                        nickname: nickname,
-                        gender: gender ?? .unknown,
-                        job: job ?? .other,
-                        categoriesOfInterest: categoriesOfInterest,
-                        isGenderVisible: false,
-                        birth: birth.toDate())
-        
         isWaiting.toggle()
         
-        switch userCredential.provider {
-        case .kakao:
-            Task {
+        Task {
+            let user = User(name: name,
+                            nickname: nickname,
+                            gender: gender ?? .unknown,
+                            job: job ?? .other,
+                            categoriesOfInterest: categoriesOfInterest,
+                            isGenderVisible: false,
+                            birth: birth.toDate())
+            
+            switch userCredential.provider {
+            case .kakao:
                 do {
-                    let userId = try await userRegistrationUseCase.register(user, encoded: image, userCredential)
-                    userIdSubject.send(userId)
+                    try await userRegistrationUseCase.register(user, encoded: image, userCredential)
                 } catch {
                     print(error)
                 }
-            }
-        case .apple:
-            Task {
+            case .apple:
                 do {
-                    let userId = try await userRegistrationUseCase.register(user, encoded: image, userCredential)
-                    userIdSubject.send(userId)
+                    try await userRegistrationUseCase.register(user, encoded: image, userCredential)
                 } catch {
                     print(error)
                 }

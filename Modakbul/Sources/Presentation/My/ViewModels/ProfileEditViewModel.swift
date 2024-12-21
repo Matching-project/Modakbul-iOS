@@ -13,12 +13,13 @@ final class ProfileEditViewModel: ObservableObject {
     private let userBusinessUseCase: UserBusinessUseCase
 
     // MARK: - Original Data
-    @Published var user: User = User()
+    @Published var user: User?
     
     // MARK: - Modified Data
     // 닉네임은 화면에 표시하지 않음.
     @Published var image: Data?
     @Published var nickname: String = ""
+    @Published var gender: Gender = .unknown
     @Published var isGenderVisible: Bool = true
     // 회원가입시 Job?으로 받는 코드 구조여서 불가피하게 Job이 아닌 Job?으로 선언
     @Published var job: Job?
@@ -27,7 +28,6 @@ final class ProfileEditViewModel: ObservableObject {
     // MARK: - For Binding
     @Published var integrityResult: NicknameIntegrityType?
     
-    let userSubject = PassthroughSubject<User, Never>()
     private let nicknameIntegritySubject = PassthroughSubject<NicknameIntegrityType, Never>()
     private var cancellables = Set<AnyCancellable>()
 
@@ -41,12 +41,13 @@ final class ProfileEditViewModel: ObservableObject {
     }
     
     private func subscribe() {
-        userSubject
+        userBusinessUseCase.user
             .receive(on: DispatchQueue.main)
             .sink { [weak self] user in
                 // TODO: 기존 이미지 넣어주기
                 self?.user = user
                 self?.nickname = user.nickname
+                self?.gender = user.gender
                 self?.isGenderVisible = user.isGenderVisible
                 self?.job = user.job
                 self?.categoriesOfInterest = user.categoriesOfInterest
@@ -74,8 +75,7 @@ final class ProfileEditViewModel: ObservableObject {
 extension ProfileEditViewModel {
     func configureView(_ userId: Int64) async {
         do {
-            let user = try await userBusinessUseCase.readMyProfile(userId: userId)
-            userSubject.send(user)
+            try await userBusinessUseCase.readMyProfile(userId: userId)
         } catch {
             print(error)
         }
@@ -99,7 +99,7 @@ extension ProfileEditViewModel {
     
     func submit() {
         let user = User(
-            id: user.id,
+            id: user?.id ?? Constants.temporalId,
             nickname: nickname,
             job: job ?? .other,
             categoriesOfInterest: categoriesOfInterest,
@@ -116,7 +116,7 @@ extension ProfileEditViewModel {
     }
     
     func initialize() {
-        user = User()
+        user = nil
         image = nil
         nickname.removeAll()
         isGenderVisible = true

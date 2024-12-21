@@ -6,24 +6,59 @@
 //
 
 import Foundation
+import Combine
 
 protocol SocialLoginRepository: TokenRefreshable {
-    func kakaoLogin(_ userCredential: UserCredential) async throws -> Int64
-    func appleLogin(_ userCredential: UserCredential) async throws -> Int64
+    var user: AnyPublisher<User, Never> { get }
+    var credential: AnyPublisher<UserCredential, Never> { get }
+    var userId: AnyPublisher<Int64, Never> { get }
+    var userNickname: AnyPublisher<String, Never> { get }
+    
+    func kakaoLogin(_ userCredential: UserCredential) async throws
+    func appleLogin(_ userCredential: UserCredential) async throws
     func logout(userId: Int64) async throws
     
     func validateNicknameIntegrity(_ nickname: String) async throws -> NicknameIntegrityType
     
-    func kakaoRegister(_ user: User, encoded imageData: Data?, _ userCredential: UserCredential) async throws -> Int64
-    func appleRegister(_ user: User, encoded imageData: Data?, _ userCredential: UserCredential) async throws -> Int64
+    func kakaoRegister(_ user: User, encoded imageData: Data?, _ userCredential: UserCredential) async throws
+    func appleRegister(_ user: User, encoded imageData: Data?, _ userCredential: UserCredential) async throws
     func unregister(userId: Int64, provider: AuthenticationProvider) async throws
 }
 
-fileprivate enum SocialLoginRepositoryError: Error {
+enum SocialLoginRepositoryError: Error {
     case authorizeFailed
 }
 
 final class DefaultSocialLoginRepository {
+    private let userSubject = CurrentValueSubject<User?, Never>(nil)
+    private let credentialSubject = CurrentValueSubject<UserCredential?, Never>(nil)
+    private let userIdSubject = CurrentValueSubject<Int64?, Never>(nil)
+    private let userNicknameSubject = CurrentValueSubject<String?, Never>(nil)
+    
+    var user: AnyPublisher<User, Never> {
+        userSubject
+            .compactMap { $0 }
+            .eraseToAnyPublisher()
+    }
+    
+    var credential: AnyPublisher<UserCredential, Never> {
+        credentialSubject
+            .compactMap { $0 }
+            .eraseToAnyPublisher()
+    }
+    
+    var userId: AnyPublisher<Int64, Never> {
+        userIdSubject
+            .compactMap { $0 }
+            .eraseToAnyPublisher()
+    }
+    
+    var userNickname: AnyPublisher<String, Never> {
+        userNicknameSubject
+            .compactMap { $0 }
+            .eraseToAnyPublisher()
+    }
+    
     let tokenStorage: TokenStorage
     let networkService: NetworkService
     
@@ -38,7 +73,7 @@ final class DefaultSocialLoginRepository {
 
 // MARK: SocialLoginRepository Conformation
 extension DefaultSocialLoginRepository: SocialLoginRepository {
-    func kakaoLogin(_ userCredential: UserCredential) async throws -> Int64 {
+    func kakaoLogin(_ userCredential: UserCredential) async throws {
         let entity = KakaoLoginRequestEntity(email: userCredential.email!, fcm: userCredential.fcm!)
         let endpoint = Endpoint.kakaoLogin(entity: entity, provider: .kakao)
         let response = try await networkService.request(endpoint: endpoint, for: UserRegistrationResponseEntity.self)
@@ -52,10 +87,10 @@ extension DefaultSocialLoginRepository: SocialLoginRepository {
         
         let tokens = TokensEntity(accessToken: accessToken, refreshToken: refreshToken)
         try tokenStorage.store(tokens, by: userId)
-        return userId
+        userIdSubject.send(userId)
     }
     
-    func appleLogin(_ userCredential: UserCredential) async throws -> Int64 {
+    func appleLogin(_ userCredential: UserCredential) async throws {
         let entity = AppleLoginRequestEntity(appleCI: userCredential.appleCI!, fcm: userCredential.fcm!)
         let endpoint = Endpoint.appleLogin(entity: entity, provider: .apple)
         let response = try await networkService.request(endpoint: endpoint, for: UserRegistrationResponseEntity.self)
@@ -69,7 +104,7 @@ extension DefaultSocialLoginRepository: SocialLoginRepository {
         
         let tokens = TokensEntity(accessToken: accessToken, refreshToken: refreshToken)
         try tokenStorage.store(tokens, by: userId)
-        return userId
+        userIdSubject.send(userId)
     }
     
     func logout(userId: Int64) async throws {
@@ -80,12 +115,14 @@ extension DefaultSocialLoginRepository: SocialLoginRepository {
             try await networkService.request(endpoint: endpoint, for: DefaultResponseEntity.self)
             UserDefaults.standard.setValue(Constants.loggedOutUserId, forKey: AppStorageKey.userId)
             try tokenStorage.delete(by: userId)
+            userSubject.send(nil)
         } catch APIError.accessTokenExpired {
             let tokens = try await reissueTokens(userId: userId, token.refreshToken)
             let endpoint = Endpoint.logout(token: tokens.accessToken)
             try await networkService.request(endpoint: endpoint, for: DefaultResponseEntity.self)
             UserDefaults.standard.setValue(Constants.loggedOutUserId, forKey: AppStorageKey.userId)
             try tokenStorage.delete(by: userId)
+            userSubject.send(nil)
         } catch {
             throw error
         }
@@ -97,7 +134,7 @@ extension DefaultSocialLoginRepository: SocialLoginRepository {
         return response.body.toDTO()
     }
     
-    func kakaoRegister(_ user: User, encoded imageData: Data?, _ userCredential: UserCredential) async throws -> Int64 {
+    func kakaoRegister(_ user: User, encoded imageData: Data?, _ userCredential: UserCredential) async throws {
         let entity = KakaoUserRegistrationRequestEntity(user, email: userCredential.email!, fcm: userCredential.fcm!)
         let endpoint = Endpoint.kakaoRegister(user: entity, image: imageData, provider: .kakao)
         let response = try await networkService.request(endpoint: endpoint, for: UserRegistrationResponseEntity.self)
@@ -112,10 +149,10 @@ extension DefaultSocialLoginRepository: SocialLoginRepository {
         let tokens = TokensEntity(accessToken: accessToken, refreshToken: refreshToken)
         try tokenStorage.store(tokens, by: userId)
         
-        return userId
+        userIdSubject.send(userId)
     }
     
-    func appleRegister(_ user: User, encoded imageData: Data?, _ userCredential: UserCredential) async throws -> Int64 {
+    func appleRegister(_ user: User, encoded imageData: Data?, _ userCredential: UserCredential) async throws {
         let entity = AppleUserRegistrationRequestEntity(user, authorizationCode: userCredential.authorizationCode!, fcm: userCredential.fcm!)
         let endpoint = Endpoint.appleRegister(user: entity, image: imageData, provider: .apple)
         let response = try await networkService.request(endpoint: endpoint, for: UserRegistrationResponseEntity.self)
@@ -130,7 +167,7 @@ extension DefaultSocialLoginRepository: SocialLoginRepository {
         let tokens = TokensEntity(accessToken: accessToken, refreshToken: refreshToken)
         try tokenStorage.store(tokens, by: userId)
         
-        return userId
+        userIdSubject.send(userId)
     }
     
     func unregister(userId: Int64, provider: AuthenticationProvider) async throws {
@@ -141,12 +178,14 @@ extension DefaultSocialLoginRepository: SocialLoginRepository {
             try await networkService.request(endpoint: endpoint, for: DefaultResponseEntity.self)
             UserDefaults.standard.setValue(Constants.loggedOutUserId, forKey: AppStorageKey.userId)
             try tokenStorage.delete(by: userId)
+            userIdSubject.send(nil)
         } catch APIError.accessTokenExpired {
             let tokens = try await reissueTokens(userId: userId, token.refreshToken)
             let endpoint = Endpoint.logout(token: tokens.accessToken)
             try await networkService.request(endpoint: endpoint, for: DefaultResponseEntity.self)
             UserDefaults.standard.setValue(Constants.loggedOutUserId, forKey: AppStorageKey.userId)
             try tokenStorage.delete(by: userId)
+            userIdSubject.send(nil)
         } catch {
             throw error
         }
