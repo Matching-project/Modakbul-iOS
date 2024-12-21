@@ -52,7 +52,7 @@ struct ContentView<Router: AppRouter>: View {
         .onAppear {
             vm.readMyProfile(Int64(userId))
         }
-        .onChange(of: vm.user.id) { _, newValue in
+        .onChange(of: vm.user?.id ?? Constants.temporalId) { _, newValue in
             userId = Int(newValue)
         }
         .navigationTitle(selectedPage.navigationTitle)

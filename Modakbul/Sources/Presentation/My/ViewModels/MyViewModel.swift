@@ -9,12 +9,12 @@ import Foundation
 import Combine
 
 final class MyViewModel: ObservableObject {
-    @Published var user: User = User()
+    @Published var user: User?
     
     private let userRegistrationUseCase: UserRegistrationUseCase
     private let userBusinessUseCase: UserBusinessUseCase
     
-    private let userSubject = PassthroughSubject<User, Never>()
+    private let userSubject = PassthroughSubject<User?, Never>()
     private var cancellables = Set<AnyCancellable>()
     
     init(
@@ -33,6 +33,20 @@ final class MyViewModel: ObservableObject {
                 self?.user = user
             }
             .store(in: &cancellables)
+        
+        userRegistrationUseCase.user
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] user in
+                self?.user = user
+            }
+            .store(in: &cancellables)
+        
+        userBusinessUseCase.user
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] user in
+                self?.user = user
+            }
+            .store(in: &cancellables)
     }
 }
 
@@ -43,7 +57,6 @@ extension MyViewModel {
         Task {
             do {
                 try await userRegistrationUseCase.logout(userId: userId)
-                userSubject.send(User())
             } catch {
                 print(error)
             }
@@ -57,8 +70,7 @@ extension MyViewModel {
     func readMyProfile(_ userId: Int64) {
         Task {
             do {
-                let user = try await userBusinessUseCase.readMyProfile(userId: userId)
-                userSubject.send(user)
+                try await userBusinessUseCase.readMyProfile(userId: userId)
             } catch {
                 print(error)
             }

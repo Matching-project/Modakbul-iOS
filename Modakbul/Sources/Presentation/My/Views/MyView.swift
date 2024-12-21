@@ -19,18 +19,18 @@ struct MyView<Router: AppRouter>: View {
     
     var body: some View {
         VStack(alignment: .leading) {
-            if userId == Constants.loggedOutUserId && vm.user.id == Constants.loggedOutUserId {
-                HeaderWhenLoggedOut()
+            if let user = vm.user {
+                HeaderWhenLoggedIn(vm, user: user)
+                   .padding(.bottom, -10)
             } else {
-                HeaderWhenLoggedIn(vm)
-                    .padding(.bottom, -10)
+                HeaderWhenLoggedOut()
             }
             
             Cell(for: vm.user)
         }
         .padding(.horizontal, Constants.horizontal)
-        .onChange(of: vm.user.id) { oldValue, newValue in
-            if newValue != Constants.loggedOutUserId {
+        .onChange(of: vm.user?.id ?? Constants.temporalId) { _, newValue in
+            if newValue != Constants.temporalId {
                 userId = Int(newValue)
             }
         }
@@ -43,14 +43,20 @@ extension MyView {
         @ObservedObject private var vm: MyViewModel
         @AppStorage(AppStorageKey.userId) private var userId: Int = Constants.loggedOutUserId
         
-        init(_ vm: MyViewModel) {
+        private let user: User
+        
+        init(
+            _ vm: MyViewModel,
+            user: User
+        ) {
             self.vm = vm
+            self.user = user
         }
         
         var body: some View {
             HStack {
                 AsyncImageView(
-                    url: vm.user.imageURL,
+                    url: user.imageURL,
                     contentMode: .fill,
                     maxWidth: 100,
                     maxHeight: 100,
@@ -59,15 +65,15 @@ extension MyView {
                 
                 VStack(alignment: .leading) {
                     // MARK: - 한글 닉네임 10자까지 가능(iPhone 15 Pro)
-                    Text(vm.user.nickname + "님, 반가워요!")
+                    Text(user.nickname + "님, 반가워요!")
                         .bold()
                     
-                    Text(vm.user.categoriesOfInterest.description + " · " + vm.user.job.description + " · " + vm.user.birth.toAge())
+                    Text(user.categoriesOfInterest.description + " · " + user.job.description + " · " + user.birth.toAge())
                         .font(.Modakbul.subheadline)
                     
                     HStack {
                         Button {
-                            router.route(to: .profileEditView(user: vm.user))
+                            router.route(to: .profileEditView(user: user))
                         } label: {
                             Text("프로필 수정")
                                 .font(.Modakbul.footnote)
@@ -134,9 +140,9 @@ extension MyView {
     struct Cell: View {
         @EnvironmentObject private var router: Router
         @AppStorage(AppStorageKey.userId) private var userId: Int = Constants.loggedOutUserId
-        private let user: User
+        private let user: User?
         
-        init(for user: User) {
+        init(for user: User?) {
             self.user = user
         }
         
@@ -160,7 +166,9 @@ extension MyView {
 //                    button("알림 설정", destination: .notificationSettingsView)
                     Link("약관 및 정책", destination: URL(string: "https://www.notion.so/204b106dd58a4f5fbec3320410cb72a7?pvs=4")!)
                     
-                    button("탈퇴하기", destination: .unregistrationView(user: user))
+                    if let user = user {
+                        button("탈퇴하기", destination: .unregistrationView(user: user))
+                    }
                     
                     Text("문의처: modakbul@gmail.com")
                 }

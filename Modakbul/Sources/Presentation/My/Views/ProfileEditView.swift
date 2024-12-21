@@ -26,7 +26,7 @@ struct ProfileEditView<Router: AppRouter>: View {
         VStack {
             ScrollView {
                 LazyVStack(spacing: 40) {
-                    PhotosUploaderView(image: $vm.image, url: vm.user.imageURL)
+                    PhotosUploaderView(image: $vm.image, url: vm.user?.imageURL)
                     nickname
                     gender
                     job
@@ -78,7 +78,7 @@ struct ProfileEditView<Router: AppRouter>: View {
                 .bold()
             
             HStack {
-                Text(vm.user.gender.description)
+                Text(vm.gender.description)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .roundedRectangleStyle()
                 
