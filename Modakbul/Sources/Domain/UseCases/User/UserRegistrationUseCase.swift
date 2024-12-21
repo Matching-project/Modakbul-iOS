@@ -6,11 +6,17 @@
 //
 
 import Foundation
+import Combine
 
 protocol UserRegistrationUseCase {
+    var user: AnyPublisher<User, Never> { get }
+    var credential: AnyPublisher<UserCredential, Never> { get }
+    var userId: AnyPublisher<Int64, Never> { get }
+    var userNickname: AnyPublisher<String, Never> { get }
+    
     /// 로그인
     /// - OAuth(카카오, 애플)를 통한 로그인을 지원합니다.
-    func login(_ userCredential: UserCredential) async throws -> Int64
+    func login(_ userCredential: UserCredential) async throws
     
     /// 로그아웃
     func logout(userId: Int64) async throws
@@ -23,13 +29,21 @@ protocol UserRegistrationUseCase {
     
     /// 회원가입
     /// - OAuth(카카오, 애플)를 통한 회원가입을 지원합니다.
-    func register(_ user: User, encoded imageData: Data?, _ userCredential: UserCredential)  async throws -> Int64
+    func register(_ user: User, encoded imageData: Data?, _ userCredential: UserCredential)  async throws
     
     /// 회원탈퇴
     func unregister(userId: Int64, provider: AuthenticationProvider) async throws
 }
 
 final class DefaultUserRegistrationUseCase {
+    var user: AnyPublisher<User, Never> { socialLoginRepository.user }
+    
+    var credential: AnyPublisher<UserCredential, Never> { socialLoginRepository.credential }
+    
+    var userId: AnyPublisher<Int64, Never> { socialLoginRepository.userId }
+    
+    var userNickname: AnyPublisher<String, Never> { socialLoginRepository.userNickname }
+    
     private let socialLoginRepository: SocialLoginRepository
     
     init(socialLoginRepository: SocialLoginRepository) {
@@ -39,7 +53,7 @@ final class DefaultUserRegistrationUseCase {
 
 // MARK: UserRegistrationUseCase Confirmation
 extension DefaultUserRegistrationUseCase: UserRegistrationUseCase {
-    func login(_ userCredential: UserCredential) async throws -> Int64 {
+    func login(_ userCredential: UserCredential) async throws {
         switch userCredential.provider {
         case .apple:
             try await socialLoginRepository.appleLogin(userCredential)
@@ -71,7 +85,7 @@ extension DefaultUserRegistrationUseCase: UserRegistrationUseCase {
         try await socialLoginRepository.validateNicknameIntegrity(nickname)
     }
         
-    func register(_ user: User, encoded imageData: Data?, _ userCredential: UserCredential) async throws -> Int64 {
+    func register(_ user: User, encoded imageData: Data?, _ userCredential: UserCredential) async throws {
         switch userCredential.provider {
         case .apple:
             try await socialLoginRepository.appleRegister(user, encoded: imageData, userCredential)

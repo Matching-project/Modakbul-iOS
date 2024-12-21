@@ -6,13 +6,16 @@
 //
 
 import Foundation
+import Combine
 
 protocol UserBusinessUseCase {
+    var user: AnyPublisher<User, Never> { get }
+    
     /// 사용자 프로필 수정
     func updateProfile(user: User, image: Data?) async throws
     
     /// 사용자 프로필 조회
-    func readMyProfile(userId: Int64) async throws -> User
+    func readMyProfile(userId: Int64) async throws
     
     /// 사용자(상대방) 차단
     func block(userId: Int64, opponentUserId: Int64) async throws
@@ -34,6 +37,8 @@ protocol UserBusinessUseCase {
 }
 
 final class DefaultUserBusinessUseCase {
+    var user: AnyPublisher<User, Never> { userManagementRepository.user }
+    
     private let userManagementRepository: UserManagementRepository
     
     init(userManagementRepository: UserManagementRepository) {
@@ -47,7 +52,7 @@ extension DefaultUserBusinessUseCase: UserBusinessUseCase {
         try await userManagementRepository.updateProfile(user: user, image: image)
     }
     
-    func readMyProfile(userId: Int64) async throws -> User {
+    func readMyProfile(userId: Int64) async throws {
         try await userManagementRepository.readMyProfile(userId: userId)
     }
     

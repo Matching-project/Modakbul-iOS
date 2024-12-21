@@ -6,9 +6,12 @@
 //
 
 import Foundation
+import Combine
 
 protocol UserManagementRepository: TokenRefreshable {
-    func readMyProfile(userId: Int64) async throws -> User
+    var user: AnyPublisher<User, Never> { get }
+    
+    func readMyProfile(userId: Int64) async throws
     func updateProfile(user: User, image: Data?) async throws
     func report(userId: Int64, opponentUserId: Int64, report: Report) async throws
     func readReports(userId: Int64) async throws -> [(user: User, status: InquiryStatusType)]
@@ -19,9 +22,16 @@ protocol UserManagementRepository: TokenRefreshable {
 }
 
 final class DefaultUserManagementRepository {
+    private let userSubject = CurrentValueSubject<User?, Never>(nil)
+    
+    var user: AnyPublisher<User, Never> {
+        userSubject
+            .compactMap { $0 }
+            .eraseToAnyPublisher()
+    }
+    
     let tokenStorage: TokenStorage
     let networkService: NetworkService
-    private var user: User?
     
     init(
         tokenStorage: TokenStorage,
@@ -34,11 +44,8 @@ final class DefaultUserManagementRepository {
 
 // MARK: UserManagementRepository Conformation
 extension DefaultUserManagementRepository: UserManagementRepository {
-    func readMyProfile(userId: Int64) async throws -> User {
-        // MARK: - A user 로그인 후, B user 로그인 한 경우 대비
-        if let user = user, user.id == userId {
-            return user
-        }
+    func readMyProfile(userId: Int64) async throws {
+        if let currentUser = userSubject.value, currentUser.id == userId { return }
         
         let token = try tokenStorage.fetch(by: userId)
         
@@ -46,16 +53,14 @@ extension DefaultUserManagementRepository: UserManagementRepository {
             let endpoint = Endpoint.readMyProfile(token: token.accessToken)
             let response = try await networkService.request(endpoint: endpoint, for: UserProfileResponseEntity.self)
             let user = response.body.toDTO()
-            self.user = user
-            return user
+            userSubject.send(user)
         } catch APIError.accessTokenExpired {
             let tokens = try await reissueTokens(userId: userId, token.refreshToken)
             
             let endpoint = Endpoint.readMyProfile(token: tokens.accessToken)
             let response = try await networkService.request(endpoint: endpoint, for: UserProfileResponseEntity.self)
             let user = response.body.toDTO()
-            self.user = user
-            return user
+            userSubject.send(user)
         } catch {
             throw error
         }
@@ -71,13 +76,13 @@ extension DefaultUserManagementRepository: UserManagementRepository {
         do {
             let endpoint = Endpoint.updateProfile(token: token.accessToken, user: entity, image: image)
             try await networkService.request(endpoint: endpoint, for: DefaultResponseEntity.self)
-            self.user = user
+            userSubject.send(user)
         } catch APIError.accessTokenExpired {
             let tokens = try await reissueTokens(userId: user.id, token.refreshToken)
             
             let endpoint = Endpoint.updateProfile(token: tokens.accessToken, user: entity, image: image)
             try await networkService.request(endpoint: endpoint, for: DefaultResponseEntity.self)
-            self.user = user
+            userSubject.send(user)
         } catch {
             throw error
         }
