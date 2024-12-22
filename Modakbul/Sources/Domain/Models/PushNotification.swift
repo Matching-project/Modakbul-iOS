@@ -85,12 +85,12 @@ struct PushNotification: Identifiable {
          timestamp: String = "",
          type: ShowingType,
          isRead: Bool = false
-    ) {
+    ) async {
         self.id = id
         self.imageURL = imageURL
         self.title = title
         self.subtitle = subtitle
-        self.timestamp = timestamp.toDate(by: .serverDateTime2)?.toDateComponent() ?? "방금 전"
+        self.timestamp = await timestamp.toDate(by: .serverDateTime2)?.toDateComponent() ?? "방금 전"
         self.type = type
         self.isRead = isRead
     }
@@ -118,7 +118,7 @@ final class PushNotificationBuilder {
         return self
     }
     
-    func build() -> PushNotification {
-        .init(id: Constants.temporalId, title: title, subtitle: subtitle, type: type)
+    func build() async -> PushNotification {
+        await .init(id: Constants.temporalId, title: title, subtitle: subtitle, type: type)
     }
 }

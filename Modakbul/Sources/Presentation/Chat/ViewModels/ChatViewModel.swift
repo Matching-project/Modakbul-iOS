@@ -226,7 +226,7 @@ extension ChatViewModel {
             try chatUseCase.send(message: chatMessage)
             
             Task {
-                let pushNotification = PushNotificationBuilder
+                let pushNotification = await PushNotificationBuilder
                     .create(type: .chat)
                     .setTitle(userNickname)
                     .setSubtitle(chatMessage.content)

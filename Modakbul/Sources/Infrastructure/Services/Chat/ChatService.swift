@@ -128,8 +128,10 @@ extension DefaultChatService: SwiftStompDelegate {
             print("Chat Service Connected")
             
             // 채팅방 접속 시 입장했음을 알리는 메세지 전송
-            let entity = ChatEntity(chatRoomId: currentChatRoomId, senderNickname: userNickname)
-            stomp?.send(body: entity, to: "/pub/enter")
+            Task {
+                let entity = await ChatEntity(chatRoomId: currentChatRoomId, senderNickname: userNickname)
+                stomp?.send(body: entity, to: "/pub/enter")
+            }
         }
     }
     
@@ -160,13 +162,17 @@ extension DefaultChatService: SwiftStompDelegate {
                let chatRoomIdString = json["chatRoomId"] as? String,
                let chatRoomId = Int64(chatRoomIdString),
                let senderNickname = json["senderNickname"] as? String {
-                let entity = ChatEntity(chatRoomId: chatRoomId, senderNickname: senderNickname)
-                chatStreamContinuation?.yield(entity.toDTO())
+                Task {
+                    let entity = await ChatEntity(chatRoomId: chatRoomId, senderNickname: senderNickname)
+                    await chatStreamContinuation?.yield(entity.toDTO())
+                }
                 return
             }
             
             let entity = try decoder.decode(ChatEntity.self, from: data)
-            chatStreamContinuation?.yield(entity.toDTO())
+            Task {
+                await chatStreamContinuation?.yield(entity.toDTO())
+            }
         } catch {
             chatStreamContinuation?.yield(with: .failure(ChatServiceError.generic(type: String(describing: data))))
         }

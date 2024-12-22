@@ -73,7 +73,7 @@ enum DateFormat: String {
 
 // MARK: DateFormatter 관련
 extension DateFormat {
-    private static var formatters = [String: DateFormatter]()
+    private static let dateFormatterCached = DateFormatterCached()
     
     /**
      각 DateFormat에 대응되는 DateFormatter
@@ -81,35 +81,13 @@ extension DateFormat {
      * DateFormatter를 매번 생성하지 않고 재사용 하려는 목적으로 사용
      
      */
-    var formatter: DateFormatter {
-        Self.cachedFormatter(dateFormat: self.rawValue)
+    
+    static func cachedFormatter(dateFormat: String) async -> DateFormatter {
+        await dateFormatterCached.cachedFormatter(for: dateFormat)
     }
     
-    static func cachedFormatter(dateFormat: String) -> DateFormatter {
-        if let cached = formatters[dateFormat] {
-            return cached
-        }
-        
-        let formatter = createFormatter(with: dateFormat)
-        Self.formatters[dateFormat] = formatter
-        return formatter
-    }
-    
-    static func cachedFormatter(dateFormat: DateFormat) -> DateFormatter {
-        if let cached = formatters[dateFormat.rawValue] {
-            return cached
-        }
-        
-        let formatter = createFormatter(with: dateFormat.rawValue)
-        Self.formatters[dateFormat.rawValue] = formatter
-        return formatter
-    }
-    
-    private static func createFormatter(with dateFormat: String) -> DateFormatter {
-        let formatter = DateFormatter()
-        formatter.dateFormat = dateFormat
-        formatter.locale = Locale(identifier: "ko_KR")
-        return formatter
+    static func cachedFormatter(dateFormat: DateFormat) async -> DateFormatter {
+        await dateFormatterCached.cachedFormatter(for: dateFormat.rawValue)
     }
     
     static func toDate(iso8601String: String) -> Date? {
@@ -119,23 +97,44 @@ extension DateFormat {
     }
 }
 
+actor DateFormatterCached {
+    private var cachedFormatters = [String: DateFormatter]()
+    
+    func cachedFormatter(for dateFormat: String) -> DateFormatter {
+        if let cached = cachedFormatters[dateFormat] {
+            return cached
+        }
+        
+        let formatter = createFormatter(with: dateFormat)
+        cachedFormatters[dateFormat] = formatter
+        return formatter
+    }
+    
+    private func createFormatter(with dateFormat: String) -> DateFormatter {
+        let formatter = DateFormatter()
+        formatter.dateFormat = dateFormat
+        formatter.locale = Locale(identifier: "ko_KR")
+        return formatter
+    }
+}
+
 // MARK: Date+Format
 extension Date {
-    func toString(by dateFormat: DateFormat) -> String {
-        let formatter = DateFormat.cachedFormatter(dateFormat: dateFormat)
+    func toString(by dateFormat: DateFormat) async -> String {
+        let formatter = await DateFormat.cachedFormatter(dateFormat: dateFormat)
         return formatter.string(from: self)
     }
     
     /// DateFormat에서 제공하는 형태와 다른 날짜 형식일 경우 사용
-    func toString(by dateFormat: String) -> String {
-        let formatter = DateFormat.cachedFormatter(dateFormat: dateFormat)
+    func toString(by dateFormat: String) async -> String {
+        let formatter = await DateFormat.cachedFormatter(dateFormat: dateFormat)
         return formatter.string(from: self)
     }
 }
 
 extension String {
-    func toDate(by dateFormat: DateFormat) -> Date? {
-        let formatter = DateFormat.cachedFormatter(dateFormat: dateFormat)
+    func toDate(by dateFormat: DateFormat) async -> Date? {
+        let formatter = await DateFormat.cachedFormatter(dateFormat: dateFormat)
         return formatter.date(from: self)
     }
 }

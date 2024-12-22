@@ -121,8 +121,9 @@ extension ChatRoomListView {
                 Spacer()
                 
                 VStack(alignment: .trailing, spacing: 10) {
-                    Text(chatRoom.messages.last?.sendTime.toString(by: .ahmm) ?? "")
-                        .font(.Modakbul.subheadline)
+                    if let lastSendTime = chatRoom.messages.last?.sendTime {
+                        AsyncDateView(date: lastSendTime, format: .ahmm, font: .Modakbul.subheadline)
+                    }
                     
                     Badge(count: chatRoom.unreadMessagesCount)
                 }

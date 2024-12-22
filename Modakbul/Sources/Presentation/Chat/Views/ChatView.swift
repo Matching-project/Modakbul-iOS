@@ -158,9 +158,8 @@ struct ChatView<Router: AppRouter>: View {
     
     @ViewBuilder
     private func timestampCell(_ message: ChatMessage) -> some View {
-        Text(message.sendTime.toString(by: .yyyyMMddKorean))
+        AsyncDateView(date: message.sendTime, format: .yyyyMMddKorean, font: .Modakbul.caption)
             .padding(10)
-            .font(.Modakbul.caption)
             .containerRelativeFrame(.horizontal)
     }
     
@@ -181,7 +180,7 @@ struct ChatView<Router: AppRouter>: View {
                 Text(message.unreadCount == 0 ? "" : "\(message.unreadCount)")
                     .foregroundStyle(.accent)
                 
-                Text(message.sendTime.toString(by: .HHmm))
+                AsyncDateView(date: message.sendTime, format: .HHmm)
                     .foregroundStyle(.gray)
             }
             
@@ -222,7 +221,7 @@ struct ChatView<Router: AppRouter>: View {
                         Text(message.unreadCount == 0 ? "" : "\(message.unreadCount)")
                             .foregroundStyle(.accent)
                         
-                        Text(message.sendTime.toString(by: .HHmm))
+                        AsyncDateView(date: message.sendTime, format: .HHmm)
                             .foregroundStyle(.gray)
                     }
                 }

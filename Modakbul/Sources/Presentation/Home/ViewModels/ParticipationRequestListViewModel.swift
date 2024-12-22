@@ -77,7 +77,7 @@ extension ParticipationRequestListViewModel {
             do {
                 try await matchingUseCase.acceptMatchRequest(userId: userId, with: matchingId)
                 indexPerformSubject.send(matchingId)
-                let pushNotification = PushNotificationBuilder
+                let pushNotification = await PushNotificationBuilder
                     .create(type: .acceptParticipation(communityRecruitingContentId: content.id))
                     .setTitle(userNickname)
                     .setSubtitle(content.title)

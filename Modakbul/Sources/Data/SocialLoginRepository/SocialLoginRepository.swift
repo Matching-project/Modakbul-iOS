@@ -9,7 +9,7 @@ import Foundation
 import Combine
 
 protocol SocialLoginRepository: TokenRefreshable {
-    var user: AnyPublisher<User, Never> { get }
+    var user: AnyPublisher<User?, Never> { get }
     var credential: AnyPublisher<UserCredential, Never> { get }
     var userId: AnyPublisher<Int64, Never> { get }
     var userNickname: AnyPublisher<String, Never> { get }
@@ -35,9 +35,8 @@ final class DefaultSocialLoginRepository {
     private let userIdSubject = CurrentValueSubject<Int64?, Never>(nil)
     private let userNicknameSubject = CurrentValueSubject<String?, Never>(nil)
     
-    var user: AnyPublisher<User, Never> {
+    var user: AnyPublisher<User?, Never> {
         userSubject
-            .compactMap { $0 }
             .eraseToAnyPublisher()
     }
     
@@ -135,7 +134,7 @@ extension DefaultSocialLoginRepository: SocialLoginRepository {
     }
     
     func kakaoRegister(_ user: User, encoded imageData: Data?, _ userCredential: UserCredential) async throws {
-        let entity = KakaoUserRegistrationRequestEntity(user, email: userCredential.email!, fcm: userCredential.fcm!)
+        let entity = await KakaoUserRegistrationRequestEntity(user, email: userCredential.email!, fcm: userCredential.fcm!)
         let endpoint = Endpoint.kakaoRegister(user: entity, image: imageData, provider: .kakao)
         let response = try await networkService.request(endpoint: endpoint, for: UserRegistrationResponseEntity.self)
         let userId = response.body.toDTO()
@@ -153,7 +152,7 @@ extension DefaultSocialLoginRepository: SocialLoginRepository {
     }
     
     func appleRegister(_ user: User, encoded imageData: Data?, _ userCredential: UserCredential) async throws {
-        let entity = AppleUserRegistrationRequestEntity(user, authorizationCode: userCredential.authorizationCode!, fcm: userCredential.fcm!)
+        let entity = await AppleUserRegistrationRequestEntity(user, authorizationCode: userCredential.authorizationCode!, fcm: userCredential.fcm!)
         let endpoint = Endpoint.appleRegister(user: entity, image: imageData, provider: .apple)
         let response = try await networkService.request(endpoint: endpoint, for: UserRegistrationResponseEntity.self)
         let userId = response.body.toDTO()

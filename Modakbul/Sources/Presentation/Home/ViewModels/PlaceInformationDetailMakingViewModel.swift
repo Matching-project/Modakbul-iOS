@@ -37,23 +37,23 @@ final class PlaceInformationDetailMakingViewModel: ObservableObject {
     ) {
         guard let placeId = placeId else { return }
         
-        let community = Community(routine: .daily,
-                                  category: category,
-                                  participantsLimit: peopleCount,
-                                  meetingDate: date.toString(by: .yyyyMMddHyphen),
-                                  startTime: startTime.toString(by: .HHmm),
-                                  endTime: endTime.toString(by: .HHmm))
-        
-        let communityRecruitingContent = CommunityRecruitingContent(
-            id: communityRecruitingContentId ?? Constants.temporalId,
-            title: title,
-            content: content,
-            writtenDate: communityRecruitingContentId == nil ? Date().toString(by: .yyyyMMdd) : self.communityRecruitingContent?.writtenDate,
-            writtenTime: communityRecruitingContentId == nil ? Date().toString(by: .HHmm) : self.communityRecruitingContent?.writtenTime,
-            community: community
-        )
-        
         Task {
+            let community = Community(routine: .daily,
+                                      category: category,
+                                      participantsLimit: peopleCount,
+                                      meetingDate: await date.toString(by: .yyyyMMddHyphen),
+                                      startTime: await startTime.toString(by: .HHmm),
+                                      endTime: await endTime.toString(by: .HHmm))
+            
+            let communityRecruitingContent = CommunityRecruitingContent(
+                id: communityRecruitingContentId ?? Constants.temporalId,
+                title: title,
+                content: content,
+                writtenDate: communityRecruitingContentId == nil ? await Date().toString(by: .yyyyMMdd) : self.communityRecruitingContent?.writtenDate,
+                writtenTime: communityRecruitingContentId == nil ? await Date().toString(by: .HHmm) : self.communityRecruitingContent?.writtenTime,
+                community: community
+            )
+            
             do {
                 if let _ = communityRecruitingContentId {
                     try await communityUseCase.updateCommunityRecruitingContent(userId: userId, communityRecruitingContent)
@@ -66,26 +66,29 @@ final class PlaceInformationDetailMakingViewModel: ObservableObject {
         }
     }
     
+    @MainActor
     func configureView(_ communityRecruitingContent: CommunityRecruitingContent?) {
-        // MARK: - 게시물 수정시
-        if let communityRecruitingContent = communityRecruitingContent {
-            self.category = communityRecruitingContent.community.category
-            self.peopleCount = communityRecruitingContent.community.participantsLimit
-            self.date = communityRecruitingContent.community.meetingDate.toDate(by: .yyyyMMdd) ?? Date()
-            // 서버에서는 HHmmss로 주고 있고, 화면에는 HHmm만 필요하므로...
-            self.startTime = communityRecruitingContent.community.startTime.toDate(by: .HHmmss)?.toString(by: .HHmm).toDate(by: .HHmm) ?? Date()
-            self.endTime = communityRecruitingContent.community.endTime.toDate(by: .HHmmss)?.toString(by: .HHmm).toDate(by: .HHmm) ?? Date()
-            self.title = communityRecruitingContent.title
-            self.content = communityRecruitingContent.content
-            self.communityRecruitingContent = communityRecruitingContent
-        } else { // MARK: - 게시물 작성시
-            self.category = .interview
-            self.peopleCount = 2
-            self.date = .now
-            self.startTime = .now.unitizeToTenMinutes()
-            self.endTime = .now.unitizeToTenMinutes()
-            self.title = String()
-            self.content = String()
+        Task {
+            // MARK: - 게시물 수정시
+            if let communityRecruitingContent = communityRecruitingContent {
+                self.category = communityRecruitingContent.community.category
+                self.peopleCount = communityRecruitingContent.community.participantsLimit
+                self.date = await communityRecruitingContent.community.meetingDate.toDate(by: .yyyyMMdd) ?? Date()
+                // 서버에서는 HHmmss로 주고 있고, 화면에는 HHmm만 필요하므로...
+                self.startTime = await communityRecruitingContent.community.startTime.toDate(by: .HHmmss)?.toString(by: .HHmm).toDate(by: .HHmm) ?? Date()
+                self.endTime = await communityRecruitingContent.community.endTime.toDate(by: .HHmmss)?.toString(by: .HHmm).toDate(by: .HHmm) ?? Date()
+                self.title = communityRecruitingContent.title
+                self.content = communityRecruitingContent.content
+                self.communityRecruitingContent = communityRecruitingContent
+            } else { // MARK: - 게시물 작성시
+                self.category = .interview
+                self.peopleCount = 2
+                self.date = .now
+                self.startTime = .now.unitizeToTenMinutes()
+                self.endTime = .now.unitizeToTenMinutes()
+                self.title = String()
+                self.content = String()
+            }
         }
     }
     

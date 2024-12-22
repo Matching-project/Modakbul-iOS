@@ -61,7 +61,7 @@ struct PlaceInformationDetailMakingView<Router: AppRouter>: View {
                     
                     cell(title: "날짜") {
                         ZStack(alignment: .leading) {
-                            Text(vm.date.toString(by: .yyyyMMdd))
+                            AsyncDateView(date: vm.date, format: .yyyyMMdd)
                             
                             DatePicker(
                                 "",
@@ -82,7 +82,7 @@ struct PlaceInformationDetailMakingView<Router: AppRouter>: View {
                     cell(title: "진행시간") {
                         HStack {
                             ZStack {
-                                Text(vm.startTime.toString(by: .HHmm))
+                                AsyncDateView(date: vm.startTime, format: .HHmm)
                                 
                                 DatePicker(
                                     "",
@@ -100,7 +100,7 @@ struct PlaceInformationDetailMakingView<Router: AppRouter>: View {
                             Text("-")
                             
                             ZStack {
-                                Text(vm.endTime.toString(by: .HHmm))
+                                AsyncDateView(date: vm.endTime, format: .HHmm)
                                     .onChange(of: vm.startTime) { _, newStartTime in
                                         if vm.endTime < newStartTime {
                                             vm.endTime = newStartTime

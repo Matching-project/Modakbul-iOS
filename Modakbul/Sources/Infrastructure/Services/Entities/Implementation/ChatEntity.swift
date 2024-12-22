@@ -25,17 +25,17 @@ struct ChatEntity: Codable {
         content: String? = nil,
         sendTime: Date? = nil,
         unreadCount: Int? = .zero
-    ) {
+    ) async {
         self.chatRoomId = chatRoomId
         self.senderId = senderId
         self.senderNickname = senderNickname
         self.content = content
-        self.sendTime = sendTime?.toString(by: .serverDateTime1) ?? String()
+        self.sendTime = await sendTime?.toString(by: .serverDateTime1) ?? String()
         self.unreadCount = unreadCount
     }
     
-    init(chatMessage: ChatMessage) {
-        self.init(
+    init(chatMessage: ChatMessage) async {
+        await self.init(
             chatRoomId: chatMessage.chatRoomId,
             senderId: chatMessage.senderId,
             senderNickname: chatMessage.senderNickname,
@@ -45,13 +45,13 @@ struct ChatEntity: Codable {
         )
     }
     
-    func toDTO() -> ChatMessage {
+    func toDTO() async -> ChatMessage {
         .init(
             chatRoomId: chatRoomId,
             senderId: senderId ?? Constants.temporalId,
             senderNickname: senderNickname,
             content: content ?? String(),
-            sendTime: sendTime?.toDate(by: .serverDateTime1) ?? .now,
+            sendTime: await sendTime?.toDate(by: .serverDateTime1) ?? .now,
             unreadCount: unreadCount ?? .zero
         )
     }

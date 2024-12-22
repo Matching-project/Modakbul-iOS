@@ -9,7 +9,7 @@ import Foundation
 import Combine
 
 protocol UserRegistrationUseCase {
-    var user: AnyPublisher<User, Never> { get }
+    var user: AnyPublisher<User?, Never> { get }
     var credential: AnyPublisher<UserCredential, Never> { get }
     var userId: AnyPublisher<Int64, Never> { get }
     var userNickname: AnyPublisher<String, Never> { get }
@@ -36,7 +36,7 @@ protocol UserRegistrationUseCase {
 }
 
 final class DefaultUserRegistrationUseCase {
-    var user: AnyPublisher<User, Never> { socialLoginRepository.user }
+    var user: AnyPublisher<User?, Never> { socialLoginRepository.user }
     
     var credential: AnyPublisher<UserCredential, Never> { socialLoginRepository.credential }
     

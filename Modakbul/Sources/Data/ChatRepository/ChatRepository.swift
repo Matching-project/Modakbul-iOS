@@ -170,13 +170,13 @@ extension DefaultChatRepository: ChatRepository {
         do {
             let endpoint = Endpoint.readChatHistory(token: token.accessToken, chatRoomId: chatRoomId, communityRecruitingContentId: communityRecruitingContentId)
             let response = try await networkService.request(endpoint: endpoint, for: ChatHistoryResponseEntity.self)
-            return response.body.toDTO()
+            return await response.body.toDTO()
         } catch APIError.accessTokenExpired {
             let tokens = try await reissueTokens(userId: userId, token.refreshToken)
             
             let endpoint = Endpoint.readChatHistory(token: tokens.accessToken, chatRoomId: chatRoomId, communityRecruitingContentId: communityRecruitingContentId)
             let response = try await networkService.request(endpoint: endpoint, for: ChatHistoryResponseEntity.self)
-            return response.body.toDTO()
+            return await response.body.toDTO()
         } catch {
             throw error
         }
@@ -185,7 +185,7 @@ extension DefaultChatRepository: ChatRepository {
     func send(message: ChatMessage) throws {
         Task {
             do {
-                let entity = ChatEntity(chatMessage: message)
+                let entity = await ChatEntity(chatMessage: message)
                 try await chatService.send(message: entity)
             } catch {
                 throw error

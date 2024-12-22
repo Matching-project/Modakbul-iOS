@@ -73,7 +73,7 @@ extension MyParticipationRequestListViewModel {
             do {
                 try await matchingUseCase.exitMatch(userId: userId, with: match.matchingId)
                 requestPerformSubject.send(match.matchingId)
-                let pushNotification = PushNotificationBuilder
+                let pushNotification = await PushNotificationBuilder
                     .create(type: .exitParticipation)
                     .setTitle(userNickname)
                     .setSubtitle(communityRecruitingContent.title)

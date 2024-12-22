@@ -16,10 +16,10 @@ struct KakaoUserRegistrationRequestEntity: Encodable {
     let email: String
     let fcm: String
     
-    init(_ user: User, email: String, fcm: String) {
+    init(_ user: User, email: String, fcm: String) async {
         self.name = user.name
         self.nickname = user.nickname
-        self.birth = user.birth.toString(by: .yyyyMMddRaw)
+        self.birth = await user.birth.toString(by: .yyyyMMddRaw)
         self.gender = user.gender
         self.job = user.job
         self.categories = user.categoriesOfInterest
@@ -37,10 +37,10 @@ struct AppleUserRegistrationRequestEntity: Encodable {
     let authorizationCode: String
     let fcm: String
     
-    init(_ user: User, authorizationCode: Data, fcm: String) {
+    init(_ user: User, authorizationCode: Data, fcm: String) async {
         self.name = user.name
         self.nickname = user.nickname
-        self.birth = user.birth.toString(by: .yyyyMMddRaw)
+        self.birth = await user.birth.toString(by: .yyyyMMddRaw)
         self.gender = user.gender
         self.job = user.job
         self.categories = user.categoriesOfInterest

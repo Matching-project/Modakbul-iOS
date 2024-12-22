@@ -184,7 +184,7 @@ extension PlaceInformationDetailViewModel {
             do {
                 try await matchingUseCase.exitMatch(userId: userId, with: matchingId)
                 userRoleSubject.send((role: UserRole.nonParticipant, matchingId: nil, state: MatchState.exit))
-                let pushNotification = PushNotificationBuilder
+                let pushNotification = await PushNotificationBuilder
                     .create(type: .exitParticipation)
                     .setTitle(userNickname)
                     .setSubtitle(content.title)
@@ -208,7 +208,7 @@ extension PlaceInformationDetailViewModel {
             do {
                 try await matchingUseCase.requestMatch(userId: userId, with: content.id)
                 userRoleSubject.send((role: UserRole.nonParticipant, matchingId: nil, state: MatchState.pending))
-                let pushNotification = PushNotificationBuilder
+                let pushNotification = await PushNotificationBuilder
                     .create(type: .requestParticipation(communityRecruitingContentId: content.id))
                     .setTitle(userNickname)
                     .setSubtitle(content.title)

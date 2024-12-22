@@ -51,13 +51,13 @@ extension DefaultNotificationRepository: NotificationRepository {
         do {
             let endpoint = Endpoint.fetchNotifications(token: token.accessToken)
             let response = try await networkService.request(endpoint: endpoint, for: NotificationResponseEntity.self)
-            return response.body.toDTO()
+            return await response.body.toDTO()
         } catch APIError.accessTokenExpired {
             let tokens = try await reissueTokens(userId: userId, token.refreshToken)
             
             let endpoint = Endpoint.fetchNotifications(token: tokens.accessToken)
             let response = try await networkService.request(endpoint: endpoint, for: NotificationResponseEntity.self)
-            return response.body.toDTO()
+            return await response.body.toDTO()
         } catch {
             throw error
         }

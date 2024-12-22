@@ -27,8 +27,16 @@ struct ChatHistoryResponseEntity: Decodable, ResponseEntity {
         }
     }
     
-    func toDTO() -> ChatHistory {
-        let messages = zip(result.contents, result.sendTimes).map { ($0.0, $0.1.toDate(by: .serverDateTime1) ?? .now) }
+    func toDTO() async -> ChatHistory {
+        let messages = await withTaskGroup(of: (String, Date).self) { group in
+            for (content, sendTime) in zip(result.contents, result.sendTimes) {
+                group.addTask {
+                    let date = await sendTime.toDate(by: .serverDateTime1) ?? .now
+                    return (content, date)
+                }
+            }
+            return await group.reduce(into: []) { $0.append($1) }
+        }
         
         return .init(
             locationName: result.locationName,

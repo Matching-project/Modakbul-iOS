@@ -29,17 +29,23 @@ struct NotificationResponseEntity: ResponseEntity {
         }
     }
     
-    func toDTO() -> [PushNotification] {
-        result.map {
-            PushNotification(
-                id: $0.id,
-                imageURL: $0.imageURL,
-                title: $0.title,
-                subtitle: $0.subtitle,
-                timestamp: $0.timestamp,
-                type: .init(from: $0.type, communityRecruitingContentId: $0.communityRecruitingContentId),
-                isRead: $0.isRead
-            )
+    func toDTO() async -> [PushNotification] {
+        await withTaskGroup(of: PushNotification.self) { group in
+            for item in result {
+                group.addTask {
+                    let timestamp = await item.timestamp.toDate(by: .serverDateTime2) ?? .now
+                    return await PushNotification(
+                        id: item.id,
+                        imageURL: item.imageURL,
+                        title: item.title,
+                        subtitle: item.subtitle,
+                        timestamp: item.timestamp,
+                        type: .init(from: item.type, communityRecruitingContentId: item.communityRecruitingContentId),
+                        isRead: item.isRead
+                    )
+                }
+            }
+            return await group.reduce(into: []) { $0.append($1) }
         }
     }
 }
