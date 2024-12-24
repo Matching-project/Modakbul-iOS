@@ -45,10 +45,10 @@ extension RegistrationView {
     @ViewBuilder
     private func view() -> some View {
         switch vm.currentField {
-        case .name:
-            contentStackView(isZStack: true) {
-                RoundedTextField("30자 내로 입력해주세요", text: $vm.name)
-            }
+//        case .name:
+//            contentStackView(isZStack: true) {
+//                RoundedTextField("30자 내로 입력해주세요", text: $vm.name)
+//            }
         case .nickname:
             contentStackView(isZStack: true) {
                 GeometryReader { geometry in

@@ -15,7 +15,7 @@ final class RegistrationViewModel: ObservableObject {
 
     // MARK: Data From User
     @Published var id: Int64?
-    @Published var name = ""
+    @Published var name = "unknown_name"
     @Published var nickname = ""
     // MARK: - 애플 심사 정책상, 불필요한 개인정보 수집 방지를 위해 뷰에서는 불필요한 생년월일을 수집하는 화면을 제거함.
     // MARK: - 다만, backend 로직상 생년월일을 받도록 되어 있어 편의상 수정사항이 일어나지 않도록 뷰를 제외한 기존 코드는 유지함.
@@ -26,7 +26,7 @@ final class RegistrationViewModel: ObservableObject {
     @Published var image: Data? = nil
     
     // MARK: For Binding
-    @Published var currentField: RegisterField = .name
+    @Published var currentField: RegisterField = .nickname
     @Published var integrityResult: NicknameIntegrityType?
     @Published var isWaiting: Bool = false
     
@@ -37,8 +37,8 @@ final class RegistrationViewModel: ObservableObject {
     
     var isNextButtonEnabled: Bool {
         switch currentField {
-        case .name:
-            return !name.isEmpty && name.count <= 30
+//        case .name:
+//            return !name.isEmpty && name.count <= 30
         case .nickname:
             return integrityResult == .normal
         case .gender:
@@ -130,7 +130,7 @@ final class RegistrationViewModel: ObservableObject {
         job = nil
         categoriesOfInterest = []
         image = nil
-        currentField = .name
+        currentField = .nickname
         fieldIndex = 0
         integrityResult = nil
         isWaiting = false
