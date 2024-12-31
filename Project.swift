@@ -9,7 +9,7 @@ let project = Project(
     targets: [
         .target(
             name: "Modakbul",
-            destinations: [.iPhone, .iPad],
+            destinations: [.iPhone],
             product: .app,
             bundleId: "com.Modakbul",
             deploymentTargets: .iOS("17.0"),
@@ -28,7 +28,8 @@ let project = Project(
             settings: .settings(
                 base: [
                        "CODE_SIGN_STYLE": "Manual",
-                       "OTHER_LDFLAGS": "-ObjC"
+                       "OTHER_LDFLAGS": "-ObjC",
+                       "CFBundleSupportedPlatforms": "$(PLATFORM_NAME)"
                 ],
                 configurations: [
                     .debug(name: "Debug",
