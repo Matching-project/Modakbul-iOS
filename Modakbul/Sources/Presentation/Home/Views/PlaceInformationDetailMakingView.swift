@@ -137,8 +137,11 @@ struct PlaceInformationDetailMakingView<Router: AppRouter>: View {
             
             // TODO: - padding 값 설정 필요
             FlatButton(communityRecruitingContent == nil ? "게시하기" : "수정하기") {
-                vm.submit(communityRecruitingContent?.id, userId: Int64(userId))
-                vm.initialize()
+                Task { @MainActor in
+                    await vm.submit(communityRecruitingContent?.id, userId: Int64(userId))
+                    vm.initialize()
+                }
+                // 게시물 작성 성공 여부와 상관없이 작성 버튼 터치시 뒤로가도록 구성함
                 router.dismiss()
             }
             .disabled(vm.title.isEmpty || vm.content.isEmpty)

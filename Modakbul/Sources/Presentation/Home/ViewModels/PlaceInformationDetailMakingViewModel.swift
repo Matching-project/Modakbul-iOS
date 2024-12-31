@@ -34,35 +34,33 @@ final class PlaceInformationDetailMakingViewModel: ObservableObject {
     func submit(
         _ communityRecruitingContentId: Int64? = nil,
         userId: Int64
-    ) {
+    ) async {
         guard let placeId = placeId else { return }
         
-        Task {
-            let community = Community(routine: .daily,
-                                      category: category,
-                                      participantsLimit: peopleCount,
-                                      meetingDate: await date.toString(by: .yyyyMMddHyphen),
-                                      startTime: await startTime.toString(by: .HHmm),
-                                      endTime: await endTime.toString(by: .HHmm))
-            
-            let communityRecruitingContent = CommunityRecruitingContent(
-                id: communityRecruitingContentId ?? Constants.temporalId,
-                title: title,
-                content: content,
-                writtenDate: communityRecruitingContentId == nil ? await Date().toString(by: .yyyyMMdd) : self.communityRecruitingContent?.writtenDate,
-                writtenTime: communityRecruitingContentId == nil ? await Date().toString(by: .HHmm) : self.communityRecruitingContent?.writtenTime,
-                community: community
-            )
-            
-            do {
-                if let _ = communityRecruitingContentId {
-                    try await communityUseCase.updateCommunityRecruitingContent(userId: userId, communityRecruitingContent)
-                } else {
-                    try await communityUseCase.createCommunityRecruitingContent(userId: userId, placeId: placeId, communityRecruitingContent)
-                }
-            } catch {
-                print(error)
+        let community = Community(routine: .daily,
+                                  category: category,
+                                  participantsLimit: peopleCount,
+                                  meetingDate: await date.toString(by: .yyyyMMddHyphen),
+                                  startTime: await startTime.toString(by: .HHmm),
+                                  endTime: await endTime.toString(by: .HHmm))
+        
+        let communityRecruitingContent = CommunityRecruitingContent(
+            id: communityRecruitingContentId ?? Constants.temporalId,
+            title: title,
+            content: content,
+            writtenDate: communityRecruitingContentId == nil ? await Date().toString(by: .yyyyMMdd) : self.communityRecruitingContent?.writtenDate,
+            writtenTime: communityRecruitingContentId == nil ? await Date().toString(by: .HHmm) : self.communityRecruitingContent?.writtenTime,
+            community: community
+        )
+        
+        do {
+            if let _ = communityRecruitingContentId {
+                try await communityUseCase.updateCommunityRecruitingContent(userId: userId, communityRecruitingContent)
+            } else {
+                try await communityUseCase.createCommunityRecruitingContent(userId: userId, placeId: placeId, communityRecruitingContent)
             }
+        } catch {
+            print(error)
         }
     }
     
@@ -86,8 +84,8 @@ final class PlaceInformationDetailMakingViewModel: ObservableObject {
                 self.date = .now
                 self.startTime = .now.unitizeToTenMinutes()
                 self.endTime = .now.unitizeToTenMinutes()
-                self.title = String()
-                self.content = String()
+                self.title = title
+                self.content = content
             }
         }
     }
