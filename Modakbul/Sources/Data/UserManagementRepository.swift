@@ -45,7 +45,7 @@ final class DefaultUserManagementRepository {
 // MARK: UserManagementRepository Conformation
 extension DefaultUserManagementRepository: UserManagementRepository {
     func readMyProfile(userId: Int64) async throws {
-        if let currentUser = userSubject.value, currentUser.id == userId { return }
+//        if let currentUser = userSubject.value, currentUser.id == userId { return }
         
         let token = try tokenStorage.fetch(by: userId)
         
