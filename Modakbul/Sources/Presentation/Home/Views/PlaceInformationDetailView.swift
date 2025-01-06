@@ -140,11 +140,73 @@ struct PlaceInformationDetailView<Router: AppRouter>: View {
                             Image(systemName: "ellipsis")
                         }
                     }
+                } else {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Menu {
+                            if vm.isBlocked {
+                                unBlockButton
+                            } else {
+                                blockButton
+                            }
+                            
+                            if vm.isReported {
+                                reportListButton
+                            } else {
+                                reportButton
+                            }
+                        } label: {
+                            Image(systemName: "ellipsis")
+                        }
+                    }
                 }
             }
             .ignoresSafeArea(edges: .top)
         }
     }
+    
+    private var unBlockButton: some View {
+        Button {
+            vm.unblock(userId: userId)
+        } label: {
+            Text("차단해제")
+        }
+    }
+    
+    private var blockButton: some View {
+        Button {
+            router.alert(for: .blockUserConfirmation, actions: [
+                .cancelAction("취소") {},
+                .destructiveAction("차단") {
+                    vm.block(userId: Int64(userId), opponentUserId: vm.writer.id)
+                },
+            ])
+        } label: {
+            Text("차단하기")
+        }
+    }
+    
+    private var reportListButton: some View {
+        Button {
+            router.route(to: .reportListView)
+        } label: {
+            Text("신고내역")
+        }
+    }
+    
+    private var reportButton: some View {
+        Button {
+            router.alert(for: .reportUser, actions: [
+                .cancelAction("취소") {},
+                .destructiveAction("신고") {
+                    router.route(to: .reportView(opponentUserId: vm.writer.id, chatRoomId: nil,
+                                                 isReported: $vm.isReported))
+                },
+            ])
+        } label: {
+            Text("신고하기")
+        }
+    }
+    
     
     @ViewBuilder private func controls() -> some View {
         switch vm.role {

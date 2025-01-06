@@ -88,7 +88,9 @@ struct PresentationAssembly: Assembly {
             PlaceInformationDetailViewModel(chatUseCase: resolver.resolve(ChatUseCase.self),
                                             communityUseCase: resolver.resolve(CommunityUseCase.self),
                                             matchingUseCase: resolver.resolve(MatchingUseCase.self),
-                                            notificationUseCase: resolver.resolve(NotificationUseCase.self))
+                                            notificationUseCase: resolver.resolve(NotificationUseCase.self),
+                                            userBusinessUseCase: resolver.resolve(UserBusinessUseCase.self)
+            )
         }
         
         container.register(for: PlaceInformationDetailMakingViewModel.self) { resolver in

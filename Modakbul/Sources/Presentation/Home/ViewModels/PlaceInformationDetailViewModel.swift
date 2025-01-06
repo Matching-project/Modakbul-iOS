@@ -29,6 +29,18 @@ final class PlaceInformationDetailViewModel: ObservableObject {
     @Published var creationDate: String = String()
     @Published var writer: User = User()
     
+    // MARK: - block & report
+    @Published var presentedUser: User?
+    @Published var isBlocked: Bool = false
+    @Published var isReported: Bool = false
+    
+    private var blockId: Int64?
+    
+    private let blocksSubject = PassthroughSubject<[(blockId: Int64, blockedUser: User)], Never>()
+    private let reportSubject = PassthroughSubject<[(user: User, status: InquiryStatusType)], Never>()
+    private let blockPerformSubject = PassthroughSubject<Bool, Never>()
+    // MARK: - End of block & report
+    
     private var matchingId: Int64 = Int64(Constants.loggedOutUserId)
     private var userId: Int64 = Int64(Constants.loggedOutUserId)
     
@@ -44,17 +56,20 @@ final class PlaceInformationDetailViewModel: ObservableObject {
     private let communityUseCase: CommunityUseCase
     private let matchingUseCase: MatchingUseCase
     private let notificationUseCase: NotificationUseCase
+    private let userBusinessUseCase: UserBusinessUseCase
     
     init(
         chatUseCase: ChatUseCase,
         communityUseCase: CommunityUseCase,
         matchingUseCase: MatchingUseCase,
-        notificationUseCase: NotificationUseCase
+        notificationUseCase: NotificationUseCase,
+        userBusinessUseCase: UserBusinessUseCase
     ) {
         self.chatUseCase = chatUseCase
         self.communityUseCase = communityUseCase
         self.matchingUseCase = matchingUseCase
         self.notificationUseCase = notificationUseCase
+        self.userBusinessUseCase = userBusinessUseCase
         subscribe()
     }
     
@@ -123,6 +138,34 @@ final class PlaceInformationDetailViewModel: ObservableObject {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] chatRoomConfiguration in
                 self?.chatRoomConfiguration = chatRoomConfiguration
+            }
+            .store(in: &cancellables)
+        
+        blocksSubject
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] blocks in
+                guard let index = blocks.firstIndex(where: { $0.blockedUser.id == self?.presentedUser?.id }) else {
+                    self?.blockPerformSubject.send(false)
+                    self?.blockId = nil
+                    return
+                }
+                let (blockId, _) = (blocks[index].blockId, blocks[index].blockedUser)
+                self?.blockPerformSubject.send(true)
+                self?.blockId = blockId
+            }
+            .store(in: &cancellables)
+        
+        reportSubject
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] report in
+                self?.isReported = report.contains(where: { $0.user.id == self?.presentedUser?.id })
+            }
+            .store(in: &cancellables)
+        
+        blockPerformSubject
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] result in
+                self?.isBlocked = result
             }
             .store(in: &cancellables)
     }
@@ -250,6 +293,57 @@ extension PlaceInformationDetailViewModel {
                 alertSubject.send(.inactiveChatRoom)
             } catch APIError.opponentUserHasDeleted {
                 alertSubject.send(.opponentUserHasDeleted)
+            } catch {
+                print(error)
+            }
+        }
+    }
+}
+
+// MARK: - interfaces for UserBusinessUseCase
+extension PlaceInformationDetailViewModel {
+    private func fetchIsBlocked(from userId: Int64, about opponentUserId: Int64) async {
+        do {
+            let blockedUsers = try await userBusinessUseCase.readBlockedUsers(userId: userId)
+            blocksSubject.send(blockedUsers)
+        } catch {
+            blocksSubject.send([])
+            print(error)
+        }
+    }
+    
+    private func fetchIsReported(from userId: Int64, about opponentUserId: Int64) async {
+        do {
+            let reportedUsers = try await userBusinessUseCase.readReports(userId: userId)
+            reportSubject.send(reportedUsers)
+        } catch {
+            reportSubject.send([])
+            print(error)
+        }
+    }
+    
+    @MainActor
+    func block(userId: Int64, opponentUserId: Int64) {
+        Task {
+            do {
+                try await userBusinessUseCase.block(userId: userId, opponentUserId: opponentUserId)
+                blockPerformSubject.send(true)
+                await fetchIsBlocked(from: userId, about: opponentUserId)
+            } catch {
+                print(error)
+            }
+        }
+    }
+    
+    @MainActor
+    func unblock(userId: Int64) {
+        guard let blockId = blockId else { return }
+        
+        Task {
+            do {
+                try await userBusinessUseCase.unblock(userId: userId, blockId: blockId)
+                blockPerformSubject.send(false)
+                await fetchIsBlocked(from: userId, about: userId)
             } catch {
                 print(error)
             }
