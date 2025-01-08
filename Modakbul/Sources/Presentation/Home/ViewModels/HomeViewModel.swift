@@ -11,7 +11,7 @@ import Combine
 
 final class HomeViewModel: ObservableObject {
     @Published var isMapShowing: Bool = true
-    @Published var cameraPosition: MapCameraPosition = .userLocation(fallback: .automatic)
+    @Published var cameraPosition: MapCameraPosition = .region(.init(center: .init(latitude: 37.252452, longitude: 127.073921), span: .init(latitudeDelta: 0.05, longitudeDelta: 0.05)))
     @Published var cameraCenterCoordinate: CLLocationCoordinate2D = .init()
     @Published var searchingText: String = String()
     @Published var places: [Place] = []
