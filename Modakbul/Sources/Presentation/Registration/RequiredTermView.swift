@@ -12,6 +12,7 @@ struct RequiredTermView<Router: AppRouter>: View {
     @State private var serviceChecked: Bool = false
     @State private var locationChecked: Bool = false
     @State private var privacyChecked: Bool = false
+    @State private var EULAChecked: Bool = false
     
     private let userCredential: UserCredential
     
@@ -36,13 +37,13 @@ struct RequiredTermView<Router: AppRouter>: View {
                         self.serviceChecked = newValue
                         self.locationChecked = newValue
                         self.privacyChecked = newValue
+                        self.EULAChecked = newValue
                     }
                 ))
                 .toggleStyle(DefaultCheckBox())
                 .padding(.vertical, 20)
                 
                 ForEach(RequiredTerm.allCases, id: \.self) { requiredTerm in
-                    // TODO: 약관 내용을 표시할 Link() 추가 필요
                     HStack {
                         Toggle(requiredTerm.description, isOn: binding(requiredTerm))
                             .toggleStyle(DefaultCheckBox())
@@ -72,7 +73,7 @@ struct RequiredTermView<Router: AppRouter>: View {
 
 extension RequiredTermView {
     private var allChecked: Bool {
-        serviceChecked && locationChecked && privacyChecked
+        serviceChecked && locationChecked && privacyChecked && EULAChecked
     }
     
     private func binding(_ requiredTerm: RequiredTerm) -> Binding<Bool> {
@@ -80,15 +81,16 @@ extension RequiredTermView {
         case .service: return Binding(get: { serviceChecked }, set: { serviceChecked = $0 })
         case .location: return Binding(get: { locationChecked }, set: { locationChecked = $0 })
         case .privacy: return Binding(get: { privacyChecked }, set: { privacyChecked = $0 })
+        case .EULA: return Binding(get: { EULAChecked }, set: { EULAChecked = $0 })
         }
     }
     
     private func link(_ requiredTerm: RequiredTerm) -> String {
-        // TODO: - 약관 링크 추가 필요
         switch requiredTerm {
-        case .service: return "https://naver.com"
-        case .location: return "https:/google.co.kr"
-        case .privacy: return "https://daum.net"
+        case .service: return "https://exuberant-snowplow-45e.notion.site/d4ef7dcf9d1b4875abed5e87b43def74?pvs=4"
+        case .location: return "https://exuberant-snowplow-45e.notion.site/265773e7dce6488bbad45da8bad15938?pvs=4"
+        case .privacy: return "https://exuberant-snowplow-45e.notion.site/063bfff6884745e0a9e162551b5de062?pvs=4"
+        case .EULA: return "https://exuberant-snowplow-45e.notion.site/EULA-8b858ec27ee248d69a7d6cef2c093b44?pvs=4"
         }
     }
 }
