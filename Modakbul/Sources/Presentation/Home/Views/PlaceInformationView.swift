@@ -132,27 +132,32 @@ struct PlaceInformationView<Router: AppRouter>: View {
     }
     
     @ViewBuilder private func communityRecruitingContentListArea(_ condition: Bool) -> some View {
-        if condition {
-            Text("아직 모집 중인 모임이 없어요.")
+        if userId == Constants.loggedOutUserId {
+            Text("로그인 해야 모집 중인 모임을 볼 수 있어요.")
                 .font(.Modakbul.footnote)
         } else {
-            ScrollView {
-                LazyVStack {
-                    ForEach(viewModel.communityRecruitingContents, id: \.id) { communityRecruitingContent in
-                        Cell(communityRecruitingContent)
-                            .contentShape(.rect)
-                            .onTapGesture {
-                                router.dismiss()
-                                if userId == Constants.loggedOutUserId {
-                                    router.route(to: .loginView)
-                                } else {
-                                    router.route(to: .placeInformationDetailView(placeId: place.id, locationName: place.location.name, communityRecruitingContentId: communityRecruitingContent.id, userId: Int64(userId)))
+            if condition {
+                Text("아직 모집 중인 모임이 없어요.")
+                    .font(.Modakbul.footnote)
+            } else {
+                ScrollView {
+                    LazyVStack {
+                        ForEach(viewModel.communityRecruitingContents, id: \.id) { communityRecruitingContent in
+                            Cell(communityRecruitingContent)
+                                .contentShape(.rect)
+                                .onTapGesture {
+                                    router.dismiss()
+                                    if userId == Constants.loggedOutUserId {
+                                        router.route(to: .loginView)
+                                    } else {
+                                        router.route(to: .placeInformationDetailView(placeId: place.id, locationName: place.location.name, communityRecruitingContentId: communityRecruitingContent.id, userId: Int64(userId)))
+                                    }
                                 }
-                            }
+                        }
                     }
                 }
+                .padding(.top)
             }
-            .padding(.top)
         }
     }
 }
